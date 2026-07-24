@@ -1,0 +1,1492 @@
+:host {
+  display: block;
+
+  --hc-dark-blue: #0f172a;
+  --hc-primary-blue: #2563eb;
+  --hc-success-green: #16a34a;
+  --hc-alert-red: #dc2626;
+  --hc-light-background: #f8fafc;
+  --hc-main-text: #111827;
+
+  --hc-slate-700: #334155;
+  --hc-slate-600: #475569;
+  --hc-slate-500: #64748b;
+  --hc-slate-400: #94a3b8;
+  --hc-slate-300: #cbd5e1;
+  --hc-slate-200: #e2e8f0;
+  --hc-slate-100: #f1f5f9;
+  --hc-white: #ffffff;
+
+  --hc-blue-700: #1d4ed8;
+  --hc-blue-100: #dbeafe;
+  --hc-blue-50: #eff6ff;
+
+  --hc-green-100: #dcfce7;
+  --hc-green-50: #f0fdf4;
+
+  --hc-red-100: #fee2e2;
+  --hc-red-50: #fef2f2;
+
+  --hc-radius-sm: 10px;
+  --hc-radius-md: 16px;
+  --hc-radius-lg: 22px;
+  --hc-radius-xl: 28px;
+
+  --hc-shadow-sm:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 3px 10px rgba(15, 23, 42, 0.06);
+
+  --hc-shadow-md:
+    0 14px 30px rgba(15, 23, 42, 0.09),
+    0 5px 14px rgba(15, 23, 42, 0.05);
+
+  --hc-shadow-lg:
+    0 28px 65px rgba(15, 23, 42, 0.2),
+    0 10px 24px rgba(15, 23, 42, 0.1);
+
+  color: var(--hc-main-text);
+}
+
+/* =========================================================
+   Contenedor principal
+========================================================= */
+
+.zone-form {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: min(880px, 100%);
+  max-height: calc(100vh - 48px);
+
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: var(--hc-radius-xl);
+  background: var(--hc-white);
+  box-shadow: var(--hc-shadow-lg);
+
+  overflow: hidden;
+  isolation: isolate;
+
+  animation: zone-form-enter 220ms ease;
+}
+
+.zone-form::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -140px;
+  right: -110px;
+  width: 310px;
+  height: 310px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.08);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.zone-form--create {
+  --zone-form-accent: var(--hc-primary-blue);
+  --zone-form-accent-soft: var(--hc-blue-50);
+}
+
+.zone-form--edit {
+  --zone-form-accent: var(--hc-success-green);
+  --zone-form-accent-soft: var(--hc-green-50);
+}
+
+/* =========================================================
+   Encabezado
+========================================================= */
+
+.zone-form__header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px 30px 24px;
+  color: var(--hc-white);
+  background:
+    radial-gradient(
+      circle at 88% 16%,
+      rgba(37, 99, 235, 0.32),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      var(--hc-dark-blue) 0%,
+      #1e293b 100%
+    );
+  overflow: hidden;
+}
+
+.zone-form--edit .zone-form__header {
+  background:
+    radial-gradient(
+      circle at 88% 16%,
+      rgba(22, 163, 74, 0.25),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      var(--hc-dark-blue) 0%,
+      #1e293b 100%
+    );
+}
+
+.zone-form__header::before {
+  content: '';
+  position: absolute;
+  inset: auto -75px -120px auto;
+  width: 260px;
+  height: 260px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 28px rgba(255, 255, 255, 0.025),
+    0 0 0 58px rgba(255, 255, 255, 0.018);
+  pointer-events: none;
+}
+
+.zone-form__heading,
+.zone-form__close {
+  position: relative;
+  z-index: 1;
+}
+
+.zone-form__heading {
+  min-width: 0;
+  max-width: 700px;
+}
+
+.zone-form__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+  color: #93c5fd;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.zone-form--edit .zone-form__eyebrow {
+  color: #86efac;
+}
+
+.zone-form__eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.zone-form__title {
+  margin: 0;
+  font-size: clamp(1.65rem, 4vw, 2.25rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.zone-form__description {
+  max-width: 670px;
+  margin: 14px 0 0;
+  color: #cbd5e1;
+  font-size: 0.94rem;
+  line-height: 1.68;
+}
+
+.zone-form__close {
+  display: grid;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  padding: 0;
+  color: var(--hc-white);
+  font: inherit;
+  font-size: 1.45rem;
+  line-height: 1;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    opacity 160ms ease;
+}
+
+.zone-form__close:hover:not(:disabled) {
+  transform: rotate(4deg) scale(1.04);
+  border-color: rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.zone-form__close:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.zone-form__close:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   Contenido desplazable
+========================================================= */
+
+.zone-form__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
+  min-height: 0;
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--hc-slate-300)
+    transparent;
+}
+
+.zone-form__content::-webkit-scrollbar {
+  width: 9px;
+}
+
+.zone-form__content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.zone-form__content::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      var(--hc-slate-300),
+      var(--hc-slate-300)
+    )
+    padding-box;
+}
+
+.zone-form__content::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      var(--hc-slate-400),
+      var(--hc-slate-400)
+    )
+    padding-box;
+}
+
+/* =========================================================
+   Alertas
+========================================================= */
+
+.zone-form__alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin: 22px 26px 0;
+  padding: 15px 16px;
+  border: 1px solid;
+  border-radius: var(--hc-radius-md);
+  box-shadow: var(--hc-shadow-sm);
+  animation: zone-alert-enter 180ms ease;
+}
+
+.zone-form__alert--error {
+  color: #7f1d1d;
+  border-color: #fecaca;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(254, 242, 242, 0.98),
+      rgba(255, 255, 255, 0.96)
+    );
+}
+
+.zone-form__alert-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  color: var(--hc-white);
+  font-size: 0.9rem;
+  font-weight: 900;
+  border-radius: 10px;
+  background: var(--hc-alert-red);
+  box-shadow: 0 7px 15px rgba(220, 38, 38, 0.2);
+}
+
+.zone-form__alert-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.zone-form__alert-content strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #7f1d1d;
+  font-size: 0.9rem;
+}
+
+.zone-form__alert-content p {
+  margin: 0;
+  color: #991b1b;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.zone-form__alert-close {
+  display: grid;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  padding: 0;
+  color: #991b1b;
+  font: inherit;
+  font-size: 1.15rem;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background 150ms ease;
+}
+
+.zone-form__alert-close:hover {
+  color: #7f1d1d;
+  background: var(--hc-red-100);
+}
+
+/* =========================================================
+   Secciones
+========================================================= */
+
+.zone-form__section {
+  position: relative;
+  margin: 0 26px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--hc-slate-200);
+}
+
+.zone-form__section:last-of-type {
+  border-bottom: 0;
+}
+
+.zone-form__section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.zone-form__section-number {
+  display: grid;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: var(--zone-form-accent);
+  font-size: 0.74rem;
+  font-weight: 900;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--zone-form-accent) 20%,
+      transparent
+    );
+  border-radius: 12px;
+  background: var(--zone-form-accent-soft);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 6px 14px rgba(15, 23, 42, 0.05);
+}
+
+.zone-form__section-title {
+  margin: 0;
+  color: var(--hc-main-text);
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.015em;
+}
+
+.zone-form__section-description {
+  max-width: 680px;
+  margin: 5px 0 0;
+  color: var(--hc-slate-500);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+/* =========================================================
+   Cuadrícula base del formulario
+========================================================= */
+
+.zone-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.zone-form__field {
+  position: relative;
+  min-width: 0;
+}
+
+.zone-form__field--full {
+  grid-column: 1 / -1;
+}
+
+/* =========================================================
+   Accesibilidad de foco general
+========================================================= */
+
+.zone-form button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.32);
+  outline-offset: 3px;
+}
+
+.zone-form--edit button:focus-visible {
+  outline-color: rgba(22, 163, 74, 0.3);
+}
+
+/* =========================================================
+   Animaciones iniciales
+========================================================= */
+
+@keyframes zone-form-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes zone-alert-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   Etiquetas y textos auxiliares
+========================================================= */
+
+.zone-form__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 8px;
+  color: var(--hc-slate-700);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.zone-form__required {
+  color: var(--hc-alert-red);
+  font-size: 0.86rem;
+  line-height: 1;
+}
+
+.zone-form__hint,
+.zone-form__counter {
+  display: block;
+  color: var(--hc-slate-500);
+  font-size: 0.73rem;
+  line-height: 1.45;
+}
+
+.zone-form__field-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 7px;
+}
+
+.zone-form__counter {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* =========================================================
+   Inputs y textarea
+========================================================= */
+
+.zone-form__input,
+.zone-form__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--hc-main-text);
+  font: inherit;
+  font-size: 0.91rem;
+  border: 1px solid var(--hc-slate-300);
+  border-radius: 13px;
+  outline: none;
+  background: var(--hc-white);
+  box-shadow:
+    inset 0 1px 2px rgba(15, 23, 42, 0.03);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.zone-form__input {
+  min-height: 48px;
+  padding: 0 14px;
+}
+
+.zone-form__textarea {
+  min-height: 128px;
+  padding: 13px 14px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.zone-form__input::placeholder,
+.zone-form__textarea::placeholder {
+  color: var(--hc-slate-400);
+}
+
+.zone-form__input:hover:not(:disabled),
+.zone-form__textarea:hover:not(:disabled) {
+  border-color: var(--hc-slate-400);
+}
+
+.zone-form__input:focus,
+.zone-form__textarea:focus {
+  border-color: var(--zone-form-accent);
+  box-shadow:
+    0 0 0 4px
+      color-mix(
+        in srgb,
+        var(--zone-form-accent) 13%,
+        transparent
+      ),
+    inset 0 1px 2px rgba(15, 23, 42, 0.03);
+  background: var(--hc-white);
+}
+
+.zone-form__input:disabled,
+.zone-form__textarea:disabled {
+  color: var(--hc-slate-500);
+  border-color: var(--hc-slate-200);
+  background: var(--hc-slate-100);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.zone-form__input:invalid:not(:placeholder-shown):not(:focus) {
+  border-color: rgba(220, 38, 38, 0.5);
+}
+
+/* =========================================================
+   Input type number
+========================================================= */
+
+.zone-form__input[type='number'] {
+  appearance: textfield;
+}
+
+.zone-form__input[type='number']::-webkit-inner-spin-button,
+.zone-form__input[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+}
+
+/* =========================================================
+   Input type time
+========================================================= */
+
+.zone-form__input[type='time'] {
+  color-scheme: light;
+}
+
+.zone-form__input[type='time']::-webkit-calendar-picker-indicator {
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.65;
+  transition:
+    opacity 150ms ease,
+    background 150ms ease;
+}
+
+.zone-form__input[type='time']::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  background: var(--zone-form-accent-soft);
+}
+
+/* =========================================================
+   Grupos de input con sufijo
+========================================================= */
+
+.zone-form__input-group {
+  position: relative;
+}
+
+.zone-form__input-group .zone-form__input {
+  padding-right: 94px;
+}
+
+.zone-form__input-suffix {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 9px;
+  color: var(--hc-slate-600);
+  font-size: 0.72rem;
+  font-weight: 900;
+  border-radius: 9px;
+  background: var(--hc-slate-100);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.zone-form__input-group:focus-within
+  .zone-form__input-suffix {
+  color: var(--zone-form-accent);
+  background: var(--zone-form-accent-soft);
+}
+
+/* =========================================================
+   Tarjeta de aprobación
+========================================================= */
+
+.zone-form__approval {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 15px;
+  padding: 17px 18px;
+  border: 1px solid var(--hc-slate-200);
+  border-radius: 17px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(248, 250, 252, 0.98),
+      rgba(255, 255, 255, 0.98)
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 5px 16px rgba(15, 23, 42, 0.04);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.zone-form__approval:hover {
+  transform: translateY(-2px);
+  border-color: var(--hc-slate-300);
+  box-shadow: var(--hc-shadow-sm);
+}
+
+.zone-form__approval--active {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--zone-form-accent) 32%,
+      transparent
+    );
+  background:
+    linear-gradient(
+      135deg,
+      var(--zone-form-accent-soft),
+      rgba(255, 255, 255, 0.98)
+    );
+}
+
+.zone-form__approval--active:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--zone-form-accent) 46%,
+      transparent
+    );
+}
+
+/* =========================================================
+   Checkbox oculto
+========================================================= */
+
+.zone-form__approval-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* =========================================================
+   Switch
+========================================================= */
+
+.zone-form__approval-switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 27px;
+  border-radius: 999px;
+  background: var(--hc-slate-300);
+  box-shadow:
+    inset 0 1px 3px rgba(15, 23, 42, 0.16);
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.zone-form__approval-switch::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--hc-white);
+  box-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.2);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.zone-form__approval-input:checked
+  + .zone-form__approval-switch {
+  background: var(--zone-form-accent);
+  box-shadow:
+    inset 0 1px 3px rgba(15, 23, 42, 0.12),
+    0 0 0 4px
+      color-mix(
+        in srgb,
+        var(--zone-form-accent) 10%,
+        transparent
+      );
+}
+
+.zone-form__approval-input:checked
+  + .zone-form__approval-switch::after {
+  transform: translateX(21px);
+}
+
+.zone-form__approval-input:focus-visible
+  + .zone-form__approval-switch {
+  outline: 3px solid
+    color-mix(
+      in srgb,
+      var(--zone-form-accent) 30%,
+      transparent
+    );
+  outline-offset: 3px;
+}
+
+.zone-form__approval-input:disabled
+  + .zone-form__approval-switch {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   Contenido de la aprobación
+========================================================= */
+
+.zone-form__approval-content {
+  min-width: 0;
+}
+
+.zone-form__approval-title {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--hc-main-text);
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.zone-form__approval-description {
+  display: block;
+  color: var(--hc-slate-500);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   Estado de aprobación
+========================================================= */
+
+.zone-form__approval-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 10px;
+  color: var(--hc-slate-600);
+  font-size: 0.7rem;
+  font-weight: 900;
+  white-space: nowrap;
+  border-radius: 999px;
+  background: var(--hc-slate-100);
+  transition:
+    color 180ms ease,
+    background 180ms ease;
+}
+
+.zone-form__approval-status--enabled {
+  color: var(--hc-success-green);
+  background: var(--hc-green-100);
+}
+
+/* =========================================================
+   Estado disabled de la tarjeta
+========================================================= */
+
+.zone-form__approval:has(
+  .zone-form__approval-input:disabled
+) {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================================
+   Detalles visuales por modo
+========================================================= */
+
+.zone-form--create
+  .zone-form__input:focus,
+.zone-form--create
+  .zone-form__textarea:focus {
+  border-color: var(--hc-primary-blue);
+}
+
+.zone-form--edit
+  .zone-form__input:focus,
+.zone-form--edit
+  .zone-form__textarea:focus {
+  border-color: var(--hc-success-green);
+}
+
+/* =========================================================
+   Responsive parcial de campos
+========================================================= */
+
+@media (max-width: 720px) {
+  .zone-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .zone-form__field--full {
+    grid-column: auto;
+  }
+
+  .zone-form__field-footer {
+    align-items: flex-start;
+  }
+
+  .zone-form__approval {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .zone-form__approval-status {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 480px) {
+  .zone-form__input,
+  .zone-form__textarea {
+    font-size: 0.88rem;
+  }
+
+  .zone-form__input-group .zone-form__input {
+    padding-right: 84px;
+  }
+
+  .zone-form__input-suffix {
+    right: 9px;
+    padding: 0 7px;
+    font-size: 0.68rem;
+  }
+
+  .zone-form__approval {
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .zone-form__approval-switch {
+    margin-top: 2px;
+  }
+}
+
+/* =========================================================
+   Footer del formulario
+========================================================= */
+
+.zone-form__footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+
+  padding: 20px 26px;
+
+  border-top: 1px solid var(--hc-slate-200);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.94),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 -12px 28px rgba(15, 23, 42, 0.05);
+}
+
+.zone-form__footer-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  min-width: 0;
+  max-width: 470px;
+}
+
+.zone-form__footer-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--zone-form-accent);
+  font-size: 0.95rem;
+  font-weight: 900;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--zone-form-accent) 18%,
+      transparent
+    );
+  border-radius: 11px;
+  background: var(--zone-form-accent-soft);
+}
+
+.zone-form__footer-message p {
+  margin: 2px 0 0;
+  color: var(--hc-slate-500);
+  font-size: 0.79rem;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   Acciones
+========================================================= */
+
+.zone-form__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.zone-form__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 18px;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 900;
+  border-radius: 13px;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.zone-form__button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.zone-form__button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.zone-form__button:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+.zone-form__button--secondary {
+  color: var(--hc-slate-700);
+  border: 1px solid var(--hc-slate-300);
+  background: var(--hc-white);
+}
+
+.zone-form__button--secondary:hover:not(:disabled) {
+  color: var(--hc-main-text);
+  border-color: var(--hc-slate-400);
+  background: var(--hc-slate-50);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.zone-form__button--primary {
+  color: var(--hc-white);
+  border: 1px solid var(--hc-primary-blue);
+  background:
+    linear-gradient(
+      135deg,
+      var(--hc-primary-blue),
+      #1d4ed8
+    );
+  box-shadow:
+    0 10px 22px rgba(37, 99, 235, 0.22);
+}
+
+.zone-form__button--primary:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      #1d4ed8,
+      #1e40af
+    );
+  box-shadow:
+    0 14px 28px rgba(37, 99, 235, 0.28);
+}
+
+.zone-form__button--edit {
+  border-color: var(--hc-success-green);
+  background:
+    linear-gradient(
+      135deg,
+      var(--hc-success-green),
+      #15803d
+    );
+  box-shadow:
+    0 10px 22px rgba(22, 163, 74, 0.22);
+}
+
+.zone-form__button--edit:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      #15803d,
+      #166534
+    );
+  box-shadow:
+    0 14px 28px rgba(22, 163, 74, 0.27);
+}
+
+.zone-form__button-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  font-size: 0.95rem;
+  font-weight: 900;
+}
+
+/* =========================================================
+   Spinner del botón
+========================================================= */
+
+.zone-form__button-spinner {
+  width: 17px;
+  height: 17px;
+  border: 2px solid rgba(255, 255, 255, 0.38);
+  border-top-color: var(--hc-white);
+  border-radius: 50%;
+  animation: zone-button-spin 0.7s linear infinite;
+}
+
+/* =========================================================
+   Estados visuales mientras se envía
+========================================================= */
+
+.zone-form:has(.zone-form__button--primary:disabled)
+  .zone-form__section {
+  pointer-events: none;
+}
+
+.zone-form:has(.zone-form__button--primary:disabled)
+  .zone-form__section,
+.zone-form:has(.zone-form__button--primary:disabled)
+  .zone-form__footer-message {
+  opacity: 0.82;
+}
+
+.zone-form:has(.zone-form__button--primary:disabled)::after {
+  content: '';
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.02);
+  pointer-events: none;
+}
+
+/* =========================================================
+   Estados de validación visual
+========================================================= */
+
+.zone-form__input.ng-invalid.ng-touched,
+.zone-form__textarea.ng-invalid.ng-touched {
+  border-color: var(--hc-alert-red);
+  box-shadow:
+    0 0 0 4px rgba(220, 38, 38, 0.09);
+}
+
+.zone-form__input.ng-valid.ng-touched:not(:focus),
+.zone-form__textarea.ng-valid.ng-touched:not(:focus) {
+  border-color: rgba(22, 163, 74, 0.48);
+}
+
+.zone-form__field:has(
+  .zone-form__input.ng-invalid.ng-touched
+) .zone-form__label,
+.zone-form__field:has(
+  .zone-form__textarea.ng-invalid.ng-touched
+) .zone-form__label {
+  color: var(--hc-alert-red);
+}
+
+/* =========================================================
+   Selección de texto
+========================================================= */
+
+.zone-form ::selection {
+  color: var(--hc-white);
+  background: var(--hc-primary-blue);
+}
+
+.zone-form--edit ::selection {
+  background: var(--hc-success-green);
+}
+
+/* =========================================================
+   Accesibilidad
+========================================================= */
+
+.zone-form a:focus-visible,
+.zone-form button:focus-visible,
+.zone-form input:focus-visible,
+.zone-form textarea:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.28);
+  outline-offset: 3px;
+}
+
+.zone-form--edit a:focus-visible,
+.zone-form--edit button:focus-visible,
+.zone-form--edit input:focus-visible,
+.zone-form--edit textarea:focus-visible {
+  outline-color: rgba(22, 163, 74, 0.3);
+}
+
+/* =========================================================
+   Animaciones
+========================================================= */
+
+@keyframes zone-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes zone-form-footer-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.zone-form__footer {
+  animation: zone-form-footer-enter 220ms ease;
+}
+
+/* =========================================================
+   Responsive general
+========================================================= */
+
+@media (max-width: 900px) {
+  .zone-form {
+    width: min(760px, 100%);
+  }
+
+  .zone-form__header {
+    padding: 26px 24px 22px;
+  }
+
+  .zone-form__section {
+    margin-right: 22px;
+    margin-left: 22px;
+  }
+
+  .zone-form__alert {
+    margin-right: 22px;
+    margin-left: 22px;
+  }
+
+  .zone-form__footer {
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+}
+
+@media (max-width: 720px) {
+  .zone-form {
+    width: 100%;
+    max-height: 94vh;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .zone-form__header {
+    gap: 18px;
+    padding: 24px 20px 20px;
+  }
+
+  .zone-form__title {
+    font-size: 1.7rem;
+  }
+
+  .zone-form__description {
+    font-size: 0.88rem;
+  }
+
+  .zone-form__close {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+  }
+
+  .zone-form__content {
+    max-height: calc(94vh - 128px);
+  }
+
+  .zone-form__alert {
+    margin: 18px 18px 0;
+  }
+
+  .zone-form__section {
+    margin: 0 18px;
+    padding: 24px 0;
+  }
+
+  .zone-form__section-heading {
+    gap: 12px;
+    margin-bottom: 19px;
+  }
+
+  .zone-form__section-number {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+
+  .zone-form__footer {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px;
+  }
+
+  .zone-form__footer-message {
+    max-width: none;
+  }
+
+  .zone-form__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .zone-form__button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .zone-form__header {
+    padding: 22px 16px 18px;
+  }
+
+  .zone-form__eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.11em;
+  }
+
+  .zone-form__title {
+    font-size: 1.5rem;
+  }
+
+  .zone-form__description {
+    margin-top: 10px;
+    line-height: 1.55;
+  }
+
+  .zone-form__alert {
+    margin-right: 14px;
+    margin-left: 14px;
+    padding: 14px;
+  }
+
+  .zone-form__section {
+    margin: 0 14px;
+    padding: 22px 0;
+  }
+
+  .zone-form__section-heading {
+    align-items: flex-start;
+  }
+
+  .zone-form__section-description {
+    font-size: 0.77rem;
+  }
+
+  .zone-form__footer {
+    padding: 15px 14px;
+  }
+
+  .zone-form__actions {
+    grid-template-columns: 1fr;
+  }
+
+  .zone-form__button--secondary {
+    order: 2;
+  }
+
+  .zone-form__button--primary {
+    order: 1;
+  }
+}
+
+@media (max-width: 380px) {
+  .zone-form__header {
+    gap: 12px;
+  }
+
+  .zone-form__close {
+    width: 35px;
+    height: 35px;
+  }
+
+  .zone-form__title {
+    font-size: 1.35rem;
+  }
+
+  .zone-form__footer-message {
+    align-items: center;
+  }
+
+  .zone-form__footer-message p {
+    font-size: 0.74rem;
+  }
+}
+
+/* =========================================================
+   Pantallas altas y bajas
+========================================================= */
+
+@media (max-height: 700px) {
+  .zone-form {
+    max-height: calc(100vh - 20px);
+  }
+
+  .zone-form__header {
+    padding-top: 20px;
+    padding-bottom: 18px;
+  }
+
+  .zone-form__content {
+    max-height: calc(100vh - 122px);
+  }
+
+  .zone-form__section {
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+}
+
+/* =========================================================
+   Alto contraste
+========================================================= */
+
+@media (prefers-contrast: more) {
+  .zone-form {
+    border-color: var(--hc-dark-blue);
+  }
+
+  .zone-form__input,
+  .zone-form__textarea,
+  .zone-form__approval,
+  .zone-form__button--secondary {
+    border-width: 2px;
+  }
+
+  .zone-form__button--primary {
+    border-color: var(--hc-dark-blue);
+  }
+}
+
+/* =========================================================
+   Movimiento reducido
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .zone-form,
+  .zone-form *,
+  .zone-form *::before,
+  .zone-form *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

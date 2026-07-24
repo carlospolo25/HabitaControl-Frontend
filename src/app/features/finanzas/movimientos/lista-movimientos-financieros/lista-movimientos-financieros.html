@@ -1,0 +1,1074 @@
+<section
+  class="financial-movements"
+  [class.financial-movements--income]="tipo === 'ingreso'"
+  [class.financial-movements--expense]="tipo === 'egreso'">
+
+  <!-- =====================================================
+       ENCABEZADO
+  ====================================================== -->
+
+  <header class="financial-movements__header">
+    <div class="financial-movements__heading">
+      <span class="financial-movements__eyebrow">
+        Gestión financiera
+      </span>
+
+      <h2 class="financial-movements__title">
+        {{ configuracion.titulo }}
+      </h2>
+
+      <p class="financial-movements__description">
+        {{ configuracion.descripcion }}
+      </p>
+    </div>
+
+    <div class="financial-movements__header-actions">
+      <button
+        type="button"
+        class="financial-button financial-button--secondary"
+        (click)="cargar()"
+        [disabled]="isLoading || isAnulando">
+
+        <span
+          class="financial-button__icon"
+          [class.financial-button__icon--rotating]="isLoading"
+          aria-hidden="true">
+          ↻
+        </span>
+
+        <span>
+          {{ isLoading ? 'Actualizando...' : 'Actualizar' }}
+        </span>
+      </button>
+
+      <button
+        type="button"
+        class="financial-button financial-button--primary"
+        (click)="abrirRegistro()"
+        [disabled]="isLoading || isAnulando">
+
+        <span
+          class="financial-button__icon"
+          aria-hidden="true">
+          +
+        </span>
+
+        <span>
+          {{ configuracion.botonNuevo }}
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- =====================================================
+       ALERTAS
+  ====================================================== -->
+
+  @if (hasErrors && errorMessage) {
+    <div
+      class="financial-alert financial-alert--error"
+      role="alert">
+
+      <span
+        class="financial-alert__icon"
+        aria-hidden="true">
+        !
+      </span>
+
+      <div class="financial-alert__content">
+        <strong class="financial-alert__title">
+          No fue posible completar la operación
+        </strong>
+
+        <p class="financial-alert__message">
+          {{ errorMessage }}
+        </p>
+      </div>
+    </div>
+  }
+
+  @if (successMessage) {
+    <div
+      class="financial-alert financial-alert--success"
+      role="status">
+
+      <span
+        class="financial-alert__icon"
+        aria-hidden="true">
+        ✓
+      </span>
+
+      <div class="financial-alert__content">
+        <strong class="financial-alert__title">
+          Operación completada
+        </strong>
+
+        <p class="financial-alert__message">
+          {{ successMessage }}
+        </p>
+      </div>
+    </div>
+  }
+
+  <!-- =====================================================
+       RESUMEN
+  ====================================================== -->
+
+  <section
+    class="financial-summary"
+    aria-label="Resumen de movimientos financieros">
+
+    <article class="financial-summary__card">
+      <div class="financial-summary__icon" aria-hidden="true">
+        #
+      </div>
+
+      <div class="financial-summary__content">
+        <span class="financial-summary__label">
+          Registros encontrados
+        </span>
+
+        <strong class="financial-summary__value">
+          {{ totalRegistros }}
+        </strong>
+      </div>
+    </article>
+
+    <article class="financial-summary__card">
+      <div class="financial-summary__icon" aria-hidden="true">
+        $
+      </div>
+
+      <div class="financial-summary__content">
+        <span class="financial-summary__label">
+          Valor total vigente
+        </span>
+
+        <strong class="financial-summary__value">
+          {{ totalValor | currency:'COP':'symbol-narrow':'1.0-0' }}
+        </strong>
+      </div>
+    </article>
+
+    <article class="financial-summary__card">
+      <div class="financial-summary__icon" aria-hidden="true">
+        ◉
+      </div>
+
+      <div class="financial-summary__content">
+        <span class="financial-summary__label">
+          Tipo de movimiento
+        </span>
+
+        <strong class="financial-summary__value financial-summary__value--text">
+          {{ tipo === 'ingreso' ? 'Ingresos' : 'Egresos' }}
+        </strong>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- =====================================================
+       PANEL DE CONSULTA
+  ====================================================== -->
+
+  <section class="financial-query">
+    <header class="financial-query__header">
+      <div>
+        <h3 class="financial-query__title">
+          Periodo de consulta
+        </h3>
+
+        <p class="financial-query__description">
+          Selecciona el periodo de los movimientos que deseas consultar.
+        </p>
+      </div>
+    </header>
+
+    <div
+      class="financial-query__tabs"
+      role="tablist"
+      aria-label="Tipo de consulta">
+
+      <button
+        type="button"
+        role="tab"
+        class="financial-query__tab"
+        [class.financial-query__tab--active]="tipoConsulta === 'todos'"
+        [attr.aria-selected]="tipoConsulta === 'todos'"
+        (click)="cambiarTipoConsulta('todos')"
+        [disabled]="isLoading">
+        Todos
+      </button>
+
+      <button
+        type="button"
+        role="tab"
+        class="financial-query__tab"
+        [class.financial-query__tab--active]="tipoConsulta === 'mes'"
+        [attr.aria-selected]="tipoConsulta === 'mes'"
+        (click)="cambiarTipoConsulta('mes')"
+        [disabled]="isLoading">
+        Por mes
+      </button>
+
+      <button
+        type="button"
+        role="tab"
+        class="financial-query__tab"
+        [class.financial-query__tab--active]="tipoConsulta === 'rango'"
+        [attr.aria-selected]="tipoConsulta === 'rango'"
+        (click)="cambiarTipoConsulta('rango')"
+        [disabled]="isLoading">
+        Por rango
+      </button>
+    </div>
+
+    <div class="financial-query__body">
+
+      @if (tipoConsulta === 'todos') {
+        <div class="financial-query__all-state">
+          <span
+            class="financial-query__all-icon"
+            aria-hidden="true">
+            ≡
+          </span>
+
+          <div>
+            <strong>
+              Todos los movimientos
+            </strong>
+
+            <p>
+              Se mostrarán todos los
+              {{ tipo === 'ingreso' ? 'ingresos' : 'egresos' }}
+              registrados.
+            </p>
+          </div>
+        </div>
+      }
+
+      @if (tipoConsulta === 'mes') {
+        <div class="financial-query__fields">
+          <div class="financial-field">
+            <label
+              class="financial-field__label"
+              for="movimiento-mes">
+              Mes
+            </label>
+
+            <select
+              id="movimiento-mes"
+              name="mesSeleccionado"
+              class="financial-field__control financial-field__control--select"
+              [(ngModel)]="mesSeleccionado"
+              [disabled]="isLoading">
+
+              <option [ngValue]="1">Enero</option>
+              <option [ngValue]="2">Febrero</option>
+              <option [ngValue]="3">Marzo</option>
+              <option [ngValue]="4">Abril</option>
+              <option [ngValue]="5">Mayo</option>
+              <option [ngValue]="6">Junio</option>
+              <option [ngValue]="7">Julio</option>
+              <option [ngValue]="8">Agosto</option>
+              <option [ngValue]="9">Septiembre</option>
+              <option [ngValue]="10">Octubre</option>
+              <option [ngValue]="11">Noviembre</option>
+              <option [ngValue]="12">Diciembre</option>
+            </select>
+          </div>
+
+          <div class="financial-field">
+            <label
+              class="financial-field__label"
+              for="movimiento-anio">
+              Año
+            </label>
+
+            <input
+              id="movimiento-anio"
+              name="anioSeleccionado"
+              type="number"
+              class="financial-field__control"
+              [(ngModel)]="anioSeleccionado"
+              min="2000"
+              max="2100"
+              step="1"
+              inputmode="numeric"
+              [disabled]="isLoading">
+          </div>
+        </div>
+      }
+
+      @if (tipoConsulta === 'rango') {
+        <div class="financial-query__fields">
+          <div class="financial-field">
+            <label
+              class="financial-field__label"
+              for="movimiento-fecha-desde">
+              Fecha inicial
+            </label>
+
+            <input
+              id="movimiento-fecha-desde"
+              name="fechaDesde"
+              type="date"
+              class="financial-field__control"
+              [(ngModel)]="fechaDesde"
+              [disabled]="isLoading">
+          </div>
+
+          <div class="financial-field">
+            <label
+              class="financial-field__label"
+              for="movimiento-fecha-hasta">
+              Fecha final
+            </label>
+
+            <input
+              id="movimiento-fecha-hasta"
+              name="fechaHasta"
+              type="date"
+              class="financial-field__control"
+              [(ngModel)]="fechaHasta"
+              [disabled]="isLoading">
+          </div>
+        </div>
+      }
+
+      <div class="financial-query__actions">
+        <button
+          type="button"
+          class="financial-button financial-button--primary"
+          (click)="aplicarConsulta()"
+          [disabled]="isLoading">
+
+          <span
+            class="financial-button__icon"
+            aria-hidden="true">
+            ⌕
+          </span>
+
+          <span>
+            Consultar movimientos
+          </span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =====================================================
+       FILTROS LOCALES
+  ====================================================== -->
+
+  <section class="financial-filters">
+    <div class="financial-filters__search">
+      <label
+        class="financial-filters__search-label"
+        [for]="'buscar-movimiento-' + tipo">
+        Buscar movimiento
+      </label>
+
+      <div class="financial-filters__search-control">
+        <span
+          class="financial-filters__search-icon"
+          aria-hidden="true">
+          ⌕
+        </span>
+
+        <input
+          [id]="'buscar-movimiento-' + tipo"
+          name="searchTerm"
+          type="search"
+          class="financial-filters__search-input"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onFiltroChange()"
+          autocomplete="off"
+          [placeholder]="
+            tipo === 'ingreso'
+              ? 'Buscar por concepto, categoría, referencia...'
+              : 'Buscar por concepto, categoría, proveedor...'
+          "
+          [disabled]="isLoading">
+      </div>
+    </div>
+
+    <div class="financial-filters__field">
+      <label
+        class="financial-field__label"
+        [for]="'filtro-estado-' + tipo">
+        Estado
+      </label>
+
+      <select
+        [id]="'filtro-estado-' + tipo"
+        name="estadoSeleccionado"
+        class="financial-field__control financial-field__control--select"
+        [(ngModel)]="estadoSeleccionado"
+        (ngModelChange)="onFiltroChange()"
+        [disabled]="isLoading">
+
+        <option value="todos">
+          Todos los estados
+        </option>
+
+        @for (estado of estadosDisponibles; track estado) {
+          <option [value]="estado">
+            {{ estado }}
+          </option>
+        }
+      </select>
+    </div>
+
+    <div class="financial-filters__field">
+      <label
+        class="financial-field__label"
+        [for]="'items-pagina-' + tipo">
+        Mostrar
+      </label>
+
+      <select
+        [id]="'items-pagina-' + tipo"
+        name="itemsPerPage"
+        class="financial-field__control financial-field__control--select"
+        [(ngModel)]="itemsPerPage"
+        (ngModelChange)="cambiarCantidadPorPagina()"
+        [disabled]="isLoading">
+
+        <option [ngValue]="5">5 registros</option>
+        <option [ngValue]="10">10 registros</option>
+        <option [ngValue]="20">20 registros</option>
+        <option [ngValue]="50">50 registros</option>
+      </select>
+    </div>
+
+    <button
+      type="button"
+      class="financial-filters__clear-button"
+      (click)="limpiarFiltros()"
+      [disabled]="isLoading">
+      Limpiar filtros
+    </button>
+  </section>
+
+  <!-- =====================================================
+       CONTENIDO PRINCIPAL
+  ====================================================== -->
+
+  <section class="financial-table-card">
+    <header class="financial-table-card__header">
+      <div>
+        <h3 class="financial-table-card__title">
+          Detalle de movimientos
+        </h3>
+
+        <p class="financial-table-card__description">
+          {{
+            totalRegistros === 1
+              ? '1 movimiento encontrado'
+              : totalRegistros + ' movimientos encontrados'
+          }}
+        </p>
+      </div>
+
+      @if (searchTerm || estadoSeleccionado !== 'todos') {
+        <span class="financial-table-card__filtered-badge">
+          Filtros activos
+        </span>
+      }
+    </header>
+
+    @if (isLoading) {
+      <div
+        class="financial-loading"
+        role="status">
+
+        <span
+          class="financial-loading__spinner"
+          aria-hidden="true">
+        </span>
+
+        <h3 class="financial-loading__title">
+          {{ configuracion.mensajeCarga }}
+        </h3>
+
+        <p class="financial-loading__description">
+          Estamos consultando la información financiera.
+        </p>
+      </div>
+    } @else if (movimientosFiltrados.length === 0) {
+      <div class="financial-empty">
+        <div
+          class="financial-empty__icon"
+          aria-hidden="true">
+          {{ tipo === 'ingreso' ? '↗' : '↘' }}
+        </div>
+
+        @if (searchTerm || estadoSeleccionado !== 'todos') {
+          <h3 class="financial-empty__title">
+            No encontramos coincidencias
+          </h3>
+
+          <p class="financial-empty__description">
+            Ajusta los filtros de búsqueda para consultar otros movimientos.
+          </p>
+
+          <button
+            type="button"
+            class="financial-button financial-button--secondary"
+            (click)="limpiarFiltros()">
+            Limpiar filtros
+          </button>
+        } @else {
+          <h3 class="financial-empty__title">
+            {{ configuracion.tituloVacio }}
+          </h3>
+
+          <p class="financial-empty__description">
+            {{ configuracion.descripcionVacio }}
+          </p>
+
+          <button
+            type="button"
+            class="financial-button financial-button--primary"
+            (click)="abrirRegistro()">
+
+            <span
+              class="financial-button__icon"
+              aria-hidden="true">
+              +
+            </span>
+
+            <span>
+              {{ configuracion.botonNuevo }}
+            </span>
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="financial-table__responsive">
+        <table class="financial-table">
+          <thead class="financial-table__head">
+            <tr>
+              <th scope="col">
+                Movimiento
+              </th>
+
+              <th scope="col">
+                Categoría
+              </th>
+
+              <th scope="col">
+                Fecha
+              </th>
+
+              <th
+                scope="col"
+                class="financial-table__amount-heading">
+                Valor
+              </th>
+
+              <th scope="col">
+                Estado
+              </th>
+
+              <th scope="col">
+                {{
+                  tipo === 'ingreso'
+                    ? 'Información de pago'
+                    : 'Información del proveedor'
+                }}
+              </th>
+
+              <th
+                scope="col"
+                class="financial-table__actions-heading">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+
+          <tbody class="financial-table__body">
+            @for (
+              movimiento of movimientosPaginados;
+              track movimiento.id
+            ) {
+              <tr
+                class="financial-table__row"
+                [class.financial-table__row--cancelled]="
+                  estaAnulado(movimiento)
+                ">
+
+                <td
+                  class="financial-table__cell"
+                  data-label="Movimiento">
+
+                  <div class="financial-table__movement">
+                    <strong class="financial-table__concept">
+                      {{ movimiento.concepto }}
+                    </strong>
+
+                    @if (movimiento.descripcion) {
+                      <p
+                        class="financial-table__description"
+                        [title]="movimiento.descripcion">
+                        {{ movimiento.descripcion }}
+                      </p>
+                    } @else {
+                      <span class="financial-table__empty-value">
+                        Sin descripción
+                      </span>
+                    }
+                  </div>
+                </td>
+
+                <td
+                  class="financial-table__cell"
+                  data-label="Categoría">
+
+                  <span class="financial-table__category">
+                    {{ movimiento.categoriaNombre }}
+                  </span>
+                </td>
+
+                <td
+                  class="financial-table__cell"
+                  data-label="Fecha">
+
+                  <time
+                    class="financial-table__date"
+                    [attr.datetime]="movimiento.fecha">
+                    {{ movimiento.fecha | date:'dd/MM/yyyy' }}
+                  </time>
+                </td>
+
+                <td
+                  class="financial-table__cell financial-table__cell--amount"
+                  data-label="Valor">
+
+                  <strong
+                    class="financial-table__amount"
+                    [class.financial-table__amount--income]="
+                      tipo === 'ingreso'
+                    "
+                    [class.financial-table__amount--expense]="
+                      tipo === 'egreso'
+                    ">
+                    {{ movimiento.valor | currency:'COP':'symbol-narrow':'1.0-0' }}
+                  </strong>
+                </td>
+
+                <td
+                  class="financial-table__cell"
+                  data-label="Estado">
+
+                  <span
+                    class="financial-status"
+                    [ngClass]="
+                      'financial-status--' +
+                      obtenerClaseEstado(movimiento.estado)
+                    ">
+                    <span
+                      class="financial-status__dot"
+                      aria-hidden="true">
+                    </span>
+
+                    {{ movimiento.estado }}
+                  </span>
+                </td>
+
+                <td
+                  class="financial-table__cell"
+                  [attr.data-label]="
+                    tipo === 'ingreso'
+                      ? 'Información de pago'
+                      : 'Información del proveedor'
+                  ">
+
+                  @if (tipo === 'ingreso') {
+                    <div class="financial-table__complementary">
+                      @if (movimiento.metodoPago) {
+                        <strong>
+                          {{ movimiento.metodoPago }}
+                        </strong>
+                      } @else {
+                        <span class="financial-table__empty-value">
+                          Sin método de pago
+                        </span>
+                      }
+
+                      @if (movimiento.referencia) {
+                        <small>
+                          Ref. {{ movimiento.referencia }}
+                        </small>
+                      }
+                    </div>
+                  } @else {
+                    <div class="financial-table__complementary">
+                      @if (movimiento.proveedor) {
+                        <strong>
+                          {{ movimiento.proveedor }}
+                        </strong>
+                      } @else {
+                        <span class="financial-table__empty-value">
+                          Sin proveedor
+                        </span>
+                      }
+
+                      @if (movimiento.numeroFactura) {
+                        <small>
+                          Factura {{ movimiento.numeroFactura }}
+                        </small>
+                      }
+                    </div>
+                  }
+                </td>
+
+                <td
+                  class="financial-table__cell financial-table__cell--actions"
+                  data-label="Acciones">
+
+                  <div class="financial-table__actions">
+                    <button
+                      type="button"
+                      class="financial-action-button financial-action-button--edit"
+                      (click)="abrirEdicion(movimiento)"
+                      [disabled]="estaAnulado(movimiento) || isAnulando"
+                      [attr.aria-label]="
+                        'Editar ' + tipo + ' ' + movimiento.concepto
+                      "
+                      title="Editar movimiento">
+                      <span aria-hidden="true">✎</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      class="financial-action-button financial-action-button--cancel"
+                      (click)="abrirAnulacion(movimiento)"
+                      [disabled]="estaAnulado(movimiento) || isAnulando"
+                      [attr.aria-label]="
+                        'Anular ' + tipo + ' ' + movimiento.concepto
+                      "
+                      title="Anular movimiento">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              @if (
+                estaAnulado(movimiento) &&
+                movimiento.motivoAnulacion
+              ) {
+                <tr class="financial-table__cancellation-row">
+                  <td colspan="7">
+                    <div class="financial-table__cancellation-detail">
+                      <span
+                        class="financial-table__cancellation-icon"
+                        aria-hidden="true">
+                        !
+                      </span>
+
+                      <div>
+                        <strong>
+                          Movimiento anulado
+                        </strong>
+
+                        <p>
+                          {{ movimiento.motivoAnulacion }}
+                        </p>
+
+                        @if (movimiento.fechaAnulacion) {
+                          <small>
+                            Anulado el
+                            {{
+                              movimiento.fechaAnulacion
+                                | date:'dd/MM/yyyy, h:mm a'
+                            }}
+                          </small>
+                        }
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- =================================================
+           PAGINACIÓN
+      ================================================== -->
+
+      <footer class="financial-pagination">
+        <p class="financial-pagination__summary">
+          Mostrando
+
+          <strong>
+            {{
+              totalRegistros === 0
+                ? 0
+                : ((currentPage - 1) * itemsPerPage) + 1
+            }}
+          </strong>
+
+          a
+
+          <strong>
+            {{
+              currentPage * itemsPerPage > totalRegistros
+                ? totalRegistros
+                : currentPage * itemsPerPage
+            }}
+          </strong>
+
+          de
+
+          <strong>
+            {{ totalRegistros }}
+          </strong>
+
+          registros
+        </p>
+
+        <nav
+          class="financial-pagination__navigation"
+          aria-label="Paginación de movimientos">
+
+          <button
+            type="button"
+            class="financial-pagination__button"
+            (click)="paginaAnterior()"
+            [disabled]="currentPage === 1"
+            aria-label="Página anterior">
+            ‹
+          </button>
+
+          <span class="financial-pagination__current">
+            Página
+
+            <strong>
+              {{ currentPage }}
+            </strong>
+
+            de
+
+            <strong>
+              {{ totalPages }}
+            </strong>
+          </span>
+
+          <button
+            type="button"
+            class="financial-pagination__button"
+            (click)="paginaSiguiente()"
+            [disabled]="currentPage === totalPages"
+            aria-label="Página siguiente">
+            ›
+          </button>
+        </nav>
+      </footer>
+    }
+  </section>
+
+</section>
+
+<!-- =====================================================
+     FORMULARIO DE REGISTRO / EDICIÓN
+====================================================== -->
+
+@if (mostrarFormulario) {
+  <app-form-movimiento-financiero
+    [tipo]="tipo"
+    [movimientoId]="movimientoEditandoId"
+    (guardado)="onMovimientoGuardado()"
+    (cerrar)="cerrarFormulario()">
+  </app-form-movimiento-financiero>
+}
+
+<!-- =====================================================
+     MODAL DE ANULACIÓN
+====================================================== -->
+
+@if (mostrarAnulacion && movimientoAnulando) {
+  <div
+    class="cancellation-modal"
+    role="presentation">
+
+    <div
+      class="cancellation-modal__backdrop"
+      aria-hidden="true"
+      (click)="cancelarAnulacion()">
+    </div>
+
+    <section
+      class="cancellation-modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cancellation-modal-title"
+      aria-describedby="cancellation-modal-description">
+
+      <header class="cancellation-modal__header">
+        <div class="cancellation-modal__heading">
+          <span
+            class="cancellation-modal__icon"
+            aria-hidden="true">
+            !
+          </span>
+
+          <div>
+            <span class="cancellation-modal__eyebrow">
+              Acción irreversible
+            </span>
+
+            <h2
+              id="cancellation-modal-title"
+              class="cancellation-modal__title">
+              {{ configuracion.tituloAnulacion }}
+            </h2>
+
+            <p
+              id="cancellation-modal-description"
+              class="cancellation-modal__description">
+              {{ configuracion.descripcionAnulacion }}
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="cancellation-modal__close-button"
+          (click)="cancelarAnulacion()"
+          [disabled]="isAnulando"
+          aria-label="Cerrar ventana de anulación">
+          ×
+        </button>
+      </header>
+
+      <div class="cancellation-modal__body">
+        <div class="cancellation-modal__movement">
+          <span class="cancellation-modal__movement-label">
+            Movimiento seleccionado
+          </span>
+
+          <strong class="cancellation-modal__movement-concept">
+            {{ movimientoAnulando.concepto }}
+          </strong>
+
+          <div class="cancellation-modal__movement-details">
+            <span>
+              {{ movimientoAnulando.categoriaNombre }}
+            </span>
+
+            <span aria-hidden="true">•</span>
+
+            <strong>
+              {{
+                movimientoAnulando.valor
+                  | currency:'COP':'symbol-narrow':'1.0-0'
+              }}
+            </strong>
+          </div>
+        </div>
+
+        <div class="cancellation-modal__warning">
+          <span
+            class="cancellation-modal__warning-icon"
+            aria-hidden="true">
+            !
+          </span>
+
+          <p>
+            Al confirmar, el movimiento cambiará al estado
+            <strong>Anulado</strong>
+            y no podrá volver a editarse.
+          </p>
+        </div>
+
+        <div class="cancellation-modal__field">
+          <div class="cancellation-modal__label-row">
+            <label
+              class="cancellation-modal__label"
+              for="motivo-anulacion">
+              Motivo de anulación
+            </label>
+
+            <span class="cancellation-modal__required">
+              Obligatorio
+            </span>
+          </div>
+
+          <textarea
+            id="motivo-anulacion"
+            name="motivoAnulacion"
+            class="cancellation-modal__textarea"
+            [(ngModel)]="motivoAnulacion"
+            maxlength="500"
+            rows="5"
+            placeholder="Explica claramente por qué se anula este movimiento..."
+            [disabled]="isAnulando">
+          </textarea>
+
+          <div class="cancellation-modal__field-footer">
+            <small>
+              Mínimo 5 caracteres.
+            </small>
+
+            <small
+              class="cancellation-modal__counter"
+              [class.cancellation-modal__counter--limit]="
+                motivoAnulacion.length >= 470
+              ">
+              {{ motivoAnulacion.length }}/500
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <footer class="cancellation-modal__footer">
+        <button
+          type="button"
+          class="financial-button financial-button--secondary"
+          (click)="cancelarAnulacion()"
+          [disabled]="isAnulando">
+          Volver
+        </button>
+
+        <button
+          type="button"
+          class="financial-button financial-button--danger"
+          (click)="confirmarAnulacion()"
+          [disabled]="
+            isAnulando ||
+            motivoAnulacion.trim().length < 5
+          ">
+
+          @if (isAnulando) {
+            <span
+              class="financial-button__loader"
+              aria-hidden="true">
+            </span>
+
+            <span>
+              Anulando...
+            </span>
+          } @else {
+            <span
+              class="financial-button__icon"
+              aria-hidden="true">
+              ×
+            </span>
+
+            <span>
+              Confirmar anulación
+            </span>
+          }
+        </button>
+      </footer>
+
+    </section>
+  </div>
+}

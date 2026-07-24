@@ -1,0 +1,510 @@
+<section class="packages-list">
+
+  <!--======================================================
+    HEADER
+  =======================================================-->
+
+  <header class="packages-list__header">
+
+    <div class="packages-list__heading">
+
+      <span class="packages-list__eyebrow">
+        Gestión de paquetes
+      </span>
+
+      <h2 class="packages-list__title">
+        Paquetes registrados
+      </h2>
+
+      <p class="packages-list__description">
+        Consulta el estado de los paquetes recibidos y registra su entrega a los
+        residentes.
+      </p>
+
+    </div>
+
+    <div class="packages-list__header-actions">
+
+      <button
+        type="button"
+        class="packages-list__refresh-button"
+        (click)="cargar()"
+        [disabled]="isLoading">
+
+        <span
+          class="packages-list__refresh-icon"
+          aria-hidden="true">
+          ↻
+        </span>
+
+        <span>
+          Actualizar
+        </span>
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!--======================================================
+    MENSAJE DE ERROR
+  =======================================================-->
+
+  @if (errorMessage) {
+
+    <div
+      class="packages-list__alert packages-list__alert--error"
+      role="alert">
+
+      <span
+        class="packages-list__alert-icon"
+        aria-hidden="true">
+        !
+      </span>
+
+      <p class="packages-list__alert-message">
+        {{ errorMessage }}
+      </p>
+
+    </div>
+
+  }
+
+
+  <!--======================================================
+    ESTADO DE CARGA
+  =======================================================-->
+
+  @if (isLoading) {
+
+    <section
+      class="packages-list__state packages-list__state--loading"
+      aria-live="polite">
+
+      <div
+        class="packages-list__loader"
+        aria-hidden="true">
+      </div>
+
+      <div class="packages-list__state-content">
+
+        <h3 class="packages-list__state-title">
+          Cargando paquetes
+        </h3>
+
+        <p class="packages-list__state-description">
+          Estamos consultando la información registrada.
+        </p>
+
+      </div>
+
+    </section>
+
+  } @else if (paquetes.length === 0) {
+
+
+    <!--====================================================
+      ESTADO VACÍO
+    =====================================================-->
+
+    <section class="packages-list__state packages-list__state--empty">
+
+      <div
+        class="packages-list__state-icon"
+        aria-hidden="true">
+        📦
+      </div>
+
+      <div class="packages-list__state-content">
+
+        <h3 class="packages-list__state-title">
+          No hay paquetes registrados
+        </h3>
+
+        <p class="packages-list__state-description">
+          Cuando se registren paquetes para los residentes aparecerán aquí.
+        </p>
+
+      </div>
+
+    </section>
+
+  } @else {
+
+
+    <!--====================================================
+      CONTENIDO PRINCIPAL
+    =====================================================-->
+
+    <section class="packages-list__content">
+
+      <div class="packages-list__content-header">
+
+        <div class="packages-list__summary">
+
+          <span class="packages-list__summary-label">
+            Registro actual
+          </span>
+
+          <strong class="packages-list__summary-value">
+            {{ paquetes.length }}
+          </strong>
+
+          <span class="packages-list__summary-text">
+            paquetes encontrados
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!--==================================================
+        TABLA
+      ===================================================-->
+
+      <div class="packages-list__table-wrapper">
+
+        <table class="packages-list__table">
+
+          <thead class="packages-list__table-head">
+
+            <tr class="packages-list__table-row">
+
+              <th
+                scope="col"
+                class="packages-list__table-heading">
+                Destinatario
+              </th>
+
+              <th
+                scope="col"
+                class="packages-list__table-heading">
+                Torre
+              </th>
+
+              <th
+                scope="col"
+                class="packages-list__table-heading">
+                Apartamento
+              </th>
+
+              <th
+                scope="col"
+                class="packages-list__table-heading packages-list__table-heading--description">
+                Descripción
+              </th>
+
+              <th
+                scope="col"
+                class="packages-list__table-heading">
+                Recepción
+              </th>
+
+              <th
+                scope="col"
+                class="packages-list__table-heading">
+                Entregado
+              </th>
+
+              <th
+                scope="col"
+                class="packages-list__table-heading">
+                Estado
+              </th>
+
+              <th
+                scope="col"
+                class="packages-list__table-heading">
+                Recoge
+              </th>
+
+              <th
+                scope="col"
+                class="packages-list__table-heading">
+                Entrega
+              </th>
+
+              <th
+                scope="col"
+                class="packages-list__table-heading packages-list__table-heading--actions">
+                Acciones
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody class="packages-list__table-body">
+
+            @for (paquete of paquetes; track paquete.id) {
+
+              <tr class="packages-list__table-row packages-list__table-row--data">
+
+
+                <!-- DESTINATARIO -->
+
+                <td
+                  class="packages-list__table-cell packages-list__table-cell--recipient"
+                  data-label="Destinatario">
+
+                  <div class="packages-list__recipient">
+
+                    <div
+                      class="packages-list__recipient-avatar"
+                      aria-hidden="true">
+                      {{ paquete.nombreDestinatario.charAt(0) }}
+                    </div>
+
+                    <div class="packages-list__recipient-info">
+
+                      <strong class="packages-list__recipient-name">
+                        {{ paquete.nombreDestinatario }}
+                      </strong>
+
+                      <span class="packages-list__recipient-location">
+                        Torre {{ paquete.torre }} · Apto. {{ paquete.apartamento }}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <!-- TORRE -->
+
+                <td
+                  class="packages-list__table-cell"
+                  data-label="Torre">
+
+                  <span class="packages-list__location-badge">
+                    {{ paquete.torre }}
+                  </span>
+
+                </td>
+
+
+                <!-- APARTAMENTO -->
+
+                <td
+                  class="packages-list__table-cell"
+                  data-label="Apartamento">
+
+                  <span class="packages-list__location-badge">
+                    {{ paquete.apartamento }}
+                  </span>
+
+                </td>
+
+
+                <!-- DESCRIPCIÓN -->
+
+                <td
+                  class="packages-list__table-cell packages-list__table-cell--description"
+                  data-label="Descripción">
+
+                  <p class="packages-list__package-description">
+                    {{ paquete.descripcion || 'Sin descripción' }}
+                  </p>
+
+                </td>
+
+
+                <!-- FECHA DE RECEPCIÓN -->
+
+                <td
+                  class="packages-list__table-cell"
+                  data-label="Recepción">
+
+                  <div class="packages-list__date">
+
+                    <span
+                      class="packages-list__date-icon"
+                      aria-hidden="true">
+                      ↓
+                    </span>
+
+                    <span class="packages-list__date-value">
+                      {{ paquete.fechaRecepcion | date:'short' }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <!-- FECHA DE ENTREGA -->
+
+                <td
+                  class="packages-list__table-cell"
+                  data-label="Entregado">
+
+                  <div
+                    class="packages-list__date"
+                    [class.packages-list__date--pending]="!paquete.fechaEntrega">
+
+                    <span
+                      class="packages-list__date-icon"
+                      aria-hidden="true">
+                      {{ paquete.fechaEntrega ? '✓' : '○' }}
+                    </span>
+
+                    <span class="packages-list__date-value">
+                      {{
+                        paquete.fechaEntrega
+                          ? (paquete.fechaEntrega | date:'short')
+                          : 'Pendiente'
+                      }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <!-- ESTADO -->
+
+                <td
+                  class="packages-list__table-cell"
+                  data-label="Estado">
+
+                  <span
+                    class="packages-list__status"
+                    [class.packages-list__status--pending]="paquete.estado === EstadoPaquete.Pendiente"
+                    [class.packages-list__status--delivered]="paquete.estado === EstadoPaquete.Entregado">
+
+                    <span
+                      class="packages-list__status-indicator"
+                      aria-hidden="true">
+                    </span>
+
+                    <span class="packages-list__status-text">
+                      {{ paquete.estado }}
+                    </span>
+
+                  </span>
+
+                </td>
+
+
+                <!-- QUIEN RECIBE -->
+
+                <td
+                  class="packages-list__table-cell"
+                  data-label="Recoge">
+
+                  <span
+                    class="packages-list__person-value"
+                    [class.packages-list__person-value--empty]="!paquete.entregadoA">
+
+                    {{ paquete.entregadoA || 'Sin entregar' }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- QUIEN ENTREGA -->
+
+                <td
+                  class="packages-list__table-cell"
+                  data-label="Entrega">
+
+                  <span
+                    class="packages-list__person-value"
+                    [class.packages-list__person-value--empty]="!paquete.entregadoPor">
+
+                    {{ paquete.entregadoPor || 'Sin entregar' }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- ACCIONES -->
+
+                <td
+                  class="packages-list__table-cell packages-list__table-cell--actions"
+                  data-label="Acciones">
+
+                  <div class="packages-list__actions">
+
+                    @if (
+                      puedeEntregar &&
+                      paquete.estado === EstadoPaquete.Pendiente
+                    ) {
+
+                      <button
+                        type="button"
+                        class="packages-list__action-button packages-list__action-button--primary"
+                        (click)="abrirEntrega(paquete.id)">
+
+                        <span
+                          class="packages-list__action-icon"
+                          aria-hidden="true">
+                          ✓
+                        </span>
+
+                        <span>
+                          Entregar
+                        </span>
+
+                      </button>
+
+                    } @else {
+
+                      <span
+                        class="packages-list__no-action"
+                        aria-label="No hay acciones disponibles">
+
+                        <span aria-hidden="true">
+                          —
+                        </span>
+
+                        <span class="packages-list__no-action-text">
+                          Sin acciones
+                        </span>
+
+                      </span>
+
+                    }
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  }
+
+</section>
+
+
+<!--========================================================
+  MODAL DE ENTREGA
+=========================================================-->
+
+@if (mostrarEntrega) {
+
+  <app-form-entrega-paquete
+    [paqueteId]="paqueteSeleccionadoId"
+    (cerrar)="cerrarEntrega()"
+    (entregaCompletada)="entregaCompletada()">
+  </app-form-entrega-paquete>
+
+}

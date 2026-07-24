@@ -1,0 +1,122 @@
+<div class="novedad-modal">
+  <section class="novedad-card">
+
+    <header class="novedad-header">
+      <div>
+        <span class="novedad-eyebrow">Nueva novedad</span>
+        <h2>Reportar novedad</h2>
+        <p>Describe lo ocurrido de forma clara para facilitar la gestión.</p>
+      </div>
+
+      <button
+        type="button"
+        class="close-button"
+        (click)="cerrar()"
+        [disabled]="isLoading">
+        ×
+      </button>
+    </header>
+
+    @if (errorMessage) {
+      <div class="alert alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (successMessage) {
+      <div class="alert alert-success">
+        {{ successMessage }}
+      </div>
+    }
+
+    <form class="novedad-form" (ngSubmit)="guardar()">
+
+      <div class="form-group">
+        <label for="titulo">Título</label>
+        <input
+          id="titulo"
+          name="titulo"
+          type="text"
+          [(ngModel)]="titulo"
+          placeholder="Ej: Fuga de agua en zona común"
+          [disabled]="isLoading"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="tipo">Tipo de novedad</label>
+        <select
+          id="tipo"
+          name="tipo"
+          [(ngModel)]="tipo"
+          [disabled]="isLoading">
+          <option value="Operativa">Operativa</option>
+          <option value="Gestion">Gestión</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          name="descripcion"
+          [(ngModel)]="descripcion"
+          placeholder="Explica qué ocurrió, dónde ocurrió y cualquier detalle importante..."
+          [disabled]="isLoading">
+        </textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Evidencia fotográfica</label>
+
+        @if (!imagenBase64) {
+          <label class="upload-box">
+            <input
+              type="file"
+              accept="image/*"
+              (change)="onFileSelected($event)"
+              [disabled]="isLoading"
+            />
+            <span class="upload-icon">📷</span>
+            <strong>Agregar imagen</strong>
+            <small>PNG, JPG o WEBP. Máximo 2 MB.</small>
+          </label>
+        }
+
+        @if (imagenBase64) {
+          <div class="preview-box">
+            <img [src]="imagenBase64" alt="Vista previa de la evidencia" />
+
+            <button
+              type="button"
+              class="remove-image-button"
+              (click)="quitarImagen()"
+              [disabled]="isLoading">
+              Quitar imagen
+            </button>
+          </div>
+        }
+      </div>
+
+      <footer class="form-actions">
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="cerrar()"
+          [disabled]="isLoading">
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="isLoading">
+          {{ isLoading ? 'Guardando...' : 'Crear novedad' }}
+        </button>
+      </footer>
+
+    </form>
+
+  </section>
+</div>

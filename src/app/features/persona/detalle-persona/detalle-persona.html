@@ -1,0 +1,1173 @@
+<div
+  class="person-file"
+  role="presentation"
+  (click)="cerrarDetalle()">
+
+  <section
+    class="person-file__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="person-file-title"
+    (click)="$event.stopPropagation()">
+
+    <!-- =====================================================
+         ENCABEZADO DEL EXPEDIENTE
+    ====================================================== -->
+
+    <header class="person-file__header">
+
+      <div class="person-file-heading">
+
+        <span class="person-file-heading__eyebrow">
+          Expediente de persona
+        </span>
+
+        <h2
+          id="person-file-title"
+          class="person-file-heading__title">
+          {{ persona?.name || 'Detalle de persona' }}
+        </h2>
+
+        <p class="person-file-heading__description">
+          Consulta la información personal, residencial y los registros asociados.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="person-file__close"
+        aria-label="Cerrar detalle de la persona"
+        (click)="cerrarDetalle()">
+
+        <span
+          class="person-file__close-icon"
+          aria-hidden="true">
+          ×
+        </span>
+
+      </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         NAVEGACIÓN DEL EXPEDIENTE
+    ====================================================== -->
+
+    <nav
+      class="person-file__navigation"
+      aria-label="Secciones del detalle">
+
+      <div
+        class="person-file-tabs"
+        role="tablist"
+        aria-label="Información de la persona">
+
+        <button
+          type="button"
+          class="person-file-tabs__button"
+          [class.person-file-tabs__button--active]="tab === 'datos'"
+          [attr.aria-selected]="tab === 'datos'"
+          (click)="cambiarTab('datos')">
+
+          <span
+            class="person-file-tabs__icon"
+            aria-hidden="true">
+            👤
+          </span>
+
+          <span class="person-file-tabs__label">
+            Datos personales
+          </span>
+
+        </button>
+
+        @if (persona?.personType === 1) {
+
+          <button
+            type="button"
+            class="person-file-tabs__button"
+            [class.person-file-tabs__button--active]="tab === 'vehiculos'"
+            [attr.aria-selected]="tab === 'vehiculos'"
+            (click)="cambiarTab('vehiculos')">
+
+            <span
+              class="person-file-tabs__icon"
+              aria-hidden="true">
+              🚗
+            </span>
+
+            <span class="person-file-tabs__label">
+              Vehículos
+            </span>
+
+          </button>
+
+          <button
+            type="button"
+            class="person-file-tabs__button"
+            [class.person-file-tabs__button--active]="tab === 'mascotas'"
+            [attr.aria-selected]="tab === 'mascotas'"
+            (click)="cambiarTab('mascotas')">
+
+            <span
+              class="person-file-tabs__icon"
+              aria-hidden="true">
+              🐾
+            </span>
+
+            <span class="person-file-tabs__label">
+              Mascotas
+            </span>
+
+          </button>
+
+        }
+
+      </div>
+
+    </nav>
+
+
+    <!-- =====================================================
+         CONTENIDO DEL EXPEDIENTE
+    ====================================================== -->
+
+    <main class="person-file__body">
+
+      <!-- ===================================================
+           DATOS PERSONALES
+      ==================================================== -->
+
+      @if (tab === 'datos') {
+
+        <section
+          class="person-file__panel person-file__panel--profile"
+          aria-labelledby="person-profile-title">
+
+          <!-- Información general -->
+
+          <section class="person-file-section">
+
+            <header class="person-file-section__header">
+
+              <div class="person-file-section__heading">
+
+                <span class="person-file-section__eyebrow">
+                  Información general
+                </span>
+
+                <h3
+                  id="person-profile-title"
+                  class="person-file-section__title">
+                  Datos personales
+                </h3>
+
+                <p class="person-file-section__description">
+                  Información de identificación y contacto registrada.
+                </p>
+
+              </div>
+
+            </header>
+
+            <div class="person-data-grid">
+
+              <article class="person-data-card">
+
+                <div class="person-data-card__icon" aria-hidden="true">
+                  🪪
+                </div>
+
+                <div class="person-data-card__content">
+
+                  <span class="person-data-card__label">
+                    Documento
+                  </span>
+
+                  <strong class="person-data-card__value">
+                    {{ persona?.document || 'No registrado' }}
+                  </strong>
+
+                </div>
+
+              </article>
+
+              <article class="person-data-card">
+
+                <div class="person-data-card__icon" aria-hidden="true">
+                  ☎
+                </div>
+
+                <div class="person-data-card__content">
+
+                  <span class="person-data-card__label">
+                    Teléfono
+                  </span>
+
+                  <strong class="person-data-card__value">
+                    {{ persona?.phone || 'No registrado' }}
+                  </strong>
+
+                </div>
+
+              </article>
+
+              <article class="person-data-card">
+
+                <div class="person-data-card__icon" aria-hidden="true">
+                  ✉
+                </div>
+
+                <div class="person-data-card__content">
+
+                  <span class="person-data-card__label">
+                    Correo electrónico
+                  </span>
+
+                  <strong
+                    class="
+                      person-data-card__value
+                      person-data-card__value--break
+                    ">
+                    {{ persona?.email || 'No registrado' }}
+                  </strong>
+
+                </div>
+
+              </article>
+
+              <article class="person-data-card">
+
+                <div class="person-data-card__icon" aria-hidden="true">
+                  ◉
+                </div>
+
+                <div class="person-data-card__content">
+
+                  <span class="person-data-card__label">
+                    Tipo de persona
+                  </span>
+
+                  <strong class="person-data-card__value">
+                    {{ persona?.personTypeName || 'No registrado' }}
+                  </strong>
+
+                </div>
+
+              </article>
+
+              <article class="person-data-card">
+
+                <div class="person-data-card__icon" aria-hidden="true">
+                  ●
+                </div>
+
+                <div class="person-data-card__content">
+
+                  <span class="person-data-card__label">
+                    Estado
+                  </span>
+
+                  <span
+                    class="person-state"
+                    [class.person-state--active]="persona?.status === 'Activo'"
+                    [class.person-state--inactive]="persona?.status !== 'Activo'">
+
+                    <span
+                      class="person-state__indicator"
+                      aria-hidden="true">
+                    </span>
+
+                    <span class="person-state__label">
+                      {{ persona?.status || 'Sin estado' }}
+                    </span>
+
+                  </span>
+
+                </div>
+
+              </article>
+
+            </div>
+
+          </section>
+
+
+          <!-- Información residencial -->
+
+          @if (persona?.personType === 1) {
+
+            <section
+              class="
+                person-file-section
+                person-file-section--residence
+              "
+              aria-labelledby="person-residence-title">
+
+              <header class="person-file-section__header">
+
+                <div class="person-file-section__heading">
+
+                  <span class="person-file-section__eyebrow">
+                    Residencia y censo
+                  </span>
+
+                  <h3
+                    id="person-residence-title"
+                    class="person-file-section__title">
+                    Información residencial
+                  </h3>
+
+                  <p class="person-file-section__description">
+                    Datos de ubicación, ocupación y contacto de emergencia.
+                  </p>
+
+                </div>
+
+              </header>
+
+              <div class="person-data-grid">
+
+                <article class="person-data-card">
+
+                  <div class="person-data-card__icon" aria-hidden="true">
+                    🏢
+                  </div>
+
+                  <div class="person-data-card__content">
+
+                    <span class="person-data-card__label">
+                      Torre
+                    </span>
+
+                    <strong class="person-data-card__value">
+                      {{ persona?.tower || 'No registrada' }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+                <article class="person-data-card">
+
+                  <div class="person-data-card__icon" aria-hidden="true">
+                    ⌂
+                  </div>
+
+                  <div class="person-data-card__content">
+
+                    <span class="person-data-card__label">
+                      Apartamento
+                    </span>
+
+                    <strong class="person-data-card__value">
+                      {{ persona?.apartment || 'No registrado' }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+                <article class="person-data-card">
+
+                  <div class="person-data-card__icon" aria-hidden="true">
+                    ◇
+                  </div>
+
+                  <div class="person-data-card__content">
+
+                    <span class="person-data-card__label">
+                      Tipo de ocupante
+                    </span>
+
+                    <strong class="person-data-card__value">
+                      {{ persona?.relationship || 'No registrado' }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+                <article class="person-data-card">
+
+                  <div class="person-data-card__icon" aria-hidden="true">
+                    📅
+                  </div>
+
+                  <div class="person-data-card__content">
+
+                    <span class="person-data-card__label">
+                      Fecha de nacimiento
+                    </span>
+
+                    <strong class="person-data-card__value">
+                      {{
+                        persona?.birthDate
+                          ? (persona.birthDate | date:'dd/MM/yyyy')
+                          : 'No registrada'
+                      }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+                <article class="person-data-card">
+
+                  <div class="person-data-card__icon" aria-hidden="true">
+                    ♡
+                  </div>
+
+                  <div class="person-data-card__content">
+
+                    <span class="person-data-card__label">
+                      Contacto de emergencia
+                    </span>
+
+                    <strong class="person-data-card__value">
+                      {{
+                        persona?.emergencyContactName ||
+                        'No registrado'
+                      }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+                <article class="person-data-card">
+
+                  <div class="person-data-card__icon" aria-hidden="true">
+                    ☎
+                  </div>
+
+                  <div class="person-data-card__content">
+
+                    <span class="person-data-card__label">
+                      Teléfono de emergencia
+                    </span>
+
+                    <strong class="person-data-card__value">
+                      {{
+                        persona?.emergencyContactPhone ||
+                        'No registrado'
+                      }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+                <article class="person-data-card">
+
+                  <div class="person-data-card__icon" aria-hidden="true">
+                    ✚
+                  </div>
+
+                  <div class="person-data-card__content">
+
+                    <span class="person-data-card__label">
+                      Tipo de sangre
+                    </span>
+
+                    <strong class="person-data-card__value">
+                      {{ persona?.bloodType || 'No registrado' }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+              </div>
+
+            </section>
+
+          }
+
+
+          <!-- Información laboral -->
+
+          @if (
+            persona?.personType === 2 ||
+            persona?.personType === 3
+          ) {
+
+            <section
+              class="
+                person-file-section
+                person-file-section--employment
+              "
+              aria-labelledby="person-employment-title">
+
+              <header class="person-file-section__header">
+
+                <div class="person-file-section__heading">
+
+                  <span class="person-file-section__eyebrow">
+                    Información laboral
+                  </span>
+
+                  <h3
+                    id="person-employment-title"
+                    class="person-file-section__title">
+                    Datos del cargo
+                  </h3>
+
+                  <p class="person-file-section__description">
+                    Información relacionada con la función desempeñada.
+                  </p>
+
+                </div>
+
+              </header>
+
+              <div class="person-data-grid">
+
+                <article class="person-data-card">
+
+                  <div class="person-data-card__icon" aria-hidden="true">
+                    💼
+                  </div>
+
+                  <div class="person-data-card__content">
+
+                    <span class="person-data-card__label">
+                      Cargo
+                    </span>
+
+                    <strong class="person-data-card__value">
+                      {{ persona?.jobTitle || 'No registrado' }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+                <article class="person-data-card">
+
+                  <div class="person-data-card__icon" aria-hidden="true">
+                    🏭
+                  </div>
+
+                  <div class="person-data-card__content">
+
+                    <span class="person-data-card__label">
+                      Empresa contratista
+                    </span>
+
+                    <strong class="person-data-card__value">
+                      {{
+                        persona?.contractorCompany ||
+                        'No registrada'
+                      }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+              </div>
+
+            </section>
+
+          }
+
+
+          <!-- Observaciones -->
+
+          <section
+            class="
+              person-file-section
+              person-file-section--notes
+            "
+            aria-labelledby="person-notes-title">
+
+            <header class="person-file-section__header">
+
+              <div class="person-file-section__heading">
+
+                <span class="person-file-section__eyebrow">
+                  Información adicional
+                </span>
+
+                <h3
+                  id="person-notes-title"
+                  class="person-file-section__title">
+                  Observaciones
+                </h3>
+
+              </div>
+
+            </header>
+
+            <div class="person-notes">
+
+              <div
+                class="person-notes__icon"
+                aria-hidden="true">
+                📝
+              </div>
+
+              <p class="person-notes__content">
+                {{
+                  persona?.notes ||
+                  'No se registraron observaciones para esta persona.'
+                }}
+              </p>
+
+            </div>
+
+          </section>
+
+        </section>
+
+      }
+
+
+      <!-- ===================================================
+           VEHÍCULOS
+      ==================================================== -->
+
+      @if (tab === 'vehiculos') {
+
+        <section
+          class="person-file__panel person-file__panel--vehicles"
+          aria-labelledby="person-vehicles-title">
+
+          <header
+            class="
+              person-file-section__header
+              person-file-section__header--actions
+            ">
+
+            <div class="person-file-section__heading">
+
+              <span class="person-file-section__eyebrow">
+                Registros asociados
+              </span>
+
+              <h3
+                id="person-vehicles-title"
+                class="person-file-section__title">
+                Vehículos registrados
+              </h3>
+
+              <p class="person-file-section__description">
+                Consulta los vehículos vinculados a esta persona.
+              </p>
+
+            </div>
+
+            <button
+              type="button"
+              class="person-file-action"
+              [disabled]="isLoadingVehiculos"
+              (click)="recargarVehiculos()">
+
+              <span
+                class="person-file-action__icon"
+                aria-hidden="true">
+                ↻
+              </span>
+
+              <span class="person-file-action__label">
+                Actualizar
+              </span>
+
+            </button>
+
+          </header>
+
+
+          <!-- Error de vehículos -->
+
+          @if (errorVehiculos) {
+
+            <div
+              class="person-file-alert person-file-alert--error"
+              role="alert">
+
+              <div class="person-file-alert__content">
+
+                <span
+                  class="person-file-alert__icon"
+                  aria-hidden="true">
+                  !
+                </span>
+
+                <span class="person-file-alert__message">
+                  {{ errorVehiculos }}
+                </span>
+
+              </div>
+
+              <button
+                type="button"
+                class="person-file-alert__close"
+                aria-label="Cerrar mensaje de error"
+                (click)="cerrarErrorVehiculos()">
+                ×
+              </button>
+
+            </div>
+
+          }
+
+
+          <!-- Carga, vacío o listado -->
+
+          @if (isLoadingVehiculos) {
+
+            <div class="person-record-loading">
+
+              <span
+                class="person-record-loading__spinner"
+                aria-hidden="true">
+              </span>
+
+              <div class="person-record-loading__content">
+
+                <strong class="person-record-loading__title">
+                  Cargando vehículos
+                </strong>
+
+                <p class="person-record-loading__description">
+                  Estamos consultando los vehículos asociados.
+                </p>
+
+              </div>
+
+            </div>
+
+          } @else if (vehiculos.length === 0) {
+
+            <div class="person-record-empty">
+
+              <div
+                class="person-record-empty__icon"
+                aria-hidden="true">
+                🚗
+              </div>
+
+              <div class="person-record-empty__content">
+
+                <h4 class="person-record-empty__title">
+                  No hay vehículos registrados
+                </h4>
+
+                <p class="person-record-empty__description">
+                  Esta persona todavía no tiene vehículos asociados.
+                </p>
+
+              </div>
+
+            </div>
+
+          } @else {
+
+            <div class="person-records">
+
+              @for (vehiculo of vehiculos; track vehiculo.id) {
+
+                <article class="person-record-card">
+
+                  <div class="person-record-card__media">
+
+                    @if (
+                      obtenerFotoVehiculo(vehiculo);
+                      as fotoVehiculo
+                    ) {
+
+                      <img
+                        class="person-record-card__image"
+                        [src]="fotoVehiculo"
+                        [alt]="'Fotografía del vehículo con placa ' + vehiculo.placa"
+                        loading="lazy">
+
+                    } @else {
+
+                      <div class="person-record-card__placeholder">
+
+                        <span aria-hidden="true">
+                          🚙
+                        </span>
+
+                      </div>
+
+                    }
+
+                  </div>
+
+                  <div class="person-record-card__body">
+
+                    <header class="person-record-card__header">
+
+                      <div class="person-record-card__heading">
+
+                        <span class="person-record-card__eyebrow">
+                          {{
+                            obtenerNombreTipoVehiculo(
+                              vehiculo.tipo
+                            )
+                          }}
+                        </span>
+
+                        <h4 class="person-record-card__title">
+                          {{ vehiculo.placa }}
+                        </h4>
+
+                      </div>
+
+                    </header>
+
+                    <dl class="person-record-details">
+
+                      <div class="person-record-details__item">
+
+                        <dt class="person-record-details__label">
+                          Marca
+                        </dt>
+
+                        <dd class="person-record-details__value">
+                          {{ vehiculo.marca || 'No registrada' }}
+                        </dd>
+
+                      </div>
+
+                      <div class="person-record-details__item">
+
+                        <dt class="person-record-details__label">
+                          Color
+                        </dt>
+
+                        <dd class="person-record-details__value">
+                          {{ vehiculo.color || 'No registrado' }}
+                        </dd>
+
+                      </div>
+
+                    </dl>
+
+                  </div>
+
+                </article>
+
+              }
+
+            </div>
+
+          }
+
+        </section>
+
+      }
+
+
+      <!-- ===================================================
+           MASCOTAS
+      ==================================================== -->
+
+      @if (tab === 'mascotas') {
+
+        <section
+          class="person-file__panel person-file__panel--pets"
+          aria-labelledby="person-pets-title">
+
+          <header
+            class="
+              person-file-section__header
+              person-file-section__header--actions
+            ">
+
+            <div class="person-file-section__heading">
+
+              <span class="person-file-section__eyebrow">
+                Registros asociados
+              </span>
+
+              <h3
+                id="person-pets-title"
+                class="person-file-section__title">
+                Mascotas registradas
+              </h3>
+
+              <p class="person-file-section__description">
+                Consulta las mascotas vinculadas a esta persona.
+              </p>
+
+            </div>
+
+            <button
+              type="button"
+              class="person-file-action"
+              [disabled]="isLoadingMascotas"
+              (click)="recargarMascotas()">
+
+              <span
+                class="person-file-action__icon"
+                aria-hidden="true">
+                ↻
+              </span>
+
+              <span class="person-file-action__label">
+                Actualizar
+              </span>
+
+            </button>
+
+          </header>
+
+
+          <!-- Error de mascotas -->
+
+          @if (errorMascotas) {
+
+            <div
+              class="person-file-alert person-file-alert--error"
+              role="alert">
+
+              <div class="person-file-alert__content">
+
+                <span
+                  class="person-file-alert__icon"
+                  aria-hidden="true">
+                  !
+                </span>
+
+                <span class="person-file-alert__message">
+                  {{ errorMascotas }}
+                </span>
+
+              </div>
+
+              <button
+                type="button"
+                class="person-file-alert__close"
+                aria-label="Cerrar mensaje de error"
+                (click)="cerrarErrorMascotas()">
+                ×
+              </button>
+
+            </div>
+
+          }
+
+
+          <!-- Carga, vacío o listado -->
+
+          @if (isLoadingMascotas) {
+
+            <div class="person-record-loading">
+
+              <span
+                class="person-record-loading__spinner"
+                aria-hidden="true">
+              </span>
+
+              <div class="person-record-loading__content">
+
+                <strong class="person-record-loading__title">
+                  Cargando mascotas
+                </strong>
+
+                <p class="person-record-loading__description">
+                  Estamos consultando las mascotas asociadas.
+                </p>
+
+              </div>
+
+            </div>
+
+          } @else if (mascotas.length === 0) {
+
+            <div class="person-record-empty">
+
+              <div
+                class="person-record-empty__icon"
+                aria-hidden="true">
+                🐾
+              </div>
+
+              <div class="person-record-empty__content">
+
+                <h4 class="person-record-empty__title">
+                  No hay mascotas registradas
+                </h4>
+
+                <p class="person-record-empty__description">
+                  Esta persona todavía no tiene mascotas asociadas.
+                </p>
+
+              </div>
+
+            </div>
+
+          } @else {
+
+            <div class="person-records">
+
+              @for (mascota of mascotas; track mascota.id) {
+
+                <article class="person-record-card">
+
+                  <div class="person-record-card__media">
+
+                    @if (
+                      obtenerFotoMascota(mascota);
+                      as fotoMascota
+                    ) {
+
+                      <img
+                        class="person-record-card__image"
+                        [src]="fotoMascota"
+                        [alt]="'Fotografía de ' + mascota.nombre"
+                        loading="lazy">
+
+                    } @else {
+
+                      <div class="person-record-card__placeholder">
+
+                        <span aria-hidden="true">
+                          🐾
+                        </span>
+
+                      </div>
+
+                    }
+
+                  </div>
+
+                  <div class="person-record-card__body">
+
+                    <header class="person-record-card__header">
+
+                      <div class="person-record-card__heading">
+
+                        <span class="person-record-card__eyebrow">
+                          {{
+                            obtenerNombreTipoMascota(
+                              mascota.tipo
+                            )
+                          }}
+                        </span>
+
+                        <h4 class="person-record-card__title">
+                          {{ mascota.nombre }}
+                        </h4>
+
+                      </div>
+
+                    </header>
+
+                    <dl class="person-record-details">
+
+                      <div class="person-record-details__item">
+
+                        <dt class="person-record-details__label">
+                          Raza
+                        </dt>
+
+                        <dd class="person-record-details__value">
+                          {{ mascota.raza || 'No registrada' }}
+                        </dd>
+
+                      </div>
+
+                      <div class="person-record-details__item">
+
+                        <dt class="person-record-details__label">
+                          Color
+                        </dt>
+
+                        <dd class="person-record-details__value">
+                          {{ mascota.color || 'No registrado' }}
+                        </dd>
+
+                      </div>
+
+                      @if (mascota.fechaNacimiento) {
+
+                        <div class="person-record-details__item">
+
+                          <dt class="person-record-details__label">
+                            Fecha de nacimiento
+                          </dt>
+
+                          <dd class="person-record-details__value">
+                            {{
+                              mascota.fechaNacimiento
+                                | date:'dd/MM/yyyy'
+                            }}
+                          </dd>
+
+                        </div>
+
+                      }
+
+                    </dl>
+
+                    @if (mascota.observaciones) {
+
+                      <div class="person-record-card__notes">
+
+                        <span
+                          class="person-record-card__notes-icon"
+                          aria-hidden="true">
+                          📝
+                        </span>
+
+                        <p class="person-record-card__notes-content">
+                          {{ mascota.observaciones }}
+                        </p>
+
+                      </div>
+
+                    }
+
+                  </div>
+
+                </article>
+
+              }
+
+            </div>
+
+          }
+
+        </section>
+
+      }
+
+    </main>
+
+
+    <!-- =====================================================
+         PIE DEL EXPEDIENTE
+    ====================================================== -->
+
+    <footer class="person-file__footer">
+
+      <button
+        type="button"
+        class="person-file__footer-button"
+        (click)="cerrarDetalle()">
+
+        <span
+          class="person-file__footer-button-icon"
+          aria-hidden="true">
+          ×
+        </span>
+
+        <span class="person-file__footer-button-label">
+          Cerrar detalle
+        </span>
+
+      </button>
+
+    </footer>
+
+  </section>
+
+</div>

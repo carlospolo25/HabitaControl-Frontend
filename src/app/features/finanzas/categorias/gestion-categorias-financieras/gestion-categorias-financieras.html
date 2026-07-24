@@ -1,0 +1,488 @@
+<section
+  class="category-management"
+  [class.category-management--income]="tipo === 'ingreso'"
+  [class.category-management--expense]="tipo === 'egreso'">
+
+  <header class="category-management__header">
+    <div class="category-management__heading">
+      <span class="category-management__eyebrow">
+        Configuración financiera
+      </span>
+
+      <h2 class="category-management__title">
+        {{ configuracion.titulo }}
+      </h2>
+
+      <p class="category-management__description">
+        {{ configuracion.descripcion }}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="category-management__refresh-button"
+      (click)="cargar()"
+      [disabled]="isLoading || isSubmitting"
+      [attr.aria-label]="'Actualizar ' + configuracion.titulo.toLowerCase()">
+
+      @if (isLoading) {
+        <span
+          class="category-management__button-loader"
+          aria-hidden="true">
+        </span>
+
+        <span>Actualizando...</span>
+      } @else {
+        <span
+          class="category-management__refresh-icon"
+          aria-hidden="true">
+          ↻
+        </span>
+
+        <span>Actualizar</span>
+      }
+    </button>
+  </header>
+
+  @if (hasErrors && errorMessage) {
+    <div
+      class="category-alert category-alert--error"
+      role="alert">
+
+      <span
+        class="category-alert__icon"
+        aria-hidden="true">
+        !
+      </span>
+
+      <div class="category-alert__content">
+        <strong class="category-alert__title">
+          No fue posible completar la operación
+        </strong>
+
+        <p class="category-alert__message">
+          {{ errorMessage }}
+        </p>
+      </div>
+    </div>
+  }
+
+  @if (successMessage) {
+    <div
+      class="category-alert category-alert--success"
+      role="status">
+
+      <span
+        class="category-alert__icon"
+        aria-hidden="true">
+        ✓
+      </span>
+
+      <div class="category-alert__content">
+        <strong class="category-alert__title">
+          Operación completada
+        </strong>
+
+        <p class="category-alert__message">
+          {{ successMessage }}
+        </p>
+      </div>
+    </div>
+  }
+
+  <div class="category-management__layout">
+
+    <section
+      class="category-form-card"
+      [attr.aria-labelledby]="'category-form-title-' + tipo">
+
+      <header class="category-form-card__header">
+        <div class="category-form-card__icon" aria-hidden="true">
+          {{ tipo === 'ingreso' ? '+' : '−' }}
+        </div>
+
+        <div>
+          <span class="category-form-card__eyebrow">
+            {{ categoriaEditandoId ? 'Modo edición' : 'Nueva categoría' }}
+          </span>
+
+          <h3
+            class="category-form-card__title"
+            [id]="'category-form-title-' + tipo">
+            {{ tituloFormulario }}
+          </h3>
+        </div>
+      </header>
+
+      <p class="category-form-card__description">
+        {{ descripcionFormulario }}
+      </p>
+
+      <form
+        class="category-form"
+        (ngSubmit)="guardar()"
+        #categoriaForm="ngForm"
+        novalidate>
+
+        <div class="category-form__group">
+          <label
+            class="category-form__label"
+            [for]="'categoria-financiera-nombre-' + tipo">
+
+            Nombre
+
+            <span
+              class="category-form__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            [id]="'categoria-financiera-nombre-' + tipo"
+            name="nombre"
+            type="text"
+            class="category-form__control"
+            [(ngModel)]="nombre"
+            #nombreInput="ngModel"
+            required
+            minlength="2"
+            maxlength="100"
+            autocomplete="off"
+            [placeholder]="configuracion.placeholderNombre"
+            [disabled]="isSubmitting || isLoading"
+            [class.category-form__control--invalid]="
+              nombreInput.invalid &&
+              (nombreInput.dirty || nombreInput.touched)
+            ">
+
+          @if (
+            nombreInput.invalid &&
+            (nombreInput.dirty || nombreInput.touched)
+          ) {
+            <div
+              class="category-form__validation"
+              role="alert">
+
+              @if (nombreInput.errors?.['required']) {
+                El nombre de la categoría es obligatorio.
+              } @else if (nombreInput.errors?.['minlength']) {
+                El nombre debe tener al menos 2 caracteres.
+              }
+            </div>
+          }
+
+          <small class="category-form__help">
+            Utiliza un nombre claro que permita identificar fácilmente los
+            movimientos asociados.
+          </small>
+        </div>
+
+        <div class="category-form__group">
+          <div class="category-form__label-row">
+            <label
+              class="category-form__label"
+              [for]="'categoria-financiera-descripcion-' + tipo">
+              Descripción
+            </label>
+
+            <span class="category-form__optional">
+              Opcional
+            </span>
+          </div>
+
+          <textarea
+            [id]="'categoria-financiera-descripcion-' + tipo"
+            name="descripcion"
+            class="category-form__control category-form__control--textarea"
+            [(ngModel)]="descripcion"
+            maxlength="300"
+            rows="5"
+            placeholder="Describe brevemente el propósito de esta categoría"
+            [disabled]="isSubmitting || isLoading">
+          </textarea>
+
+          <div class="category-form__footer">
+            <small class="category-form__help">
+              Esta información ayudará a entender el uso de la categoría.
+            </small>
+
+            <small
+              class="category-form__counter"
+              [class.category-form__counter--limit]="descripcion.length >= 280">
+              {{ descripcion.length }}/300
+            </small>
+          </div>
+        </div>
+
+        <div class="category-form__actions">
+          @if (categoriaEditandoId) {
+            <button
+              type="button"
+              class="category-button category-button--secondary"
+              (click)="cancelarEdicion()"
+              [disabled]="isSubmitting">
+              Cancelar edición
+            </button>
+          }
+
+          <button
+            type="submit"
+            class="category-button category-button--primary"
+            [disabled]="
+              categoriaForm.invalid ||
+              isSubmitting ||
+              isLoading
+            ">
+
+            @if (isSubmitting) {
+              <span
+                class="category-button__loader"
+                aria-hidden="true">
+              </span>
+
+              <span>
+                {{ categoriaEditandoId ? 'Actualizando...' : 'Registrando...' }}
+              </span>
+            } @else {
+              <span aria-hidden="true">
+                {{ categoriaEditandoId ? '✓' : '+' }}
+              </span>
+
+              <span>
+                {{
+                  categoriaEditandoId
+                    ? 'Guardar cambios'
+                    : 'Registrar categoría'
+                }}
+              </span>
+            }
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section
+      class="category-list-card"
+      [attr.aria-labelledby]="'category-list-title-' + tipo">
+
+      <header class="category-list-card__header">
+        <div>
+          <span class="category-list-card__eyebrow">
+            Catálogo actual
+          </span>
+
+          <h3
+            class="category-list-card__title"
+            [id]="'category-list-title-' + tipo">
+            Categorías registradas
+          </h3>
+
+          <p class="category-list-card__description">
+            Consulta y administra las categorías disponibles para los
+            movimientos de {{ tipo }}.
+          </p>
+        </div>
+
+        <span
+          class="category-list-card__count"
+          [attr.aria-label]="
+            categorias.length +
+            (categorias.length === 1
+              ? ' categoría registrada'
+              : ' categorías registradas')
+          ">
+          {{ categorias.length }}
+          {{ categorias.length === 1 ? 'categoría' : 'categorías' }}
+        </span>
+      </header>
+
+      @if (isLoading) {
+        <div
+          class="category-state category-state--loading"
+          role="status">
+
+          <span
+            class="category-state__loader"
+            aria-hidden="true">
+          </span>
+
+          <h4 class="category-state__title">
+            Consultando información
+          </h4>
+
+          <p class="category-state__description">
+            {{ configuracion.mensajeCarga }}
+          </p>
+        </div>
+      } @else if (categorias.length === 0) {
+        <div class="category-state category-state--empty">
+          <span
+            class="category-state__icon"
+            aria-hidden="true">
+            {{ tipo === 'ingreso' ? '+' : '−' }}
+          </span>
+
+          <h4 class="category-state__title">
+            No hay categorías registradas
+          </h4>
+
+          <p class="category-state__description">
+            {{ configuracion.mensajeVacio }}
+          </p>
+        </div>
+      } @else {
+        <div class="category-table-wrapper">
+          <table class="category-table">
+            <caption class="category-table__caption">
+              Listado de {{ configuracion.titulo.toLowerCase() }}
+            </caption>
+
+            <thead>
+              <tr>
+                <th scope="col">Categoría</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Creación</th>
+                <th
+                  scope="col"
+                  class="category-table__actions-heading">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (categoria of categorias; track categoria.id) {
+                <tr
+                  [class.category-table__row--inactive]="!categoria.activa">
+
+                  <td data-label="Categoría">
+                    <div class="category-table__name-cell">
+                      <span
+                        class="category-table__type-indicator"
+                        [class.category-table__type-indicator--income]="
+                          tipo === 'ingreso'
+                        "
+                        [class.category-table__type-indicator--expense]="
+                          tipo === 'egreso'
+                        "
+                        aria-hidden="true">
+                        {{ tipo === 'ingreso' ? '+' : '−' }}
+                      </span>
+
+                      <div class="category-table__name-content">
+                        <span class="category-table__name">
+                          {{ categoria.nombre }}
+                        </span>
+
+                        @if (categoria.fechaActualizacion) {
+                          <small class="category-table__updated">
+                            Actualizada el
+                            {{
+                              categoria.fechaActualizacion
+                                | date:'dd/MM/yyyy'
+                            }}
+                          </small>
+                        }
+                      </div>
+                    </div>
+                  </td>
+
+                  <td data-label="Descripción">
+                    <span
+                      class="category-table__description"
+                      [class.category-table__description--empty]="
+                        !categoria.descripcion
+                      ">
+                      {{ categoria.descripcion || 'Sin descripción' }}
+                    </span>
+                  </td>
+
+                  <td data-label="Estado">
+                    <span
+                      class="category-status"
+                      [class.category-status--active]="categoria.activa"
+                      [class.category-status--inactive]="!categoria.activa">
+
+                      <span
+                        class="category-status__dot"
+                        aria-hidden="true">
+                      </span>
+
+                      {{ categoria.activa ? 'Activa' : 'Inactiva' }}
+                    </span>
+                  </td>
+
+                  <td data-label="Creación">
+                    <time
+                      class="category-table__date"
+                      [attr.datetime]="categoria.fechaCreacion">
+                      {{ categoria.fechaCreacion | date:'dd/MM/yyyy' }}
+                    </time>
+                  </td>
+
+                  <td
+                    data-label="Acciones"
+                    class="category-table__actions">
+
+                    <button
+                      type="button"
+                      class="category-action-button category-action-button--edit"
+                      (click)="editar(categoria)"
+                      [disabled]="
+                        isSubmitting ||
+                        isLoading ||
+                        categoriaCambiandoEstadoId !== null
+                      "
+                      [attr.aria-label]="
+                        'Editar categoría ' + categoria.nombre
+                      ">
+                      Editar
+                    </button>
+
+                    <button
+                      type="button"
+                      class="category-action-button"
+                      [class.category-action-button--disable]="categoria.activa"
+                      [class.category-action-button--enable]="!categoria.activa"
+                      (click)="cambiarEstado(categoria)"
+                      [disabled]="
+                        isSubmitting ||
+                        isLoading ||
+                        categoriaCambiandoEstadoId !== null
+                      "
+                      [attr.aria-label]="
+                        (categoria.activa ? 'Desactivar ' : 'Activar ') +
+                        categoria.nombre
+                      ">
+
+                      @if (
+                        categoriaCambiandoEstadoId === categoria.id
+                      ) {
+                        <span
+                          class="category-action-button__loader"
+                          aria-hidden="true">
+                        </span>
+
+                        <span>Procesando...</span>
+                      } @else {
+                        {{
+                          categoria.activa
+                            ? 'Desactivar'
+                            : 'Activar'
+                        }}
+                      }
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+
+  </div>
+
+</section>

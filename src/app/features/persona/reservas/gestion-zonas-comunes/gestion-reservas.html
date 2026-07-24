@@ -1,0 +1,1317 @@
+<section class="reservation-management-page">
+
+  <!-- =====================================================
+       Encabezado principal
+  ====================================================== -->
+
+  <header class="reservation-management-header">
+    <div class="reservation-management-header__content">
+      <span class="reservation-management-header__eyebrow">
+        Administración de solicitudes
+      </span>
+
+      <h2 class="reservation-management-header__title">
+        Gestión de reservas
+      </h2>
+
+      <p class="reservation-management-header__description">
+        Consulta las solicitudes realizadas por los residentes, revisa
+        su información y aprueba o rechaza cada reserva pendiente.
+      </p>
+    </div>
+
+    <div class="reservation-management-header__actions">
+      <button
+        type="button"
+        class="reservation-management-header__refresh-button"
+        (click)="recargar()"
+        [disabled]="
+          isLoading ||
+          isLoadingDetail ||
+          isReviewing ||
+          mostrarRevision ||
+          reservaProcesandoId !== null
+        ">
+
+        <span
+          class="reservation-management-header__refresh-icon"
+          aria-hidden="true">
+          ↻
+        </span>
+
+        <span>
+          {{ isLoading ? 'Actualizando...' : 'Actualizar solicitudes' }}
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- =====================================================
+       Resumen operativo
+  ====================================================== -->
+
+  <section
+    class="reservation-management-summary"
+    aria-label="Resumen de solicitudes de reserva">
+
+    <article class="reservation-management-summary__card">
+      <div
+        class="reservation-management-summary__icon"
+        aria-hidden="true">
+        📅
+      </div>
+
+      <div class="reservation-management-summary__content">
+        <span class="reservation-management-summary__label">
+          Total de solicitudes
+        </span>
+
+        <strong class="reservation-management-summary__value">
+          {{ reservas.length }}
+        </strong>
+      </div>
+    </article>
+
+    <article
+      class="
+        reservation-management-summary__card
+        reservation-management-summary__card--pending
+      ">
+
+      <div
+        class="reservation-management-summary__icon"
+        aria-hidden="true">
+        ◷
+      </div>
+
+      <div class="reservation-management-summary__content">
+        <span class="reservation-management-summary__label">
+          Pendientes de revisión
+        </span>
+
+        <strong class="reservation-management-summary__value">
+          {{ totalPendientes }}
+        </strong>
+      </div>
+    </article>
+
+    <article
+      class="
+        reservation-management-summary__card
+        reservation-management-summary__card--approved
+      ">
+
+      <div
+        class="reservation-management-summary__icon"
+        aria-hidden="true">
+        ✓
+      </div>
+
+      <div class="reservation-management-summary__content">
+        <span class="reservation-management-summary__label">
+          Aprobadas
+        </span>
+
+        <strong class="reservation-management-summary__value">
+          {{ totalAprobadas }}
+        </strong>
+      </div>
+    </article>
+
+    <article
+      class="
+        reservation-management-summary__card
+        reservation-management-summary__card--rejected
+      ">
+
+      <div
+        class="reservation-management-summary__icon"
+        aria-hidden="true">
+        ×
+      </div>
+
+      <div class="reservation-management-summary__content">
+        <span class="reservation-management-summary__label">
+          Rechazadas
+        </span>
+
+        <strong class="reservation-management-summary__value">
+          {{ totalRechazadas }}
+        </strong>
+      </div>
+    </article>
+  </section>
+
+  <!-- =====================================================
+       Mensajes globales
+  ====================================================== -->
+
+  @if (successMessage) {
+    <div
+      class="
+        reservation-management-alert
+        reservation-management-alert--success
+      "
+      role="status">
+
+      <span
+        class="reservation-management-alert__icon"
+        aria-hidden="true">
+        ✓
+      </span>
+
+      <div class="reservation-management-alert__content">
+        <strong>Revisión completada</strong>
+        <p>{{ successMessage }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="reservation-management-alert__close"
+        aria-label="Cerrar mensaje de éxito"
+        (click)="cerrarMensajeExito()">
+        ×
+      </button>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div
+      class="
+        reservation-management-alert
+        reservation-management-alert--error
+      "
+      role="alert">
+
+      <span
+        class="reservation-management-alert__icon"
+        aria-hidden="true">
+        !
+      </span>
+
+      <div class="reservation-management-alert__content">
+        <strong>No fue posible cargar las solicitudes</strong>
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="reservation-management-alert__close"
+        aria-label="Cerrar mensaje de error"
+        (click)="cerrarMensajeError()">
+        ×
+      </button>
+    </div>
+  }
+
+  <!-- =====================================================
+       Buscador y filtros
+  ====================================================== -->
+
+  <section class="reservation-management-toolbar">
+    <div class="reservation-management-search">
+      <label
+        class="reservation-management-search__label"
+        for="management-reservation-search">
+        Buscar solicitud
+      </label>
+
+      <div class="reservation-management-search__control">
+        <span
+          class="reservation-management-search__icon"
+          aria-hidden="true">
+          ⌕
+        </span>
+
+        <input
+          id="management-reservation-search"
+          class="reservation-management-search__input"
+          type="search"
+          name="searchTerm"
+          [(ngModel)]="searchTerm"
+          placeholder="Buscar por residente, zona, fecha, estado u observación..."
+          autocomplete="off">
+
+        @if (searchTerm) {
+          <button
+            type="button"
+            class="reservation-management-search__clear"
+            aria-label="Limpiar búsqueda"
+            (click)="searchTerm = ''">
+            ×
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="reservation-management-filters">
+      <span class="reservation-management-filters__label">
+        Filtrar por estado
+      </span>
+
+      <div
+        class="reservation-management-filters__group"
+        role="group"
+        aria-label="Filtrar solicitudes por estado">
+
+        <button
+          type="button"
+          class="reservation-management-filters__button"
+          [class.reservation-management-filters__button--active]="
+            statusFilter === 'todas'
+          "
+          (click)="setStatusFilter('todas')">
+
+          Todas
+
+          <span class="reservation-management-filters__count">
+            {{ reservas.length }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="reservation-management-filters__button"
+          [class.reservation-management-filters__button--active]="
+            statusFilter === 'pendientes'
+          "
+          (click)="setStatusFilter('pendientes')">
+
+          Pendientes
+
+          <span class="reservation-management-filters__count">
+            {{ totalPendientes }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="reservation-management-filters__button"
+          [class.reservation-management-filters__button--active]="
+            statusFilter === 'aprobadas'
+          "
+          (click)="setStatusFilter('aprobadas')">
+
+          Aprobadas
+
+          <span class="reservation-management-filters__count">
+            {{ totalAprobadas }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="reservation-management-filters__button"
+          [class.reservation-management-filters__button--active]="
+            statusFilter === 'rechazadas'
+          "
+          (click)="setStatusFilter('rechazadas')">
+
+          Rechazadas
+
+          <span class="reservation-management-filters__count">
+            {{ totalRechazadas }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="reservation-management-filters__button"
+          [class.reservation-management-filters__button--active]="
+            statusFilter === 'canceladas'
+          "
+          (click)="setStatusFilter('canceladas')">
+
+          Canceladas
+
+          <span class="reservation-management-filters__count">
+            {{ totalCanceladas }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="reservation-management-filters__button"
+          [class.reservation-management-filters__button--active]="
+            statusFilter === 'finalizadas'
+          "
+          (click)="setStatusFilter('finalizadas')">
+
+          Finalizadas
+
+          <span class="reservation-management-filters__count">
+            {{ totalFinalizadas }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       Información de resultados
+  ====================================================== -->
+
+  @if (!isLoading && reservas.length > 0) {
+    <div class="reservation-management-results">
+      <p class="reservation-management-results__text">
+        Mostrando
+        <strong>{{ reservasFiltradas.length }}</strong>
+
+        @if (reservasFiltradas.length === 1) {
+          solicitud
+        } @else {
+          solicitudes
+        }
+      </p>
+
+      @if (searchTerm || statusFilter !== 'todas') {
+        <button
+          type="button"
+          class="reservation-management-results__clear"
+          (click)="clearFilters()">
+          Limpiar filtros
+        </button>
+      }
+    </div>
+  }
+
+  <!-- =====================================================
+       Carga y estados vacíos
+  ====================================================== -->
+
+  @if (isLoading) {
+    <section
+      class="reservation-management-loading"
+      aria-live="polite"
+      aria-busy="true">
+
+      <div class="reservation-management-loading__spinner"></div>
+
+      <div class="reservation-management-loading__content">
+        <strong>Cargando solicitudes</strong>
+
+        <p>
+          Estamos consultando las reservas registradas por los residentes.
+        </p>
+      </div>
+    </section>
+
+  } @else if (reservas.length === 0 && !errorMessage) {
+    <section class="reservation-management-empty">
+      <div
+        class="reservation-management-empty__icon"
+        aria-hidden="true">
+        📅
+      </div>
+
+      <h3 class="reservation-management-empty__title">
+        No hay solicitudes registradas
+      </h3>
+
+      <p class="reservation-management-empty__description">
+        Cuando un residente solicite una zona común, la reserva aparecerá
+        en este espacio para su consulta y revisión.
+      </p>
+
+      <button
+        type="button"
+        class="reservation-management-empty__button"
+        (click)="recargar()">
+        Actualizar solicitudes
+      </button>
+    </section>
+
+  } @else if (reservasFiltradas.length === 0) {
+    <section class="reservation-management-empty">
+      <div
+        class="reservation-management-empty__icon"
+        aria-hidden="true">
+        ⌕
+      </div>
+
+      <h3 class="reservation-management-empty__title">
+        No encontramos coincidencias
+      </h3>
+
+      <p class="reservation-management-empty__description">
+        Prueba con otro residente, zona, fecha o cambia el filtro de estado.
+      </p>
+
+      <button
+        type="button"
+        class="reservation-management-empty__button"
+        (click)="clearFilters()">
+        Limpiar búsqueda y filtros
+      </button>
+    </section>
+
+  } @else {
+
+    <!-- ===================================================
+         Listado de solicitudes
+    ==================================================== -->
+
+    <section
+      class="reservation-management-grid"
+      aria-label="Listado de solicitudes de reserva">
+
+      @for (
+        reservation of reservasFiltradas;
+        track reservation.id
+      ) {
+        <article
+          class="management-reservation-card"
+          [class.management-reservation-card--pending]="
+            reservation.estado.toLowerCase().includes('pendiente')
+          "
+          [class.management-reservation-card--approved]="
+            reservation.estado.toLowerCase().includes('aprob') ||
+            reservation.estado.toLowerCase().includes('confirm')
+          "
+          [class.management-reservation-card--rejected]="
+            reservation.estado.toLowerCase().includes('rechaz')
+          "
+          [class.management-reservation-card--cancelled]="
+            reservation.estado.toLowerCase().includes('cancel')
+          "
+          [class.management-reservation-card--finished]="
+            reservation.estado.toLowerCase().includes('finaliz')
+          ">
+
+          <header class="management-reservation-card__header">
+            <div class="management-reservation-card__identity">
+              <div
+                class="management-reservation-card__avatar"
+                aria-hidden="true">
+                {{
+                  reservation.zonaComunNombre
+                    .charAt(0)
+                    .toUpperCase()
+                }}
+              </div>
+
+              <div class="management-reservation-card__heading">
+                <div class="management-reservation-card__status-row">
+                  <span class="management-reservation-card__status">
+                    <span
+                      class="management-reservation-card__status-dot"
+                      aria-hidden="true">
+                    </span>
+
+                    {{ reservation.estado }}
+                  </span>
+
+                  @if (puedeRevisar(reservation)) {
+                    <span class="management-reservation-card__attention">
+                      Requiere revisión
+                    </span>
+                  }
+                </div>
+
+                <h3 class="management-reservation-card__title">
+                  {{ reservation.zonaComunNombre }}
+                </h3>
+
+                <p class="management-reservation-card__resident">
+                  Solicitada por
+                  <strong>{{ reservation.residenteNombre }}</strong>
+                </p>
+              </div>
+            </div>
+          </header>
+
+          <div class="management-reservation-card__body">
+
+            <!-- Fecha y horario -->
+
+            <div class="management-reservation-card__schedule">
+              <div class="management-reservation-card__date">
+                <span
+                  class="management-reservation-card__schedule-icon"
+                  aria-hidden="true">
+                  📅
+                </span>
+
+                <div>
+                  <span class="management-reservation-card__schedule-label">
+                    Fecha reservada
+                  </span>
+
+                  <strong class="management-reservation-card__schedule-value">
+                    {{
+                      reservation.fechaReserva
+                        | date: 'dd/MM/yyyy'
+                    }}
+                  </strong>
+                </div>
+              </div>
+
+              <div class="management-reservation-card__time">
+                <span
+                  class="management-reservation-card__schedule-icon"
+                  aria-hidden="true">
+                  ◷
+                </span>
+
+                <div>
+                  <span class="management-reservation-card__schedule-label">
+                    Horario solicitado
+                  </span>
+
+                  <strong class="management-reservation-card__schedule-value">
+                    {{ reservation.horaInicio.slice(0, 5) }}
+                    –
+                    {{ reservation.horaFin.slice(0, 5) }}
+                  </strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Información complementaria -->
+
+            <dl class="management-reservation-card__details">
+              <div class="management-reservation-card__detail">
+                <dt>
+                  <span aria-hidden="true">👥</span>
+                  Asistentes
+                </dt>
+
+                <dd>
+                  {{ reservation.cantidadPersonas }}
+                  {{
+                    reservation.cantidadPersonas === 1
+                      ? 'persona'
+                      : 'personas'
+                  }}
+                </dd>
+              </div>
+
+              <div class="management-reservation-card__detail">
+                <dt>
+                  <span aria-hidden="true">📝</span>
+                  Fecha de solicitud
+                </dt>
+
+                <dd>
+                  {{
+                    reservation.fechaCreacion
+                      | date: 'dd/MM/yyyy, h:mm a'
+                  }}
+                </dd>
+              </div>
+            </dl>
+
+            <!-- Observación del residente -->
+
+            <div
+              class="management-reservation-card__observation"
+              [class.management-reservation-card__observation--empty]="
+                !reservation.observacion
+              ">
+
+              <span class="management-reservation-card__observation-label">
+                Observación del residente
+              </span>
+
+              <p>
+                {{
+                  reservation.observacion ||
+                  'El residente no registró ninguna observación.'
+                }}
+              </p>
+            </div>
+
+            <!-- Resultado de revisión -->
+
+            @if (reservation.observacionRevision) {
+              <div
+                class="
+                  management-reservation-card__notice
+                  management-reservation-card__notice--review
+                ">
+
+                <strong>Observación de revisión</strong>
+                <p>{{ reservation.observacionRevision }}</p>
+              </div>
+            }
+
+            @if (reservation.motivoCancelacion) {
+              <div
+                class="
+                  management-reservation-card__notice
+                  management-reservation-card__notice--cancelled
+                ">
+
+                <strong>Motivo de cancelación</strong>
+                <p>{{ reservation.motivoCancelacion }}</p>
+              </div>
+            }
+          </div>
+
+          <footer class="management-reservation-card__footer">
+            <button
+              type="button"
+              class="
+                management-reservation-card__button
+                management-reservation-card__button--secondary
+              "
+              (click)="verDetalle(reservation.id)"
+              [disabled]="
+                isLoadingDetail ||
+                isReviewing ||
+                mostrarRevision ||
+                reservaProcesandoId !== null
+              ">
+              Ver detalle
+            </button>
+
+            @if (puedeRevisar(reservation)) {
+              <button
+                type="button"
+                class="
+                  management-reservation-card__button
+                  management-reservation-card__button--success
+                "
+                (click)="abrirRevision(reservation, 'aprobar')"
+                [disabled]="
+                  isLoadingDetail ||
+                  isReviewing ||
+                  mostrarRevision ||
+                  reservaProcesandoId !== null
+                ">
+
+                @if (estaProcesando(reservation.id) && esAprobacion) {
+                  Procesando...
+                } @else {
+                  Aprobar
+                }
+              </button>
+
+              <button
+                type="button"
+                class="
+                  management-reservation-card__button
+                  management-reservation-card__button--danger
+                "
+                (click)="abrirRevision(reservation, 'rechazar')"
+                [disabled]="
+                  isLoadingDetail ||
+                  isReviewing ||
+                  mostrarRevision ||
+                  reservaProcesandoId !== null
+                ">
+
+                @if (estaProcesando(reservation.id) && esRechazo) {
+                  Procesando...
+                } @else {
+                  Rechazar
+                }
+              </button>
+            } @else {
+              <span class="management-reservation-card__reviewed-state">
+                Solicitud revisada
+              </span>
+            }
+          </footer>
+        </article>
+      }
+    </section>
+  }
+
+</section>
+
+<!-- =======================================================
+     Modal de detalle
+======================================================== -->
+
+@if (mostrarDetalle) {
+  <div
+    class="management-reservation-detail-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="management-reservation-detail-title">
+
+    <button
+      type="button"
+      class="management-reservation-detail-modal__backdrop"
+      aria-label="Cerrar detalle"
+      (click)="cerrarDetalle()">
+    </button>
+
+    <article class="management-reservation-detail-modal__panel">
+      <header class="management-reservation-detail-modal__header">
+        <div>
+          <span class="management-reservation-detail-modal__eyebrow">
+            Expediente de solicitud
+          </span>
+
+          <h3
+            id="management-reservation-detail-title"
+            class="management-reservation-detail-modal__title">
+            Detalle de la reserva
+          </h3>
+        </div>
+
+        <button
+          type="button"
+          class="management-reservation-detail-modal__close"
+          aria-label="Cerrar detalle"
+          [disabled]="isLoadingDetail"
+          (click)="cerrarDetalle()">
+          ×
+        </button>
+      </header>
+
+      <div class="management-reservation-detail-modal__body">
+        @if (isLoadingDetail) {
+          <div class="management-reservation-detail-modal__loading">
+            <span class="reservation-management-loading__spinner"></span>
+
+            <p>Consultando la información de la solicitud...</p>
+          </div>
+
+        } @else if (detailErrorMessage) {
+          <div
+            class="
+              reservation-management-alert
+              reservation-management-alert--error
+            "
+            role="alert">
+
+            <span
+              class="reservation-management-alert__icon"
+              aria-hidden="true">
+              !
+            </span>
+
+            <div class="reservation-management-alert__content">
+              <strong>No fue posible cargar el detalle</strong>
+              <p>{{ detailErrorMessage }}</p>
+            </div>
+          </div>
+
+        } @else if (reservaSeleccionada) {
+          <section class="management-reservation-detail">
+
+            <div class="management-reservation-detail__heading">
+              <div
+                class="management-reservation-detail__avatar"
+                aria-hidden="true">
+                {{
+                  reservaSeleccionada.zonaComunNombre
+                    .charAt(0)
+                    .toUpperCase()
+                }}
+              </div>
+
+              <div class="management-reservation-detail__identity">
+                <span class="management-reservation-detail__status">
+                  {{ reservaSeleccionada.estado }}
+                </span>
+
+                <h4 class="management-reservation-detail__name">
+                  {{ reservaSeleccionada.zonaComunNombre }}
+                </h4>
+
+                <p class="management-reservation-detail__resident">
+                  Solicitud realizada por
+                  <strong>
+                    {{ reservaSeleccionada.residenteNombre }}
+                  </strong>
+                </p>
+              </div>
+            </div>
+
+            <dl class="management-reservation-detail__grid">
+              <div class="management-reservation-detail__item">
+                <dt>Fecha de la reserva</dt>
+
+                <dd>
+                  {{
+                    reservaSeleccionada.fechaReserva
+                      | date: 'dd/MM/yyyy'
+                  }}
+                </dd>
+              </div>
+
+              <div class="management-reservation-detail__item">
+                <dt>Horario solicitado</dt>
+
+                <dd>
+                  {{ reservaSeleccionada.horaInicio.slice(0, 5) }}
+                  –
+                  {{ reservaSeleccionada.horaFin.slice(0, 5) }}
+                </dd>
+              </div>
+
+              <div class="management-reservation-detail__item">
+                <dt>Cantidad de personas</dt>
+
+                <dd>
+                  {{ reservaSeleccionada.cantidadPersonas }}
+                  {{
+                    reservaSeleccionada.cantidadPersonas === 1
+                      ? 'persona'
+                      : 'personas'
+                  }}
+                </dd>
+              </div>
+
+              <div class="management-reservation-detail__item">
+                <dt>Estado actual</dt>
+                <dd>{{ reservaSeleccionada.estado }}</dd>
+              </div>
+
+              <div class="management-reservation-detail__item">
+                <dt>Fecha de creación</dt>
+
+                <dd>
+                  {{
+                    reservaSeleccionada.fechaCreacion
+                      | date: 'dd/MM/yyyy, h:mm a'
+                  }}
+                </dd>
+              </div>
+
+              @if (reservaSeleccionada.fechaActualizacion) {
+                <div class="management-reservation-detail__item">
+                  <dt>Última actualización</dt>
+
+                  <dd>
+                    {{
+                      reservaSeleccionada.fechaActualizacion
+                        | date: 'dd/MM/yyyy, h:mm a'
+                    }}
+                  </dd>
+                </div>
+              }
+
+              @if (reservaSeleccionada.fechaRevision) {
+                <div class="management-reservation-detail__item">
+                  <dt>Fecha de revisión</dt>
+
+                  <dd>
+                    {{
+                      reservaSeleccionada.fechaRevision
+                        | date: 'dd/MM/yyyy, h:mm a'
+                    }}
+                  </dd>
+                </div>
+              }
+
+              @if (reservaSeleccionada.fechaCancelacion) {
+                <div class="management-reservation-detail__item">
+                  <dt>Fecha de cancelación</dt>
+
+                  <dd>
+                    {{
+                      reservaSeleccionada.fechaCancelacion
+                        | date: 'dd/MM/yyyy, h:mm a'
+                    }}
+                  </dd>
+                </div>
+              }
+            </dl>
+
+            <div class="management-reservation-detail__text-block">
+              <span>Observación del residente</span>
+
+              <p>
+                {{
+                  reservaSeleccionada.observacion ||
+                  'El residente no registró ninguna observación.'
+                }}
+              </p>
+            </div>
+
+            @if (reservaSeleccionada.observacionRevision) {
+              <div
+                class="
+                  management-reservation-detail__text-block
+                  management-reservation-detail__text-block--review
+                ">
+
+                <span>Observación de revisión</span>
+                <p>{{ reservaSeleccionada.observacionRevision }}</p>
+              </div>
+            }
+
+            @if (reservaSeleccionada.motivoCancelacion) {
+              <div
+                class="
+                  management-reservation-detail__text-block
+                  management-reservation-detail__text-block--cancelled
+                ">
+
+                <span>Motivo de cancelación</span>
+                <p>{{ reservaSeleccionada.motivoCancelacion }}</p>
+              </div>
+            }
+          </section>
+        }
+      </div>
+
+      @if (
+        reservaSeleccionada &&
+        !isLoadingDetail &&
+        !detailErrorMessage
+      ) {
+        <footer class="management-reservation-detail-modal__footer">
+          <button
+            type="button"
+            class="
+              management-reservation-detail-modal__button
+              management-reservation-detail-modal__button--secondary
+            "
+            (click)="cerrarDetalle()">
+            Cerrar
+          </button>
+
+          @if (puedeRevisar(reservaSeleccionada)) {
+            <button
+              type="button"
+              class="
+                management-reservation-detail-modal__button
+                management-reservation-detail-modal__button--success
+              "
+              (click)="revisarDesdeDetalle('aprobar')">
+              Aprobar solicitud
+            </button>
+
+            <button
+              type="button"
+              class="
+                management-reservation-detail-modal__button
+                management-reservation-detail-modal__button--danger
+              "
+              (click)="revisarDesdeDetalle('rechazar')">
+              Rechazar solicitud
+            </button>
+          }
+        </footer>
+      }
+    </article>
+  </div>
+}
+
+<!-- =======================================================
+     Modal de revisión
+======================================================== -->
+
+@if (
+  mostrarRevision &&
+  reservaParaRevisar &&
+  decisionRevision
+) {
+  <div
+    class="reservation-review-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="reservation-review-title">
+
+    <button
+      type="button"
+      class="reservation-review-modal__backdrop"
+      aria-label="Cerrar revisión"
+      [disabled]="isReviewing"
+      (click)="cerrarRevision()">
+    </button>
+
+    <article
+      class="reservation-review-modal__panel"
+      [class.reservation-review-modal__panel--approval]="esAprobacion"
+      [class.reservation-review-modal__panel--rejection]="esRechazo">
+
+      <header class="reservation-review-modal__header">
+        <div
+          class="reservation-review-modal__icon"
+          aria-hidden="true">
+          {{ esAprobacion ? '✓' : '!' }}
+        </div>
+
+        <div class="reservation-review-modal__heading">
+          <span class="reservation-review-modal__eyebrow">
+            {{
+              esAprobacion
+                ? 'Confirmación administrativa'
+                : 'Decisión administrativa'
+            }}
+          </span>
+
+          <h3
+            id="reservation-review-title"
+            class="reservation-review-modal__title">
+            {{
+              esAprobacion
+                ? 'Aprobar solicitud'
+                : 'Rechazar solicitud'
+            }}
+          </h3>
+
+          <p class="reservation-review-modal__description">
+            @if (esAprobacion) {
+              Confirma que la solicitud cumple las condiciones de uso
+              para la zona seleccionada.
+            } @else {
+              Indica de forma clara por qué la solicitud no puede
+              ser aprobada.
+            }
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="reservation-review-modal__close"
+          aria-label="Cerrar revisión"
+          [disabled]="isReviewing"
+          (click)="cerrarRevision()">
+          ×
+        </button>
+      </header>
+
+      <form
+        class="reservation-review-form"
+        autocomplete="off"
+        (ngSubmit)="confirmarRevision()">
+
+        <div class="reservation-review-form__body">
+
+          <!-- Selector de decisión -->
+
+          <div
+            class="reservation-review-form__decision"
+            role="group"
+            aria-label="Decisión sobre la solicitud">
+
+            <button
+              type="button"
+              class="
+                reservation-review-form__decision-button
+                reservation-review-form__decision-button--approval
+              "
+              [class.reservation-review-form__decision-button--active]="
+                esAprobacion
+              "
+              [disabled]="isReviewing"
+              (click)="cambiarDecision('aprobar')">
+
+              <span aria-hidden="true">✓</span>
+
+              <div>
+                <strong>Aprobar</strong>
+                <small>Autorizar la solicitud</small>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              class="
+                reservation-review-form__decision-button
+                reservation-review-form__decision-button--rejection
+              "
+              [class.reservation-review-form__decision-button--active]="
+                esRechazo
+              "
+              [disabled]="isReviewing"
+              (click)="cambiarDecision('rechazar')">
+
+              <span aria-hidden="true">×</span>
+
+              <div>
+                <strong>Rechazar</strong>
+                <small>Denegar la solicitud</small>
+              </div>
+            </button>
+          </div>
+
+          <!-- Resumen -->
+
+          <section class="reservation-review-form__summary">
+            <header class="reservation-review-form__summary-header">
+              <span>Solicitud seleccionada</span>
+
+              <strong>
+                {{ reservaParaRevisar.zonaComunNombre }}
+              </strong>
+            </header>
+
+            <dl class="reservation-review-form__summary-grid">
+              <div>
+                <dt>Residente</dt>
+                <dd>{{ reservaParaRevisar.residenteNombre }}</dd>
+              </div>
+
+              <div>
+                <dt>Fecha</dt>
+
+                <dd>
+                  {{
+                    reservaParaRevisar.fechaReserva
+                      | date: 'dd/MM/yyyy'
+                  }}
+                </dd>
+              </div>
+
+              <div>
+                <dt>Horario</dt>
+
+                <dd>
+                  {{ reservaParaRevisar.horaInicio.slice(0, 5) }}
+                  –
+                  {{ reservaParaRevisar.horaFin.slice(0, 5) }}
+                </dd>
+              </div>
+
+              <div>
+                <dt>Asistentes</dt>
+
+                <dd>
+                  {{ reservaParaRevisar.cantidadPersonas }}
+                  {{
+                    reservaParaRevisar.cantidadPersonas === 1
+                      ? 'persona'
+                      : 'personas'
+                  }}
+                </dd>
+              </div>
+            </dl>
+          </section>
+
+          <!-- Error de revisión -->
+
+          @if (reviewErrorMessage) {
+            <div
+              class="
+                reservation-management-alert
+                reservation-management-alert--error
+              "
+              role="alert">
+
+              <span
+                class="reservation-management-alert__icon"
+                aria-hidden="true">
+                !
+              </span>
+
+              <div class="reservation-management-alert__content">
+                <strong>Revisa la información ingresada</strong>
+                <p>{{ reviewErrorMessage }}</p>
+              </div>
+
+              <button
+                type="button"
+                class="reservation-management-alert__close"
+                aria-label="Cerrar mensaje de error"
+                (click)="reviewErrorMessage = ''">
+                ×
+              </button>
+            </div>
+          }
+
+          <!-- Observación -->
+
+          <div class="reservation-review-form__field">
+            <label
+              class="reservation-review-form__label"
+              for="review-observation">
+
+              {{
+                esRechazo
+                  ? 'Motivo del rechazo'
+                  : 'Observación de aprobación'
+              }}
+
+              @if (esRechazo) {
+                <span class="reservation-review-form__required">
+                  *
+                </span>
+              }
+            </label>
+
+            <textarea
+              id="review-observation"
+              class="reservation-review-form__textarea"
+              name="observacionRevision"
+              [(ngModel)]="observacionRevision"
+              maxlength="500"
+              rows="5"
+              [placeholder]="
+                esRechazo
+                  ? 'Explica por qué la solicitud será rechazada...'
+                  : 'Agrega una recomendación o condición para el residente...'
+              "
+              [disabled]="isReviewing"
+              [required]="esRechazo">
+            </textarea>
+
+            <div class="reservation-review-form__field-footer">
+              <span>
+                {{
+                  esRechazo
+                    ? 'El motivo será visible para el residente.'
+                    : 'Campo opcional. La observación será visible para el residente.'
+                }}
+              </span>
+
+              <span>
+                {{ observacionRevision.length }}/500
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <footer class="reservation-review-form__footer">
+          <button
+            type="button"
+            class="
+              reservation-review-form__button
+              reservation-review-form__button--secondary
+            "
+            [disabled]="isReviewing"
+            (click)="cerrarRevision()">
+            Cancelar revisión
+          </button>
+
+          <button
+            type="submit"
+            class="reservation-review-form__button"
+            [class.reservation-review-form__button--success]="
+              esAprobacion
+            "
+            [class.reservation-review-form__button--danger]="
+              esRechazo
+            "
+            [disabled]="isReviewing">
+
+            @if (isReviewing) {
+              <span
+                class="reservation-review-form__spinner"
+                aria-hidden="true">
+              </span>
+
+              <span>
+                {{
+                  esAprobacion
+                    ? 'Aprobando solicitud...'
+                    : 'Rechazando solicitud...'
+                }}
+              </span>
+            } @else {
+              <span aria-hidden="true">
+                {{ esAprobacion ? '✓' : '×' }}
+              </span>
+
+              <span>
+                {{
+                  esAprobacion
+                    ? 'Confirmar aprobación'
+                    : 'Confirmar rechazo'
+                }}
+              </span>
+            }
+          </button>
+        </footer>
+      </form>
+    </article>
+  </div>
+}

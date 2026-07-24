@@ -1,0 +1,9844 @@
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE VEHÍCULOS
+   PARTE 1: VARIABLES, CONTENEDOR, ENCABEZADO,
+   NOTIFICACIONES Y DISTRIBUCIÓN PRINCIPAL
+========================================================== */
+
+
+/* ==========================================================
+   1. VARIABLES DEL COMPONENTE
+========================================================== */
+
+:host {
+  /* --------------------------------------------------------
+     Identidad HabitaControl
+  --------------------------------------------------------- */
+
+  --vehicle-navy-950: #020617;
+  --vehicle-navy-900: #0f172a;
+  --vehicle-navy-800: #1e293b;
+  --vehicle-navy-700: #334155;
+  --vehicle-navy-600: #475569;
+
+  --vehicle-primary-950: #172554;
+  --vehicle-primary-900: #1e3a8a;
+  --vehicle-primary-800: #1e40af;
+  --vehicle-primary-700: #1d4ed8;
+  --vehicle-primary-600: #2563eb;
+  --vehicle-primary-500: #3b82f6;
+  --vehicle-primary-400: #60a5fa;
+  --vehicle-primary-300: #93c5fd;
+  --vehicle-primary-200: #bfdbfe;
+  --vehicle-primary-100: #dbeafe;
+  --vehicle-primary-50: #eff6ff;
+
+  --vehicle-info-800: #075985;
+  --vehicle-info-700: #0369a1;
+  --vehicle-info-600: #0284c7;
+  --vehicle-info-500: #0ea5e9;
+  --vehicle-info-100: #e0f2fe;
+  --vehicle-info-50: #f0f9ff;
+
+  --vehicle-success-900: #14532d;
+  --vehicle-success-800: #166534;
+  --vehicle-success-700: #15803d;
+  --vehicle-success-600: #16a34a;
+  --vehicle-success-500: #22c55e;
+  --vehicle-success-200: #bbf7d0;
+  --vehicle-success-100: #dcfce7;
+  --vehicle-success-50: #f0fdf4;
+
+  --vehicle-warning-900: #78350f;
+  --vehicle-warning-800: #92400e;
+  --vehicle-warning-700: #b45309;
+  --vehicle-warning-600: #d97706;
+  --vehicle-warning-500: #f59e0b;
+  --vehicle-warning-300: #fcd34d;
+  --vehicle-warning-200: #fde68a;
+  --vehicle-warning-100: #fef3c7;
+  --vehicle-warning-50: #fffbeb;
+
+  --vehicle-danger-900: #7f1d1d;
+  --vehicle-danger-800: #991b1b;
+  --vehicle-danger-700: #b91c1c;
+  --vehicle-danger-600: #dc2626;
+  --vehicle-danger-500: #ef4444;
+  --vehicle-danger-200: #fecaca;
+  --vehicle-danger-100: #fee2e2;
+  --vehicle-danger-50: #fef2f2;
+
+  --vehicle-cyan-700: #0e7490;
+  --vehicle-cyan-600: #0891b2;
+  --vehicle-cyan-500: #06b6d4;
+  --vehicle-cyan-100: #cffafe;
+  --vehicle-cyan-50: #ecfeff;
+
+
+  /* --------------------------------------------------------
+     Superficies
+  --------------------------------------------------------- */
+
+  --vehicle-surface: #ffffff;
+  --vehicle-surface-soft: #f8fafc;
+  --vehicle-surface-muted: #f1f5f9;
+  --vehicle-surface-strong: #e2e8f0;
+  --vehicle-surface-dark: #cbd5e1;
+
+
+  /* --------------------------------------------------------
+     Tipografía
+  --------------------------------------------------------- */
+
+  --vehicle-text-primary: #111827;
+  --vehicle-text-secondary: #334155;
+  --vehicle-text-muted: #64748b;
+  --vehicle-text-soft: #94a3b8;
+  --vehicle-text-disabled: #94a3b8;
+  --vehicle-text-white: #ffffff;
+
+
+  /* --------------------------------------------------------
+     Bordes
+  --------------------------------------------------------- */
+
+  --vehicle-border-dark: #94a3b8;
+  --vehicle-border: #cbd5e1;
+  --vehicle-border-light: #e2e8f0;
+  --vehicle-border-soft: #f1f5f9;
+
+
+  /* --------------------------------------------------------
+     Sombras
+  --------------------------------------------------------- */
+
+  --vehicle-shadow-xs:
+    0 0.125rem 0.375rem rgba(15, 23, 42, 0.055);
+
+  --vehicle-shadow-sm:
+    0 0.5rem 1.25rem rgba(15, 23, 42, 0.07);
+
+  --vehicle-shadow-md:
+    0 0.875rem 2rem rgba(15, 23, 42, 0.09);
+
+  --vehicle-shadow-lg:
+    0 1.375rem 3.25rem rgba(15, 23, 42, 0.12);
+
+  --vehicle-shadow-primary:
+    0 0.875rem 1.875rem rgba(37, 99, 235, 0.2);
+
+  --vehicle-shadow-success:
+    0 0.875rem 1.875rem rgba(22, 163, 74, 0.17);
+
+  --vehicle-shadow-danger:
+    0 0.875rem 1.875rem rgba(220, 38, 38, 0.18);
+
+  --vehicle-shadow-warning:
+    0 0.875rem 1.875rem rgba(217, 119, 6, 0.17);
+
+
+  /* --------------------------------------------------------
+     Radios
+  --------------------------------------------------------- */
+
+  --vehicle-radius-xs: 0.375rem;
+  --vehicle-radius-sm: 0.625rem;
+  --vehicle-radius-md: 0.875rem;
+  --vehicle-radius-lg: 1.125rem;
+  --vehicle-radius-xl: 1.375rem;
+  --vehicle-radius-2xl: 1.75rem;
+  --vehicle-radius-pill: 999px;
+
+
+  /* --------------------------------------------------------
+     Espaciado
+  --------------------------------------------------------- */
+
+  --vehicle-space-2: 0.125rem;
+  --vehicle-space-4: 0.25rem;
+  --vehicle-space-6: 0.375rem;
+  --vehicle-space-8: 0.5rem;
+  --vehicle-space-10: 0.625rem;
+  --vehicle-space-12: 0.75rem;
+  --vehicle-space-14: 0.875rem;
+  --vehicle-space-16: 1rem;
+  --vehicle-space-18: 1.125rem;
+  --vehicle-space-20: 1.25rem;
+  --vehicle-space-24: 1.5rem;
+  --vehicle-space-28: 1.75rem;
+  --vehicle-space-32: 2rem;
+  --vehicle-space-36: 2.25rem;
+  --vehicle-space-40: 2.5rem;
+  --vehicle-space-48: 3rem;
+
+
+  /* --------------------------------------------------------
+     Transiciones
+  --------------------------------------------------------- */
+
+  --vehicle-transition-fast:
+    160ms ease;
+
+  --vehicle-transition-normal:
+    240ms ease;
+
+  --vehicle-transition-slow:
+    360ms ease;
+
+
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   2. NORMALIZACIÓN INTERNA
+========================================================== */
+
+.vehicle-management,
+.vehicle-management *,
+.vehicle-management *::before,
+.vehicle-management *::after {
+  box-sizing: border-box;
+}
+
+.vehicle-management h1,
+.vehicle-management h2,
+.vehicle-management h3,
+.vehicle-management p,
+.vehicle-management dl,
+.vehicle-management dd,
+.vehicle-management figure {
+  margin: 0;
+}
+
+.vehicle-management button,
+.vehicle-management input,
+.vehicle-management select,
+.vehicle-management textarea {
+  font: inherit;
+}
+
+.vehicle-management button {
+  border: 0;
+}
+
+.vehicle-management img {
+  display: block;
+  max-width: 100%;
+}
+
+.vehicle-management :where(
+  button,
+  input,
+  select,
+  textarea
+) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ==========================================================
+   3. CONTENEDOR GENERAL
+========================================================== */
+
+.vehicle-management {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--vehicle-space-24);
+
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+
+  padding:
+    clamp(1rem, 2vw, 2rem);
+
+  color:
+    var(--vehicle-text-primary);
+
+  background:
+    linear-gradient(
+      145deg,
+      #f8fafc 0%,
+      #f1f5f9 48%,
+      #eff6ff 100%
+    );
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+/* Iluminación superior */
+
+.vehicle-management::before {
+  position: absolute;
+  top: -13rem;
+  right: -10rem;
+  z-index: -1;
+
+  width: 32rem;
+  height: 32rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.1),
+      rgba(14, 165, 233, 0.045) 45%,
+      transparent 72%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* Iluminación inferior */
+
+.vehicle-management::after {
+  position: absolute;
+  bottom: -17rem;
+  left: -12rem;
+  z-index: -1;
+
+  width: 36rem;
+  height: 36rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(6, 182, 212, 0.065),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   4. ENCABEZADO PRINCIPAL
+========================================================== */
+
+.vehicle-management__header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vehicle-space-24);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    clamp(1.25rem, 2.4vw, 2rem);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(248, 250, 252, 0.95)
+    );
+
+  border:
+    1px solid
+    rgba(203, 213, 225, 0.8);
+
+  border-radius:
+    var(--vehicle-radius-xl);
+
+  box-shadow:
+    var(--vehicle-shadow-md);
+
+  overflow: hidden;
+}
+
+
+/* Línea principal de identidad */
+
+.vehicle-management__header::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 0.3125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-info-500),
+      var(--vehicle-cyan-500)
+    );
+}
+
+
+/* Luz decorativa */
+
+.vehicle-management__header::after {
+  position: absolute;
+  top: -8rem;
+  right: 5rem;
+
+  width: 19rem;
+  height: 19rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.075),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   5. BLOQUE DE TÍTULO
+========================================================== */
+
+.vehicle-management__heading {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  max-width: 46rem;
+}
+
+.vehicle-management__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vehicle-space-8);
+
+  width: fit-content;
+  max-width: 100%;
+
+  color:
+    var(--vehicle-primary-700);
+
+  font-size: 0.6875rem;
+  font-weight: 820;
+  line-height: 1.2;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.vehicle-management__eyebrow::before {
+  width: 1.75rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-info-500)
+    );
+
+  border-radius:
+    var(--vehicle-radius-pill);
+}
+
+.vehicle-management__title {
+  margin-top:
+    var(--vehicle-space-10);
+
+  color:
+    var(--vehicle-navy-900);
+
+  font-size:
+    clamp(1.75rem, 3vw, 2.5rem);
+
+  font-weight: 850;
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+
+  text-wrap: balance;
+}
+
+.vehicle-management__description {
+  max-width: 42rem;
+
+  margin-top:
+    var(--vehicle-space-10);
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size:
+    clamp(0.8125rem, 1.2vw, 0.9375rem);
+
+  font-weight: 480;
+  line-height: 1.7;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   6. BOTÓN ACTUALIZAR
+========================================================== */
+
+.vehicle-management__refresh {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vehicle-space-8);
+  flex: 0 0 auto;
+
+  min-width: 8.75rem;
+  min-height: 2.875rem;
+
+  padding:
+    var(--vehicle-space-10)
+    var(--vehicle-space-16);
+
+  color:
+    var(--vehicle-primary-800);
+
+  font-size: 0.75rem;
+  font-weight: 750;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-50),
+      var(--vehicle-surface)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-primary-200);
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  box-shadow:
+    var(--vehicle-shadow-xs),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    color var(--vehicle-transition-fast),
+    background-color var(--vehicle-transition-fast),
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-fast),
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-fast);
+}
+
+
+/* Brillo dinámico */
+
+.vehicle-management__refresh::before {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.34) 48%,
+      transparent 74%
+    );
+
+  opacity: 0;
+
+  transform:
+    translateX(-40%);
+
+  pointer-events: none;
+
+  transition:
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-normal);
+}
+
+.vehicle-management__refresh:hover:not(:disabled) {
+  color:
+    var(--vehicle-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-primary-800)
+    );
+
+  border-color:
+    var(--vehicle-primary-600);
+
+  box-shadow:
+    var(--vehicle-shadow-primary);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+.vehicle-management__refresh:hover:not(:disabled)::before {
+  opacity: 1;
+
+  transform:
+    translateX(40%);
+}
+
+.vehicle-management__refresh:active:not(:disabled) {
+  box-shadow:
+    0 0.5rem 1.25rem rgba(37, 99, 235, 0.17);
+
+  transform:
+    translateY(0)
+    scale(0.97);
+}
+
+.vehicle-management__refresh:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(59, 130, 246, 0.2);
+
+  outline-offset:
+    0.1875rem;
+}
+
+.vehicle-management__refresh:disabled {
+  color:
+    var(--vehicle-text-disabled);
+
+  background:
+    var(--vehicle-surface-muted);
+
+  border-color:
+    var(--vehicle-border-light);
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+
+  opacity: 0.68;
+
+  transform: none;
+}
+
+.vehicle-management__refresh:disabled::before {
+  display: none;
+}
+
+
+/* Protección del contenido */
+
+.vehicle-management__refresh > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ==========================================================
+   7. ICONO DE ACTUALIZACIÓN
+========================================================== */
+
+.vehicle-management__refresh-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 1.125rem;
+  height: 1.125rem;
+
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1;
+
+  transform-origin: center;
+
+  transition:
+    transform var(--vehicle-transition-fast);
+}
+
+.vehicle-management__refresh:hover:not(:disabled)
+.vehicle-management__refresh-icon {
+  transform:
+    rotate(35deg);
+}
+
+.vehicle-management__refresh-icon--loading {
+  animation:
+    vehicle-refresh-spin
+    800ms
+    linear
+    infinite;
+}
+
+.vehicle-management__refresh-label {
+  line-height: 1.2;
+}
+
+
+/* ==========================================================
+   8. ANIMACIÓN DEL BOTÓN ACTUALIZAR
+========================================================== */
+
+@keyframes vehicle-refresh-spin {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* ==========================================================
+   9. CONTENEDOR DE NOTIFICACIONES
+========================================================== */
+
+.vehicle-management__notifications {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vehicle-space-12);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* Evita espacio cuando no existen mensajes */
+
+.vehicle-management__notifications:empty {
+  display: none;
+}
+
+
+/* ==========================================================
+   10. NOTIFICACIÓN BASE
+========================================================== */
+
+.vehicle-notification {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vehicle-space-16);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-14)
+    var(--vehicle-space-16);
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    var(--vehicle-radius-lg);
+
+  box-shadow:
+    var(--vehicle-shadow-sm);
+
+  overflow: hidden;
+
+  animation:
+    vehicle-notification-enter
+    260ms
+    ease-out;
+}
+
+
+/* Línea lateral */
+
+.vehicle-notification::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 0.25rem;
+
+  content: "";
+
+  background:
+    currentColor;
+}
+
+
+/* Luz ambiental */
+
+.vehicle-notification::after {
+  position: absolute;
+  top: -4rem;
+  right: 3rem;
+
+  width: 10rem;
+  height: 10rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      currentColor,
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  opacity: 0.045;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   11. CONTENIDO DE LA NOTIFICACIÓN
+========================================================== */
+
+.vehicle-notification__body {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--vehicle-space-12);
+
+  min-width: 0;
+}
+
+.vehicle-notification__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 2rem;
+  height: 2rem;
+
+  font-size: 0.875rem;
+  font-weight: 850;
+  line-height: 1;
+
+  background:
+    rgba(255, 255, 255, 0.72);
+
+  border:
+    1px solid
+    currentColor;
+
+  border-radius:
+    var(--vehicle-radius-sm);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+.vehicle-notification__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vehicle-space-4);
+
+  min-width: 0;
+}
+
+.vehicle-notification__title {
+  color:
+    currentColor;
+
+  font-size: 0.75rem;
+  font-weight: 780;
+  line-height: 1.35;
+}
+
+.vehicle-notification__message {
+  color:
+    var(--vehicle-text-secondary);
+
+  font-size: 0.71875rem;
+  font-weight: 500;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   12. NOTIFICACIÓN DE ERROR
+========================================================== */
+
+.vehicle-notification--error {
+  color:
+    var(--vehicle-danger-700);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-danger-50),
+      rgba(255, 255, 255, 0.97)
+    );
+
+  border-color:
+    var(--vehicle-danger-200);
+}
+
+
+/* ==========================================================
+   13. NOTIFICACIÓN DE ÉXITO
+========================================================== */
+
+.vehicle-notification--success {
+  color:
+    var(--vehicle-success-700);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-success-50),
+      rgba(255, 255, 255, 0.97)
+    );
+
+  border-color:
+    var(--vehicle-success-200);
+}
+
+
+/* ==========================================================
+   14. BOTÓN CERRAR NOTIFICACIÓN
+========================================================== */
+
+.vehicle-notification__close {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 2rem;
+  height: 2rem;
+
+  padding: 0;
+
+  color:
+    currentColor;
+
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1;
+
+  background:
+    rgba(255, 255, 255, 0.7);
+
+  border:
+    1px solid
+    currentColor;
+
+  border-radius:
+    var(--vehicle-radius-sm);
+
+  cursor: pointer;
+
+  opacity: 0.72;
+
+  transition:
+    background-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-fast),
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-fast);
+}
+
+.vehicle-notification__close:hover {
+  background:
+    rgba(255, 255, 255, 0.96);
+
+  box-shadow:
+    var(--vehicle-shadow-xs);
+
+  opacity: 1;
+
+  transform:
+    scale(1.05);
+}
+
+.vehicle-notification__close:active {
+  transform:
+    scale(0.92);
+}
+
+.vehicle-notification__close:focus-visible {
+  outline:
+    0.1875rem solid
+    currentColor;
+
+  outline-offset:
+    0.125rem;
+}
+
+
+/* ==========================================================
+   15. ANIMACIÓN DE NOTIFICACIONES
+========================================================== */
+
+@keyframes vehicle-notification-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-0.5rem);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* ==========================================================
+   16. DISTRIBUCIÓN PRINCIPAL
+========================================================== */
+
+.vehicle-management__layout {
+  display: grid;
+  grid-template-columns:
+    minmax(21rem, 0.84fr)
+    minmax(0, 1.36fr);
+
+  align-items: start;
+
+  gap:
+    var(--vehicle-space-24);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* Protección ante desbordamientos */
+
+.vehicle-management__layout > * {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   17. PANEL EDITOR
+========================================================== */
+
+.vehicle-editor {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
+
+  background:
+    linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(248, 250, 252, 0.97)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-border-light);
+
+  border-radius:
+    var(--vehicle-radius-xl);
+
+  box-shadow:
+    var(--vehicle-shadow-md);
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+/* Línea superior del editor */
+
+.vehicle-editor::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-info-500),
+      var(--vehicle-cyan-500)
+    );
+}
+
+
+/* Luz ambiental */
+
+.vehicle-editor::after {
+  position: absolute;
+  top: -7rem;
+  right: -6rem;
+  z-index: -1;
+
+  width: 17rem;
+  height: 17rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.07),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   18. PANEL DEL REGISTRO
+========================================================== */
+
+.vehicle-registry {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--vehicle-space-20);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-24);
+
+  background:
+    linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(248, 250, 252, 0.96)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-border-light);
+
+  border-radius:
+    var(--vehicle-radius-xl);
+
+  box-shadow:
+    var(--vehicle-shadow-md);
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+/* Línea superior del registro */
+
+.vehicle-registry::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-cyan-600),
+      var(--vehicle-primary-600),
+      var(--vehicle-info-500)
+    );
+}
+
+
+/* Iluminación ambiental */
+
+.vehicle-registry::after {
+  position: absolute;
+  top: -8rem;
+  right: -7rem;
+  z-index: -1;
+
+  width: 20rem;
+  height: 20rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(6, 182, 212, 0.065),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   19. PANTALLAS GRANDES INTERMEDIAS
+========================================================== */
+
+@media (max-width: 1380px) {
+  .vehicle-management__layout {
+    grid-template-columns:
+      minmax(20rem, 0.9fr)
+      minmax(0, 1.1fr);
+  }
+
+  .vehicle-registry {
+    padding:
+      var(--vehicle-space-20);
+  }
+}
+
+
+/* ==========================================================
+   20. PORTÁTILES Y TABLETS HORIZONTALES
+========================================================== */
+
+@media (max-width: 1120px) {
+  .vehicle-management {
+    gap:
+      var(--vehicle-space-20);
+  }
+
+  .vehicle-management__layout {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .vehicle-editor,
+  .vehicle-registry {
+    width: 100%;
+  }
+}
+
+
+/* ==========================================================
+   21. TABLET
+========================================================== */
+
+@media (max-width: 760px) {
+  .vehicle-management {
+    padding:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-management__header {
+    align-items: flex-start;
+
+    padding:
+      var(--vehicle-space-20);
+  }
+
+  .vehicle-management__title {
+    font-size:
+      clamp(1.625rem, 7vw, 2rem);
+  }
+
+  .vehicle-management__refresh {
+    min-width: 8rem;
+  }
+
+  .vehicle-registry {
+    padding:
+      var(--vehicle-space-18);
+  }
+}
+
+
+/* ==========================================================
+   22. CELULAR
+========================================================== */
+
+@media (max-width: 580px) {
+  .vehicle-management {
+    gap:
+      var(--vehicle-space-16);
+
+    padding:
+      var(--vehicle-space-12);
+  }
+
+  .vehicle-management__header {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap:
+      var(--vehicle-space-18);
+
+    padding:
+      var(--vehicle-space-18);
+
+    border-radius:
+      var(--vehicle-radius-lg);
+  }
+
+  .vehicle-management__header::after {
+    right: -5rem;
+  }
+
+  .vehicle-management__description {
+    font-size: 0.8125rem;
+  }
+
+  .vehicle-management__refresh {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .vehicle-notification {
+    align-items: flex-start;
+
+    padding:
+      var(--vehicle-space-12);
+  }
+
+  .vehicle-notification__body {
+    gap:
+      var(--vehicle-space-10);
+  }
+
+  .vehicle-notification__icon {
+    width: 1.875rem;
+    height: 1.875rem;
+  }
+
+  .vehicle-editor,
+  .vehicle-registry {
+    border-radius:
+      var(--vehicle-radius-lg);
+  }
+
+  .vehicle-registry {
+    gap:
+      var(--vehicle-space-16);
+
+    padding:
+      var(--vehicle-space-16);
+  }
+}
+
+
+/* ==========================================================
+   23. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .vehicle-management {
+    padding:
+      var(--vehicle-space-8);
+  }
+
+  .vehicle-management__header {
+    padding:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-management__eyebrow {
+    font-size: 0.625rem;
+  }
+
+  .vehicle-management__title {
+    font-size: 1.5rem;
+  }
+
+  .vehicle-management__description {
+    font-size: 0.78125rem;
+  }
+
+  .vehicle-notification {
+    gap:
+      var(--vehicle-space-10);
+  }
+
+  .vehicle-notification__title {
+    font-size: 0.71875rem;
+  }
+
+  .vehicle-notification__message {
+    font-size: 0.6875rem;
+  }
+
+  .vehicle-notification__close {
+    width: 1.875rem;
+    height: 1.875rem;
+  }
+
+  .vehicle-registry {
+    padding:
+      var(--vehicle-space-14);
+  }
+}
+
+
+/* ==========================================================
+   24. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .vehicle-management__refresh {
+    min-height: 3rem;
+  }
+
+  .vehicle-management__refresh:hover:not(:disabled),
+  .vehicle-management__refresh:hover:not(:disabled)
+  .vehicle-management__refresh-icon,
+  .vehicle-notification__close:hover {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   25. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .vehicle-management__header,
+  .vehicle-editor,
+  .vehicle-registry,
+  .vehicle-management__refresh,
+  .vehicle-notification,
+  .vehicle-notification__icon,
+  .vehicle-notification__close {
+    border-width:
+      0.125rem;
+  }
+
+  .vehicle-management__description,
+  .vehicle-notification__message {
+    color:
+      var(--vehicle-text-secondary);
+  }
+}
+
+
+/* ==========================================================
+   26. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .vehicle-management__refresh,
+  .vehicle-management__refresh::before,
+  .vehicle-management__refresh-icon,
+  .vehicle-notification,
+  .vehicle-notification__close {
+    transition: none;
+    animation: none;
+  }
+
+  .vehicle-management__refresh:hover:not(:disabled),
+  .vehicle-management__refresh:active:not(:disabled),
+  .vehicle-management__refresh:hover:not(:disabled)
+  .vehicle-management__refresh-icon,
+  .vehicle-notification__close:hover,
+  .vehicle-notification__close:active {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   27. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .vehicle-management {
+    padding: 0;
+
+    background: #ffffff;
+  }
+
+  .vehicle-management::before,
+  .vehicle-management::after,
+  .vehicle-management__header::after,
+  .vehicle-editor::after,
+  .vehicle-registry::after {
+    display: none;
+  }
+
+  .vehicle-management__refresh,
+  .vehicle-management__notifications {
+    display: none;
+  }
+
+  .vehicle-management__header,
+  .vehicle-editor,
+  .vehicle-registry {
+    border:
+      1px solid #cbd5e1;
+
+    box-shadow: none;
+  }
+
+  .vehicle-management__layout {
+    display: block;
+  }
+
+  .vehicle-editor {
+    display: none;
+  }
+
+  .vehicle-registry {
+    padding:
+      1rem;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE VEHÍCULOS
+   PARTE 2: ENCABEZADO DEL EDITOR, FORMULARIO,
+   CAMPOS, CONTROLES Y VALIDACIÓN
+========================================================== */
+
+
+/* ==========================================================
+   1. ENCABEZADO DEL EDITOR
+========================================================== */
+
+.vehicle-editor__header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--vehicle-space-20);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-24)
+    var(--vehicle-space-24)
+    var(--vehicle-space-20);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(248, 250, 252, 0.92)
+    );
+
+  border-bottom:
+    1px solid
+    var(--vehicle-border-light);
+}
+
+
+/* Segmento decorativo inferior */
+
+.vehicle-editor__header::after {
+  position: absolute;
+  left: var(--vehicle-space-24);
+  bottom: -0.0625rem;
+
+  width: 6.5rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-info-500),
+      transparent
+    );
+
+  border-radius:
+    var(--vehicle-radius-pill);
+}
+
+
+/* ==========================================================
+   2. BLOQUE DE TÍTULO DEL EDITOR
+========================================================== */
+
+.vehicle-editor-heading {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  max-width: 32rem;
+}
+
+.vehicle-editor-heading__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vehicle-space-8);
+
+  width: fit-content;
+  max-width: 100%;
+
+  color:
+    var(--vehicle-primary-700);
+
+  font-size: 0.65625rem;
+  font-weight: 820;
+  line-height: 1.2;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.vehicle-editor-heading__eyebrow::before {
+  flex: 0 0 auto;
+
+  width: 1.5rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-info-500)
+    );
+
+  border-radius:
+    var(--vehicle-radius-pill);
+}
+
+.vehicle-editor-heading__title {
+  margin-top:
+    var(--vehicle-space-8);
+
+  color:
+    var(--vehicle-text-primary);
+
+  font-size:
+    clamp(1.375rem, 2vw, 1.75rem);
+
+  font-weight: 830;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+
+  text-wrap: balance;
+}
+
+.vehicle-editor-heading__description {
+  max-width: 29rem;
+
+  margin-top:
+    var(--vehicle-space-8);
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.78125rem;
+  font-weight: 480;
+  line-height: 1.62;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   3. INDICADOR DE MODO EDICIÓN
+========================================================== */
+
+.vehicle-editor__mode {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vehicle-space-6);
+  flex: 0 0 auto;
+
+  min-height: 1.875rem;
+
+  padding:
+    var(--vehicle-space-4)
+    var(--vehicle-space-10);
+
+  color:
+    var(--vehicle-warning-900);
+
+  font-size: 0.625rem;
+  font-weight: 780;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-warning-100),
+      var(--vehicle-warning-50)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-warning-200);
+
+  border-radius:
+    var(--vehicle-radius-pill);
+
+  box-shadow:
+    0 0.5rem 1rem rgba(245, 158, 11, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+
+  overflow: hidden;
+}
+
+
+/* Punto de estado */
+
+.vehicle-editor__mode::before {
+  flex: 0 0 auto;
+
+  width: 0.4375rem;
+  height: 0.4375rem;
+
+  content: "";
+
+  background:
+    var(--vehicle-warning-500);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0.5rem rgba(245, 158, 11, 0.48);
+}
+
+
+/* Brillo del indicador */
+
+.vehicle-editor__mode::after {
+  position: absolute;
+  top: -80%;
+  left: -30%;
+
+  width: 50%;
+  height: 220%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.48),
+      transparent
+    );
+
+  transform:
+    rotate(22deg);
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   4. FORMULARIO DEL EDITOR
+========================================================== */
+
+.vehicle-editor-form {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  align-items: start;
+
+  gap:
+    var(--vehicle-space-18)
+    var(--vehicle-space-16);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-24);
+}
+
+
+/* Protección de los elementos del grid */
+
+.vehicle-editor-form > * {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   5. GRUPO DE CAMPO
+========================================================== */
+
+.vehicle-field {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--vehicle-space-8);
+
+  min-width: 0;
+}
+
+
+/* Campo que ocupa las dos columnas */
+
+.vehicle-field--wide {
+  grid-column:
+    1 / -1;
+}
+
+
+/* ==========================================================
+   6. ETIQUETA DEL CAMPO
+========================================================== */
+
+.vehicle-field__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vehicle-space-4);
+
+  width: fit-content;
+  max-width: 100%;
+
+  color:
+    var(--vehicle-text-secondary);
+
+  font-size: 0.6875rem;
+  font-weight: 760;
+  line-height: 1.35;
+  letter-spacing: 0.015em;
+}
+
+
+/* Indicador obligatorio */
+
+.vehicle-field__required {
+  color:
+    var(--vehicle-danger-600);
+
+  font-size: 0.75rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+
+/* ==========================================================
+   7. CONTROL BASE
+========================================================== */
+
+.vehicle-field__control {
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 2.875rem;
+
+  padding:
+    var(--vehicle-space-10)
+    var(--vehicle-space-12);
+
+  color:
+    var(--vehicle-text-primary);
+
+  font-size: 0.75rem;
+  font-weight: 540;
+  line-height: 1.4;
+
+  background-color:
+    var(--vehicle-surface);
+
+  border:
+    1px solid
+    var(--vehicle-border);
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0.125rem 0.375rem rgba(15, 23, 42, 0.025);
+
+  outline: none;
+
+  transition:
+    color var(--vehicle-transition-fast),
+    background-color var(--vehicle-transition-fast),
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-fast),
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-fast);
+}
+
+
+/* ==========================================================
+   8. INPUT
+========================================================== */
+
+.vehicle-field__control--input {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+
+/* Placa en mayúsculas */
+
+.vehicle-field__control--uppercase {
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
+  font-weight: 680;
+}
+
+
+/* ==========================================================
+   9. SELECT PERSONALIZADO
+========================================================== */
+
+.vehicle-field__control--select {
+  appearance: none;
+  -webkit-appearance: none;
+
+  padding-right:
+    2.75rem;
+
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--vehicle-text-muted) 50%
+    ),
+    linear-gradient(
+      135deg,
+      var(--vehicle-text-muted) 50%,
+      transparent 50%
+    ),
+    linear-gradient(
+      90deg,
+      var(--vehicle-border-light),
+      var(--vehicle-border-light)
+    );
+
+  background-position:
+    calc(100% - 1.0625rem) 50%,
+    calc(100% - 0.75rem) 50%,
+    calc(100% - 2.125rem) 50%;
+
+  background-size:
+    0.375rem 0.375rem,
+    0.375rem 0.375rem,
+    0.0625rem 1.5rem;
+
+  background-repeat:
+    no-repeat;
+
+  cursor: pointer;
+}
+
+
+/* Color de la opción inicial */
+
+.vehicle-field__control--select:invalid {
+  color:
+    var(--vehicle-text-muted);
+}
+
+.vehicle-field__control--select option {
+  color:
+    var(--vehicle-text-primary);
+
+  background:
+    var(--vehicle-surface);
+}
+
+
+/* ==========================================================
+   10. PLACEHOLDERS
+========================================================== */
+
+.vehicle-field__control::placeholder {
+  color:
+    var(--vehicle-text-soft);
+
+  font-weight: 460;
+
+  opacity: 1;
+}
+
+
+/* ==========================================================
+   11. HOVER DE CONTROLES
+========================================================== */
+
+.vehicle-field__control:hover:not(:disabled) {
+  border-color:
+    var(--vehicle-primary-300);
+
+  background-color:
+    #ffffff;
+
+  box-shadow:
+    0 0.25rem 0.75rem rgba(37, 99, 235, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+
+/* ==========================================================
+   12. FOCO DE CONTROLES
+========================================================== */
+
+.vehicle-field__control:focus {
+  color:
+    var(--vehicle-text-primary);
+
+  background-color:
+    var(--vehicle-surface);
+
+  border-color:
+    var(--vehicle-primary-500);
+
+  box-shadow:
+    0 0 0 0.25rem rgba(59, 130, 246, 0.12),
+    0 0.5rem 1rem rgba(37, 99, 235, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+
+/* Refuerzo para navegación por teclado */
+
+.vehicle-field__control:focus-visible {
+  outline: none;
+}
+
+
+/* Resalta la etiqueta del campo enfocado */
+
+.vehicle-field:focus-within
+.vehicle-field__label {
+  color:
+    var(--vehicle-primary-700);
+}
+
+
+/* ==========================================================
+   13. CONTROL DESHABILITADO
+========================================================== */
+
+.vehicle-field__control:disabled {
+  color:
+    var(--vehicle-text-disabled);
+
+  background-color:
+    var(--vehicle-surface-muted);
+
+  border-color:
+    var(--vehicle-border-light);
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+
+  opacity: 0.72;
+}
+
+.vehicle-field__control--select:disabled {
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--vehicle-text-soft) 50%
+    ),
+    linear-gradient(
+      135deg,
+      var(--vehicle-text-soft) 50%,
+      transparent 50%
+    ),
+    linear-gradient(
+      90deg,
+      var(--vehicle-border-light),
+      var(--vehicle-border-light)
+    );
+}
+
+
+/* ==========================================================
+   14. PIE DEL CAMPO
+========================================================== */
+
+.vehicle-field__footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--vehicle-space-10);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    0
+    var(--vehicle-space-2);
+}
+
+
+/* ==========================================================
+   15. TEXTO DE AYUDA
+========================================================== */
+
+.vehicle-field__hint {
+  min-width: 0;
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.625rem;
+  font-weight: 480;
+  line-height: 1.45;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   16. CONTADOR DE CARACTERES
+========================================================== */
+
+.vehicle-field__counter {
+  flex: 0 0 auto;
+
+  color:
+    var(--vehicle-text-soft);
+
+  font-size: 0.59375rem;
+  font-weight: 690;
+  line-height: 1.45;
+  white-space: nowrap;
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+
+/* El contador se resalta al enfocar */
+
+.vehicle-field:focus-within
+.vehicle-field__counter {
+  color:
+    var(--vehicle-primary-700);
+}
+
+
+/* ==========================================================
+   17. TEXTO AUXILIAR DESTACADO
+========================================================== */
+
+.vehicle-field__helper {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--vehicle-space-8);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-10)
+    var(--vehicle-space-12);
+
+  color:
+    var(--vehicle-info-800);
+
+  font-size: 0.65625rem;
+  font-weight: 540;
+  line-height: 1.55;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-info-50),
+      rgba(255, 255, 255, 0.96)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-info-100);
+
+  border-left:
+    0.1875rem solid
+    var(--vehicle-info-500);
+
+  border-radius:
+    var(--vehicle-radius-sm);
+
+  overflow-wrap:
+    anywhere;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* Icono informativo generado con CSS */
+
+.vehicle-field__helper::before {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 1.125rem;
+  height: 1.125rem;
+
+  content: "i";
+
+  color:
+    var(--vehicle-info-800);
+
+  font-size: 0.625rem;
+  font-weight: 850;
+  font-style: normal;
+  line-height: 1;
+
+  background:
+    var(--vehicle-info-100);
+
+  border-radius:
+    50%;
+}
+
+
+/* ==========================================================
+   18. VALIDACIÓN ANGULAR — CAMPO INVÁLIDO
+========================================================== */
+
+.vehicle-field__control.ng-invalid.ng-touched:not(:focus),
+.vehicle-field__control.ng-invalid.ng-dirty:not(:focus) {
+  border-color:
+    var(--vehicle-danger-500);
+
+  background-color:
+    var(--vehicle-danger-50);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(239, 68, 68, 0.08);
+}
+
+
+/* Label del campo inválido */
+
+.vehicle-field:has(
+  .vehicle-field__control.ng-invalid.ng-touched
+)
+.vehicle-field__label,
+.vehicle-field:has(
+  .vehicle-field__control.ng-invalid.ng-dirty
+)
+.vehicle-field__label {
+  color:
+    var(--vehicle-danger-700);
+}
+
+
+/* ==========================================================
+   19. VALIDACIÓN ANGULAR — CAMPO VÁLIDO
+========================================================== */
+
+.vehicle-field__control.ng-valid.ng-touched:not(:focus),
+.vehicle-field__control.ng-valid.ng-dirty:not(:focus) {
+  border-color:
+    rgba(34, 197, 94, 0.48);
+
+  background-color:
+    rgba(240, 253, 244, 0.42);
+}
+
+
+/* No aplicar el estado válido al select vacío */
+
+.vehicle-field__control--select.ng-valid:invalid {
+  border-color:
+    var(--vehicle-border);
+
+  background-color:
+    var(--vehicle-surface);
+}
+
+
+/* ==========================================================
+   20. VALIDACIÓN DURANTE EL FOCO
+========================================================== */
+
+.vehicle-field__control.ng-invalid:focus {
+  border-color:
+    var(--vehicle-danger-500);
+
+  background-color:
+    var(--vehicle-surface);
+
+  box-shadow:
+    0 0 0 0.25rem rgba(239, 68, 68, 0.12),
+    0 0.5rem 1rem rgba(220, 38, 38, 0.065);
+}
+
+.vehicle-field__control.ng-valid:focus {
+  border-color:
+    var(--vehicle-primary-500);
+
+  background-color:
+    var(--vehicle-surface);
+
+  box-shadow:
+    0 0 0 0.25rem rgba(59, 130, 246, 0.12),
+    0 0.5rem 1rem rgba(37, 99, 235, 0.07);
+}
+
+
+/* ==========================================================
+   21. AUTOFILL DEL NAVEGADOR
+========================================================== */
+
+.vehicle-field__control:-webkit-autofill,
+.vehicle-field__control:-webkit-autofill:hover,
+.vehicle-field__control:-webkit-autofill:focus {
+  -webkit-text-fill-color:
+    var(--vehicle-text-primary);
+
+  -webkit-box-shadow:
+    0 0 0 62.5rem
+    var(--vehicle-surface)
+    inset;
+
+  caret-color:
+    var(--vehicle-text-primary);
+
+  border-color:
+    var(--vehicle-primary-400);
+
+  transition:
+    background-color 9999s ease-out;
+}
+
+
+/* ==========================================================
+   22. SELECCIÓN DE TEXTO
+========================================================== */
+
+.vehicle-management ::selection {
+  color:
+    var(--vehicle-primary-950);
+
+  background:
+    var(--vehicle-primary-200);
+}
+
+
+/* ==========================================================
+   23. PREVENCIÓN DE DESBORDAMIENTO
+========================================================== */
+
+.vehicle-field__label,
+.vehicle-field__hint,
+.vehicle-field__helper,
+.vehicle-editor-heading__description {
+  overflow-wrap:
+    anywhere;
+}
+
+
+/* ==========================================================
+   24. PANTALLAS GRANDES INTERMEDIAS
+========================================================== */
+
+@media (max-width: 1380px) {
+  .vehicle-editor__header {
+    padding:
+      var(--vehicle-space-20);
+  }
+
+  .vehicle-editor__header::after {
+    left:
+      var(--vehicle-space-20);
+  }
+
+  .vehicle-editor-form {
+    padding:
+      var(--vehicle-space-20);
+  }
+}
+
+
+/* ==========================================================
+   25. FORMULARIO A ANCHO COMPLETO
+========================================================== */
+
+@media (max-width: 1120px) {
+  .vehicle-editor-form {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  }
+
+  .vehicle-field--wide {
+    grid-column:
+      1 / -1;
+  }
+}
+
+
+/* ==========================================================
+   26. TABLET
+========================================================== */
+
+@media (max-width: 790px) {
+  .vehicle-editor-form {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* ==========================================================
+   27. CELULAR
+========================================================== */
+
+@media (max-width: 580px) {
+  .vehicle-editor__header {
+    align-items: flex-start;
+
+    gap:
+      var(--vehicle-space-14);
+
+    padding:
+      var(--vehicle-space-18)
+      var(--vehicle-space-16)
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-editor__header::after {
+    left:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-editor-heading__title {
+    font-size: 1.375rem;
+  }
+
+  .vehicle-editor-heading__description {
+    font-size: 0.75rem;
+  }
+
+  .vehicle-editor__mode {
+    min-height: 1.75rem;
+
+    padding:
+      var(--vehicle-space-4)
+      var(--vehicle-space-8);
+  }
+
+  .vehicle-editor-form {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap:
+      var(--vehicle-space-16);
+
+    padding:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-field--wide {
+    grid-column: auto;
+  }
+
+  .vehicle-field__control {
+    min-height: 2.875rem;
+  }
+
+  .vehicle-field__footer {
+    gap:
+      var(--vehicle-space-8);
+  }
+}
+
+
+/* ==========================================================
+   28. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .vehicle-editor__header {
+    flex-direction: column;
+  }
+
+  .vehicle-editor__mode {
+    align-self:
+      flex-start;
+  }
+
+  .vehicle-editor-heading__eyebrow {
+    font-size: 0.625rem;
+  }
+
+  .vehicle-editor-heading__description {
+    font-size: 0.71875rem;
+  }
+
+  .vehicle-editor-form {
+    padding:
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-field__label {
+    font-size: 0.65625rem;
+  }
+
+  .vehicle-field__control {
+    padding:
+      var(--vehicle-space-10);
+
+    font-size: 0.71875rem;
+  }
+
+  .vehicle-field__control--select {
+    padding-right:
+      2.5rem;
+
+    background-position:
+      calc(100% - 0.9375rem) 50%,
+      calc(100% - 0.6875rem) 50%,
+      calc(100% - 1.875rem) 50%;
+  }
+
+  .vehicle-field__footer {
+    flex-direction: column;
+
+    gap:
+      var(--vehicle-space-4);
+  }
+
+  .vehicle-field__counter {
+    align-self:
+      flex-end;
+  }
+
+  .vehicle-field__helper {
+    padding:
+      var(--vehicle-space-8)
+      var(--vehicle-space-10);
+
+    font-size: 0.625rem;
+  }
+}
+
+
+/* ==========================================================
+   29. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .vehicle-field__control {
+    min-height: 3rem;
+  }
+
+  .vehicle-field__control--select {
+    cursor: default;
+  }
+}
+
+
+/* ==========================================================
+   30. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .vehicle-editor__mode,
+  .vehicle-field__control,
+  .vehicle-field__helper {
+    border-width:
+      0.125rem;
+  }
+
+  .vehicle-editor-heading__description,
+  .vehicle-field__hint,
+  .vehicle-field__counter {
+    color:
+      var(--vehicle-text-secondary);
+  }
+}
+
+
+/* ==========================================================
+   31. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .vehicle-field__control,
+  .vehicle-editor__mode {
+    transition: none;
+  }
+}
+
+
+/* ==========================================================
+   32. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .vehicle-editor__header,
+  .vehicle-editor-form {
+    background: transparent;
+  }
+
+  .vehicle-field__control,
+  .vehicle-field__helper {
+    background: transparent;
+
+    box-shadow: none;
+  }
+}
+
+
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE VEHÍCULOS
+   PARTE 3: SISTEMA DE FOTOGRAFÍA, SELECTOR,
+   VISTA PREVIA Y ESTADO VACÍO
+========================================================== */
+
+
+/* ==========================================================
+   1. CONTENEDOR DEL SISTEMA DE FOTOGRAFÍA
+========================================================== */
+
+.vehicle-photo-uploader {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--vehicle-space-14);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-14);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(248, 250, 252, 0.96),
+      rgba(255, 255, 255, 0.99)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-border-light);
+
+  border-radius:
+    var(--vehicle-radius-lg);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+/* Iluminación ambiental */
+
+.vehicle-photo-uploader::before {
+  position: absolute;
+  top: -6rem;
+  right: -5rem;
+  z-index: -1;
+
+  width: 14rem;
+  height: 14rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.065),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* Refuerzo inferior */
+
+.vehicle-photo-uploader::after {
+  position: absolute;
+  left: var(--vehicle-space-14);
+  right: var(--vehicle-space-14);
+  bottom: 0;
+
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(37, 99, 235, 0.22),
+      transparent
+    );
+
+  opacity: 0.72;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   2. INPUT DE ARCHIVO OCULTO
+========================================================== */
+
+.vehicle-photo-uploader__input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+
+  white-space: nowrap;
+
+  border: 0;
+}
+
+
+/* Mantiene accesible el foco desde teclado */
+
+.vehicle-photo-uploader__input:focus-visible
++
+.vehicle-photo-uploader__selector {
+  border-color:
+    var(--vehicle-primary-500);
+
+  box-shadow:
+    0 0 0 0.25rem rgba(59, 130, 246, 0.13),
+    0 0.75rem 1.5rem rgba(37, 99, 235, 0.08);
+
+  outline: none;
+}
+
+
+/* Foco para estado inválido o problemas de navegador */
+
+.vehicle-photo-uploader__input:focus
++
+.vehicle-photo-uploader__selector {
+  border-color:
+    var(--vehicle-primary-500);
+}
+
+
+/* ==========================================================
+   3. SELECTOR VISUAL
+========================================================== */
+
+.vehicle-photo-uploader__selector {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: var(--vehicle-space-14);
+
+  width: 100%;
+  min-width: 0;
+  min-height: 5.5rem;
+
+  padding:
+    var(--vehicle-space-14)
+    var(--vehicle-space-16);
+
+  color:
+    var(--vehicle-text-primary);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface),
+      var(--vehicle-primary-50)
+    );
+
+  border:
+    1px dashed
+    var(--vehicle-primary-300);
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  box-shadow:
+    0 0.5rem 1.125rem rgba(37, 99, 235, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    color var(--vehicle-transition-fast),
+    background-color var(--vehicle-transition-fast),
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-fast),
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-fast);
+}
+
+
+/* Brillo dinámico */
+
+.vehicle-photo-uploader__selector::before {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      112deg,
+      transparent 25%,
+      rgba(255, 255, 255, 0.46) 48%,
+      transparent 72%
+    );
+
+  opacity: 0;
+
+  transform:
+    translateX(-48%);
+
+  pointer-events: none;
+
+  transition:
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-normal);
+}
+
+
+/* Patrón sutil */
+
+.vehicle-photo-uploader__selector::after {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgba(37, 99, 235, 0.055) 0,
+      rgba(37, 99, 235, 0.055) 0.09375rem,
+      transparent 0.125rem
+    );
+
+  background-size:
+    1.25rem
+    1.25rem;
+
+  opacity: 0.52;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   4. HOVER DEL SELECTOR
+========================================================== */
+
+.vehicle-photo-uploader__selector:hover {
+  color:
+    var(--vehicle-primary-900);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-50),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-primary-500);
+
+  box-shadow:
+    0 0.875rem 1.75rem rgba(37, 99, 235, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+.vehicle-photo-uploader__selector:hover::before {
+  opacity: 1;
+
+  transform:
+    translateX(48%);
+}
+
+
+/* ==========================================================
+   5. SELECTOR DESHABILITADO
+========================================================== */
+
+.vehicle-photo-uploader__selector--disabled {
+  color:
+    var(--vehicle-text-disabled);
+
+  background:
+    var(--vehicle-surface-muted);
+
+  border-color:
+    var(--vehicle-border-light);
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+
+  opacity: 0.68;
+
+  transform: none;
+}
+
+.vehicle-photo-uploader__selector--disabled::before {
+  display: none;
+}
+
+.vehicle-photo-uploader__selector--disabled::after {
+  opacity: 0.2;
+}
+
+.vehicle-photo-uploader__selector--disabled:hover {
+  color:
+    var(--vehicle-text-disabled);
+
+  background:
+    var(--vehicle-surface-muted);
+
+  border-color:
+    var(--vehicle-border-light);
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+
+/* ==========================================================
+   6. PROTECCIÓN DEL CONTENIDO DEL SELECTOR
+========================================================== */
+
+.vehicle-photo-uploader__selector > * {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   7. ICONO DEL SELECTOR
+========================================================== */
+
+.vehicle-photo-uploader__icon {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 3.25rem;
+  height: 3.25rem;
+
+  color:
+    var(--vehicle-primary-800);
+
+  font-size: 1.375rem;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-100),
+      var(--vehicle-surface)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-primary-200);
+
+  border-radius:
+    var(--vehicle-radius-lg);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(37, 99, 235, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+
+  overflow: hidden;
+
+  transform:
+    rotate(-2deg);
+
+  transition:
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-normal);
+}
+
+
+/* Halo interior */
+
+.vehicle-photo-uploader__icon::before {
+  position: absolute;
+  inset: 0.375rem;
+
+  content: "";
+
+  border:
+    1px solid
+    rgba(59, 130, 246, 0.13);
+
+  border-radius:
+    calc(var(--vehicle-radius-lg) - 0.25rem);
+
+  pointer-events: none;
+}
+
+
+/* Brillo */
+
+.vehicle-photo-uploader__icon::after {
+  position: absolute;
+  top: -35%;
+  left: -30%;
+
+  width: 65%;
+  height: 165%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.55),
+      transparent
+    );
+
+  transform:
+    rotate(24deg);
+
+  pointer-events: none;
+}
+
+.vehicle-photo-uploader__selector:hover
+.vehicle-photo-uploader__icon {
+  border-color:
+    var(--vehicle-primary-400);
+
+  box-shadow:
+    0 1rem 1.875rem rgba(37, 99, 235, 0.17),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+
+  transform:
+    rotate(1deg)
+    scale(1.035);
+}
+
+.vehicle-photo-uploader__selector--disabled
+.vehicle-photo-uploader__icon {
+  color:
+    var(--vehicle-text-soft);
+
+  background:
+    var(--vehicle-surface-strong);
+
+  border-color:
+    var(--vehicle-border);
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+
+/* ==========================================================
+   8. CONTENIDO DEL SELECTOR
+========================================================== */
+
+.vehicle-photo-uploader__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vehicle-space-4);
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   9. TÍTULO DEL SELECTOR
+========================================================== */
+
+.vehicle-photo-uploader__title {
+  color:
+    var(--vehicle-text-primary);
+
+  font-size: 0.75rem;
+  font-weight: 760;
+  line-height: 1.4;
+
+  overflow-wrap:
+    anywhere;
+}
+
+.vehicle-photo-uploader__selector:hover
+.vehicle-photo-uploader__title {
+  color:
+    var(--vehicle-primary-900);
+}
+
+.vehicle-photo-uploader__selector--disabled
+.vehicle-photo-uploader__title {
+  color:
+    var(--vehicle-text-disabled);
+}
+
+
+/* ==========================================================
+   10. DESCRIPCIÓN DEL SELECTOR
+========================================================== */
+
+.vehicle-photo-uploader__description {
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.625rem;
+  font-weight: 480;
+  line-height: 1.5;
+
+  overflow-wrap:
+    anywhere;
+
+  text-wrap:
+    pretty;
+}
+
+.vehicle-photo-uploader__selector--disabled
+.vehicle-photo-uploader__description {
+  color:
+    var(--vehicle-text-soft);
+}
+
+
+/* ==========================================================
+   11. CONTENEDOR DE VISTA PREVIA
+========================================================== */
+
+.vehicle-photo-preview {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    minmax(8.5rem, 0.78fr)
+    minmax(0, 1.22fr);
+
+  align-items: stretch;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 9.5rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface),
+      var(--vehicle-surface-soft)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-border-light);
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  box-shadow:
+    var(--vehicle-shadow-sm),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  overflow: hidden;
+
+  animation:
+    vehicle-photo-preview-enter
+    260ms
+    ease-out;
+}
+
+
+/* Línea superior de identidad */
+
+.vehicle-photo-preview::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-info-500),
+      var(--vehicle-cyan-500)
+    );
+}
+
+
+/* Luz ambiental */
+
+.vehicle-photo-preview::after {
+  position: absolute;
+  top: -5rem;
+  right: -4rem;
+
+  width: 12rem;
+  height: 12rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.065),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   12. ÁREA VISUAL DE LA VISTA PREVIA
+========================================================== */
+
+.vehicle-photo-preview__media {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+  min-height: 9.5rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-navy-900),
+      var(--vehicle-navy-800)
+    );
+
+  border-right:
+    1px solid
+    var(--vehicle-border-light);
+
+  overflow: hidden;
+}
+
+
+/* Degradado de profundidad */
+
+.vehicle-photo-preview__media::after {
+  position: absolute;
+  inset:
+    auto
+    0
+    0;
+
+  height: 42%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(2, 6, 23, 0.28)
+    );
+
+  pointer-events: none;
+}
+
+
+/* Iluminación de la fotografía */
+
+.vehicle-photo-preview__media::before {
+  position: absolute;
+  top: -4rem;
+  right: -3rem;
+  z-index: 1;
+
+  width: 10rem;
+  height: 10rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.18),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   13. IMAGEN DE LA VISTA PREVIA
+========================================================== */
+
+.vehicle-photo-preview__image {
+  width: 100%;
+  height: 100%;
+  min-height: 9.5rem;
+
+  object-fit: cover;
+  object-position: center;
+
+  filter:
+    saturate(104%)
+    contrast(102%);
+
+  transition:
+    filter var(--vehicle-transition-normal),
+    transform var(--vehicle-transition-slow);
+}
+
+.vehicle-photo-preview:hover
+.vehicle-photo-preview__image {
+  filter:
+    saturate(111%)
+    contrast(105%);
+
+  transform:
+    scale(1.045);
+}
+
+
+/* ==========================================================
+   14. CONTENIDO DE LA VISTA PREVIA
+========================================================== */
+
+.vehicle-photo-preview__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--vehicle-space-6);
+
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-18);
+}
+
+
+/* ==========================================================
+   15. EYEBROW DE LA VISTA PREVIA
+========================================================== */
+
+.vehicle-photo-preview__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vehicle-space-6);
+
+  width: fit-content;
+  max-width: 100%;
+
+  color:
+    var(--vehicle-primary-700);
+
+  font-size: 0.59375rem;
+  font-weight: 810;
+  line-height: 1.25;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.vehicle-photo-preview__eyebrow::before {
+  flex: 0 0 auto;
+
+  width: 0.4375rem;
+  height: 0.4375rem;
+
+  content: "";
+
+  background:
+    var(--vehicle-primary-500);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(59, 130, 246, 0.1);
+}
+
+
+/* ==========================================================
+   16. NOMBRE DEL ARCHIVO
+========================================================== */
+
+.vehicle-photo-preview__title {
+  display: block;
+
+  max-width: 100%;
+
+  color:
+    var(--vehicle-text-primary);
+
+  font-size: 0.8125rem;
+  font-weight: 760;
+  line-height: 1.4;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+/* ==========================================================
+   17. METADATOS DE LA IMAGEN
+========================================================== */
+
+.vehicle-photo-preview__meta {
+  display: block;
+
+  max-width: 100%;
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.625rem;
+  font-weight: 500;
+  line-height: 1.5;
+
+  overflow-wrap:
+    anywhere;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* ==========================================================
+   18. BOTÓN QUITAR SELECCIÓN
+========================================================== */
+
+.vehicle-photo-preview__remove {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vehicle-space-6);
+
+  min-height: 2.25rem;
+
+  margin-top:
+    var(--vehicle-space-6);
+
+  padding:
+    var(--vehicle-space-6)
+    var(--vehicle-space-10);
+
+  color:
+    var(--vehicle-danger-700);
+
+  font-size: 0.625rem;
+  font-weight: 720;
+  line-height: 1.2;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-danger-50),
+      var(--vehicle-surface)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-danger-200);
+
+  border-radius:
+    var(--vehicle-radius-sm);
+
+  box-shadow:
+    var(--vehicle-shadow-xs),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    color var(--vehicle-transition-fast),
+    background-color var(--vehicle-transition-fast),
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-fast),
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-fast);
+}
+
+
+/* Brillo dinámico */
+
+.vehicle-photo-preview__remove::before {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.3) 48%,
+      transparent 75%
+    );
+
+  opacity: 0;
+
+  transform:
+    translateX(-45%);
+
+  pointer-events: none;
+
+  transition:
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-normal);
+}
+
+.vehicle-photo-preview__remove:hover:not(:disabled) {
+  color:
+    var(--vehicle-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-danger-600),
+      var(--vehicle-danger-800)
+    );
+
+  border-color:
+    var(--vehicle-danger-600);
+
+  box-shadow:
+    var(--vehicle-shadow-danger);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+.vehicle-photo-preview__remove:hover:not(:disabled)::before {
+  opacity: 1;
+
+  transform:
+    translateX(45%);
+}
+
+.vehicle-photo-preview__remove:active:not(:disabled) {
+  transform:
+    translateY(0)
+    scale(0.96);
+}
+
+.vehicle-photo-preview__remove:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(239, 68, 68, 0.18);
+
+  outline-offset:
+    0.125rem;
+}
+
+
+/* Estado deshabilitado */
+
+.vehicle-photo-preview__remove:disabled {
+  color:
+    var(--vehicle-text-disabled);
+
+  background:
+    var(--vehicle-surface-muted);
+
+  border-color:
+    var(--vehicle-border-light);
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+
+  opacity: 0.66;
+
+  transform: none;
+}
+
+.vehicle-photo-preview__remove:disabled::before {
+  display: none;
+}
+
+
+/* ==========================================================
+   19. PROTECCIÓN DEL CONTENIDO DEL BOTÓN
+========================================================== */
+
+.vehicle-photo-preview__remove > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ==========================================================
+   20. ESTADO SIN FOTOGRAFÍA
+========================================================== */
+
+.vehicle-photo-empty {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: var(--vehicle-space-12);
+
+  width: 100%;
+  min-width: 0;
+  min-height: 4.5rem;
+
+  padding:
+    var(--vehicle-space-12)
+    var(--vehicle-space-14);
+
+  color:
+    var(--vehicle-text-secondary);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface-muted),
+      rgba(255, 255, 255, 0.97)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-border-light);
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+
+  overflow: hidden;
+}
+
+
+/* Patrón ambiental */
+
+.vehicle-photo-empty::before {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgba(100, 116, 139, 0.055) 0,
+      rgba(100, 116, 139, 0.055) 0.09375rem,
+      transparent 0.125rem
+    );
+
+  background-size:
+    1.125rem
+    1.125rem;
+
+  opacity: 0.55;
+
+  pointer-events: none;
+}
+
+
+/* Resplandor */
+
+.vehicle-photo-empty::after {
+  position: absolute;
+  top: -4rem;
+  right: -3rem;
+
+  width: 10rem;
+  height: 10rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.055),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   21. ICONO DEL ESTADO VACÍO
+========================================================== */
+
+.vehicle-photo-empty__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 2.75rem;
+  height: 2.75rem;
+
+  color:
+    var(--vehicle-primary-700);
+
+  font-size: 1.25rem;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface),
+      var(--vehicle-primary-100)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-primary-200);
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  box-shadow:
+    0 0.625rem 1.25rem rgba(37, 99, 235, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  transform:
+    rotate(-2deg);
+}
+
+
+/* ==========================================================
+   22. MENSAJE DEL ESTADO VACÍO
+========================================================== */
+
+.vehicle-photo-empty__message {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.65625rem;
+  font-weight: 500;
+  line-height: 1.55;
+
+  overflow-wrap:
+    anywhere;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* ==========================================================
+   23. ANIMACIÓN DE ENTRADA
+========================================================== */
+
+@keyframes vehicle-photo-preview-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(0.5rem)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* ==========================================================
+   24. PORTÁTILES INTERMEDIOS
+========================================================== */
+
+@media (max-width: 1380px) {
+  .vehicle-photo-preview {
+    grid-template-columns:
+      minmax(7.5rem, 0.72fr)
+      minmax(0, 1.28fr);
+  }
+
+  .vehicle-photo-preview__content {
+    padding:
+      var(--vehicle-space-16);
+  }
+}
+
+
+/* ==========================================================
+   25. FORMULARIO A ANCHO COMPLETO
+========================================================== */
+
+@media (max-width: 1120px) {
+  .vehicle-photo-preview {
+    grid-template-columns:
+      minmax(12rem, 0.72fr)
+      minmax(0, 1.28fr);
+
+    min-height: 11rem;
+  }
+
+  .vehicle-photo-preview__media,
+  .vehicle-photo-preview__image {
+    min-height: 11rem;
+  }
+}
+
+
+/* ==========================================================
+   26. TABLET
+========================================================== */
+
+@media (max-width: 790px) {
+  .vehicle-photo-uploader {
+    padding:
+      var(--vehicle-space-12);
+  }
+
+  .vehicle-photo-uploader__selector {
+    min-height: 5rem;
+
+    padding:
+      var(--vehicle-space-12)
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-photo-preview {
+    grid-template-columns:
+      minmax(10rem, 0.82fr)
+      minmax(0, 1.18fr);
+  }
+}
+
+
+/* ==========================================================
+   27. CELULAR
+========================================================== */
+
+@media (max-width: 580px) {
+  .vehicle-photo-uploader {
+    gap:
+      var(--vehicle-space-12);
+
+    padding:
+      var(--vehicle-space-10);
+
+    border-radius:
+      var(--vehicle-radius-md);
+  }
+
+  .vehicle-photo-uploader::after {
+    left:
+      var(--vehicle-space-10);
+
+    right:
+      var(--vehicle-space-10);
+  }
+
+  .vehicle-photo-uploader__selector {
+    align-items: flex-start;
+
+    gap:
+      var(--vehicle-space-12);
+
+    min-height: auto;
+
+    padding:
+      var(--vehicle-space-12);
+
+    border-radius:
+      var(--vehicle-radius-sm);
+  }
+
+  .vehicle-photo-uploader__icon {
+    width: 2.875rem;
+    height: 2.875rem;
+
+    font-size: 1.25rem;
+  }
+
+  .vehicle-photo-preview {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    min-height: 0;
+  }
+
+  .vehicle-photo-preview__media {
+    min-height: 12rem;
+
+    border-right: 0;
+
+    border-bottom:
+      1px solid
+      var(--vehicle-border-light);
+  }
+
+  .vehicle-photo-preview__image {
+    min-height: 12rem;
+  }
+
+  .vehicle-photo-preview__content {
+    padding:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-photo-preview__title {
+    white-space:
+      normal;
+
+    overflow-wrap:
+      anywhere;
+  }
+
+  .vehicle-photo-empty {
+    align-items: flex-start;
+
+    padding:
+      var(--vehicle-space-12);
+  }
+}
+
+
+/* ==========================================================
+   28. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .vehicle-photo-uploader__selector {
+    flex-direction: column;
+  }
+
+  .vehicle-photo-uploader__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .vehicle-photo-uploader__title {
+    font-size: 0.71875rem;
+  }
+
+  .vehicle-photo-uploader__description {
+    font-size: 0.59375rem;
+  }
+
+  .vehicle-photo-preview__media,
+  .vehicle-photo-preview__image {
+    min-height: 10.5rem;
+  }
+
+  .vehicle-photo-preview__content {
+    padding:
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-photo-preview__remove {
+    width: 100%;
+  }
+
+  .vehicle-photo-empty {
+    flex-direction: column;
+  }
+
+  .vehicle-photo-empty__message {
+    font-size: 0.625rem;
+  }
+}
+
+
+/* ==========================================================
+   29. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .vehicle-photo-uploader__selector {
+    min-height: 5.5rem;
+  }
+
+  .vehicle-photo-uploader__selector:hover,
+  .vehicle-photo-uploader__selector:hover
+  .vehicle-photo-uploader__icon,
+  .vehicle-photo-preview:hover
+  .vehicle-photo-preview__image,
+  .vehicle-photo-preview__remove:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .vehicle-photo-preview__remove {
+    min-height: 2.75rem;
+  }
+}
+
+
+/* ==========================================================
+   30. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .vehicle-photo-uploader,
+  .vehicle-photo-uploader__selector,
+  .vehicle-photo-uploader__icon,
+  .vehicle-photo-preview,
+  .vehicle-photo-preview__remove,
+  .vehicle-photo-empty,
+  .vehicle-photo-empty__icon {
+    border-width:
+      0.125rem;
+  }
+
+  .vehicle-photo-uploader__description,
+  .vehicle-photo-preview__meta,
+  .vehicle-photo-empty__message {
+    color:
+      var(--vehicle-text-secondary);
+  }
+}
+
+
+/* ==========================================================
+   31. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .vehicle-photo-uploader__selector,
+  .vehicle-photo-uploader__selector::before,
+  .vehicle-photo-uploader__icon,
+  .vehicle-photo-preview,
+  .vehicle-photo-preview__image,
+  .vehicle-photo-preview__remove,
+  .vehicle-photo-preview__remove::before {
+    transition: none;
+    animation: none;
+  }
+
+  .vehicle-photo-uploader__selector:hover,
+  .vehicle-photo-uploader__selector:hover
+  .vehicle-photo-uploader__icon,
+  .vehicle-photo-preview:hover
+  .vehicle-photo-preview__image,
+  .vehicle-photo-preview__remove:hover:not(:disabled),
+  .vehicle-photo-preview__remove:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   32. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .vehicle-photo-uploader {
+    padding: 0;
+
+    background: transparent;
+
+    border: 0;
+
+    box-shadow: none;
+  }
+
+  .vehicle-photo-uploader__selector,
+  .vehicle-photo-preview__remove,
+  .vehicle-photo-empty {
+    display: none;
+  }
+
+  .vehicle-photo-preview {
+    border:
+      1px solid #cbd5e1;
+
+    box-shadow: none;
+  }
+
+  .vehicle-photo-preview__image {
+    filter: none;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE VEHÍCULOS
+   PARTE 4: ACCIONES DEL FORMULARIO, ENCABEZADO
+   DEL REGISTRO, CARGA Y ESTADO VACÍO
+========================================================== */
+
+
+/* ==========================================================
+   1. PIE DE ACCIONES DEL FORMULARIO
+========================================================== */
+
+.vehicle-editor-form__actions {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--vehicle-space-10);
+
+  grid-column:
+    1 / -1;
+
+  width: 100%;
+  min-width: 0;
+
+  margin-top:
+    var(--vehicle-space-4);
+
+  padding-top:
+    var(--vehicle-space-20);
+
+  border-top:
+    1px solid
+    var(--vehicle-border-light);
+}
+
+
+/* Línea decorativa superior */
+
+.vehicle-editor-form__actions::before {
+  position: absolute;
+  top: -0.0625rem;
+  left: 0;
+
+  width: 6rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-info-500),
+      transparent
+    );
+
+  border-radius:
+    var(--vehicle-radius-pill);
+}
+
+
+/* ==========================================================
+   2. BOTÓN BASE DEL FORMULARIO
+========================================================== */
+
+.vehicle-action {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vehicle-space-8);
+  flex: 0 0 auto;
+
+  min-width: 8.75rem;
+  min-height: 2.75rem;
+
+  padding:
+    var(--vehicle-space-9, 0.5625rem)
+    var(--vehicle-space-16);
+
+  font-size: 0.71875rem;
+  font-weight: 740;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    color var(--vehicle-transition-fast),
+    background-color var(--vehicle-transition-fast),
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-fast),
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-fast);
+}
+
+
+/* Brillo dinámico */
+
+.vehicle-action::before {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.28) 48%,
+      transparent 74%
+    );
+
+  opacity: 0;
+
+  transform:
+    translateX(-44%);
+
+  pointer-events: none;
+
+  transition:
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-normal);
+}
+
+.vehicle-action:hover:not(:disabled)::before {
+  opacity: 1;
+
+  transform:
+    translateX(44%);
+}
+
+
+/* Protección del contenido */
+
+.vehicle-action > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ==========================================================
+   3. BOTÓN PRIMARIO
+========================================================== */
+
+.vehicle-action--primary {
+  color:
+    var(--vehicle-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-primary-800)
+    );
+
+  border-color:
+    var(--vehicle-primary-600);
+
+  box-shadow:
+    var(--vehicle-shadow-primary),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.vehicle-action--primary:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-500),
+      var(--vehicle-primary-700)
+    );
+
+  border-color:
+    var(--vehicle-primary-500);
+
+  box-shadow:
+    0 1rem 2rem rgba(37, 99, 235, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+.vehicle-action--primary:active:not(:disabled) {
+  box-shadow:
+    0 0.5rem 1.125rem rgba(37, 99, 235, 0.18);
+
+  transform:
+    translateY(0)
+    scale(0.97);
+}
+
+
+/* ==========================================================
+   4. BOTÓN SECUNDARIO
+========================================================== */
+
+.vehicle-action--secondary {
+  color:
+    var(--vehicle-text-secondary);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface),
+      var(--vehicle-surface-soft)
+    );
+
+  border-color:
+    var(--vehicle-border);
+
+  box-shadow:
+    var(--vehicle-shadow-xs),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.vehicle-action--secondary:hover:not(:disabled) {
+  color:
+    var(--vehicle-primary-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-50),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-primary-300);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(37, 99, 235, 0.1);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+.vehicle-action--secondary:active:not(:disabled) {
+  box-shadow:
+    var(--vehicle-shadow-xs);
+
+  transform:
+    translateY(0)
+    scale(0.97);
+}
+
+
+/* ==========================================================
+   5. FOCO DE LOS BOTONES
+========================================================== */
+
+.vehicle-action:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(59, 130, 246, 0.2);
+
+  outline-offset:
+    0.1875rem;
+}
+
+.vehicle-action--secondary:focus-visible {
+  outline-color:
+    rgba(100, 116, 139, 0.22);
+}
+
+
+/* ==========================================================
+   6. BOTÓN DESHABILITADO
+========================================================== */
+
+.vehicle-action:disabled {
+  color:
+    var(--vehicle-text-disabled);
+
+  background:
+    var(--vehicle-surface-muted);
+
+  border-color:
+    var(--vehicle-border-light);
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+
+  opacity: 0.68;
+
+  transform: none;
+}
+
+.vehicle-action:disabled::before {
+  display: none;
+}
+
+
+/* ==========================================================
+   7. ICONO DEL BOTÓN
+========================================================== */
+
+.vehicle-action__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 1rem;
+  height: 1rem;
+
+  font-size: 0.875rem;
+  font-weight: 760;
+  line-height: 1;
+
+  transition:
+    transform var(--vehicle-transition-fast);
+}
+
+.vehicle-action:hover:not(:disabled)
+.vehicle-action__icon {
+  transform:
+    scale(1.12);
+}
+
+
+/* ==========================================================
+   8. TEXTO DEL BOTÓN
+========================================================== */
+
+.vehicle-action__label {
+  min-width: 0;
+
+  line-height: 1.2;
+}
+
+
+/* ==========================================================
+   9. SPINNER DEL FORMULARIO
+========================================================== */
+
+.vehicle-action__spinner {
+  display: block;
+  flex: 0 0 auto;
+
+  width: 1rem;
+  height: 1rem;
+
+  border:
+    0.125rem solid
+    rgba(255, 255, 255, 0.32);
+
+  border-top-color:
+    currentColor;
+
+  border-radius:
+    50%;
+
+  animation:
+    vehicle-action-spin
+    700ms
+    linear
+    infinite;
+}
+
+
+/* Spinner cuando el botón queda deshabilitado */
+
+.vehicle-action:disabled
+.vehicle-action__spinner {
+  border-color:
+    rgba(100, 116, 139, 0.22);
+
+  border-top-color:
+    var(--vehicle-text-muted);
+}
+
+
+/* ==========================================================
+   10. ANIMACIÓN DEL SPINNER
+========================================================== */
+
+@keyframes vehicle-action-spin {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* ==========================================================
+   11. ENCABEZADO DEL REGISTRO
+========================================================== */
+
+.vehicle-registry__header {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--vehicle-space-20);
+
+  width: 100%;
+  min-width: 0;
+
+  padding-bottom:
+    var(--vehicle-space-18);
+
+  border-bottom:
+    1px solid
+    var(--vehicle-border-light);
+}
+
+
+/* Segmento decorativo inferior */
+
+.vehicle-registry__header::after {
+  position: absolute;
+  left: 0;
+  bottom: -0.0625rem;
+
+  width: 6.5rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-cyan-600),
+      var(--vehicle-primary-600),
+      transparent
+    );
+
+  border-radius:
+    var(--vehicle-radius-pill);
+}
+
+
+/* ==========================================================
+   12. BLOQUE DE TÍTULO DEL REGISTRO
+========================================================== */
+
+.vehicle-registry-heading {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  max-width: 38rem;
+}
+
+.vehicle-registry-heading__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vehicle-space-8);
+
+  width: fit-content;
+  max-width: 100%;
+
+  color:
+    var(--vehicle-cyan-700);
+
+  font-size: 0.65625rem;
+  font-weight: 820;
+  line-height: 1.2;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.vehicle-registry-heading__eyebrow::before {
+  flex: 0 0 auto;
+
+  width: 1.5rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-cyan-600),
+      var(--vehicle-primary-600)
+    );
+
+  border-radius:
+    var(--vehicle-radius-pill);
+}
+
+.vehicle-registry-heading__title {
+  margin-top:
+    var(--vehicle-space-8);
+
+  color:
+    var(--vehicle-text-primary);
+
+  font-size:
+    clamp(1.375rem, 2vw, 1.75rem);
+
+  font-weight: 830;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+
+  text-wrap:
+    balance;
+}
+
+.vehicle-registry-heading__description {
+  max-width: 34rem;
+
+  margin-top:
+    var(--vehicle-space-8);
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.78125rem;
+  font-weight: 480;
+  line-height: 1.62;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* ==========================================================
+   13. CONTADOR DE VEHÍCULOS
+========================================================== */
+
+.vehicle-registry__counter {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  min-width: 2.625rem;
+  height: 2.625rem;
+
+  padding:
+    0
+    var(--vehicle-space-10);
+
+  color:
+    var(--vehicle-primary-800);
+
+  font-size: 0.875rem;
+  font-weight: 850;
+  line-height: 1;
+
+  font-variant-numeric:
+    tabular-nums;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-100),
+      var(--vehicle-surface)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-primary-200);
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(37, 99, 235, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+
+  overflow: hidden;
+}
+
+
+/* Halo interior */
+
+.vehicle-registry__counter::before {
+  position: absolute;
+  inset: 0.3125rem;
+
+  content: "";
+
+  border:
+    1px solid
+    rgba(59, 130, 246, 0.1);
+
+  border-radius:
+    calc(var(--vehicle-radius-md) - 0.1875rem);
+
+  pointer-events: none;
+}
+
+
+/* Brillo decorativo */
+
+.vehicle-registry__counter::after {
+  position: absolute;
+  top: -35%;
+  left: -25%;
+
+  width: 58%;
+  height: 165%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.52),
+      transparent
+    );
+
+  transform:
+    rotate(24deg);
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   14. ESTADO BASE DEL REGISTRO
+========================================================== */
+
+.vehicle-registry-state {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vehicle-space-16);
+
+  width: 100%;
+  min-width: 0;
+  min-height: 18rem;
+
+  padding:
+    var(--vehicle-space-32);
+
+  text-align:
+    center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(248, 250, 252, 0.96),
+      rgba(255, 255, 255, 0.99)
+    );
+
+  border:
+    1px dashed
+    var(--vehicle-border);
+
+  border-radius:
+    var(--vehicle-radius-lg);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+/* Patrón ambiental */
+
+.vehicle-registry-state::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  content: "";
+
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgba(100, 116, 139, 0.055) 0,
+      rgba(100, 116, 139, 0.055) 0.09375rem,
+      transparent 0.125rem
+    );
+
+  background-size:
+    1.25rem
+    1.25rem;
+
+  opacity: 0.48;
+
+  pointer-events: none;
+}
+
+
+/* Resplandor ambiental */
+
+.vehicle-registry-state::after {
+  position: absolute;
+  top: -8rem;
+  right: -7rem;
+  z-index: -1;
+
+  width: 20rem;
+  height: 20rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.07),
+      transparent 70%
+    );
+
+  border-radius:
+    50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   15. CONTENIDO DEL ESTADO
+========================================================== */
+
+.vehicle-registry-state__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--vehicle-space-6);
+
+  min-width: 0;
+  max-width: 27rem;
+}
+
+.vehicle-registry-state__title {
+  color:
+    var(--vehicle-text-primary);
+
+  font-size:
+    clamp(1rem, 1.6vw, 1.25rem);
+
+  font-weight: 790;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+
+  text-wrap:
+    balance;
+}
+
+.vehicle-registry-state__description {
+  max-width: 24rem;
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.75rem;
+  font-weight: 480;
+  line-height: 1.6;
+
+  overflow-wrap:
+    anywhere;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* ==========================================================
+   16. ESTADO DE CARGA
+========================================================== */
+
+.vehicle-registry-state--loading {
+  flex-direction:
+    column;
+
+  color:
+    var(--vehicle-primary-700);
+
+  border-color:
+    var(--vehicle-primary-200);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-50),
+      rgba(255, 255, 255, 0.98)
+    );
+}
+
+.vehicle-registry-state--loading::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.11),
+      transparent 70%
+    );
+}
+
+
+/* ==========================================================
+   17. SPINNER DEL ESTADO DE CARGA
+========================================================== */
+
+.vehicle-registry-state__spinner {
+  position: relative;
+
+  display: block;
+  flex: 0 0 auto;
+
+  width: 3.5rem;
+  height: 3.5rem;
+
+  border:
+    0.25rem solid
+    var(--vehicle-primary-100);
+
+  border-top-color:
+    var(--vehicle-primary-600);
+
+  border-right-color:
+    var(--vehicle-info-500);
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0.875rem 1.875rem rgba(37, 99, 235, 0.14);
+
+  animation:
+    vehicle-registry-spin
+    800ms
+    linear
+    infinite;
+}
+
+
+/* Centro del spinner */
+
+.vehicle-registry-state__spinner::before {
+  position: absolute;
+  inset: 0.5rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface),
+      var(--vehicle-primary-50)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-primary-100);
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+
+/* Punto central */
+
+.vehicle-registry-state__spinner::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 0.5rem;
+  height: 0.5rem;
+
+  content: "";
+
+  background:
+    var(--vehicle-primary-600);
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0 0.75rem rgba(37, 99, 235, 0.48);
+
+  transform:
+    translate(-50%, -50%);
+}
+
+
+/* ==========================================================
+   18. ANIMACIÓN DEL SPINNER DEL REGISTRO
+========================================================== */
+
+@keyframes vehicle-registry-spin {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* ==========================================================
+   19. ESTADO VACÍO
+========================================================== */
+
+.vehicle-registry-state--empty {
+  flex-direction:
+    column;
+
+  border-color:
+    var(--vehicle-border);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface-muted),
+      rgba(255, 255, 255, 0.98)
+    );
+}
+
+
+/* ==========================================================
+   20. ILUSTRACIÓN DEL ESTADO VACÍO
+========================================================== */
+
+.vehicle-registry-state__illustration {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 5.5rem;
+  height: 5.5rem;
+
+  color:
+    var(--vehicle-primary-800);
+
+  font-size: 2.25rem;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-100),
+      var(--vehicle-surface)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-primary-200);
+
+  border-radius:
+    var(--vehicle-radius-xl);
+
+  box-shadow:
+    0 1.125rem 2.25rem rgba(37, 99, 235, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+
+  overflow: hidden;
+
+  transform:
+    rotate(-2deg);
+}
+
+
+/* Halo interior */
+
+.vehicle-registry-state__illustration::before {
+  position: absolute;
+  inset: 0.5rem;
+
+  content: "";
+
+  border:
+    1px solid
+    rgba(59, 130, 246, 0.12);
+
+  border-radius:
+    calc(var(--vehicle-radius-xl) - 0.3125rem);
+
+  pointer-events: none;
+}
+
+
+/* Brillo */
+
+.vehicle-registry-state__illustration::after {
+  position: absolute;
+  top: -40%;
+  left: -20%;
+
+  width: 55%;
+  height: 180%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.58),
+      transparent
+    );
+
+  transform:
+    rotate(24deg);
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   21. PANTALLAS GRANDES INTERMEDIAS
+========================================================== */
+
+@media (max-width: 1380px) {
+  .vehicle-editor-form__actions {
+    padding-top:
+      var(--vehicle-space-18);
+  }
+
+  .vehicle-registry-state {
+    min-height:
+      16rem;
+
+    padding:
+      var(--vehicle-space-28);
+  }
+}
+
+
+/* ==========================================================
+   22. FORMULARIO A ANCHO COMPLETO
+========================================================== */
+
+@media (max-width: 1120px) {
+  .vehicle-editor-form__actions {
+    justify-content:
+      flex-end;
+  }
+
+  .vehicle-registry-state {
+    min-height:
+      17rem;
+  }
+}
+
+
+/* ==========================================================
+   23. TABLET
+========================================================== */
+
+@media (max-width: 790px) {
+  .vehicle-registry__header {
+    gap:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-registry-heading__title {
+    font-size:
+      1.375rem;
+  }
+
+  .vehicle-registry-state {
+    min-height:
+      15rem;
+
+    padding:
+      var(--vehicle-space-24);
+  }
+
+  .vehicle-registry-state__spinner {
+    width:
+      3.25rem;
+
+    height:
+      3.25rem;
+  }
+
+  .vehicle-registry-state__illustration {
+    width:
+      5rem;
+
+    height:
+      5rem;
+
+    font-size:
+      2rem;
+  }
+}
+
+
+/* ==========================================================
+   24. CELULAR
+========================================================== */
+
+@media (max-width: 580px) {
+  .vehicle-editor-form__actions {
+    align-items:
+      stretch;
+
+    gap:
+      var(--vehicle-space-8);
+
+    padding-top:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-action {
+    flex:
+      1 1 0;
+
+    min-width:
+      0;
+
+    min-height:
+      2.875rem;
+  }
+
+  .vehicle-registry__header {
+    align-items:
+      flex-start;
+
+    padding-bottom:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-registry-heading__description {
+    font-size:
+      0.75rem;
+  }
+
+  .vehicle-registry__counter {
+    min-width:
+      2.375rem;
+
+    height:
+      2.375rem;
+
+    font-size:
+      0.8125rem;
+  }
+
+  .vehicle-registry-state {
+    min-height:
+      14rem;
+
+    padding:
+      var(--vehicle-space-20);
+  }
+
+  .vehicle-registry-state__description {
+    font-size:
+      0.71875rem;
+  }
+}
+
+
+/* ==========================================================
+   25. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .vehicle-editor-form__actions {
+    flex-direction:
+      column-reverse;
+  }
+
+  .vehicle-action {
+    width:
+      100%;
+  }
+
+  .vehicle-registry__header {
+    gap:
+      var(--vehicle-space-12);
+  }
+
+  .vehicle-registry-heading__eyebrow {
+    font-size:
+      0.625rem;
+  }
+
+  .vehicle-registry-heading__title {
+    font-size:
+      1.25rem;
+  }
+
+  .vehicle-registry-heading__description {
+    font-size:
+      0.71875rem;
+  }
+
+  .vehicle-registry__counter {
+    min-width:
+      2.25rem;
+
+    height:
+      2.25rem;
+
+    padding:
+      0
+      var(--vehicle-space-8);
+  }
+
+  .vehicle-registry-state {
+    min-height:
+      13rem;
+
+    padding:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-registry-state__illustration {
+    width:
+      4.5rem;
+
+    height:
+      4.5rem;
+
+    font-size:
+      1.75rem;
+  }
+
+  .vehicle-registry-state__title {
+    font-size:
+      1rem;
+  }
+
+  .vehicle-registry-state__description {
+    font-size:
+      0.6875rem;
+  }
+}
+
+
+/* ==========================================================
+   26. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .vehicle-action {
+    min-height:
+      3rem;
+  }
+
+  .vehicle-action:hover:not(:disabled),
+  .vehicle-action:hover:not(:disabled)
+  .vehicle-action__icon {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   27. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .vehicle-action,
+  .vehicle-registry__counter,
+  .vehicle-registry-state,
+  .vehicle-registry-state__illustration {
+    border-width:
+      0.125rem;
+  }
+
+  .vehicle-registry-heading__description,
+  .vehicle-registry-state__description {
+    color:
+      var(--vehicle-text-secondary);
+  }
+}
+
+
+/* ==========================================================
+   28. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .vehicle-action,
+  .vehicle-action::before,
+  .vehicle-action__icon,
+  .vehicle-action__spinner,
+  .vehicle-registry-state__spinner {
+    transition:
+      none;
+
+    animation:
+      none;
+  }
+
+  .vehicle-action:hover:not(:disabled),
+  .vehicle-action:active:not(:disabled),
+  .vehicle-action:hover:not(:disabled)
+  .vehicle-action__icon {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   29. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .vehicle-editor-form__actions,
+  .vehicle-registry-state--loading {
+    display:
+      none;
+  }
+
+  .vehicle-registry__counter,
+  .vehicle-registry-state,
+  .vehicle-registry-state__illustration {
+    box-shadow:
+      none;
+  }
+
+  .vehicle-registry-state {
+    min-height:
+      auto;
+
+    border:
+      1px solid #cbd5e1;
+
+    background:
+      transparent;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE VEHÍCULOS
+   PARTE 5A: CUADRÍCULA, TARJETA, ENCABEZADO,
+   IDENTIDAD, TIPO, PLACA Y ESTADO
+========================================================== */
+
+
+/* ==========================================================
+   1. CUADRÍCULA DEL REGISTRO
+========================================================== */
+
+.vehicle-registry-grid {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  align-items: stretch;
+
+  gap:
+    var(--vehicle-space-18);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* Protección contra desbordamiento */
+
+.vehicle-registry-grid > * {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   2. TARJETA BASE DEL VEHÍCULO
+========================================================== */
+
+.vehicle-profile-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+
+  color:
+    var(--vehicle-text-primary);
+
+  background:
+    linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(248, 250, 252, 0.975)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-border-light);
+
+  border-radius:
+    var(--vehicle-radius-lg);
+
+  box-shadow:
+    var(--vehicle-shadow-sm),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  transition:
+    border-color var(--vehicle-transition-normal),
+    box-shadow var(--vehicle-transition-normal),
+    transform var(--vehicle-transition-normal);
+}
+
+
+/* ==========================================================
+   3. LÍNEA SUPERIOR DE IDENTIDAD
+========================================================== */
+
+.vehicle-profile-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-info-500),
+      var(--vehicle-cyan-500)
+    );
+
+  transform-origin:
+    left center;
+
+  transition:
+    height var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-normal);
+}
+
+
+/* ==========================================================
+   4. ILUMINACIÓN AMBIENTAL DE LA TARJETA
+========================================================== */
+
+.vehicle-profile-card::after {
+  position: absolute;
+  top: -8rem;
+  right: -7rem;
+  z-index: -1;
+
+  width: 18rem;
+  height: 18rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.065),
+      transparent 70%
+    );
+
+  border-radius:
+    50%;
+
+  opacity: 0.82;
+
+  pointer-events: none;
+
+  transition:
+    opacity var(--vehicle-transition-normal),
+    transform var(--vehicle-transition-slow);
+}
+
+
+/* ==========================================================
+   5. HOVER DE LA TARJETA
+========================================================== */
+
+.vehicle-profile-card:hover {
+  border-color:
+    rgba(147, 197, 253, 0.95);
+
+  box-shadow:
+    0 1.25rem 2.75rem rgba(15, 23, 42, 0.12),
+    0 0.875rem 1.875rem rgba(37, 99, 235, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+
+  transform:
+    translateY(-0.25rem);
+}
+
+.vehicle-profile-card:hover::before {
+  height:
+    0.25rem;
+
+  transform:
+    scaleX(1);
+}
+
+.vehicle-profile-card:hover::after {
+  opacity:
+    1;
+
+  transform:
+    translate(-0.75rem, 0.75rem)
+    scale(1.08);
+}
+
+
+/* ==========================================================
+   6. ESTADO DE EDICIÓN
+========================================================== */
+
+.vehicle-profile-card--editing {
+  border-color:
+    var(--vehicle-warning-300);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(245, 158, 11, 0.1),
+    0 1.25rem 2.75rem rgba(15, 23, 42, 0.12),
+    0 0.875rem 1.875rem rgba(217, 119, 6, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+.vehicle-profile-card--editing::before {
+  height:
+    0.25rem;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-warning-500),
+      var(--vehicle-warning-600),
+      var(--vehicle-primary-600)
+    );
+}
+
+.vehicle-profile-card--editing::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(245, 158, 11, 0.095),
+      transparent 70%
+    );
+}
+
+
+/* Mantener elevación visible durante edición */
+
+.vehicle-profile-card--editing:hover {
+  border-color:
+    var(--vehicle-warning-400, #fbbf24);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(245, 158, 11, 0.12),
+    0 1.375rem 3rem rgba(15, 23, 42, 0.13),
+    0 1rem 2rem rgba(217, 119, 6, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+
+/* ==========================================================
+   7. ENCABEZADO DE LA TARJETA
+========================================================== */
+
+.vehicle-profile-card__header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--vehicle-space-14);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-18)
+    var(--vehicle-space-18)
+    var(--vehicle-space-16);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(248, 250, 252, 0.9)
+    );
+
+  border-bottom:
+    1px solid
+    var(--vehicle-border-light);
+}
+
+
+/* Segmento decorativo inferior */
+
+.vehicle-profile-card__header::after {
+  position: absolute;
+  left: var(--vehicle-space-18);
+  bottom: -0.0625rem;
+
+  width: 4.75rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-info-500),
+      transparent
+    );
+
+  border-radius:
+    var(--vehicle-radius-pill);
+
+  transition:
+    width var(--vehicle-transition-normal);
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__header::after {
+  width:
+    7rem;
+}
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__header::after {
+  background:
+    linear-gradient(
+      90deg,
+      var(--vehicle-warning-500),
+      var(--vehicle-primary-600),
+      transparent
+    );
+}
+
+
+/* ==========================================================
+   8. IDENTIDAD DEL VEHÍCULO
+========================================================== */
+
+.vehicle-profile-card__identity {
+  display: flex;
+  align-items: center;
+  gap: var(--vehicle-space-12);
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   9. AVATAR DEL VEHÍCULO
+========================================================== */
+
+.vehicle-profile-card__avatar {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 3.125rem;
+  height: 3.125rem;
+
+  color:
+    var(--vehicle-primary-800);
+
+  font-size: 1.25rem;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-100),
+      var(--vehicle-surface)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-primary-200);
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(37, 99, 235, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+
+  overflow: hidden;
+
+  transform:
+    rotate(-2deg);
+
+  transition:
+    color var(--vehicle-transition-fast),
+    background-color var(--vehicle-transition-fast),
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-normal),
+    transform var(--vehicle-transition-normal);
+}
+
+
+/* Halo interior */
+
+.vehicle-profile-card__avatar::before {
+  position: absolute;
+  inset: 0.3125rem;
+
+  content: "";
+
+  border:
+    1px solid
+    rgba(59, 130, 246, 0.11);
+
+  border-radius:
+    calc(var(--vehicle-radius-md) - 0.1875rem);
+
+  pointer-events: none;
+}
+
+
+/* Brillo */
+
+.vehicle-profile-card__avatar::after {
+  position: absolute;
+  top: -40%;
+  left: -30%;
+
+  width: 62%;
+  height: 180%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.57),
+      transparent
+    );
+
+  transform:
+    rotate(24deg);
+
+  pointer-events: none;
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__avatar {
+  border-color:
+    var(--vehicle-primary-400);
+
+  box-shadow:
+    0 1rem 1.875rem rgba(37, 99, 235, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+
+  transform:
+    rotate(1deg)
+    scale(1.045);
+}
+
+
+/* ==========================================================
+   10. VARIANTE AVATAR — CARRO
+========================================================== */
+
+.vehicle-profile-card__avatar--car {
+  color:
+    var(--vehicle-primary-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-100),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-primary-200);
+}
+
+
+/* ==========================================================
+   11. VARIANTE AVATAR — MOTO
+========================================================== */
+
+.vehicle-profile-card__avatar--motorcycle {
+  color:
+    var(--vehicle-warning-900);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-warning-100),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-warning-200);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(217, 119, 6, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.vehicle-profile-card__avatar--motorcycle::before {
+  border-color:
+    rgba(245, 158, 11, 0.14);
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__avatar--motorcycle {
+  border-color:
+    var(--vehicle-warning-500);
+
+  box-shadow:
+    0 1rem 1.875rem rgba(217, 119, 6, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+
+/* ==========================================================
+   12. VARIANTE AVATAR — NO MOTORIZADO
+========================================================== */
+
+.vehicle-profile-card__avatar--non-motorized {
+  color:
+    var(--vehicle-success-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-success-100),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-success-200);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(22, 163, 74, 0.105),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.vehicle-profile-card__avatar--non-motorized::before {
+  border-color:
+    rgba(34, 197, 94, 0.14);
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__avatar--non-motorized {
+  border-color:
+    var(--vehicle-success-500);
+
+  box-shadow:
+    0 1rem 1.875rem rgba(22, 163, 74, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+
+/* ==========================================================
+   13. VARIANTE AVATAR GENÉRICA
+========================================================== */
+
+.vehicle-profile-card__avatar--default {
+  color:
+    var(--vehicle-text-secondary);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface-strong),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-border);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(100, 116, 139, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.vehicle-profile-card__avatar--default::before {
+  border-color:
+    rgba(100, 116, 139, 0.13);
+}
+
+
+/* ==========================================================
+   14. CONTENIDO DE IDENTIDAD
+========================================================== */
+
+.vehicle-profile-card__identity-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vehicle-space-4);
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   15. TIPO DEL VEHÍCULO
+========================================================== */
+
+.vehicle-profile-card__type {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vehicle-space-6);
+
+  width: fit-content;
+  max-width: 100%;
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.59375rem;
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+
+  overflow-wrap:
+    anywhere;
+}
+
+.vehicle-profile-card__type::before {
+  flex: 0 0 auto;
+
+  width: 0.375rem;
+  height: 0.375rem;
+
+  content: "";
+
+  background:
+    var(--vehicle-primary-500);
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0 0 0.15625rem rgba(59, 130, 246, 0.095);
+}
+
+
+/* Variaciones del indicador por tipo */
+
+.vehicle-profile-card__type--motorcycle::before {
+  background:
+    var(--vehicle-warning-500);
+
+  box-shadow:
+    0 0 0 0.15625rem rgba(245, 158, 11, 0.11);
+}
+
+.vehicle-profile-card__type--non-motorized::before {
+  background:
+    var(--vehicle-success-500);
+
+  box-shadow:
+    0 0 0 0.15625rem rgba(34, 197, 94, 0.11);
+}
+
+.vehicle-profile-card__type--default::before {
+  background:
+    var(--vehicle-text-soft);
+
+  box-shadow:
+    0 0 0 0.15625rem rgba(148, 163, 184, 0.12);
+}
+
+
+/* ==========================================================
+   16. PLACA DEL VEHÍCULO
+========================================================== */
+
+.vehicle-profile-card__plate {
+  display: block;
+
+  max-width: 100%;
+
+  color:
+    var(--vehicle-navy-900);
+
+  font-size:
+    clamp(0.9375rem, 1.45vw, 1.125rem);
+
+  font-weight: 850;
+  line-height: 1.2;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+
+/* ==========================================================
+   17. TEXTO SECUNDARIO DE IDENTIDAD
+========================================================== */
+
+.vehicle-profile-card__subtitle {
+  display: block;
+
+  max-width: 100%;
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.65625rem;
+  font-weight: 500;
+  line-height: 1.45;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+/* ==========================================================
+   18. CONTENEDOR DE ESTADO
+========================================================== */
+
+.vehicle-profile-card__status {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   19. BADGE DE ESTADO BASE
+========================================================== */
+
+.vehicle-status-badge {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vehicle-space-6);
+
+  min-height: 1.75rem;
+
+  padding:
+    var(--vehicle-space-4)
+    var(--vehicle-space-10);
+
+  font-size: 0.59375rem;
+  font-weight: 770;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    var(--vehicle-radius-pill);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+
+  overflow: hidden;
+}
+
+
+/* Brillo del badge */
+
+.vehicle-status-badge::after {
+  position: absolute;
+  top: -75%;
+  left: -35%;
+
+  width: 45%;
+  height: 240%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.46),
+      transparent
+    );
+
+  transform:
+    rotate(22deg);
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   20. INDICADOR DEL BADGE
+========================================================== */
+
+.vehicle-status-badge__indicator {
+  position: relative;
+
+  display: block;
+  flex: 0 0 auto;
+
+  width: 0.4375rem;
+  height: 0.4375rem;
+
+  background:
+    currentColor;
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0 0.5rem currentColor;
+}
+
+
+/* Anillo del indicador */
+
+.vehicle-status-badge__indicator::after {
+  position: absolute;
+  inset: -0.1875rem;
+
+  content: "";
+
+  border:
+    1px solid
+    currentColor;
+
+  border-radius:
+    50%;
+
+  opacity:
+    0.24;
+}
+
+
+/* ==========================================================
+   21. BADGE ACTIVO
+========================================================== */
+
+.vehicle-status-badge--active {
+  color:
+    var(--vehicle-success-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-success-100),
+      var(--vehicle-success-50)
+    );
+
+  border-color:
+    var(--vehicle-success-200);
+
+  box-shadow:
+    0 0.625rem 1.125rem rgba(22, 163, 74, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+
+/* Pulso muy sutil */
+
+.vehicle-status-badge--active
+.vehicle-status-badge__indicator {
+  animation:
+    vehicle-status-pulse
+    2.2s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   22. BADGE INACTIVO
+========================================================== */
+
+.vehicle-status-badge--inactive {
+  color:
+    var(--vehicle-text-muted);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface-strong),
+      var(--vehicle-surface-muted)
+    );
+
+  border-color:
+    var(--vehicle-border);
+
+  box-shadow:
+    0 0.625rem 1.125rem rgba(100, 116, 139, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+.vehicle-status-badge--inactive
+.vehicle-status-badge__indicator {
+  box-shadow:
+    none;
+}
+
+
+/* ==========================================================
+   23. BADGE EN EDICIÓN
+========================================================== */
+
+.vehicle-status-badge--editing {
+  color:
+    var(--vehicle-warning-900);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-warning-100),
+      var(--vehicle-warning-50)
+    );
+
+  border-color:
+    var(--vehicle-warning-200);
+
+  box-shadow:
+    0 0.625rem 1.125rem rgba(217, 119, 6, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+
+/* ==========================================================
+   24. ANIMACIÓN DEL ESTADO ACTIVO
+========================================================== */
+
+@keyframes vehicle-status-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0.35rem currentColor;
+
+    transform:
+      scale(1);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0.7rem currentColor;
+
+    transform:
+      scale(1.08);
+  }
+}
+
+
+/* ==========================================================
+   25. PANTALLAS AMPLIAS
+========================================================== */
+
+@media (min-width: 1540px) {
+  .vehicle-registry-grid {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* ==========================================================
+   26. PORTÁTILES INTERMEDIOS
+========================================================== */
+
+@media (max-width: 1380px) {
+  .vehicle-registry-grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-profile-card__header {
+    padding:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-profile-card__header::after {
+    left:
+      var(--vehicle-space-16);
+  }
+}
+
+
+/* ==========================================================
+   27. FORMULARIO APILADO Y REGISTRO AMPLIO
+========================================================== */
+
+@media (min-width: 1121px) and (max-width: 1380px) {
+  .vehicle-profile-card__header {
+    align-items:
+      center;
+  }
+
+  .vehicle-profile-card__avatar {
+    width:
+      3rem;
+
+    height:
+      3rem;
+  }
+}
+
+
+/* ==========================================================
+   28. REGISTRO A ANCHO COMPLETO
+========================================================== */
+
+@media (max-width: 1120px) {
+  .vehicle-registry-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* ==========================================================
+   29. TABLET
+========================================================== */
+
+@media (max-width: 790px) {
+  .vehicle-registry-grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .vehicle-profile-card__header {
+    gap:
+      var(--vehicle-space-12);
+  }
+}
+
+
+/* ==========================================================
+   30. CELULAR
+========================================================== */
+
+@media (max-width: 580px) {
+  .vehicle-registry-grid {
+    gap:
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-profile-card {
+    border-radius:
+      var(--vehicle-radius-md);
+  }
+
+  .vehicle-profile-card__header {
+    align-items:
+      flex-start;
+
+    padding:
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-profile-card__header::after {
+    left:
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-profile-card__identity {
+    gap:
+      var(--vehicle-space-10);
+  }
+
+  .vehicle-profile-card__avatar {
+    width:
+      2.875rem;
+
+    height:
+      2.875rem;
+
+    font-size:
+      1.125rem;
+  }
+
+  .vehicle-profile-card__plate {
+    font-size:
+      0.9375rem;
+  }
+
+  .vehicle-status-badge {
+    min-height:
+      1.625rem;
+
+    padding:
+      var(--vehicle-space-4)
+      var(--vehicle-space-8);
+
+    font-size:
+      0.5625rem;
+  }
+}
+
+
+/* ==========================================================
+   31. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .vehicle-profile-card__header {
+    flex-direction:
+      column;
+
+    gap:
+      var(--vehicle-space-12);
+  }
+
+  .vehicle-profile-card__status {
+    justify-content:
+      flex-start;
+
+    width:
+      100%;
+  }
+
+  .vehicle-profile-card__subtitle {
+    white-space:
+      normal;
+
+    overflow-wrap:
+      anywhere;
+  }
+}
+
+
+/* ==========================================================
+   32. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .vehicle-profile-card:hover,
+  .vehicle-profile-card:hover::after,
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__avatar {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   33. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .vehicle-profile-card,
+  .vehicle-profile-card__avatar,
+  .vehicle-status-badge {
+    border-width:
+      0.125rem;
+  }
+
+  .vehicle-profile-card__type,
+  .vehicle-profile-card__subtitle {
+    color:
+      var(--vehicle-text-secondary);
+  }
+}
+
+
+/* ==========================================================
+   34. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .vehicle-profile-card,
+  .vehicle-profile-card::before,
+  .vehicle-profile-card::after,
+  .vehicle-profile-card__header::after,
+  .vehicle-profile-card__avatar,
+  .vehicle-status-badge__indicator {
+    transition:
+      none;
+
+    animation:
+      none;
+  }
+
+  .vehicle-profile-card:hover,
+  .vehicle-profile-card:hover::after,
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__avatar {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   35. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .vehicle-registry-grid {
+    display:
+      grid;
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap:
+      0.75rem;
+  }
+
+  .vehicle-profile-card {
+    break-inside:
+      avoid;
+
+    border:
+      1px solid #cbd5e1;
+
+    box-shadow:
+      none;
+
+    transform:
+      none;
+  }
+
+  .vehicle-profile-card::after,
+  .vehicle-profile-card__avatar::after,
+  .vehicle-status-badge::after {
+    display:
+      none;
+  }
+
+  .vehicle-profile-card__avatar,
+  .vehicle-status-badge {
+    box-shadow:
+      none;
+  }
+
+  .vehicle-status-badge--active
+  .vehicle-status-badge__indicator {
+    animation:
+      none;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE VEHÍCULOS
+   PARTE 5B: FOTOGRAFÍA DE TARJETA, OVERLAY,
+   PLACEHOLDER Y EFECTOS VISUALES
+========================================================== */
+
+
+/* ==========================================================
+   1. CONTENEDOR PRINCIPAL DE LA FOTOGRAFÍA
+========================================================== */
+
+.vehicle-profile-card__media {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 12.5rem;
+  aspect-ratio: 16 / 9;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-navy-900),
+      var(--vehicle-navy-800)
+    );
+
+  border-bottom:
+    1px solid
+    var(--vehicle-border-light);
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+/* ==========================================================
+   2. ILUMINACIÓN SUPERIOR
+========================================================== */
+
+.vehicle-profile-card__media::before {
+  position: absolute;
+  top: -6rem;
+  right: -4rem;
+  z-index: 2;
+
+  width: 15rem;
+  height: 15rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.18),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  opacity: 0.72;
+
+  pointer-events: none;
+
+  transition:
+    opacity var(--vehicle-transition-normal),
+    transform var(--vehicle-transition-slow);
+}
+
+
+/* ==========================================================
+   3. OVERLAY DE PROFUNDIDAD
+========================================================== */
+
+.vehicle-profile-card__media::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 6, 23, 0.02) 0%,
+      rgba(2, 6, 23, 0.04) 40%,
+      rgba(2, 6, 23, 0.2) 72%,
+      rgba(2, 6, 23, 0.54) 100%
+    );
+
+  pointer-events: none;
+
+  transition:
+    background var(--vehicle-transition-normal),
+    opacity var(--vehicle-transition-normal);
+}
+
+
+/* ==========================================================
+   4. IMAGEN DEL VEHÍCULO
+========================================================== */
+
+.vehicle-profile-card__image {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+  min-height: 12.5rem;
+
+  object-fit: cover;
+  object-position: center;
+
+  background:
+    var(--vehicle-surface-strong);
+
+  filter:
+    saturate(103%)
+    contrast(102%)
+    brightness(99%);
+
+  transform:
+    scale(1.001);
+
+  transition:
+    filter var(--vehicle-transition-normal),
+    transform var(--vehicle-transition-slow);
+}
+
+
+/* ==========================================================
+   5. HOVER DE LA FOTOGRAFÍA
+========================================================== */
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__image {
+  filter:
+    saturate(112%)
+    contrast(105%)
+    brightness(102%);
+
+  transform:
+    scale(1.055);
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__media::before {
+  opacity:
+    1;
+
+  transform:
+    translate(-0.75rem, 0.5rem)
+    scale(1.08);
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__media::after {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 6, 23, 0.015) 0%,
+      rgba(2, 6, 23, 0.025) 42%,
+      rgba(2, 6, 23, 0.16) 72%,
+      rgba(2, 6, 23, 0.5) 100%
+    );
+}
+
+
+/* ==========================================================
+   6. ESTADO DE EDICIÓN EN LA FOTOGRAFÍA
+========================================================== */
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__media {
+  box-shadow:
+    inset 0 0 0 0.125rem
+    rgba(245, 158, 11, 0.24);
+}
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__media::after {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(245, 158, 11, 0.02) 0%,
+      rgba(2, 6, 23, 0.04) 38%,
+      rgba(2, 6, 23, 0.2) 72%,
+      rgba(2, 6, 23, 0.56) 100%
+    );
+}
+
+
+/* ==========================================================
+   7. ETIQUETA FLOTANTE SOBRE LA FOTO
+========================================================== */
+
+.vehicle-profile-card__media-label {
+  position: absolute;
+  left: var(--vehicle-space-14);
+  bottom: var(--vehicle-space-14);
+  z-index: 4;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vehicle-space-6);
+
+  max-width:
+    calc(100% - 1.75rem);
+
+  min-height: 1.75rem;
+
+  padding:
+    var(--vehicle-space-4)
+    var(--vehicle-space-10);
+
+  color:
+    var(--vehicle-text-white);
+
+  font-size: 0.59375rem;
+  font-weight: 740;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+
+  background:
+    rgba(15, 23, 42, 0.72);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.16);
+
+  border-radius:
+    var(--vehicle-radius-pill);
+
+  box-shadow:
+    0 0.625rem 1.375rem rgba(2, 6, 23, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
+  backdrop-filter:
+    blur(0.625rem);
+
+  -webkit-backdrop-filter:
+    blur(0.625rem);
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+  transition:
+    background-color var(--vehicle-transition-fast),
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-fast);
+}
+
+
+/* Indicador de la etiqueta */
+
+.vehicle-profile-card__media-label::before {
+  flex: 0 0 auto;
+
+  width: 0.4375rem;
+  height: 0.4375rem;
+
+  content: "";
+
+  background:
+    var(--vehicle-primary-400);
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0 0.625rem rgba(96, 165, 250, 0.68);
+}
+
+
+/* Brillo de la etiqueta */
+
+.vehicle-profile-card__media-label::after {
+  position: absolute;
+  top: -85%;
+  left: -25%;
+
+  width: 38%;
+  height: 250%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.24),
+      transparent
+    );
+
+  transform:
+    rotate(22deg);
+
+  pointer-events: none;
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__media-label {
+  background:
+    rgba(15, 23, 42, 0.82);
+
+  border-color:
+    rgba(255, 255, 255, 0.24);
+
+  box-shadow:
+    0 0.875rem 1.75rem rgba(2, 6, 23, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+
+/* ==========================================================
+   8. ETIQUETA DE EDICIÓN
+========================================================== */
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__media-label {
+  color:
+    #fffbeb;
+
+  background:
+    rgba(120, 53, 15, 0.78);
+
+  border-color:
+    rgba(253, 230, 138, 0.24);
+}
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__media-label::before {
+  background:
+    var(--vehicle-warning-300);
+
+  box-shadow:
+    0 0 0.625rem rgba(252, 211, 77, 0.68);
+}
+
+
+/* ==========================================================
+   9. ESTADO SIN FOTOGRAFÍA
+========================================================== */
+
+.vehicle-profile-card__photo-placeholder {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vehicle-space-10);
+
+  width: 100%;
+  height: 100%;
+  min-height: 12.5rem;
+
+  padding:
+    var(--vehicle-space-24);
+
+  color:
+    var(--vehicle-text-secondary);
+
+  text-align:
+    center;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface-strong),
+      var(--vehicle-surface-muted)
+    );
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+/* Patrón del placeholder */
+
+.vehicle-profile-card__photo-placeholder::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  content: "";
+
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgba(100, 116, 139, 0.075) 0,
+      rgba(100, 116, 139, 0.075) 0.09375rem,
+      transparent 0.125rem
+    );
+
+  background-size:
+    1.25rem
+    1.25rem;
+
+  opacity: 0.62;
+
+  pointer-events: none;
+}
+
+
+/* Luz ambiental */
+
+.vehicle-profile-card__photo-placeholder::after {
+  position: absolute;
+  top: -7rem;
+  right: -6rem;
+  z-index: -1;
+
+  width: 18rem;
+  height: 18rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.095),
+      transparent 70%
+    );
+
+  border-radius:
+    50%;
+
+  pointer-events: none;
+
+  transition:
+    opacity var(--vehicle-transition-normal),
+    transform var(--vehicle-transition-slow);
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__photo-placeholder::after {
+  transform:
+    translate(-0.75rem, 0.75rem)
+    scale(1.08);
+}
+
+
+/* ==========================================================
+   10. ICONO DEL PLACEHOLDER
+========================================================== */
+
+.vehicle-profile-card__photo-placeholder-icon {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 4.5rem;
+  height: 4.5rem;
+
+  color:
+    var(--vehicle-primary-800);
+
+  font-size: 1.875rem;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-100),
+      var(--vehicle-surface)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-primary-200);
+
+  border-radius:
+    var(--vehicle-radius-xl);
+
+  box-shadow:
+    0 1rem 2rem rgba(37, 99, 235, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+
+  overflow: hidden;
+
+  transform:
+    rotate(-2deg);
+
+  transition:
+    color var(--vehicle-transition-fast),
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-normal),
+    transform var(--vehicle-transition-normal);
+}
+
+
+/* Halo interior */
+
+.vehicle-profile-card__photo-placeholder-icon::before {
+  position: absolute;
+  inset: 0.4375rem;
+
+  content: "";
+
+  border:
+    1px solid
+    rgba(59, 130, 246, 0.12);
+
+  border-radius:
+    calc(var(--vehicle-radius-xl) - 0.3125rem);
+
+  pointer-events: none;
+}
+
+
+/* Brillo */
+
+.vehicle-profile-card__photo-placeholder-icon::after {
+  position: absolute;
+  top: -40%;
+  left: -25%;
+
+  width: 58%;
+  height: 180%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.58),
+      transparent
+    );
+
+  transform:
+    rotate(24deg);
+
+  pointer-events: none;
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__photo-placeholder-icon {
+  border-color:
+    var(--vehicle-primary-400);
+
+  box-shadow:
+    0 1.25rem 2.375rem rgba(37, 99, 235, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+
+  transform:
+    rotate(1deg)
+    scale(1.045);
+}
+
+
+/* ==========================================================
+   11. VARIANTE DE PLACEHOLDER — MOTO
+========================================================== */
+
+.vehicle-profile-card__photo-placeholder-icon--motorcycle {
+  color:
+    var(--vehicle-warning-900);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-warning-100),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-warning-200);
+
+  box-shadow:
+    0 1rem 2rem rgba(217, 119, 6, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.vehicle-profile-card__photo-placeholder-icon--motorcycle::before {
+  border-color:
+    rgba(245, 158, 11, 0.15);
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__photo-placeholder-icon--motorcycle {
+  border-color:
+    var(--vehicle-warning-500);
+
+  box-shadow:
+    0 1.25rem 2.375rem rgba(217, 119, 6, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+
+/* ==========================================================
+   12. VARIANTE DE PLACEHOLDER — NO MOTORIZADO
+========================================================== */
+
+.vehicle-profile-card__photo-placeholder-icon--non-motorized {
+  color:
+    var(--vehicle-success-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-success-100),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-success-200);
+
+  box-shadow:
+    0 1rem 2rem rgba(22, 163, 74, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.vehicle-profile-card__photo-placeholder-icon--non-motorized::before {
+  border-color:
+    rgba(34, 197, 94, 0.15);
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__photo-placeholder-icon--non-motorized {
+  border-color:
+    var(--vehicle-success-500);
+
+  box-shadow:
+    0 1.25rem 2.375rem rgba(22, 163, 74, 0.17),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+
+/* ==========================================================
+   13. TÍTULO DEL PLACEHOLDER
+========================================================== */
+
+.vehicle-profile-card__photo-placeholder-title {
+  position: relative;
+  z-index: 1;
+
+  color:
+    var(--vehicle-text-primary);
+
+  font-size: 0.78125rem;
+  font-weight: 760;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+
+  overflow-wrap:
+    anywhere;
+
+  text-wrap:
+    balance;
+}
+
+
+/* ==========================================================
+   14. DESCRIPCIÓN DEL PLACEHOLDER
+========================================================== */
+
+.vehicle-profile-card__photo-placeholder-description {
+  position: relative;
+  z-index: 1;
+
+  max-width: 17rem;
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.625rem;
+  font-weight: 480;
+  line-height: 1.55;
+
+  overflow-wrap:
+    anywhere;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* ==========================================================
+   15. PLACEHOLDER DURANTE EDICIÓN
+========================================================== */
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__photo-placeholder {
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-warning-50),
+      var(--vehicle-surface)
+    );
+}
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__photo-placeholder::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(245, 158, 11, 0.1),
+      transparent 70%
+    );
+}
+
+
+/* ==========================================================
+   16. CAPA PARA IMÁGENES CON TRANSPARENCIA
+========================================================== */
+
+.vehicle-profile-card__image-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-navy-900),
+      var(--vehicle-navy-800)
+    );
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   17. ESTADO DE IMAGEN EN CARGA
+========================================================== */
+
+.vehicle-profile-card__media--loading {
+  background:
+    linear-gradient(
+      110deg,
+      var(--vehicle-surface-strong) 8%,
+      var(--vehicle-surface-muted) 18%,
+      var(--vehicle-surface-strong) 33%
+    );
+
+  background-size:
+    200% 100%;
+
+  animation:
+    vehicle-card-photo-loading
+    1.4s
+    linear
+    infinite;
+}
+
+.vehicle-profile-card__media--loading
+.vehicle-profile-card__image {
+  opacity:
+    0;
+}
+
+
+/* ==========================================================
+   18. ANIMACIÓN DE CARGA DE LA IMAGEN
+========================================================== */
+
+@keyframes vehicle-card-photo-loading {
+  to {
+    background-position:
+      -200% 0;
+  }
+}
+
+
+/* ==========================================================
+   19. ESTADO DE IMAGEN CARGADA
+========================================================== */
+
+.vehicle-profile-card__media--loaded
+.vehicle-profile-card__image {
+  animation:
+    vehicle-card-photo-enter
+    320ms
+    ease-out;
+}
+
+
+/* ==========================================================
+   20. ANIMACIÓN DE ENTRADA DE LA IMAGEN
+========================================================== */
+
+@keyframes vehicle-card-photo-enter {
+  from {
+    opacity:
+      0;
+
+    transform:
+      scale(1.035);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      scale(1.001);
+  }
+}
+
+
+/* ==========================================================
+   21. ESTADO DE IMAGEN ROTA O NO DISPONIBLE
+========================================================== */
+
+.vehicle-profile-card__media--error
+.vehicle-profile-card__image {
+  display:
+    none;
+}
+
+.vehicle-profile-card__media--error {
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface-strong),
+      var(--vehicle-surface-muted)
+    );
+}
+
+
+/* Mensaje alternativo para error */
+
+.vehicle-profile-card__image-error {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vehicle-space-8);
+
+  padding:
+    var(--vehicle-space-20);
+
+  color:
+    var(--vehicle-text-muted);
+
+  text-align:
+    center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(248, 250, 252, 0.96),
+      rgba(255, 255, 255, 0.98)
+    );
+}
+
+.vehicle-profile-card__image-error-icon {
+  display: grid;
+  place-items: center;
+
+  width: 2.75rem;
+  height: 2.75rem;
+
+  color:
+    var(--vehicle-danger-700);
+
+  font-size:
+    1.125rem;
+
+  background:
+    var(--vehicle-danger-50);
+
+  border:
+    1px solid
+    var(--vehicle-danger-200);
+
+  border-radius:
+    var(--vehicle-radius-md);
+}
+
+.vehicle-profile-card__image-error-text {
+  max-width:
+    14rem;
+
+  font-size:
+    0.625rem;
+
+  font-weight:
+    540;
+
+  line-height:
+    1.5;
+
+  overflow-wrap:
+    anywhere;
+}
+
+
+/* ==========================================================
+   22. TARJETA INACTIVA — TRATAMIENTO VISUAL
+========================================================== */
+
+.vehicle-profile-card--inactive
+.vehicle-profile-card__image {
+  filter:
+    grayscale(55%)
+    saturate(65%)
+    contrast(98%)
+    brightness(96%);
+}
+
+.vehicle-profile-card--inactive:hover
+.vehicle-profile-card__image {
+  filter:
+    grayscale(35%)
+    saturate(78%)
+    contrast(101%)
+    brightness(99%);
+}
+
+.vehicle-profile-card--inactive
+.vehicle-profile-card__media::after {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.04) 0%,
+      rgba(15, 23, 42, 0.1) 45%,
+      rgba(15, 23, 42, 0.32) 100%
+    );
+}
+
+.vehicle-profile-card--inactive
+.vehicle-profile-card__photo-placeholder {
+  filter:
+    grayscale(30%);
+}
+
+
+/* ==========================================================
+   23. PANTALLAS AMPLIAS
+========================================================== */
+
+@media (min-width: 1540px) {
+  .vehicle-profile-card__media,
+  .vehicle-profile-card__image,
+  .vehicle-profile-card__photo-placeholder {
+    min-height:
+      11.5rem;
+  }
+}
+
+
+/* ==========================================================
+   24. PORTÁTILES INTERMEDIOS
+========================================================== */
+
+@media (max-width: 1380px) {
+  .vehicle-profile-card__media,
+  .vehicle-profile-card__image,
+  .vehicle-profile-card__photo-placeholder {
+    min-height:
+      13rem;
+  }
+
+  .vehicle-profile-card__media-label {
+    left:
+      var(--vehicle-space-12);
+
+    bottom:
+      var(--vehicle-space-12);
+  }
+}
+
+
+/* ==========================================================
+   25. REGISTRO A ANCHO COMPLETO
+========================================================== */
+
+@media (max-width: 1120px) {
+  .vehicle-profile-card__media,
+  .vehicle-profile-card__image,
+  .vehicle-profile-card__photo-placeholder {
+    min-height:
+      12rem;
+  }
+}
+
+
+/* ==========================================================
+   26. TABLET
+========================================================== */
+
+@media (max-width: 790px) {
+  .vehicle-profile-card__media {
+    aspect-ratio:
+      16 / 8.5;
+  }
+
+  .vehicle-profile-card__media,
+  .vehicle-profile-card__image,
+  .vehicle-profile-card__photo-placeholder {
+    min-height:
+      14rem;
+  }
+
+  .vehicle-profile-card__photo-placeholder-icon {
+    width:
+      4.25rem;
+
+    height:
+      4.25rem;
+
+    font-size:
+      1.75rem;
+  }
+}
+
+
+/* ==========================================================
+   27. CELULAR
+========================================================== */
+
+@media (max-width: 580px) {
+  .vehicle-profile-card__media {
+    aspect-ratio:
+      16 / 10;
+  }
+
+  .vehicle-profile-card__media,
+  .vehicle-profile-card__image,
+  .vehicle-profile-card__photo-placeholder {
+    min-height:
+      11.5rem;
+  }
+
+  .vehicle-profile-card__media-label {
+    left:
+      var(--vehicle-space-10);
+
+    bottom:
+      var(--vehicle-space-10);
+
+    max-width:
+      calc(100% - 1.25rem);
+
+    min-height:
+      1.625rem;
+
+    padding:
+      var(--vehicle-space-4)
+      var(--vehicle-space-8);
+
+    font-size:
+      0.5625rem;
+  }
+
+  .vehicle-profile-card__photo-placeholder {
+    padding:
+      var(--vehicle-space-18);
+  }
+
+  .vehicle-profile-card__photo-placeholder-icon {
+    width:
+      3.875rem;
+
+    height:
+      3.875rem;
+
+    font-size:
+      1.625rem;
+  }
+
+  .vehicle-profile-card__photo-placeholder-title {
+    font-size:
+      0.75rem;
+  }
+
+  .vehicle-profile-card__photo-placeholder-description {
+    font-size:
+      0.59375rem;
+  }
+}
+
+
+/* ==========================================================
+   28. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .vehicle-profile-card__media {
+    aspect-ratio:
+      4 / 3;
+  }
+
+  .vehicle-profile-card__media,
+  .vehicle-profile-card__image,
+  .vehicle-profile-card__photo-placeholder {
+    min-height:
+      10rem;
+  }
+
+  .vehicle-profile-card__photo-placeholder {
+    gap:
+      var(--vehicle-space-8);
+
+    padding:
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-profile-card__photo-placeholder-icon {
+    width:
+      3.5rem;
+
+    height:
+      3.5rem;
+
+    font-size:
+      1.5rem;
+  }
+
+  .vehicle-profile-card__photo-placeholder-description {
+    max-width:
+      14rem;
+  }
+}
+
+
+/* ==========================================================
+   29. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__image,
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__media::before,
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__media-label,
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__photo-placeholder::after,
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__photo-placeholder-icon {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   30. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .vehicle-profile-card__media,
+  .vehicle-profile-card__photo-placeholder,
+  .vehicle-profile-card__photo-placeholder-icon,
+  .vehicle-profile-card__media-label,
+  .vehicle-profile-card__image-error-icon {
+    border-width:
+      0.125rem;
+  }
+
+  .vehicle-profile-card__photo-placeholder-description,
+  .vehicle-profile-card__image-error-text {
+    color:
+      var(--vehicle-text-secondary);
+  }
+
+  .vehicle-profile-card__media-label {
+    background:
+      rgba(2, 6, 23, 0.9);
+  }
+}
+
+
+/* ==========================================================
+   31. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .vehicle-profile-card__media::before,
+  .vehicle-profile-card__media::after,
+  .vehicle-profile-card__image,
+  .vehicle-profile-card__media-label,
+  .vehicle-profile-card__photo-placeholder::after,
+  .vehicle-profile-card__photo-placeholder-icon,
+  .vehicle-profile-card__media--loading,
+  .vehicle-profile-card__media--loaded
+  .vehicle-profile-card__image {
+    transition:
+      none;
+
+    animation:
+      none;
+  }
+
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__image,
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__media::before,
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__media-label,
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__photo-placeholder::after,
+  .vehicle-profile-card:hover
+  .vehicle-profile-card__photo-placeholder-icon {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   32. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .vehicle-profile-card__media {
+    min-height:
+      8rem;
+
+    aspect-ratio:
+      16 / 9;
+
+    background:
+      transparent;
+
+    border-bottom:
+      1px solid #cbd5e1;
+  }
+
+  .vehicle-profile-card__image,
+  .vehicle-profile-card__photo-placeholder {
+    min-height:
+      8rem;
+  }
+
+  .vehicle-profile-card__image {
+    filter:
+      none;
+
+    transform:
+      none;
+  }
+
+  .vehicle-profile-card__media::before,
+  .vehicle-profile-card__media::after,
+  .vehicle-profile-card__photo-placeholder::before,
+  .vehicle-profile-card__photo-placeholder::after,
+  .vehicle-profile-card__photo-placeholder-icon::after,
+  .vehicle-profile-card__media-label::after {
+    display:
+      none;
+  }
+
+  .vehicle-profile-card__media-label {
+    color:
+      #0f172a;
+
+    background:
+      #ffffff;
+
+    border:
+      1px solid #cbd5e1;
+
+    box-shadow:
+      none;
+
+    backdrop-filter:
+      none;
+
+    -webkit-backdrop-filter:
+      none;
+  }
+
+  .vehicle-profile-card__photo-placeholder,
+  .vehicle-profile-card__photo-placeholder-icon,
+  .vehicle-profile-card__image-error {
+    background:
+      transparent;
+
+    box-shadow:
+      none;
+  }
+
+  .vehicle-profile-card__photo-placeholder-icon {
+    border:
+      1px solid #cbd5e1;
+  }
+}
+
+
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE VEHÍCULOS
+   PARTE 6: CUERPO DE TARJETA, INFORMACIÓN,
+   PIE, ACCIONES Y CIERRE RESPONSIVE
+========================================================== */
+
+
+/* ==========================================================
+   1. CUERPO DE LA TARJETA
+========================================================== */
+
+.vehicle-profile-card__body {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--vehicle-space-16);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-18);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(248, 250, 252, 0.94)
+    );
+}
+
+
+/* Iluminación ambiental del cuerpo */
+
+.vehicle-profile-card__body::before {
+  position: absolute;
+  top: -5rem;
+  right: -4rem;
+  z-index: -1;
+
+  width: 12rem;
+  height: 12rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.045),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   2. RESUMEN PRINCIPAL DEL VEHÍCULO
+========================================================== */
+
+.vehicle-profile-card__summary {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    var(--vehicle-space-10);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* Protección de contenido */
+
+.vehicle-profile-card__summary > * {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   3. ELEMENTO INFORMATIVO
+========================================================== */
+
+.vehicle-profile-card__detail {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--vehicle-space-5, 0.3125rem);
+
+  min-width: 0;
+  min-height: 4.25rem;
+
+  padding:
+    var(--vehicle-space-12);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface-muted),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-border-light);
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  overflow: hidden;
+
+  transition:
+    background-color var(--vehicle-transition-fast),
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-fast);
+}
+
+
+/* Línea de identidad del detalle */
+
+.vehicle-profile-card__detail::before {
+  position: absolute;
+  top: var(--vehicle-space-10);
+  bottom: var(--vehicle-space-10);
+  left: 0;
+
+  width: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--vehicle-primary-500),
+      var(--vehicle-info-400)
+    );
+
+  border-radius:
+    0
+    var(--vehicle-radius-pill)
+    var(--vehicle-radius-pill)
+    0;
+
+  opacity: 0.68;
+
+  transition:
+    opacity var(--vehicle-transition-fast),
+    width var(--vehicle-transition-fast);
+}
+
+.vehicle-profile-card__detail:hover {
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-50),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-primary-200);
+
+  box-shadow:
+    0 0.625rem 1.25rem rgba(37, 99, 235, 0.075),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+
+  transform:
+    translateY(-0.0625rem);
+}
+
+.vehicle-profile-card__detail:hover::before {
+  width: 0.25rem;
+
+  opacity: 1;
+}
+
+
+/* ==========================================================
+   4. VARIANTE DE DETALLE A ANCHO COMPLETO
+========================================================== */
+
+.vehicle-profile-card__detail--full {
+  grid-column:
+    1 / -1;
+}
+
+
+/* ==========================================================
+   5. ICONO DEL DETALLE
+========================================================== */
+
+.vehicle-profile-card__detail-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 1.625rem;
+  height: 1.625rem;
+
+  margin-bottom:
+    var(--vehicle-space-2, 0.125rem);
+
+  color:
+    var(--vehicle-primary-700);
+
+  font-size: 0.75rem;
+  line-height: 1;
+
+  background:
+    var(--vehicle-primary-100);
+
+  border:
+    1px solid
+    var(--vehicle-primary-200);
+
+  border-radius:
+    var(--vehicle-radius-sm);
+}
+
+
+/* ==========================================================
+   6. ETIQUETA DEL DATO
+========================================================== */
+
+.vehicle-profile-card__detail-label {
+  display: block;
+
+  max-width: 100%;
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.5625rem;
+  font-weight: 760;
+  line-height: 1.25;
+  letter-spacing: 0.085em;
+  text-transform: uppercase;
+
+  overflow-wrap:
+    anywhere;
+}
+
+
+/* ==========================================================
+   7. VALOR DEL DATO
+========================================================== */
+
+.vehicle-profile-card__detail-value {
+  display: block;
+
+  max-width: 100%;
+
+  color:
+    var(--vehicle-text-primary);
+
+  font-size: 0.71875rem;
+  font-weight: 710;
+  line-height: 1.45;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+/* Valor que puede ocupar varias líneas */
+
+.vehicle-profile-card__detail-value--wrap {
+  overflow:
+    visible;
+
+  text-overflow:
+    clip;
+
+  white-space:
+    normal;
+
+  overflow-wrap:
+    anywhere;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* ==========================================================
+   8. MARCA DEL VEHÍCULO
+========================================================== */
+
+.vehicle-profile-card__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vehicle-space-6);
+
+  width: fit-content;
+  max-width: 100%;
+
+  color:
+    var(--vehicle-text-primary);
+
+  font-size: 0.71875rem;
+  font-weight: 730;
+  line-height: 1.4;
+}
+
+.vehicle-profile-card__brand::before {
+  flex: 0 0 auto;
+
+  width: 0.375rem;
+  height: 0.375rem;
+
+  content: "";
+
+  background:
+    var(--vehicle-primary-500);
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0 0 0.15625rem rgba(59, 130, 246, 0.1);
+}
+
+
+/* ==========================================================
+   9. VALOR DEL COLOR
+========================================================== */
+
+.vehicle-profile-card__color {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vehicle-space-8);
+
+  min-width: 0;
+  max-width: 100%;
+}
+
+
+/* Muestra visual del color */
+
+.vehicle-profile-card__color-swatch {
+  position: relative;
+
+  display: block;
+  flex: 0 0 auto;
+
+  width: 1rem;
+  height: 1rem;
+
+  background:
+    var(--vehicle-color-value, var(--vehicle-border));
+
+  border:
+    0.125rem solid
+    var(--vehicle-surface);
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0 0 0.0625rem var(--vehicle-border),
+    0 0.25rem 0.5rem rgba(15, 23, 42, 0.12);
+}
+
+
+/* Brillo de la muestra */
+
+.vehicle-profile-card__color-swatch::after {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.1875rem;
+
+  width: 0.25rem;
+  height: 0.25rem;
+
+  content: "";
+
+  background:
+    rgba(255, 255, 255, 0.65);
+
+  border-radius:
+    50%;
+
+  pointer-events: none;
+}
+
+
+/* Nombre del color */
+
+.vehicle-profile-card__color-name {
+  min-width: 0;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+/* ==========================================================
+   10. TIPO DEL VEHÍCULO DENTRO DEL CUERPO
+========================================================== */
+
+.vehicle-profile-card__vehicle-type {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vehicle-space-6);
+
+  width: fit-content;
+  max-width: 100%;
+
+  padding:
+    var(--vehicle-space-3, 0.1875rem)
+    var(--vehicle-space-8);
+
+  color:
+    var(--vehicle-primary-800);
+
+  font-size: 0.59375rem;
+  font-weight: 730;
+  line-height: 1.3;
+
+  background:
+    var(--vehicle-primary-50);
+
+  border:
+    1px solid
+    var(--vehicle-primary-200);
+
+  border-radius:
+    var(--vehicle-radius-pill);
+}
+
+
+/* ==========================================================
+   11. VARIANTE DE TIPO — MOTO
+========================================================== */
+
+.vehicle-profile-card__vehicle-type--motorcycle {
+  color:
+    var(--vehicle-warning-900);
+
+  background:
+    var(--vehicle-warning-50);
+
+  border-color:
+    var(--vehicle-warning-200);
+}
+
+
+/* ==========================================================
+   12. VARIANTE DE TIPO — NO MOTORIZADO
+========================================================== */
+
+.vehicle-profile-card__vehicle-type--non-motorized {
+  color:
+    var(--vehicle-success-800);
+
+  background:
+    var(--vehicle-success-50);
+
+  border-color:
+    var(--vehicle-success-200);
+}
+
+
+/* ==========================================================
+   13. SECCIÓN ADICIONAL DE INFORMACIÓN
+========================================================== */
+
+.vehicle-profile-card__information {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vehicle-space-10);
+
+  width: 100%;
+  min-width: 0;
+
+  padding-top:
+    var(--vehicle-space-14);
+
+  border-top:
+    1px solid
+    var(--vehicle-border-light);
+}
+
+
+/* ==========================================================
+   14. FILA INFORMATIVA
+========================================================== */
+
+.vehicle-profile-card__information-row {
+  display: grid;
+  grid-template-columns:
+    minmax(5rem, 0.72fr)
+    minmax(0, 1.28fr);
+
+  align-items: start;
+  gap: var(--vehicle-space-12);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-8)
+    0;
+}
+
+
+/* Separadores entre filas */
+
+.vehicle-profile-card__information-row
++
+.vehicle-profile-card__information-row {
+  border-top:
+    1px dashed
+    var(--vehicle-border-light);
+}
+
+
+/* ==========================================================
+   15. ETIQUETA DE LA FILA
+========================================================== */
+
+.vehicle-profile-card__information-label {
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.625rem;
+  font-weight: 680;
+  line-height: 1.45;
+
+  overflow-wrap:
+    anywhere;
+}
+
+
+/* ==========================================================
+   16. VALOR DE LA FILA
+========================================================== */
+
+.vehicle-profile-card__information-value {
+  min-width: 0;
+
+  color:
+    var(--vehicle-text-primary);
+
+  font-size: 0.65625rem;
+  font-weight: 580;
+  line-height: 1.5;
+  text-align: right;
+
+  overflow-wrap:
+    anywhere;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* ==========================================================
+   17. BLOQUE DE OBSERVACIONES
+========================================================== */
+
+.vehicle-profile-card__observations {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--vehicle-space-6);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--vehicle-space-12)
+    var(--vehicle-space-14);
+
+  color:
+    var(--vehicle-text-secondary);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface-muted),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border:
+    1px solid
+    var(--vehicle-border-light);
+
+  border-radius:
+    var(--vehicle-radius-md);
+
+  overflow: hidden;
+}
+
+
+/* Comilla decorativa */
+
+.vehicle-profile-card__observations::before {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.625rem;
+
+  content: "“";
+
+  color:
+    rgba(37, 99, 235, 0.11);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   18. TÍTULO DE OBSERVACIONES
+========================================================== */
+
+.vehicle-profile-card__observations-title {
+  position: relative;
+  z-index: 1;
+
+  color:
+    var(--vehicle-primary-700);
+
+  font-size: 0.5625rem;
+  font-weight: 780;
+  line-height: 1.25;
+  letter-spacing: 0.085em;
+  text-transform: uppercase;
+}
+
+
+/* ==========================================================
+   19. TEXTO DE OBSERVACIONES
+========================================================== */
+
+.vehicle-profile-card__observations-text {
+  position: relative;
+  z-index: 1;
+
+  margin: 0;
+
+  color:
+    var(--vehicle-text-muted);
+
+  font-size: 0.65625rem;
+  font-weight: 480;
+  line-height: 1.6;
+
+  overflow-wrap:
+    anywhere;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* ==========================================================
+   20. ESTADO SIN OBSERVACIONES
+========================================================== */
+
+.vehicle-profile-card__observations--empty {
+  color:
+    var(--vehicle-text-soft);
+
+  background:
+    var(--vehicle-surface-muted);
+
+  border-style:
+    dashed;
+}
+
+.vehicle-profile-card__observations--empty
+.vehicle-profile-card__observations-title {
+  color:
+    var(--vehicle-text-muted);
+}
+
+.vehicle-profile-card__observations--empty
+.vehicle-profile-card__observations-text {
+  color:
+    var(--vehicle-text-soft);
+
+  font-style:
+    italic;
+}
+
+
+/* ==========================================================
+   21. PIE DE LA TARJETA
+========================================================== */
+
+.vehicle-profile-card__footer {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--vehicle-space-8);
+
+  width: 100%;
+  min-width: 0;
+
+  margin-top: auto;
+
+  padding:
+    var(--vehicle-space-14)
+    var(--vehicle-space-18)
+    var(--vehicle-space-18);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.78),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border-top:
+    1px solid
+    var(--vehicle-border-light);
+}
+
+
+/* Línea decorativa superior */
+
+.vehicle-profile-card__footer::before {
+  position: absolute;
+  top: -0.0625rem;
+  right: var(--vehicle-space-18);
+
+  width: 4.5rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--vehicle-info-500),
+      var(--vehicle-primary-600)
+    );
+
+  border-radius:
+    var(--vehicle-radius-pill);
+
+  transition:
+    width var(--vehicle-transition-normal);
+}
+
+.vehicle-profile-card:hover
+.vehicle-profile-card__footer::before {
+  width:
+    7rem;
+}
+
+
+/* ==========================================================
+   22. BOTÓN BASE DE LA TARJETA
+========================================================== */
+
+.vehicle-card-action {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vehicle-space-6);
+  flex: 0 0 auto;
+
+  min-width: 6.5rem;
+  min-height: 2.375rem;
+
+  padding:
+    var(--vehicle-space-7, 0.4375rem)
+    var(--vehicle-space-12);
+
+  font-size: 0.625rem;
+  font-weight: 730;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+
+  background:
+    transparent;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    var(--vehicle-radius-sm);
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    color var(--vehicle-transition-fast),
+    background-color var(--vehicle-transition-fast),
+    border-color var(--vehicle-transition-fast),
+    box-shadow var(--vehicle-transition-fast),
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-fast);
+}
+
+
+/* Brillo del botón */
+
+.vehicle-card-action::before {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.3) 48%,
+      transparent 75%
+    );
+
+  opacity: 0;
+
+  transform:
+    translateX(-45%);
+
+  pointer-events: none;
+
+  transition:
+    opacity var(--vehicle-transition-fast),
+    transform var(--vehicle-transition-normal);
+}
+
+.vehicle-card-action:hover:not(:disabled)::before {
+  opacity: 1;
+
+  transform:
+    translateX(45%);
+}
+
+
+/* Protección del contenido */
+
+.vehicle-card-action > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ==========================================================
+   23. ICONO DEL BOTÓN
+========================================================== */
+
+.vehicle-card-action__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 0.875rem;
+  height: 0.875rem;
+
+  font-size: 0.75rem;
+  line-height: 1;
+
+  transition:
+    transform var(--vehicle-transition-fast);
+}
+
+.vehicle-card-action:hover:not(:disabled)
+.vehicle-card-action__icon {
+  transform:
+    scale(1.12);
+}
+
+
+/* ==========================================================
+   24. BOTÓN EDITAR
+========================================================== */
+
+.vehicle-card-action--edit {
+  color:
+    var(--vehicle-primary-700);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-50),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-primary-200);
+
+  box-shadow:
+    var(--vehicle-shadow-xs),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.vehicle-card-action--edit:hover:not(:disabled) {
+  color:
+    var(--vehicle-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-primary-600),
+      var(--vehicle-primary-800)
+    );
+
+  border-color:
+    var(--vehicle-primary-600);
+
+  box-shadow:
+    var(--vehicle-shadow-primary);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+.vehicle-card-action--edit:active:not(:disabled) {
+  transform:
+    translateY(0)
+    scale(0.96);
+}
+
+
+/* ==========================================================
+   25. BOTÓN ACTIVAR
+========================================================== */
+
+.vehicle-card-action--activate {
+  color:
+    var(--vehicle-success-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-success-50),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-success-200);
+
+  box-shadow:
+    var(--vehicle-shadow-xs),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.vehicle-card-action--activate:hover:not(:disabled) {
+  color:
+    var(--vehicle-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-success-600),
+      var(--vehicle-success-800)
+    );
+
+  border-color:
+    var(--vehicle-success-600);
+
+  box-shadow:
+    var(--vehicle-shadow-success);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+.vehicle-card-action--activate:active:not(:disabled) {
+  transform:
+    translateY(0)
+    scale(0.96);
+}
+
+
+/* ==========================================================
+   26. BOTÓN DESACTIVAR
+========================================================== */
+
+.vehicle-card-action--deactivate {
+  color:
+    var(--vehicle-danger-700);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-danger-50),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-danger-200);
+
+  box-shadow:
+    var(--vehicle-shadow-xs),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.vehicle-card-action--deactivate:hover:not(:disabled) {
+  color:
+    var(--vehicle-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-danger-600),
+      var(--vehicle-danger-800)
+    );
+
+  border-color:
+    var(--vehicle-danger-600);
+
+  box-shadow:
+    var(--vehicle-shadow-danger);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+.vehicle-card-action--deactivate:active:not(:disabled) {
+  transform:
+    translateY(0)
+    scale(0.96);
+}
+
+
+/* ==========================================================
+   27. BOTÓN CANCELAR EDICIÓN
+========================================================== */
+
+.vehicle-card-action--cancel {
+  color:
+    var(--vehicle-text-secondary);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface),
+      var(--vehicle-surface-muted)
+    );
+
+  border-color:
+    var(--vehicle-border);
+
+  box-shadow:
+    var(--vehicle-shadow-xs),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.vehicle-card-action--cancel:hover:not(:disabled) {
+  color:
+    var(--vehicle-warning-900);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-warning-50),
+      var(--vehicle-surface)
+    );
+
+  border-color:
+    var(--vehicle-warning-300);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(217, 119, 6, 0.11);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+
+/* ==========================================================
+   28. FOCO DE LOS BOTONES
+========================================================== */
+
+.vehicle-card-action:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(59, 130, 246, 0.2);
+
+  outline-offset:
+    0.125rem;
+}
+
+.vehicle-card-action--activate:focus-visible {
+  outline-color:
+    rgba(34, 197, 94, 0.22);
+}
+
+.vehicle-card-action--deactivate:focus-visible {
+  outline-color:
+    rgba(239, 68, 68, 0.22);
+}
+
+.vehicle-card-action--cancel:focus-visible {
+  outline-color:
+    rgba(245, 158, 11, 0.22);
+}
+
+
+/* ==========================================================
+   29. BOTÓN DESHABILITADO
+========================================================== */
+
+.vehicle-card-action:disabled {
+  color:
+    var(--vehicle-text-disabled);
+
+  background:
+    var(--vehicle-surface-muted);
+
+  border-color:
+    var(--vehicle-border-light);
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+
+  opacity: 0.66;
+
+  transform: none;
+}
+
+.vehicle-card-action:disabled::before {
+  display: none;
+}
+
+
+/* ==========================================================
+   30. SPINNER DE ACCIÓN
+========================================================== */
+
+.vehicle-card-action__spinner {
+  display: block;
+  flex: 0 0 auto;
+
+  width: 0.875rem;
+  height: 0.875rem;
+
+  border:
+    0.125rem solid
+    currentColor;
+
+  border-right-color:
+    transparent;
+
+  border-radius:
+    50%;
+
+  opacity: 0.82;
+
+  animation:
+    vehicle-card-action-spin
+    680ms
+    linear
+    infinite;
+}
+
+@keyframes vehicle-card-action-spin {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* ==========================================================
+   31. TARJETA INACTIVA
+========================================================== */
+
+.vehicle-profile-card--inactive
+.vehicle-profile-card__body {
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-surface-muted),
+      rgba(255, 255, 255, 0.96)
+    );
+}
+
+.vehicle-profile-card--inactive
+.vehicle-profile-card__detail,
+.vehicle-profile-card--inactive
+.vehicle-profile-card__observations {
+  opacity: 0.82;
+}
+
+.vehicle-profile-card--inactive
+.vehicle-profile-card__detail-value,
+.vehicle-profile-card--inactive
+.vehicle-profile-card__information-value {
+  color:
+    var(--vehicle-text-muted);
+}
+
+
+/* ==========================================================
+   32. TARJETA EN EDICIÓN
+========================================================== */
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__body {
+  background:
+    linear-gradient(
+      145deg,
+      var(--vehicle-warning-50),
+      rgba(255, 255, 255, 0.985)
+    );
+}
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__detail {
+  border-color:
+    var(--vehicle-warning-200);
+}
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__detail::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--vehicle-warning-500),
+      var(--vehicle-primary-500)
+    );
+}
+
+.vehicle-profile-card--editing
+.vehicle-profile-card__footer::before {
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--vehicle-primary-500),
+      var(--vehicle-warning-500)
+    );
+}
+
+
+/* ==========================================================
+   33. PANTALLAS GRANDES
+========================================================== */
+
+@media (min-width: 1540px) {
+  .vehicle-profile-card__body {
+    padding:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-profile-card__summary {
+    gap:
+      var(--vehicle-space-8);
+  }
+
+  .vehicle-profile-card__detail {
+    min-height:
+      4rem;
+  }
+
+  .vehicle-profile-card__footer {
+    padding:
+      var(--vehicle-space-12)
+      var(--vehicle-space-16)
+      var(--vehicle-space-16);
+  }
+}
+
+
+/* ==========================================================
+   34. PORTÁTILES INTERMEDIOS
+========================================================== */
+
+@media (max-width: 1380px) {
+  .vehicle-profile-card__body {
+    padding:
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-profile-card__footer {
+    padding:
+      var(--vehicle-space-14)
+      var(--vehicle-space-16)
+      var(--vehicle-space-16);
+  }
+
+  .vehicle-profile-card__footer::before {
+    right:
+      var(--vehicle-space-16);
+  }
+}
+
+
+/* ==========================================================
+   35. REGISTRO A ANCHO COMPLETO
+========================================================== */
+
+@media (max-width: 1120px) {
+  .vehicle-profile-card__detail {
+    min-height:
+      4.125rem;
+  }
+
+  .vehicle-card-action {
+    min-width:
+      6rem;
+  }
+}
+
+
+/* ==========================================================
+   36. TABLET
+========================================================== */
+
+@media (max-width: 790px) {
+  .vehicle-profile-card__body {
+    gap:
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-profile-card__summary {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .vehicle-profile-card__detail {
+    min-height:
+      4rem;
+  }
+
+  .vehicle-profile-card__footer {
+    justify-content:
+      flex-end;
+  }
+}
+
+
+/* ==========================================================
+   37. CELULAR
+========================================================== */
+
+@media (max-width: 580px) {
+  .vehicle-profile-card__body {
+    gap:
+      var(--vehicle-space-12);
+
+    padding:
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-profile-card__summary {
+    gap:
+      var(--vehicle-space-8);
+  }
+
+  .vehicle-profile-card__detail {
+    min-height:
+      3.875rem;
+
+    padding:
+      var(--vehicle-space-10);
+  }
+
+  .vehicle-profile-card__detail-label {
+    font-size:
+      0.53125rem;
+  }
+
+  .vehicle-profile-card__detail-value {
+    font-size:
+      0.6875rem;
+  }
+
+  .vehicle-profile-card__information {
+    gap:
+      var(--vehicle-space-8);
+
+    padding-top:
+      var(--vehicle-space-12);
+  }
+
+  .vehicle-profile-card__information-row {
+    gap:
+      var(--vehicle-space-8);
+  }
+
+  .vehicle-profile-card__observations {
+    padding:
+      var(--vehicle-space-10)
+      var(--vehicle-space-12);
+  }
+
+  .vehicle-profile-card__footer {
+    align-items:
+      stretch;
+
+    padding:
+      var(--vehicle-space-12)
+      var(--vehicle-space-14)
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-profile-card__footer::before {
+    right:
+      var(--vehicle-space-14);
+  }
+
+  .vehicle-card-action {
+    flex:
+      1 1 0;
+
+    min-width:
+      0;
+
+    min-height:
+      2.625rem;
+  }
+}
+
+
+/* ==========================================================
+   38. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .vehicle-profile-card__summary {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .vehicle-profile-card__detail--full {
+    grid-column:
+      auto;
+  }
+
+  .vehicle-profile-card__information-row {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap:
+      var(--vehicle-space-4);
+  }
+
+  .vehicle-profile-card__information-value {
+    text-align:
+      left;
+  }
+
+  .vehicle-profile-card__footer {
+    flex-direction:
+      column;
+  }
+
+  .vehicle-card-action {
+    width:
+      100%;
+  }
+
+  .vehicle-profile-card__observations::before {
+    font-size:
+      3rem;
+  }
+}
+
+
+/* ==========================================================
+   39. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .vehicle-card-action {
+    min-height:
+      2.875rem;
+  }
+
+  .vehicle-profile-card__detail:hover,
+  .vehicle-card-action:hover:not(:disabled),
+  .vehicle-card-action:hover:not(:disabled)
+  .vehicle-card-action__icon {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   40. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .vehicle-profile-card__detail,
+  .vehicle-profile-card__vehicle-type,
+  .vehicle-profile-card__observations,
+  .vehicle-card-action {
+    border-width:
+      0.125rem;
+  }
+
+  .vehicle-profile-card__detail-label,
+  .vehicle-profile-card__information-label,
+  .vehicle-profile-card__observations-text {
+    color:
+      var(--vehicle-text-secondary);
+  }
+
+  .vehicle-profile-card__detail-value,
+  .vehicle-profile-card__information-value {
+    color:
+      var(--vehicle-text-primary);
+  }
+}
+
+
+/* ==========================================================
+   41. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .vehicle-profile-card__detail,
+  .vehicle-profile-card__detail::before,
+  .vehicle-profile-card__footer::before,
+  .vehicle-card-action,
+  .vehicle-card-action::before,
+  .vehicle-card-action__icon,
+  .vehicle-card-action__spinner {
+    transition:
+      none;
+
+    animation:
+      none;
+  }
+
+  .vehicle-profile-card__detail:hover,
+  .vehicle-card-action:hover:not(:disabled),
+  .vehicle-card-action:active:not(:disabled),
+  .vehicle-card-action:hover:not(:disabled)
+  .vehicle-card-action__icon {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   42. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .vehicle-profile-card__body {
+    gap:
+      0.625rem;
+
+    padding:
+      0.75rem;
+
+    background:
+      transparent;
+  }
+
+  .vehicle-profile-card__body::before,
+  .vehicle-profile-card__detail::before,
+  .vehicle-profile-card__observations::before,
+  .vehicle-profile-card__footer::before {
+    display:
+      none;
+  }
+
+  .vehicle-profile-card__detail,
+  .vehicle-profile-card__vehicle-type,
+  .vehicle-profile-card__observations {
+    background:
+      transparent;
+
+    border:
+      1px solid #cbd5e1;
+
+    box-shadow:
+      none;
+
+    transform:
+      none;
+  }
+
+  .vehicle-profile-card__summary {
+    gap:
+      0.5rem;
+  }
+
+  .vehicle-profile-card__footer {
+    display:
+      none;
+  }
+
+  .vehicle-profile-card__information {
+    border-top:
+      1px solid #cbd5e1;
+  }
+
+  .vehicle-profile-card__information-row
+  +
+  .vehicle-profile-card__information-row {
+    border-top:
+      1px dashed #cbd5e1;
+  }
+
+  .vehicle-profile-card__color-swatch {
+    box-shadow:
+      0 0 0 1px #94a3b8;
+  }
+}
+
+
+/* ==========================================================
+   43. CORRECCIÓN PARA NAVEGADORES SIN BACKDROP-FILTER
+========================================================== */
+
+@supports not (
+  (backdrop-filter: blur(0.5rem))
+  or
+  (-webkit-backdrop-filter: blur(0.5rem))
+) {
+  .vehicle-profile-card__media-label {
+    background:
+      rgba(15, 23, 42, 0.9);
+  }
+}
+
+
+/* ==========================================================
+   44. CORRECCIÓN PARA NAVEGADORES SIN ASPECT-RATIO
+========================================================== */
+
+@supports not (aspect-ratio: 16 / 9) {
+  .vehicle-profile-card__media {
+    height:
+      12.5rem;
+  }
+
+  .vehicle-profile-card__image,
+  .vehicle-profile-card__photo-placeholder {
+    height:
+      12.5rem;
+  }
+}
+
+
+/* ==========================================================
+   45. FOCO GLOBAL DENTRO DE LA TARJETA
+========================================================== */
+
+.vehicle-profile-card:focus-within {
+  border-color:
+    var(--vehicle-primary-300);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(59, 130, 246, 0.085),
+    0 1.25rem 2.75rem rgba(15, 23, 42, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.vehicle-profile-card--editing:focus-within {
+  border-color:
+    var(--vehicle-warning-400, #fbbf24);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(245, 158, 11, 0.12),
+    0 1.25rem 2.75rem rgba(15, 23, 42, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+
+/* ==========================================================
+   46. PROTECCIÓN FINAL CONTRA DESBORDAMIENTOS
+========================================================== */
+
+.vehicle-profile-card__body,
+.vehicle-profile-card__summary,
+.vehicle-profile-card__information,
+.vehicle-profile-card__information-row,
+.vehicle-profile-card__footer,
+.vehicle-profile-card__detail,
+.vehicle-profile-card__observations {
+  min-inline-size:
+    0;
+}
+
+.vehicle-profile-card__detail-value,
+.vehicle-profile-card__information-value,
+.vehicle-profile-card__observations-text,
+.vehicle-profile-card__brand,
+.vehicle-profile-card__color-name {
+  overflow-wrap:
+    anywhere;
+}
+
+
+/* ==========================================================
+   47. SELECCIÓN DE TEXTO
+========================================================== */
+
+.vehicle-profile-card__body ::selection {
+  color:
+    var(--vehicle-text-white);
+
+  background:
+    var(--vehicle-primary-600);
+}
+
+
+/* ==========================================================
+   48. CIERRE VISUAL DEL COMPONENTE
+========================================================== */
+
+.vehicle-registry-grid:last-child {
+  margin-bottom:
+    0;
+}
+
+.vehicle-profile-card:last-child {
+  margin-bottom:
+    0;
+}

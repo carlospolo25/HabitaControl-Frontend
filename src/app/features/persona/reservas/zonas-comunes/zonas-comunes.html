@@ -1,0 +1,737 @@
+<section class="common-zones-page">
+
+  <!-- Encabezado principal -->
+  <header class="common-zones-header">
+    <div class="common-zones-header__content">
+      <span class="common-zones-header__eyebrow">
+        Administración de espacios
+      </span>
+
+      <h2 class="common-zones-header__title">
+        Zonas comunes
+      </h2>
+
+      <p class="common-zones-header__description">
+        Consulta, organiza y administra los espacios compartidos
+        disponibles dentro del conjunto residencial.
+      </p>
+    </div>
+
+    <div class="common-zones-header__actions">
+      <button
+        type="button"
+        class="common-zones-header__create-button"
+        (click)="abrirFormularioCrear()"
+        [disabled]="
+          isLoading ||
+          isLoadingDetail ||
+          mostrarFormulario ||
+          zonaProcesandoId !== null
+        ">
+
+        <span aria-hidden="true">+</span>
+        <span>Nueva zona</span>
+      </button>
+
+      <button
+        type="button"
+        class="common-zones-header__refresh-button"
+        (click)="recargar()"
+        [disabled]="
+          isLoading ||
+          isLoadingDetail ||
+          mostrarFormulario ||
+          zonaProcesandoId !== null
+        ">
+
+        <span
+          class="common-zones-header__refresh-icon"
+          aria-hidden="true">
+          ↻
+        </span>
+
+        <span>
+          {{ isLoading ? 'Actualizando...' : 'Actualizar' }}
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Resumen -->
+  <section
+    class="common-zones-summary"
+    aria-label="Resumen de zonas comunes">
+
+    <article class="common-zones-summary__card">
+      <div class="common-zones-summary__icon">
+        🏢
+      </div>
+
+      <div class="common-zones-summary__content">
+        <span class="common-zones-summary__label">
+          Total de zonas
+        </span>
+
+        <strong class="common-zones-summary__value">
+          {{ zonas.length }}
+        </strong>
+      </div>
+    </article>
+
+    <article class="common-zones-summary__card common-zones-summary__card--active">
+      <div class="common-zones-summary__icon">
+        ✓
+      </div>
+
+      <div class="common-zones-summary__content">
+        <span class="common-zones-summary__label">
+          Zonas activas
+        </span>
+
+        <strong class="common-zones-summary__value">
+          {{ totalActiveZones }}
+        </strong>
+      </div>
+    </article>
+
+    <article class="common-zones-summary__card common-zones-summary__card--inactive">
+      <div class="common-zones-summary__icon">
+        —
+      </div>
+
+      <div class="common-zones-summary__content">
+        <span class="common-zones-summary__label">
+          Zonas inactivas
+        </span>
+
+        <strong class="common-zones-summary__value">
+          {{ totalInactiveZones }}
+        </strong>
+      </div>
+    </article>
+  </section>
+
+  <!-- Mensajes globales -->
+  @if (successMessage) {
+    <div
+      class="common-zones-alert common-zones-alert--success"
+      role="status">
+
+      <span
+        class="common-zones-alert__icon"
+        aria-hidden="true">
+        ✓
+      </span>
+
+      <div class="common-zones-alert__content">
+        <strong>Operación completada</strong>
+        <p>{{ successMessage }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="common-zones-alert__close"
+        aria-label="Cerrar mensaje"
+        (click)="successMessage = ''">
+        ×
+      </button>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div
+      class="common-zones-alert common-zones-alert--error"
+      role="alert">
+
+      <span
+        class="common-zones-alert__icon"
+        aria-hidden="true">
+        !
+      </span>
+
+      <div class="common-zones-alert__content">
+        <strong>No fue posible completar la operación</strong>
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="common-zones-alert__close"
+        aria-label="Cerrar mensaje"
+        (click)="errorMessage = ''">
+        ×
+      </button>
+    </div>
+  }
+
+  <!-- Buscador y filtros -->
+  <section class="common-zones-toolbar">
+    <div class="common-zones-search">
+      <label
+        class="common-zones-search__label"
+        for="common-zone-search">
+        Buscar zona común
+      </label>
+
+      <div class="common-zones-search__control">
+        <span
+          class="common-zones-search__icon"
+          aria-hidden="true">
+          ⌕
+        </span>
+
+        <input
+          id="common-zone-search"
+          class="common-zones-search__input"
+          type="search"
+          name="searchTerm"
+          [(ngModel)]="searchTerm"
+          placeholder="Buscar por nombre o descripción..."
+          autocomplete="off">
+
+        @if (searchTerm) {
+          <button
+            type="button"
+            class="common-zones-search__clear"
+            aria-label="Limpiar búsqueda"
+            (click)="searchTerm = ''">
+            ×
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="common-zones-filters">
+      <span class="common-zones-filters__label">
+        Filtrar por estado
+      </span>
+
+      <div
+        class="common-zones-filters__group"
+        role="group"
+        aria-label="Filtrar zonas comunes por estado">
+
+        <button
+          type="button"
+          class="common-zones-filters__button"
+          [class.common-zones-filters__button--active]="statusFilter === 'all'"
+          (click)="setStatusFilter('all')">
+          Todas
+          <span class="common-zones-filters__count">
+            {{ zonas.length }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="common-zones-filters__button"
+          [class.common-zones-filters__button--active]="statusFilter === 'active'"
+          (click)="setStatusFilter('active')">
+          Activas
+          <span class="common-zones-filters__count">
+            {{ totalActiveZones }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="common-zones-filters__button"
+          [class.common-zones-filters__button--active]="statusFilter === 'inactive'"
+          (click)="setStatusFilter('inactive')">
+          Inactivas
+          <span class="common-zones-filters__count">
+            {{ totalInactiveZones }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Información de resultados -->
+  @if (!isLoading && zonas.length > 0) {
+    <div class="common-zones-results">
+      <p class="common-zones-results__text">
+        Mostrando
+        <strong>{{ filteredZones.length }}</strong>
+
+        @if (filteredZones.length === 1) {
+          zona común
+        } @else {
+          zonas comunes
+        }
+      </p>
+
+      @if (searchTerm || statusFilter !== 'all') {
+        <button
+          type="button"
+          class="common-zones-results__clear"
+          (click)="clearFilters()">
+          Limpiar filtros
+        </button>
+      }
+    </div>
+  }
+
+  <!-- Estado de carga -->
+  @if (isLoading) {
+    <section
+      class="common-zones-loading"
+      aria-live="polite"
+      aria-busy="true">
+
+      <div class="common-zones-loading__spinner"></div>
+
+      <div class="common-zones-loading__content">
+        <strong>Cargando zonas comunes</strong>
+        <p>Estamos consultando la información disponible.</p>
+      </div>
+    </section>
+  } @else if (zonas.length === 0 && !errorMessage) {
+
+    <!-- Sin datos registrados -->
+    <section class="common-zones-empty">
+      <div class="common-zones-empty__icon">
+        🏢
+      </div>
+
+      <h3 class="common-zones-empty__title">
+        No hay zonas comunes registradas
+      </h3>
+
+      <p class="common-zones-empty__description">
+        Cuando se registren espacios compartidos aparecerán disponibles en
+        esta sección.
+      </p>
+
+      <button
+        type="button"
+        class="common-zones-empty__button"
+        (click)="recargar()">
+        Volver a consultar
+      </button>
+    </section>
+
+  } @else if (filteredZones.length === 0) {
+
+    <!-- Sin coincidencias -->
+    <section class="common-zones-empty">
+      <div class="common-zones-empty__icon">
+        ⌕
+      </div>
+
+      <h3 class="common-zones-empty__title">
+        No encontramos coincidencias
+      </h3>
+
+      <p class="common-zones-empty__description">
+        Prueba con otro nombre, una descripción diferente o cambia el filtro
+        de estado.
+      </p>
+
+      <button
+        type="button"
+        class="common-zones-empty__button"
+        (click)="clearFilters()">
+        Limpiar búsqueda y filtros
+      </button>
+    </section>
+
+  } @else {
+
+    <!-- Tarjetas -->
+    <section
+      class="common-zones-grid"
+      aria-label="Listado de zonas comunes">
+
+      @for (
+        zone of filteredZones;
+        track zone.id
+      ) {
+        <article
+          class="common-zone-card"
+          [class.common-zone-card--inactive]="!zone.activa">
+
+          <header class="common-zone-card__header">
+            <div class="common-zone-card__identity">
+              <div
+                class="common-zone-card__avatar"
+                aria-hidden="true">
+                {{ zone.nombre.charAt(0).toUpperCase() }}
+              </div>
+
+              <div class="common-zone-card__heading">
+                <div class="common-zone-card__status-row">
+                  <span
+                    class="common-zone-card__status"
+                    [class.common-zone-card__status--active]="zone.activa"
+                    [class.common-zone-card__status--inactive]="!zone.activa">
+
+                    <span
+                      class="common-zone-card__status-dot"
+                      aria-hidden="true">
+                    </span>
+
+                    {{ zone.activa ? 'Activa' : 'Inactiva' }}
+                  </span>
+
+                  @if (zone.requiereAprobacion) {
+                    <span class="common-zone-card__approval-badge">
+                      Requiere aprobación
+                    </span>
+                  } @else {
+                    <span class="common-zone-card__approval-badge common-zone-card__approval-badge--automatic">
+                      Aprobación automática
+                    </span>
+                  }
+                </div>
+
+                <h3 class="common-zone-card__title">
+                  {{ zone.nombre }}
+                </h3>
+              </div>
+            </div>
+          </header>
+
+          <div class="common-zone-card__body">
+            <p
+              class="common-zone-card__description"
+              [class.common-zone-card__description--empty]="!zone.descripcion">
+
+              {{
+                zone.descripcion ||
+                'Esta zona común todavía no cuenta con una descripción.'
+              }}
+            </p>
+
+            <dl class="common-zone-card__details">
+
+              <div class="common-zone-card__detail">
+                <dt class="common-zone-card__detail-label">
+                  <span aria-hidden="true">👥</span>
+                  Capacidad máxima
+                </dt>
+
+                <dd class="common-zone-card__detail-value">
+                  {{ zone.capacidadMaxima }}
+                  {{ zone.capacidadMaxima === 1 ? 'persona' : 'personas' }}
+                </dd>
+              </div>
+
+              <div class="common-zone-card__detail">
+                <dt class="common-zone-card__detail-label">
+                  <span aria-hidden="true">◷</span>
+                  Horario disponible
+                </dt>
+
+                <dd class="common-zone-card__detail-value">
+                  {{ zone.horaApertura.slice(0, 5) }}
+                  –
+                  {{ zone.horaCierre.slice(0, 5) }}
+                </dd>
+              </div>
+
+              <div class="common-zone-card__detail">
+                <dt class="common-zone-card__detail-label">
+                  <span aria-hidden="true">⏱</span>
+                  Duración máxima
+                </dt>
+
+                <dd class="common-zone-card__detail-value">
+                  {{ zone.duracionMaximaMinutos }}
+                  minutos
+                </dd>
+              </div>
+
+              <div class="common-zone-card__detail">
+                <dt class="common-zone-card__detail-label">
+                  <span aria-hidden="true">✓</span>
+                  Modalidad
+                </dt>
+
+                <dd class="common-zone-card__detail-value">
+                  {{
+                    zone.requiereAprobacion
+                      ? 'Reserva sujeta a revisión'
+                      : 'Confirmación inmediata'
+                  }}
+                </dd>
+              </div>
+
+            </dl>
+          </div>
+
+          <footer class="common-zone-card__footer">
+            <button
+              type="button"
+              class="common-zone-card__button common-zone-card__button--secondary"
+              (click)="verDetalle(zone.id)"
+              [disabled]="
+                isLoadingDetail ||
+                mostrarFormulario ||
+                zonaProcesandoId !== null
+              ">
+              Ver detalle
+            </button>
+
+            <button
+              type="button"
+              class="common-zone-card__button common-zone-card__button--primary"
+              (click)="abrirFormularioEditar(zone)"
+              [disabled]="
+                isLoadingDetail ||
+                mostrarFormulario ||
+                zonaProcesandoId !== null
+              ">
+              Editar
+            </button>
+
+            <button
+              type="button"
+              class="common-zone-card__button"
+              [class.common-zone-card__button--danger]="zone.activa"
+              [class.common-zone-card__button--success]="!zone.activa"
+              (click)="cambiarEstado(zone)"
+              [disabled]="
+                isLoadingDetail ||
+                mostrarFormulario ||
+                zonaProcesandoId !== null
+              ">
+
+              @if (estaProcesando(zone.id)) {
+                Procesando...
+              } @else {
+                {{ zone.activa ? 'Desactivar' : 'Activar' }}
+              }
+            </button>
+          </footer>
+        </article>
+      }
+    </section>
+  }
+
+</section>
+
+<!-- Modal de detalle -->
+@if (zonaSeleccionada || isLoadingDetail || detailErrorMessage) {
+  <div
+    class="common-zone-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="common-zone-detail-title">
+
+    <button
+      type="button"
+      class="common-zone-modal__backdrop"
+      aria-label="Cerrar detalle"
+      (click)="cerrarDetalle()">
+    </button>
+
+    <article class="common-zone-modal__panel">
+      <header class="common-zone-modal__header">
+        <div>
+          <span class="common-zone-modal__eyebrow">
+            Información completa
+          </span>
+
+          <h3
+            id="common-zone-detail-title"
+            class="common-zone-modal__title">
+            Detalle de la zona común
+          </h3>
+        </div>
+
+        <button
+          type="button"
+          class="common-zone-modal__close"
+          aria-label="Cerrar detalle"
+          [disabled]="isLoadingDetail"
+          (click)="cerrarDetalle()">
+          ×
+        </button>
+      </header>
+
+      <div class="common-zone-modal__body">
+
+        @if (isLoadingDetail) {
+          <div class="common-zone-modal__loading">
+            <div class="common-zones-loading__spinner"></div>
+            <p>Consultando información...</p>
+          </div>
+        } @else if (detailErrorMessage) {
+          <div
+            class="common-zones-alert common-zones-alert--error"
+            role="alert">
+
+            <span class="common-zones-alert__icon">
+              !
+            </span>
+
+            <div class="common-zones-alert__content">
+              <strong>No fue posible cargar el detalle</strong>
+              <p>{{ detailErrorMessage }}</p>
+            </div>
+          </div>
+        } @else if (zonaSeleccionada) {
+
+          <section class="common-zone-detail">
+            <div class="common-zone-detail__heading">
+              <div class="common-zone-detail__avatar">
+                {{
+                  zonaSeleccionada.nombre
+                    .charAt(0)
+                    .toUpperCase()
+                }}
+              </div>
+
+              <div>
+                <span
+                  class="common-zone-card__status"
+                  [class.common-zone-card__status--active]="zonaSeleccionada.activa"
+                  [class.common-zone-card__status--inactive]="!zonaSeleccionada.activa">
+
+                  <span class="common-zone-card__status-dot"></span>
+
+                  {{
+                    zonaSeleccionada.activa
+                      ? 'Activa'
+                      : 'Inactiva'
+                  }}
+                </span>
+
+                <h4 class="common-zone-detail__name">
+                  {{ zonaSeleccionada.nombre }}
+                </h4>
+              </div>
+            </div>
+
+            <p class="common-zone-detail__description">
+              {{
+                zonaSeleccionada.descripcion ||
+                'Esta zona común no tiene una descripción registrada.'
+              }}
+            </p>
+
+            <dl class="common-zone-detail__grid">
+              <div class="common-zone-detail__item">
+                <dt>Capacidad máxima</dt>
+                <dd>
+                  {{ zonaSeleccionada.capacidadMaxima }}
+                  personas
+                </dd>
+              </div>
+
+              <div class="common-zone-detail__item">
+                <dt>Hora de apertura</dt>
+                <dd>
+                  {{
+                    zonaSeleccionada.horaApertura
+                      .slice(0, 5)
+                  }}
+                </dd>
+              </div>
+
+              <div class="common-zone-detail__item">
+                <dt>Hora de cierre</dt>
+                <dd>
+                  {{
+                    zonaSeleccionada.horaCierre
+                      .slice(0, 5)
+                  }}
+                </dd>
+              </div>
+
+              <div class="common-zone-detail__item">
+                <dt>Duración máxima</dt>
+                <dd>
+                  {{
+                    zonaSeleccionada.duracionMaximaMinutos
+                  }}
+                  minutos
+                </dd>
+              </div>
+
+              <div class="common-zone-detail__item">
+                <dt>Aprobación</dt>
+                <dd>
+                  {{
+                    zonaSeleccionada.requiereAprobacion
+                      ? 'Requiere revisión'
+                      : 'Automática'
+                  }}
+                </dd>
+              </div>
+
+              <div class="common-zone-detail__item">
+                <dt>Fecha de creación</dt>
+                <dd>
+                  {{
+                    zonaSeleccionada.fechaCreacion
+                      | date: 'dd/MM/yyyy, h:mm a'
+                  }}
+                </dd>
+              </div>
+
+              @if (zonaSeleccionada.fechaActualizacion) {
+                <div class="common-zone-detail__item">
+                  <dt>Última actualización</dt>
+                  <dd>
+                    {{
+                      zonaSeleccionada.fechaActualizacion
+                        | date: 'dd/MM/yyyy, h:mm a'
+                    }}
+                  </dd>
+                </div>
+              }
+            </dl>
+          </section>
+        }
+      </div>
+
+      @if (zonaSeleccionada && !isLoadingDetail) {
+        <footer class="common-zone-modal__footer">
+          <button
+            type="button"
+            class="common-zone-modal__button common-zone-modal__button--secondary"
+            (click)="cerrarDetalle()">
+            Cerrar
+          </button>
+
+          <button
+            type="button"
+            class="common-zone-modal__button common-zone-modal__button--primary"
+            (click)="editarDesdeDetalle()">
+            Editar zona
+          </button>
+        </footer>
+      }
+    </article>
+  </div>
+}
+
+@if (mostrarFormulario) {
+  <div
+    class="common-zone-form-modal"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="
+      zonaFormulario
+        ? 'Editar zona común'
+        : 'Crear zona común'
+    ">
+
+    <button
+      type="button"
+      class="common-zone-form-modal__backdrop"
+      aria-label="Cerrar formulario"
+      (click)="cerrarFormulario()">
+    </button>
+
+    <div class="common-zone-form-modal__content">
+      <app-form-zona-comunes
+        [zona]="zonaFormulario"
+        (guardado)="zonaGuardada($event)"
+        (cerrar)="cerrarFormulario()">
+      </app-form-zona-comunes>
+    </div>
+  </div>
+}

@@ -1,0 +1,1082 @@
+<section class="my-reservations-page">
+
+  <!-- =====================================================
+       Encabezado principal
+  ====================================================== -->
+
+  <header class="my-reservations-header">
+    <div class="my-reservations-header__content">
+      <span class="my-reservations-header__eyebrow">
+        Gestión personal de espacios
+      </span>
+
+      <h2 class="my-reservations-header__title">
+        Mis reservas
+      </h2>
+
+      <p class="my-reservations-header__description">
+        Consulta tus solicitudes, revisa su estado y administra las reservas
+        realizadas para las zonas comunes del conjunto residencial.
+      </p>
+    </div>
+
+    <div class="my-reservations-header__actions">
+      <button
+        type="button"
+        class="my-reservations-header__create-button"
+        (click)="abrirFormulario()"
+        [disabled]="
+          isLoading ||
+          isLoadingDetail ||
+          isCancelling ||
+          mostrarFormulario ||
+          mostrarCancelacion ||
+          reservaProcesandoId !== null
+        ">
+
+        <span
+          class="my-reservations-header__create-icon"
+          aria-hidden="true">
+          +
+        </span>
+
+        <span>Nueva reserva</span>
+      </button>
+
+      <button
+        type="button"
+        class="my-reservations-header__refresh-button"
+        (click)="recargar()"
+        [disabled]="
+          isLoading ||
+          isLoadingDetail ||
+          isCancelling ||
+          mostrarFormulario ||
+          mostrarCancelacion ||
+          reservaProcesandoId !== null
+        ">
+
+        <span
+          class="my-reservations-header__refresh-icon"
+          aria-hidden="true">
+          ↻
+        </span>
+
+        <span>
+          {{ isLoading ? 'Actualizando...' : 'Actualizar' }}
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- =====================================================
+       Resumen
+  ====================================================== -->
+
+  <section
+    class="my-reservations-summary"
+    aria-label="Resumen de mis reservas">
+
+    <article class="my-reservations-summary__card">
+      <div class="my-reservations-summary__icon">
+        📅
+      </div>
+
+      <div class="my-reservations-summary__content">
+        <span class="my-reservations-summary__label">
+          Total de reservas
+        </span>
+
+        <strong class="my-reservations-summary__value">
+          {{ reservas.length }}
+        </strong>
+      </div>
+    </article>
+
+    <article
+      class="my-reservations-summary__card my-reservations-summary__card--pending">
+
+      <div class="my-reservations-summary__icon">
+        ◷
+      </div>
+
+      <div class="my-reservations-summary__content">
+        <span class="my-reservations-summary__label">
+          Pendientes
+        </span>
+
+        <strong class="my-reservations-summary__value">
+          {{ totalPendientes }}
+        </strong>
+      </div>
+    </article>
+
+    <article
+      class="my-reservations-summary__card my-reservations-summary__card--approved">
+
+      <div class="my-reservations-summary__icon">
+        ✓
+      </div>
+
+      <div class="my-reservations-summary__content">
+        <span class="my-reservations-summary__label">
+          Aprobadas
+        </span>
+
+        <strong class="my-reservations-summary__value">
+          {{ totalAprobadas }}
+        </strong>
+      </div>
+    </article>
+
+    <article
+      class="my-reservations-summary__card my-reservations-summary__card--cancelled">
+
+      <div class="my-reservations-summary__icon">
+        ×
+      </div>
+
+      <div class="my-reservations-summary__content">
+        <span class="my-reservations-summary__label">
+          Canceladas
+        </span>
+
+        <strong class="my-reservations-summary__value">
+          {{ totalCanceladas }}
+        </strong>
+      </div>
+    </article>
+  </section>
+
+  <!-- =====================================================
+       Mensajes globales
+  ====================================================== -->
+
+  @if (successMessage) {
+    <div
+      class="my-reservations-alert my-reservations-alert--success"
+      role="status">
+
+      <span
+        class="my-reservations-alert__icon"
+        aria-hidden="true">
+        ✓
+      </span>
+
+      <div class="my-reservations-alert__content">
+        <strong>Operación completada</strong>
+        <p>{{ successMessage }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="my-reservations-alert__close"
+        aria-label="Cerrar mensaje"
+        (click)="cerrarMensajeExito()">
+        ×
+      </button>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div
+      class="my-reservations-alert my-reservations-alert--error"
+      role="alert">
+
+      <span
+        class="my-reservations-alert__icon"
+        aria-hidden="true">
+        !
+      </span>
+
+      <div class="my-reservations-alert__content">
+        <strong>No fue posible completar la operación</strong>
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="my-reservations-alert__close"
+        aria-label="Cerrar mensaje"
+        (click)="cerrarMensajeError()">
+        ×
+      </button>
+    </div>
+  }
+
+  <!-- =====================================================
+       Buscador y filtros
+  ====================================================== -->
+
+  <section class="my-reservations-toolbar">
+    <div class="my-reservations-search">
+      <label
+        class="my-reservations-search__label"
+        for="reservation-search">
+        Buscar reserva
+      </label>
+
+      <div class="my-reservations-search__control">
+        <span
+          class="my-reservations-search__icon"
+          aria-hidden="true">
+          ⌕
+        </span>
+
+        <input
+          id="reservation-search"
+          class="my-reservations-search__input"
+          type="search"
+          name="searchTerm"
+          [(ngModel)]="searchTerm"
+          placeholder="Buscar por zona, estado, fecha u observación..."
+          autocomplete="off">
+
+        @if (searchTerm) {
+          <button
+            type="button"
+            class="my-reservations-search__clear"
+            aria-label="Limpiar búsqueda"
+            (click)="searchTerm = ''">
+            ×
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="my-reservations-filters">
+      <span class="my-reservations-filters__label">
+        Filtrar por estado
+      </span>
+
+      <div
+        class="my-reservations-filters__group"
+        role="group"
+        aria-label="Filtrar reservas por estado">
+
+        <button
+          type="button"
+          class="my-reservations-filters__button"
+          [class.my-reservations-filters__button--active]="
+            statusFilter === 'todas'
+          "
+          (click)="setStatusFilter('todas')">
+
+          Todas
+
+          <span class="my-reservations-filters__count">
+            {{ reservas.length }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="my-reservations-filters__button"
+          [class.my-reservations-filters__button--active]="
+            statusFilter === 'pendientes'
+          "
+          (click)="setStatusFilter('pendientes')">
+
+          Pendientes
+
+          <span class="my-reservations-filters__count">
+            {{ totalPendientes }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="my-reservations-filters__button"
+          [class.my-reservations-filters__button--active]="
+            statusFilter === 'aprobadas'
+          "
+          (click)="setStatusFilter('aprobadas')">
+
+          Aprobadas
+
+          <span class="my-reservations-filters__count">
+            {{ totalAprobadas }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="my-reservations-filters__button"
+          [class.my-reservations-filters__button--active]="
+            statusFilter === 'rechazadas'
+          "
+          (click)="setStatusFilter('rechazadas')">
+
+          Rechazadas
+
+          <span class="my-reservations-filters__count">
+            {{ totalRechazadas }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="my-reservations-filters__button"
+          [class.my-reservations-filters__button--active]="
+            statusFilter === 'canceladas'
+          "
+          (click)="setStatusFilter('canceladas')">
+
+          Canceladas
+
+          <span class="my-reservations-filters__count">
+            {{ totalCanceladas }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="my-reservations-filters__button"
+          [class.my-reservations-filters__button--active]="
+            statusFilter === 'finalizadas'
+          "
+          (click)="setStatusFilter('finalizadas')">
+
+          Finalizadas
+
+          <span class="my-reservations-filters__count">
+            {{ totalFinalizadas }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       Información de resultados
+  ====================================================== -->
+
+  @if (!isLoading && reservas.length > 0) {
+    <div class="my-reservations-results">
+      <p class="my-reservations-results__text">
+        Mostrando
+        <strong>{{ reservasFiltradas.length }}</strong>
+
+        @if (reservasFiltradas.length === 1) {
+          reserva
+        } @else {
+          reservas
+        }
+      </p>
+
+      @if (searchTerm || statusFilter !== 'todas') {
+        <button
+          type="button"
+          class="my-reservations-results__clear"
+          (click)="clearFilters()">
+          Limpiar filtros
+        </button>
+      }
+    </div>
+  }
+
+  <!-- =====================================================
+       Estados de carga y vacío
+  ====================================================== -->
+
+  @if (isLoading) {
+    <section
+      class="my-reservations-loading"
+      aria-live="polite"
+      aria-busy="true">
+
+      <div class="my-reservations-loading__spinner"></div>
+
+      <div class="my-reservations-loading__content">
+        <strong>Cargando tus reservas</strong>
+        <p>Estamos consultando la información registrada.</p>
+      </div>
+    </section>
+
+  } @else if (reservas.length === 0 && !errorMessage) {
+
+    <section class="my-reservations-empty">
+      <div class="my-reservations-empty__icon">
+        📅
+      </div>
+
+      <h3 class="my-reservations-empty__title">
+        Todavía no tienes reservas
+      </h3>
+
+      <p class="my-reservations-empty__description">
+        Cuando registres una solicitud para una zona común aparecerá
+        disponible en esta sección.
+      </p>
+
+      <button
+        type="button"
+        class="my-reservations-empty__button"
+        (click)="abrirFormulario()">
+        Crear mi primera reserva
+      </button>
+    </section>
+
+  } @else if (reservasFiltradas.length === 0) {
+
+    <section class="my-reservations-empty">
+      <div class="my-reservations-empty__icon">
+        ⌕
+      </div>
+
+      <h3 class="my-reservations-empty__title">
+        No encontramos coincidencias
+      </h3>
+
+      <p class="my-reservations-empty__description">
+        Prueba con otra zona, fecha, palabra o cambia el filtro de estado.
+      </p>
+
+      <button
+        type="button"
+        class="my-reservations-empty__button"
+        (click)="clearFilters()">
+        Limpiar búsqueda y filtros
+      </button>
+    </section>
+
+  } @else {
+
+    <!-- ===================================================
+         Tarjetas
+    ==================================================== -->
+
+    <section
+      class="my-reservations-grid"
+      aria-label="Listado de mis reservas">
+
+      @for (
+        reservation of reservasFiltradas;
+        track reservation.id
+      ) {
+        <article
+          class="reservation-card"
+          [class.reservation-card--pending]="
+            reservation.estado.toLowerCase().includes('pendiente')
+          "
+          [class.reservation-card--approved]="
+            reservation.estado.toLowerCase().includes('aprob') ||
+            reservation.estado.toLowerCase().includes('confirm')
+          "
+          [class.reservation-card--rejected]="
+            reservation.estado.toLowerCase().includes('rechaz')
+          "
+          [class.reservation-card--cancelled]="
+            reservation.estado.toLowerCase().includes('cancel')
+          "
+          [class.reservation-card--finished]="
+            reservation.estado.toLowerCase().includes('finaliz')
+          ">
+
+          <header class="reservation-card__header">
+            <div class="reservation-card__identity">
+              <div
+                class="reservation-card__avatar"
+                aria-hidden="true">
+                {{
+                  reservation.zonaComunNombre
+                    .charAt(0)
+                    .toUpperCase()
+                }}
+              </div>
+
+              <div class="reservation-card__heading">
+                <span class="reservation-card__status">
+                  <span
+                    class="reservation-card__status-dot"
+                    aria-hidden="true">
+                  </span>
+
+                  {{ reservation.estado }}
+                </span>
+
+                <h3 class="reservation-card__title">
+                  {{ reservation.zonaComunNombre }}
+                </h3>
+              </div>
+            </div>
+          </header>
+
+          <div class="reservation-card__body">
+            <div class="reservation-card__schedule">
+              <div class="reservation-card__date">
+                <span
+                  class="reservation-card__date-icon"
+                  aria-hidden="true">
+                  📅
+                </span>
+
+                <div>
+                  <span class="reservation-card__schedule-label">
+                    Fecha
+                  </span>
+
+                  <strong class="reservation-card__schedule-value">
+                    {{
+                      reservation.fechaReserva
+                        | date: 'dd/MM/yyyy'
+                    }}
+                  </strong>
+                </div>
+              </div>
+
+              <div class="reservation-card__time">
+                <span
+                  class="reservation-card__time-icon"
+                  aria-hidden="true">
+                  ◷
+                </span>
+
+                <div>
+                  <span class="reservation-card__schedule-label">
+                    Horario
+                  </span>
+
+                  <strong class="reservation-card__schedule-value">
+                    {{ reservation.horaInicio.slice(0, 5) }}
+                    –
+                    {{ reservation.horaFin.slice(0, 5) }}
+                  </strong>
+                </div>
+              </div>
+            </div>
+
+            <dl class="reservation-card__details">
+              <div class="reservation-card__detail">
+                <dt>
+                  <span aria-hidden="true">👥</span>
+                  Asistentes
+                </dt>
+
+                <dd>
+                  {{ reservation.cantidadPersonas }}
+                  {{
+                    reservation.cantidadPersonas === 1
+                      ? 'persona'
+                      : 'personas'
+                  }}
+                </dd>
+              </div>
+
+              <div class="reservation-card__detail">
+                <dt>
+                  <span aria-hidden="true">📝</span>
+                  Solicitud creada
+                </dt>
+
+                <dd>
+                  {{
+                    reservation.fechaCreacion
+                      | date: 'dd/MM/yyyy, h:mm a'
+                  }}
+                </dd>
+              </div>
+            </dl>
+
+            <div
+              class="reservation-card__observation"
+              [class.reservation-card__observation--empty]="
+                !reservation.observacion
+              ">
+
+              <span class="reservation-card__observation-label">
+                Observación
+              </span>
+
+              <p>
+                {{
+                  reservation.observacion ||
+                  'No se registró ninguna observación.'
+                }}
+              </p>
+            </div>
+
+            @if (reservation.motivoCancelacion) {
+              <div class="reservation-card__notice reservation-card__notice--cancelled">
+                <strong>Motivo de cancelación</strong>
+                <p>{{ reservation.motivoCancelacion }}</p>
+              </div>
+            }
+
+            @if (reservation.observacionRevision) {
+              <div class="reservation-card__notice reservation-card__notice--review">
+                <strong>Observación de revisión</strong>
+                <p>{{ reservation.observacionRevision }}</p>
+              </div>
+            }
+          </div>
+
+          <footer class="reservation-card__footer">
+            <button
+              type="button"
+              class="reservation-card__button reservation-card__button--secondary"
+              (click)="verDetalle(reservation.id)"
+              [disabled]="
+                isLoadingDetail ||
+                isCancelling ||
+                mostrarFormulario ||
+                mostrarCancelacion ||
+                reservaProcesandoId !== null
+              ">
+              Ver detalle
+            </button>
+
+            @if (puedeCancelar(reservation)) {
+              <button
+                type="button"
+                class="reservation-card__button reservation-card__button--danger"
+                (click)="abrirCancelacion(reservation)"
+                [disabled]="
+                  isLoadingDetail ||
+                  isCancelling ||
+                  mostrarFormulario ||
+                  mostrarCancelacion ||
+                  reservaProcesandoId !== null
+                ">
+
+                @if (estaProcesando(reservation.id)) {
+                  Cancelando...
+                } @else {
+                  Cancelar reserva
+                }
+              </button>
+            } @else {
+              <span class="reservation-card__closed-state">
+                {{
+                  reservaYaPaso(reservation)
+                    ? 'Reserva finalizada'
+                    : 'No disponible para cancelar'
+                }}
+              </span>
+            }
+          </footer>
+        </article>
+      }
+    </section>
+  }
+
+</section>
+
+<!-- =======================================================
+     Modal de detalle
+======================================================== -->
+
+@if (mostrarDetalle) {
+  <div
+    class="reservation-detail-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="reservation-detail-title">
+
+    <button
+      type="button"
+      class="reservation-detail-modal__backdrop"
+      aria-label="Cerrar detalle"
+      (click)="cerrarDetalle()">
+    </button>
+
+    <article class="reservation-detail-modal__panel">
+      <header class="reservation-detail-modal__header">
+        <div>
+          <span class="reservation-detail-modal__eyebrow">
+            Información completa
+          </span>
+
+          <h3
+            id="reservation-detail-title"
+            class="reservation-detail-modal__title">
+            Detalle de la reserva
+          </h3>
+        </div>
+
+        <button
+          type="button"
+          class="reservation-detail-modal__close"
+          aria-label="Cerrar detalle"
+          [disabled]="isLoadingDetail"
+          (click)="cerrarDetalle()">
+          ×
+        </button>
+      </header>
+
+      <div class="reservation-detail-modal__body">
+        @if (isLoadingDetail) {
+          <div class="reservation-detail-modal__loading">
+            <span class="my-reservations-loading__spinner"></span>
+            <p>Consultando la información de la reserva...</p>
+          </div>
+
+        } @else if (detailErrorMessage) {
+          <div
+            class="my-reservations-alert my-reservations-alert--error"
+            role="alert">
+
+            <span
+              class="my-reservations-alert__icon"
+              aria-hidden="true">
+              !
+            </span>
+
+            <div class="my-reservations-alert__content">
+              <strong>No fue posible cargar el detalle</strong>
+              <p>{{ detailErrorMessage }}</p>
+            </div>
+          </div>
+
+        } @else if (reservaSeleccionada) {
+          <section class="reservation-detail">
+            <div class="reservation-detail__heading">
+              <div
+                class="reservation-detail__avatar"
+                aria-hidden="true">
+                {{
+                  reservaSeleccionada.zonaComunNombre
+                    .charAt(0)
+                    .toUpperCase()
+                }}
+              </div>
+
+              <div>
+                <span class="reservation-detail__status">
+                  {{ reservaSeleccionada.estado }}
+                </span>
+
+                <h4 class="reservation-detail__name">
+                  {{ reservaSeleccionada.zonaComunNombre }}
+                </h4>
+              </div>
+            </div>
+
+            <dl class="reservation-detail__grid">
+              <div class="reservation-detail__item">
+                <dt>Fecha de la reserva</dt>
+                <dd>
+                  {{
+                    reservaSeleccionada.fechaReserva
+                      | date: 'dd/MM/yyyy'
+                  }}
+                </dd>
+              </div>
+
+              <div class="reservation-detail__item">
+                <dt>Horario</dt>
+                <dd>
+                  {{ reservaSeleccionada.horaInicio.slice(0, 5) }}
+                  –
+                  {{ reservaSeleccionada.horaFin.slice(0, 5) }}
+                </dd>
+              </div>
+
+              <div class="reservation-detail__item">
+                <dt>Cantidad de personas</dt>
+                <dd>
+                  {{ reservaSeleccionada.cantidadPersonas }}
+                  {{
+                    reservaSeleccionada.cantidadPersonas === 1
+                      ? 'persona'
+                      : 'personas'
+                  }}
+                </dd>
+              </div>
+
+              <div class="reservation-detail__item">
+                <dt>Estado</dt>
+                <dd>{{ reservaSeleccionada.estado }}</dd>
+              </div>
+
+              <div class="reservation-detail__item">
+                <dt>Fecha de creación</dt>
+                <dd>
+                  {{
+                    reservaSeleccionada.fechaCreacion
+                      | date: 'dd/MM/yyyy, h:mm a'
+                  }}
+                </dd>
+              </div>
+
+              @if (reservaSeleccionada.fechaActualizacion) {
+                <div class="reservation-detail__item">
+                  <dt>Última actualización</dt>
+                  <dd>
+                    {{
+                      reservaSeleccionada.fechaActualizacion
+                        | date: 'dd/MM/yyyy, h:mm a'
+                    }}
+                  </dd>
+                </div>
+              }
+
+              @if (reservaSeleccionada.fechaRevision) {
+                <div class="reservation-detail__item">
+                  <dt>Fecha de revisión</dt>
+                  <dd>
+                    {{
+                      reservaSeleccionada.fechaRevision
+                        | date: 'dd/MM/yyyy, h:mm a'
+                    }}
+                  </dd>
+                </div>
+              }
+
+              @if (reservaSeleccionada.fechaCancelacion) {
+                <div class="reservation-detail__item">
+                  <dt>Fecha de cancelación</dt>
+                  <dd>
+                    {{
+                      reservaSeleccionada.fechaCancelacion
+                        | date: 'dd/MM/yyyy, h:mm a'
+                    }}
+                  </dd>
+                </div>
+              }
+            </dl>
+
+            <div class="reservation-detail__text-block">
+              <span>Observación de la reserva</span>
+              <p>
+                {{
+                  reservaSeleccionada.observacion ||
+                  'No se registró ninguna observación.'
+                }}
+              </p>
+            </div>
+
+            @if (reservaSeleccionada.observacionRevision) {
+              <div class="reservation-detail__text-block reservation-detail__text-block--review">
+                <span>Observación de revisión</span>
+                <p>{{ reservaSeleccionada.observacionRevision }}</p>
+              </div>
+            }
+
+            @if (reservaSeleccionada.motivoCancelacion) {
+              <div class="reservation-detail__text-block reservation-detail__text-block--cancelled">
+                <span>Motivo de cancelación</span>
+                <p>{{ reservaSeleccionada.motivoCancelacion }}</p>
+              </div>
+            }
+          </section>
+        }
+      </div>
+
+      @if (
+        reservaSeleccionada &&
+        !isLoadingDetail &&
+        !detailErrorMessage
+      ) {
+        <footer class="reservation-detail-modal__footer">
+          <button
+            type="button"
+            class="reservation-detail-modal__button reservation-detail-modal__button--secondary"
+            (click)="cerrarDetalle()">
+            Cerrar
+          </button>
+
+          @if (puedeCancelar(reservaSeleccionada)) {
+            <button
+              type="button"
+              class="reservation-detail-modal__button reservation-detail-modal__button--danger"
+              (click)="cancelarDesdeDetalle()">
+              Cancelar reserva
+            </button>
+          }
+        </footer>
+      }
+    </article>
+  </div>
+}
+
+<!-- =======================================================
+     Modal de cancelación
+======================================================== -->
+
+@if (mostrarCancelacion && reservaParaCancelar) {
+  <div
+    class="reservation-cancel-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="reservation-cancel-title">
+
+    <button
+      type="button"
+      class="reservation-cancel-modal__backdrop"
+      aria-label="Cerrar cancelación"
+      [disabled]="isCancelling"
+      (click)="cerrarCancelacion()">
+    </button>
+
+    <article class="reservation-cancel-modal__panel">
+      <header class="reservation-cancel-modal__header">
+        <div class="reservation-cancel-modal__icon">
+          !
+        </div>
+
+        <div class="reservation-cancel-modal__heading">
+          <span class="reservation-cancel-modal__eyebrow">
+            Acción irreversible
+          </span>
+
+          <h3
+            id="reservation-cancel-title"
+            class="reservation-cancel-modal__title">
+            Cancelar reserva
+          </h3>
+
+          <p class="reservation-cancel-modal__description">
+            Estás a punto de cancelar tu reserva para
+            <strong>{{ reservaParaCancelar.zonaComunNombre }}</strong>.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="reservation-cancel-modal__close"
+          aria-label="Cerrar cancelación"
+          [disabled]="isCancelling"
+          (click)="cerrarCancelacion()">
+          ×
+        </button>
+      </header>
+
+      <form
+        class="reservation-cancel-form"
+        (ngSubmit)="confirmarCancelacion()">
+
+        <div class="reservation-cancel-form__body">
+          <div class="reservation-cancel-form__summary">
+            <div>
+              <span>Fecha</span>
+              <strong>
+                {{
+                  reservaParaCancelar.fechaReserva
+                    | date: 'dd/MM/yyyy'
+                }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Horario</span>
+              <strong>
+                {{ reservaParaCancelar.horaInicio.slice(0, 5) }}
+                –
+                {{ reservaParaCancelar.horaFin.slice(0, 5) }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Estado actual</span>
+              <strong>{{ reservaParaCancelar.estado }}</strong>
+            </div>
+          </div>
+
+          @if (cancellationErrorMessage) {
+            <div
+              class="my-reservations-alert my-reservations-alert--error"
+              role="alert">
+
+              <span
+                class="my-reservations-alert__icon"
+                aria-hidden="true">
+                !
+              </span>
+
+              <div class="my-reservations-alert__content">
+                <strong>Revisa el motivo ingresado</strong>
+                <p>{{ cancellationErrorMessage }}</p>
+              </div>
+            </div>
+          }
+
+          <div class="reservation-cancel-form__field">
+            <label
+              class="reservation-cancel-form__label"
+              for="cancellation-reason">
+              Motivo de la cancelación
+              <span>*</span>
+            </label>
+
+            <textarea
+              id="cancellation-reason"
+              class="reservation-cancel-form__textarea"
+              name="motivoCancelacion"
+              [(ngModel)]="motivoCancelacion"
+              maxlength="500"
+              rows="5"
+              placeholder="Explica brevemente por qué deseas cancelar la reserva..."
+              [disabled]="isCancelling"
+              required>
+            </textarea>
+
+            <div class="reservation-cancel-form__field-footer">
+              <span>
+                El motivo quedará registrado en el historial.
+              </span>
+
+              <span>
+                {{ motivoCancelacion.length }}/500
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <footer class="reservation-cancel-form__footer">
+          <button
+            type="button"
+            class="reservation-cancel-form__button reservation-cancel-form__button--secondary"
+            [disabled]="isCancelling"
+            (click)="cerrarCancelacion()">
+            Conservar reserva
+          </button>
+
+          <button
+            type="submit"
+            class="reservation-cancel-form__button reservation-cancel-form__button--danger"
+            [disabled]="isCancelling">
+
+            @if (isCancelling) {
+              <span
+                class="reservation-cancel-form__spinner"
+                aria-hidden="true">
+              </span>
+
+              Cancelando...
+            } @else {
+              Confirmar cancelación
+            }
+          </button>
+        </footer>
+      </form>
+    </article>
+  </div>
+}
+
+<!-- =======================================================
+     Formulario de nueva reserva
+======================================================== -->
+
+@if (mostrarFormulario) {
+  <div
+    class="reservation-form-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Crear nueva reserva">
+
+    <button
+      type="button"
+      class="reservation-form-modal__backdrop"
+      aria-label="Cerrar formulario"
+      (click)="cerrarFormulario()">
+    </button>
+
+    <div class="reservation-form-modal__content">
+      <app-form-reservas
+        (guardado)="reservaGuardada($event)"
+        (cerrar)="cerrarFormulario()">
+      </app-form-reservas>
+    </div>
+  </div>
+}

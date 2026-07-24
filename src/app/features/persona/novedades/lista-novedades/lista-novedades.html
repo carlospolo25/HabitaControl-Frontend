@@ -1,0 +1,161 @@
+<section class="novedades-container">
+
+  <header class="novedades-header">
+    <div>
+      <span class="eyebrow">Gestión de novedades</span>
+      <h2>Novedades registradas</h2>
+      <p>Consulta el estado, responsable e historial de cada incidencia.</p>
+    </div>
+
+    <button
+      type="button"
+      class="refresh-button"
+      (click)="cargar()"
+      [disabled]="isLoading">
+      Actualizar
+    </button>
+  </header>
+
+  @if (errorMessage) {
+    <div class="alert error">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="loading-state">
+      Cargando novedades...
+    </div>
+  } @else if (novedades.length === 0) {
+    <div class="empty-state">
+      <span>📋</span>
+      <h3>No hay novedades registradas</h3>
+      <p>Cuando exista una novedad disponible aparecerá aquí.</p>
+    </div>
+  } @else {
+
+    <section class="novedades-table-wrapper">
+      <table class="tabla-novedades">
+
+        <thead>
+          <tr>
+            <th>Novedad</th>
+            <th>Estado</th>
+            <th>Reportada por</th>
+            <th>Asignada a</th>
+            <th>Eventos</th>
+            <th>Última actualización</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (n of novedades; track n.id) {
+            <tr>
+
+              <td data-label="Novedad">
+                <div class="novedad-main-cell">
+                  <strong>{{ n.titulo }}</strong>
+                  <p>{{ n.descripcion }}</p>
+                </div>
+              </td>
+
+              <td data-label="Estado">
+                <span
+                  class="estado"
+                  [class.reportada]="n.estado === 'Reportada'"
+                  [class.asignada]="n.estado === 'Asignada'"
+                  [class.enCurso]="n.estado === 'EnCurso'"
+                  [class.finalizada]="n.estado === 'Finalizada'">
+                  {{ n.estado }}
+                </span>
+              </td>
+
+              <td data-label="Reportada por">
+                {{ n.reportadaPor || '—' }}
+              </td>
+
+              <td data-label="Asignada a">
+                {{ n.asignadaA || 'Sin asignar' }}
+              </td>
+
+              <td data-label="Eventos">
+                {{ n.totalEventos ?? 0 }}
+              </td>
+
+              <td data-label="Última actualización">
+                {{ (n.ultimaActualizacion ?? n.fechaCreacion) | date:'short' }}
+              </td>
+
+              <td data-label="Acciones" class="acciones-cell">
+
+                @if (canViewHistory()) {
+                  <button
+                    type="button"
+                    class="btn-ver"
+                    [disabled]="isLoading"
+                    (click)="mostrarHistorial(n.id)">
+                    Ver
+                  </button>
+                }
+
+                @if (canAssignNews()) {
+                  <button
+                    type="button"
+                    class="btn-asignar"
+                    [disabled]="isLoading || n.estado === 'Finalizada'"
+                    (click)="abrirAsignacion(n.id)">
+                    {{ n.asignadaA ? 'Reasignar' : 'Asignar' }}
+                  </button>
+                }
+
+                @if (canStartTracking() && n.estado !== 'Finalizada') {
+                  <button
+                    type="button"
+                    class="btn-evento"
+                    [disabled]="isLoading"
+                    (click)="abrirSeguimiento(n.id)">
+                    Agregar evento
+                  </button>
+                }
+
+                @if (canFinishTracking() && n.estado !== 'Finalizada') {
+                  <button
+                    type="button"
+                    class="btn-finalizar"
+                    [disabled]="isLoading"
+                    (click)="abrirFinalizacion(n.id)">
+                    Cerrar
+                  </button>
+                }
+
+              </td>
+
+            </tr>
+          }
+        </tbody>
+
+      </table>
+    </section>
+  }
+
+</section>
+
+@if (asignacionNovedad) {
+  <app-novedad-asignar
+    [novedadId]="novedadSeleccionadaId"
+    (cancelar)="cerrarAsignacion(false)"
+    (asignacionCompletada)="cerrarAsignacion(true)">
+  </app-novedad-asignar>
+}
+
+@if (mostrarDetalles) {
+  <section class="expediente-modal-backdrop">
+    <div class="expediente-modal-panel">
+      <app-novedad-eventos-detalle
+        [novedadId]="novedadSeleccionadaId"
+        (cerrar)="cerrarDetalles()">
+      </app-novedad-eventos-detalle>
+    </div>
+  </section>
+}

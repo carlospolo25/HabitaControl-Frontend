@@ -1,0 +1,101 @@
+<section class="persona-login-page">
+  <div class="persona-login-background"></div>
+
+  <main
+    class="persona-login-card"
+    [class.persona-login-card--error]="errorMessage">
+    <header class="persona-login-brand">
+      <div class="persona-login-logo">
+        <img src="assets/brand/logo-habitacontrol.png" alt="HabitaControl">
+      </div>
+      
+    </header>
+
+    <section class="persona-login-heading">
+      <h1>Iniciar sesión</h1>
+      <p>Accede a tu panel como residente, seguridad o personal del conjunto.</p>
+    </section>
+
+    <form class="persona-login-form" (ngSubmit)="login()">
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          (input)="errorMessage = ''"
+          placeholder="ejemplo@correo.com"
+          autocomplete="email"
+          required>
+      </div>
+
+      <div class="form-group">
+        <div class="password-label-row">
+          <label for="password">Contraseña</label>
+
+        <button type="button" class="link-button" (click)="forgotPassword()">
+          ¿Olvidaste tu contraseña?
+        </button>
+        </div>
+
+        <div class="password-field">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            [(ngModel)]="password"
+            (input)="errorMessage = ''"
+            placeholder="Ingresa tu contraseña"
+            autocomplete="current-password"
+            required>
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="showPassword = !showPassword"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+
+            @if (showPassword) {
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 3l18 18" />
+                <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+                <path d="M9.9 4.3A9.8 9.8 0 0 1 12 4c5 0 8.5 4.4 9.7 6.2a2.5 2.5 0 0 1 0 2.6 16.2 16.2 0 0 1-2.1 2.7" />
+                <path d="M6.4 6.4a16 16 0 0 0-4.1 3.8 2.5 2.5 0 0 0 0 2.6C3.5 14.6 7 19 12 19a9.7 9.7 0 0 0 3.6-.7" />
+              </svg>
+            } @else {
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.3 10.2a2.5 2.5 0 0 0 0 2.6C3.5 14.6 7 19 12 19s8.5-4.4 9.7-6.2a2.5 2.5 0 0 0 0-2.6C20.5 8.4 17 4 12 4s-8.5 4.4-9.7 6.2Z" />
+                <circle cx="12" cy="11.5" r="3" />
+              </svg>
+            }
+          </button>
+        </div>
+      </div>
+
+      @if (errorMessage) {
+        <div class="login-error">
+          <span>!</span>
+          <p>{{ errorMessage }}</p>
+        </div>
+      }
+
+      <button
+        type="submit"
+        class="btn-login"
+        [disabled]="loading">
+        {{ loading ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+
+    <footer class="persona-login-footer">
+      <p>
+        Al iniciar sesión aceptas nuestras
+        <a href="#">Políticas de privacidad</a>
+        y
+        <a href="#">Términos de uso</a>.
+      </p>
+    </footer>
+  </main>
+</section>

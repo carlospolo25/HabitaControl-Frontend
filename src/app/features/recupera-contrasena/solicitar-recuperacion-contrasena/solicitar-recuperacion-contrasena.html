@@ -1,0 +1,143 @@
+<section class="recovery-page">
+  <div class="recovery-card">
+
+    <header class="recovery-header">
+      <div class="recovery-icon" aria-hidden="true">
+        🔐
+      </div>
+
+      <span class="recovery-eyebrow">
+        Seguridad de la cuenta
+      </span>
+
+      <h1>Recuperar contraseña</h1>
+
+      <p>
+        Ingresa el correo asociado a tu cuenta. Te enviaremos un enlace seguro
+        para crear una nueva contraseña.
+      </p>
+    </header>
+
+    @if (successMessage) {
+      <div
+        class="alert alert-success"
+        role="status"
+        aria-live="polite">
+
+        <span class="alert-icon" aria-hidden="true">✓</span>
+
+        <div>
+          <strong>Solicitud enviada</strong>
+          <p>{{ successMessage }}</p>
+        </div>
+      </div>
+    }
+
+    @if (hasErrors && errorMessage) {
+      <div
+        class="alert alert-error"
+        role="alert"
+        aria-live="assertive">
+
+        <span class="alert-icon" aria-hidden="true">!</span>
+
+        <div>
+          <strong>No pudimos procesar la solicitud</strong>
+          <p>{{ errorMessage }}</p>
+        </div>
+      </div>
+    }
+
+    @if (!successMessage) {
+      <form
+        class="recovery-form"
+        (ngSubmit)="solicitar()"
+        #recoveryForm="ngForm"
+        novalidate>
+
+        <div class="form-group">
+          <label for="recovery-email">
+            Correo electrónico
+          </label>
+
+          <div class="input-wrapper">
+            <span class="input-icon" aria-hidden="true">
+              @
+            </span>
+
+            <input
+              id="recovery-email"
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              #emailInput="ngModel"
+              placeholder="nombre@correo.com"
+              autocomplete="email"
+              inputmode="email"
+              maxlength="150"
+              required
+              email
+              [disabled]="isSubmitting"
+              [class.input-invalid]="
+                emailInput.invalid &&
+                (emailInput.dirty || emailInput.touched)
+              "
+              aria-describedby="email-help email-error">
+          </div>
+
+          <small id="email-help" class="field-help">
+            Usa el mismo correo con el que ingresas a HabitaControl.
+          </small>
+
+          @if (
+            emailInput.invalid &&
+            (emailInput.dirty || emailInput.touched)
+          ) {
+            <small id="email-error" class="field-error">
+              @if (emailInput.errors?.['required']) {
+                El correo electrónico es obligatorio.
+              } @else if (emailInput.errors?.['email']) {
+                Ingresa un correo electrónico válido.
+              }
+            </small>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="isSubmitting || recoveryForm.invalid">
+
+          @if (isSubmitting) {
+            <span class="spinner" aria-hidden="true"></span>
+            Enviando solicitud...
+          } @else {
+            Enviar enlace de recuperación
+          }
+        </button>
+      </form>
+    }
+
+    @if (successMessage) {
+      <div class="success-actions">
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="email = ''; successMessage = ''">
+          Enviar a otro correo
+        </button>
+      </div>
+    }
+
+    <footer class="recovery-footer">
+      <p>
+        El enlace tendrá una duración limitada y solo podrá utilizarse una vez.
+      </p>
+
+      <a routerLink="/login">
+        Volver al inicio de sesión
+      </a>
+    </footer>
+
+  </div>
+</section>

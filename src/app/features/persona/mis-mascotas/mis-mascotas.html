@@ -1,0 +1,1057 @@
+<section class="pet-management">
+
+  <!-- ======================================================
+       ENCABEZADO PRINCIPAL
+  ======================================================= -->
+
+  <header class="pet-management__header">
+
+    <div class="pet-management-heading">
+
+      <span class="pet-management-heading__eyebrow">
+        Censo residencial
+      </span>
+
+      <h1 class="pet-management-heading__title">
+        Mis mascotas
+      </h1>
+
+      <p class="pet-management-heading__description">
+        Registra, actualiza y administra las mascotas asociadas a tu
+        residencia.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="pet-management-refresh"
+      (click)="cargarMascotas()"
+      [disabled]="isLoading || isSubmitting"
+      aria-label="Actualizar lista de mascotas">
+
+      <span
+        class="pet-management-refresh__icon"
+        [class.pet-management-refresh__icon--loading]="isLoading"
+        aria-hidden="true">
+        ↻
+      </span>
+
+      <span class="pet-management-refresh__label">
+        {{ isLoading ? 'Actualizando...' : 'Actualizar' }}
+      </span>
+
+    </button>
+
+  </header>
+
+
+  <!-- ======================================================
+       MENSAJES DEL SISTEMA
+  ======================================================= -->
+
+  <section
+    class="pet-management__notifications"
+    aria-live="polite">
+
+    @if (errorMessage) {
+
+      <article
+        class="pet-notification pet-notification--error"
+        role="alert">
+
+        <div class="pet-notification__body">
+
+          <span
+            class="pet-notification__icon"
+            aria-hidden="true">
+            !
+          </span>
+
+          <div class="pet-notification__content">
+
+            <strong class="pet-notification__title">
+              No fue posible completar la operación
+            </strong>
+
+            <p class="pet-notification__message">
+              {{ errorMessage }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="pet-notification__close"
+          (click)="cerrarError()"
+          aria-label="Cerrar mensaje de error">
+          ×
+        </button>
+
+      </article>
+
+    }
+
+    @if (successMessage) {
+
+      <article
+        class="pet-notification pet-notification--success"
+        role="status">
+
+        <div class="pet-notification__body">
+
+          <span
+            class="pet-notification__icon"
+            aria-hidden="true">
+            ✓
+          </span>
+
+          <div class="pet-notification__content">
+
+            <strong class="pet-notification__title">
+              Operación completada
+            </strong>
+
+            <p class="pet-notification__message">
+              {{ successMessage }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="pet-notification__close"
+          (click)="cerrarExito()"
+          aria-label="Cerrar mensaje de éxito">
+          ×
+        </button>
+
+      </article>
+
+    }
+
+  </section>
+
+
+  <!-- ======================================================
+       ÁREA DE TRABAJO
+  ======================================================= -->
+
+  <div class="pet-management__workspace">
+
+
+    <!-- ====================================================
+         PANEL DEL FORMULARIO
+    ===================================================== -->
+
+    <article class="pet-editor">
+
+      <header class="pet-editor__header">
+
+        <div class="pet-editor-heading">
+
+          <span class="pet-editor-heading__eyebrow">
+            {{ mascotaEditandoId ? 'Edición de mascota' : 'Nuevo registro' }}
+          </span>
+
+          <h2 class="pet-editor-heading__title">
+            {{
+              mascotaEditandoId
+                ? 'Actualizar mascota'
+                : 'Registrar mascota'
+            }}
+          </h2>
+
+          <p class="pet-editor-heading__description">
+            {{
+              mascotaEditandoId
+                ? 'Modifica la información de la mascota seleccionada.'
+                : 'Completa los datos para asociar una mascota a tu cuenta.'
+            }}
+          </p>
+
+        </div>
+
+        @if (mascotaEditandoId) {
+
+          <span class="pet-editor__mode">
+            Editando
+          </span>
+
+        }
+
+      </header>
+
+
+      <!-- ==================================================
+           FORMULARIO
+      =================================================== -->
+
+      <form
+        class="pet-editor-form"
+        (ngSubmit)="guardarMascota()"
+        #petForm="ngForm"
+        novalidate>
+
+
+        <!-- Nombre -->
+
+        <div class="pet-field">
+
+          <label
+            class="pet-field__label"
+            for="petName">
+
+            Nombre
+
+            <span
+              class="pet-field__required"
+              aria-hidden="true">
+              *
+            </span>
+
+          </label>
+
+          <input
+            id="petName"
+            name="nombre"
+            type="text"
+            class="pet-field__control pet-field__control--input"
+            [(ngModel)]="nombre"
+            [disabled]="isSubmitting"
+            maxlength="100"
+            autocomplete="off"
+            placeholder="Ej. Luna"
+            required>
+
+          <div class="pet-field__footer">
+
+            <span class="pet-field__hint">
+              Nombre habitual de la mascota.
+            </span>
+
+            <span class="pet-field__counter">
+              {{ nombre.trim().length }}/100
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Tipo -->
+
+        <div class="pet-field">
+
+          <label
+            class="pet-field__label"
+            for="petType">
+
+            Tipo de mascota
+
+            <span
+              class="pet-field__required"
+              aria-hidden="true">
+              *
+            </span>
+
+          </label>
+
+          <select
+            id="petType"
+            name="tipoSeleccionado"
+            class="pet-field__control pet-field__control--select"
+            [(ngModel)]="tipoSeleccionado"
+            [disabled]="isSubmitting"
+            required>
+
+            <option [ngValue]="null">
+              Selecciona un tipo
+            </option>
+
+            @for (
+              opcion of tiposMascota;
+              track opcion.valor
+            ) {
+
+              <option [ngValue]="opcion.valor">
+                {{ opcion.etiqueta }}
+              </option>
+
+            }
+
+          </select>
+
+          @if (tipoSeleccionado !== null) {
+
+            <p class="pet-field__helper">
+              {{ obtenerDescripcionTipo(tipoSeleccionado) }}
+            </p>
+
+          }
+
+        </div>
+
+
+        <!-- Raza -->
+
+        <div class="pet-field">
+
+          <label
+            class="pet-field__label"
+            for="petBreed">
+
+            Raza
+
+            <span
+              class="pet-field__required"
+              aria-hidden="true">
+              *
+            </span>
+
+          </label>
+
+          <input
+            id="petBreed"
+            name="raza"
+            type="text"
+            class="pet-field__control pet-field__control--input"
+            [(ngModel)]="raza"
+            [disabled]="isSubmitting"
+            maxlength="100"
+            autocomplete="off"
+            placeholder="Ej. Criollo"
+            required>
+
+          <div class="pet-field__footer">
+
+            <span class="pet-field__hint">
+              Indica la raza o escribe “Criollo”.
+            </span>
+
+            <span class="pet-field__counter">
+              {{ raza.trim().length }}/100
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Color -->
+
+        <div class="pet-field">
+
+          <label
+            class="pet-field__label"
+            for="petColor">
+
+            Color
+
+            <span
+              class="pet-field__required"
+              aria-hidden="true">
+              *
+            </span>
+
+          </label>
+
+          <input
+            id="petColor"
+            name="color"
+            type="text"
+            class="pet-field__control pet-field__control--input"
+            [(ngModel)]="color"
+            [disabled]="isSubmitting"
+            maxlength="80"
+            autocomplete="off"
+            placeholder="Ej. Blanco con café"
+            required>
+
+          <div class="pet-field__footer">
+
+            <span class="pet-field__hint">
+              Color predominante o rasgos visibles.
+            </span>
+
+            <span class="pet-field__counter">
+              {{ color.trim().length }}/80
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Fecha de nacimiento -->
+
+        <div class="pet-field pet-field--wide">
+
+          <label
+            class="pet-field__label"
+            for="petBirthDate">
+            Fecha de nacimiento
+          </label>
+
+          <input
+            id="petBirthDate"
+            name="fechaNacimiento"
+            type="date"
+            class="pet-field__control pet-field__control--input"
+            [(ngModel)]="fechaNacimiento"
+            [disabled]="isSubmitting">
+
+          <p class="pet-field__helper pet-field__helper--neutral">
+            Este campo es opcional. Puedes dejarlo vacío si no conoces la fecha.
+          </p>
+
+        </div>
+
+
+        <!-- Observaciones -->
+
+        <div class="pet-field pet-field--wide">
+
+          <label
+            class="pet-field__label"
+            for="petObservations">
+            Observaciones
+          </label>
+
+          <textarea
+            id="petObservations"
+            name="observaciones"
+            class="pet-field__control pet-field__control--textarea"
+            [(ngModel)]="observaciones"
+            [disabled]="isSubmitting"
+            maxlength="500"
+            rows="4"
+            placeholder="Ej. Mascota de apoyo emocional, requiere bozal o tiene microchip.">
+          </textarea>
+
+          <div class="pet-field__footer">
+
+            <span class="pet-field__hint">
+              Información adicional útil para la administración.
+            </span>
+
+            <span class="pet-field__counter">
+              {{ observaciones.trim().length }}/500
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Fotografía -->
+
+        <div class="pet-field pet-field--wide">
+
+          <label
+            class="pet-field__label"
+            for="petPhoto">
+            Fotografía de la mascota
+          </label>
+
+          <div class="pet-photo-uploader">
+
+            <input
+              #photoInput
+              id="petPhoto"
+              name="foto"
+              type="file"
+              class="pet-photo-uploader__input"
+              accept="image/jpeg,image/png,image/webp"
+              (change)="seleccionarFoto($event)"
+              [disabled]="isSubmitting">
+
+            <label
+              class="pet-photo-uploader__selector"
+              for="petPhoto"
+              [class.pet-photo-uploader__selector--disabled]="isSubmitting">
+
+              <span
+                class="pet-photo-uploader__icon"
+                aria-hidden="true">
+                📷
+              </span>
+
+              <span class="pet-photo-uploader__content">
+
+                <strong class="pet-photo-uploader__title">
+                  {{
+                    fotoSeleccionada
+                      ? 'Cambiar fotografía seleccionada'
+                      : 'Seleccionar fotografía'
+                  }}
+                </strong>
+
+                <small class="pet-photo-uploader__description">
+                  Formatos permitidos: JPG, PNG o WebP. Máximo 5 MB.
+                </small>
+
+              </span>
+
+            </label>
+
+
+            @if (fotoPreview || fotoActualUrl) {
+
+              <article class="pet-photo-preview">
+
+                <figure class="pet-photo-preview__media">
+
+                  <img
+                    class="pet-photo-preview__image"
+                    [src]="fotoPreview || fotoActualUrl"
+                    [alt]="
+                      fotoPreview
+                        ? 'Vista previa de la nueva fotografía'
+                        : 'Fotografía actual de la mascota'
+                    ">
+
+                </figure>
+
+                <div class="pet-photo-preview__content">
+
+                  <span class="pet-photo-preview__eyebrow">
+                    {{
+                      fotoPreview
+                        ? 'Nueva fotografía'
+                        : 'Fotografía actual'
+                    }}
+                  </span>
+
+                  <strong class="pet-photo-preview__title">
+                    {{
+                      fotoSeleccionada?.name ||
+                      'Imagen registrada'
+                    }}
+                  </strong>
+
+                  @if (fotoSeleccionada) {
+
+                    <span class="pet-photo-preview__meta">
+                      {{
+                        fotoSeleccionada.size / 1024 / 1024
+                          | number: '1.2-2'
+                      }}
+                      MB
+                    </span>
+
+                  } @else {
+
+                    <span class="pet-photo-preview__meta">
+                      Se conservará si no seleccionas una nueva imagen.
+                    </span>
+
+                  }
+
+                  @if (fotoPreview) {
+
+                    <button
+                      type="button"
+                      class="pet-photo-preview__remove"
+                      (click)="quitarFotoSeleccionada(photoInput)"
+                      [disabled]="isSubmitting">
+
+                      <span aria-hidden="true">
+                        ×
+                      </span>
+
+                      <span>
+                        Quitar selección
+                      </span>
+
+                    </button>
+
+                  }
+
+                </div>
+
+              </article>
+
+            } @else {
+
+              <div class="pet-photo-empty">
+
+                <span
+                  class="pet-photo-empty__icon"
+                  aria-hidden="true">
+                  🐾
+                </span>
+
+                <p class="pet-photo-empty__message">
+                  La fotografía es opcional, pero facilita la identificación de
+                  la mascota.
+                </p>
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- Acciones -->
+
+        <footer class="pet-editor-form__actions">
+
+          @if (mascotaEditandoId) {
+
+            <button
+              type="button"
+              class="pet-action pet-action--secondary"
+              (click)="cancelarEdicion()"
+              [disabled]="isSubmitting">
+
+              <span class="pet-action__label">
+                Cancelar edición
+              </span>
+
+            </button>
+
+          }
+
+          <button
+            type="submit"
+            class="pet-action pet-action--primary"
+            [disabled]="
+              isSubmitting ||
+              !personaId ||
+              petForm.invalid
+            ">
+
+            @if (isSubmitting) {
+
+              <span
+                class="pet-action__spinner"
+                aria-hidden="true">
+              </span>
+
+              <span class="pet-action__label">
+                {{
+                  mascotaEditandoId
+                    ? 'Guardando cambios...'
+                    : 'Registrando mascota...'
+                }}
+              </span>
+
+            } @else {
+
+              <span
+                class="pet-action__icon"
+                aria-hidden="true">
+                {{ mascotaEditandoId ? '✓' : '+' }}
+              </span>
+
+              <span class="pet-action__label">
+                {{
+                  mascotaEditandoId
+                    ? 'Guardar cambios'
+                    : 'Registrar mascota'
+                }}
+              </span>
+
+            }
+
+          </button>
+
+        </footer>
+
+      </form>
+
+    </article>
+
+
+    <!-- ====================================================
+         PANEL DE REGISTROS
+    ===================================================== -->
+
+    <section class="pet-registry">
+
+      <header class="pet-registry__header">
+
+        <div class="pet-registry-heading">
+
+          <span class="pet-registry-heading__eyebrow">
+            Mascotas asociadas
+          </span>
+
+          <h2 class="pet-registry-heading__title">
+            Registros activos
+          </h2>
+
+          <p class="pet-registry-heading__description">
+            Consulta y administra las mascotas registradas actualmente.
+          </p>
+
+        </div>
+
+        <span
+          class="pet-registry__counter"
+          [attr.aria-label]="mascotas.length + ' mascotas registradas'">
+          {{ mascotas.length }}
+        </span>
+
+      </header>
+
+
+      <!-- Estado de carga -->
+
+      @if (isLoading) {
+
+        <div
+          class="pet-registry-state pet-registry-state--loading"
+          role="status">
+
+          <span
+            class="pet-registry-state__spinner"
+            aria-hidden="true">
+          </span>
+
+          <div class="pet-registry-state__content">
+
+            <h3 class="pet-registry-state__title">
+              Cargando mascotas
+            </h3>
+
+            <p class="pet-registry-state__description">
+              Estamos consultando tus registros activos.
+            </p>
+
+          </div>
+
+        </div>
+
+      } @else if (mascotas.length === 0) {
+
+
+        <!-- Estado vacío -->
+
+        <div class="pet-registry-state pet-registry-state--empty">
+
+          <div
+            class="pet-registry-state__illustration"
+            aria-hidden="true">
+            🐾
+          </div>
+
+          <div class="pet-registry-state__content">
+
+            <h3 class="pet-registry-state__title">
+              No tienes mascotas registradas
+            </h3>
+
+            <p class="pet-registry-state__description">
+              Completa el formulario para registrar tu primera mascota.
+            </p>
+
+          </div>
+
+        </div>
+
+      } @else {
+
+
+        <!-- ==================================================
+             CUADRÍCULA DE MASCOTAS
+        =================================================== -->
+
+        <div class="pet-registry-grid">
+
+          @for (
+            mascota of mascotas;
+            track mascota.id
+          ) {
+
+            <article
+              class="pet-profile-card"
+              [class.pet-profile-card--editing]="
+                mascotaEditandoId === mascota.id
+              ">
+
+
+              <!-- Encabezado de tarjeta -->
+
+              <header class="pet-profile-card__header">
+
+                <div class="pet-profile-card__identity">
+
+                  <div
+                    class="pet-profile-card__avatar"
+                    aria-hidden="true">
+
+                    @switch (mascota.tipo) {
+
+                      @case (TipoMascota.Perro) {
+                        🐶
+                      }
+
+                      @case (TipoMascota.Gato) {
+                        🐱
+                      }
+
+                      @case (TipoMascota.Ave) {
+                        🐦
+                      }
+
+                      @case (TipoMascota.Otro) {
+                        🐾
+                      }
+
+                      @default {
+                        🐾
+                      }
+
+                    }
+
+                  </div>
+
+                  <div class="pet-profile-card__heading">
+
+                    <span class="pet-profile-card__type">
+                      {{ obtenerNombreTipo(mascota.tipo) }}
+                    </span>
+
+                    <h3 class="pet-profile-card__name">
+                      {{ mascota.nombre }}
+                    </h3>
+
+                  </div>
+
+                </div>
+
+                <span class="pet-profile-card__status">
+
+                  <span
+                    class="pet-profile-card__status-indicator"
+                    aria-hidden="true">
+                  </span>
+
+                  <span class="pet-profile-card__status-label">
+                    Activa
+                  </span>
+
+                </span>
+
+              </header>
+
+
+              <!-- Fotografía -->
+
+              @if (obtenerFotoMascota(mascota); as fotoMascota) {
+
+                <figure class="pet-profile-card__media">
+
+                  <img
+                    class="pet-profile-card__image"
+                    [src]="fotoMascota"
+                    [alt]="'Fotografía de la mascota ' + mascota.nombre"
+                    loading="lazy">
+
+                </figure>
+
+              } @else {
+
+                <div class="pet-profile-card__media-placeholder">
+
+                  <span
+                    class="pet-profile-card__media-icon"
+                    aria-hidden="true">
+                    📷
+                  </span>
+
+                  <p class="pet-profile-card__media-message">
+                    Sin fotografía registrada
+                  </p>
+
+                </div>
+
+              }
+
+
+              <!-- Información -->
+
+              <dl class="pet-profile-details">
+
+                <div class="pet-profile-details__item">
+
+                  <dt class="pet-profile-details__label">
+                    Raza
+                  </dt>
+
+                  <dd class="pet-profile-details__value">
+                    {{ mascota.raza }}
+                  </dd>
+
+                </div>
+
+                <div class="pet-profile-details__item">
+
+                  <dt class="pet-profile-details__label">
+                    Color
+                  </dt>
+
+                  <dd class="pet-profile-details__value">
+                    {{ mascota.color }}
+                  </dd>
+
+                </div>
+
+                <div class="pet-profile-details__item">
+
+                  <dt class="pet-profile-details__label">
+                    Tipo
+                  </dt>
+
+                  <dd class="pet-profile-details__value">
+                    {{ obtenerNombreTipo(mascota.tipo) }}
+                  </dd>
+
+                </div>
+
+                <div class="pet-profile-details__item">
+
+                  <dt class="pet-profile-details__label">
+                    Fecha de nacimiento
+                  </dt>
+
+                  <dd class="pet-profile-details__value">
+                    {{
+                      mascota.fechaNacimiento
+                        ? (mascota.fechaNacimiento | date: 'dd/MM/yyyy')
+                        : 'No registrada'
+                    }}
+                  </dd>
+
+                </div>
+
+              </dl>
+
+
+              <!-- Observaciones -->
+
+              @if (mascota.observaciones) {
+
+                <div class="pet-profile-notes">
+
+                  <span class="pet-profile-notes__label">
+                    Observaciones
+                  </span>
+
+                  <p class="pet-profile-notes__content">
+                    {{ mascota.observaciones }}
+                  </p>
+
+                </div>
+
+              }
+
+
+              <!-- Aviso de edición -->
+
+              @if (mascotaEditandoId === mascota.id) {
+
+                <div class="pet-profile-card__editing-notice">
+
+                  <span
+                    class="pet-profile-card__editing-icon"
+                    aria-hidden="true">
+                    ✎
+                  </span>
+
+                  <span class="pet-profile-card__editing-label">
+                    Esta mascota está siendo editada.
+                  </span>
+
+                </div>
+
+              }
+
+
+              <!-- Acciones -->
+
+              <footer class="pet-profile-card__actions">
+
+                <button
+                  type="button"
+                  class="pet-profile-action pet-profile-action--edit"
+                  (click)="editarMascota(mascota)"
+                  [disabled]="
+                    isSubmitting ||
+                    mascotaDesactivandoId !== null
+                  ">
+
+                  <span
+                    class="pet-profile-action__icon"
+                    aria-hidden="true">
+                    ✎
+                  </span>
+
+                  <span class="pet-profile-action__label">
+                    Editar
+                  </span>
+
+                </button>
+
+                <button
+                  type="button"
+                  class="pet-profile-action pet-profile-action--danger"
+                  (click)="desactivarMascota(mascota.id)"
+                  [disabled]="
+                    isSubmitting ||
+                    mascotaDesactivandoId !== null
+                  ">
+
+                  @if (
+                    mascotaDesactivandoId === mascota.id
+                  ) {
+
+                    <span
+                      class="pet-profile-action__spinner"
+                      aria-hidden="true">
+                    </span>
+
+                    <span class="pet-profile-action__label">
+                      Desactivando...
+                    </span>
+
+                  } @else {
+
+                    <span
+                      class="pet-profile-action__icon"
+                      aria-hidden="true">
+                      ⊘
+                    </span>
+
+                    <span class="pet-profile-action__label">
+                      Desactivar
+                    </span>
+
+                  }
+
+                </button>
+
+              </footer>
+
+            </article>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+  </div>
+
+</section>

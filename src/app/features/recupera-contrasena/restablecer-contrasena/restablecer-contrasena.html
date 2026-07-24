@@ -1,0 +1,400 @@
+<section class="recovery-page">
+
+  <article class="recovery-card">
+
+    <header class="recovery-header">
+      <div class="recovery-icon" aria-hidden="true">
+        🔑
+      </div>
+
+      <span class="recovery-eyebrow">
+        Seguridad de la cuenta
+      </span>
+
+      <h1>Restablecer contraseña</h1>
+
+      <p>
+        Crea una nueva contraseña segura para recuperar el acceso a tu cuenta
+        de HabitaControl.
+      </p>
+    </header>
+
+    <!-- =====================================================
+         VALIDANDO TOKEN
+    ====================================================== -->
+
+    @if (isValidating) {
+      <section
+        class="validation-state"
+        aria-live="polite"
+        aria-busy="true">
+
+        <span class="validation-spinner" aria-hidden="true"></span>
+
+        <div>
+          <strong>Validando enlace</strong>
+          <p>Estamos verificando que este enlace de recuperación sea válido.</p>
+        </div>
+
+      </section>
+    }
+
+    <!-- =====================================================
+         MENSAJE DE ERROR
+    ====================================================== -->
+
+    @if (!isValidating && hasErrors && errorMessage) {
+      <div
+        class="alert alert-error"
+        role="alert"
+        aria-live="assertive">
+
+        <span class="alert-icon" aria-hidden="true">
+          !
+        </span>
+
+        <div>
+          <strong>
+            @if (tokenExpirado) {
+              Enlace expirado
+            } @else if (tokenUsado) {
+              Enlace utilizado
+            } @else if (tokenCancelado) {
+              Recuperación cancelada
+            } @else {
+              No fue posible continuar
+            }
+          </strong>
+
+          <p>{{ errorMessage }}</p>
+        </div>
+
+      </div>
+    }
+
+    <!-- =====================================================
+         MENSAJE DE ÉXITO
+    ====================================================== -->
+
+    @if (!isValidating && successMessage) {
+      <div
+        class="alert alert-success"
+        role="status"
+        aria-live="polite">
+
+        <span class="alert-icon" aria-hidden="true">
+          ✓
+        </span>
+
+        <div>
+          <strong>Contraseña actualizada</strong>
+          <p>{{ successMessage }}</p>
+        </div>
+
+      </div>
+
+      <div class="success-actions">
+        <button
+          type="button"
+          class="submit-button"
+          (click)="irAlLogin()">
+
+          Ir al inicio de sesión
+        </button>
+      </div>
+    }
+
+    <!-- =====================================================
+         FORMULARIO
+    ====================================================== -->
+
+    @if (!isValidating && tokenValido && !successMessage) {
+      <form
+        class="recovery-form"
+        #recoveryForm="ngForm"
+        (ngSubmit)="restablecer()"
+        novalidate>
+
+        <!-- NUEVA CONTRASEÑA -->
+
+        <div class="form-group">
+
+          <label for="nuevaContrasena">
+            Nueva contraseña
+          </label>
+
+          <div class="input-wrapper password-wrapper">
+
+            <span class="input-icon" aria-hidden="true">
+              🔒
+            </span>
+
+            <input
+              id="nuevaContrasena"
+              name="nuevaContrasena"
+              [type]="mostrarNuevaContrasena ? 'text' : 'password'"
+              [(ngModel)]="nuevaContrasena"
+              #nuevaContrasenaControl="ngModel"
+              (ngModelChange)="limpiarMensajes()"
+              placeholder="Ingresa tu nueva contraseña"
+              autocomplete="new-password"
+              minlength="8"
+              required
+              [disabled]="isSubmitting"
+              [class.input-invalid]="
+                nuevaContrasenaControl.invalid &&
+                nuevaContrasenaControl.touched
+              "
+              aria-describedby="nuevaContrasenaAyuda nuevaContrasenaError">
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="alternarNuevaContrasena()"
+              [disabled]="isSubmitting"
+              [attr.aria-label]="
+                mostrarNuevaContrasena
+                  ? 'Ocultar nueva contraseña'
+                  : 'Mostrar nueva contraseña'
+              "
+              [attr.aria-pressed]="mostrarNuevaContrasena">
+
+              @if (mostrarNuevaContrasena) {
+                <span aria-hidden="true">🙈</span>
+              } @else {
+                <span aria-hidden="true">👁️</span>
+              }
+            </button>
+
+          </div>
+
+          <p
+            id="nuevaContrasenaAyuda"
+            class="field-help">
+
+            Usa mínimo 8 caracteres, una mayúscula, una minúscula, un número
+            y un carácter especial.
+          </p>
+
+          @if (
+            nuevaContrasenaControl.invalid &&
+            nuevaContrasenaControl.touched
+          ) {
+            <p
+              id="nuevaContrasenaError"
+              class="field-error"
+              role="alert">
+
+              @if (nuevaContrasenaControl.errors?.['required']) {
+                Debes ingresar una nueva contraseña.
+              } @else if (nuevaContrasenaControl.errors?.['minlength']) {
+                La contraseña debe tener mínimo 8 caracteres.
+              }
+            </p>
+          }
+
+        </div>
+
+        <!-- REGLAS DE CONTRASEÑA -->
+
+        <section
+          class="password-requirements"
+          aria-label="Requisitos de la contraseña">
+
+          <span class="requirements-title">
+            La contraseña debe contener:
+          </span>
+
+          <ul>
+           <li [class.rule-valid]="tieneLongitudMinima()">
+            <span aria-hidden="true">
+                {{ tieneLongitudMinima() ? '✓' : '•' }}
+            </span>
+            Mínimo 8 caracteres
+            </li>
+
+            <li [class.rule-valid]="tieneMayuscula()">
+            <span aria-hidden="true">
+                {{ tieneMayuscula() ? '✓' : '•' }}
+            </span>
+            Una letra mayúscula
+            </li>
+
+            <li [class.rule-valid]="tieneMinuscula()">
+            <span aria-hidden="true">
+                {{ tieneMinuscula() ? '✓' : '•' }}
+            </span>
+            Una letra minúscula
+            </li>
+
+            <li [class.rule-valid]="tieneNumero()">
+            <span aria-hidden="true">
+                {{ tieneNumero() ? '✓' : '•' }}
+            </span>
+            Un número
+            </li>
+
+            <li [class.rule-valid]="tieneCaracterEspecial()">
+            <span aria-hidden="true">
+                {{ tieneCaracterEspecial() ? '✓' : '•' }}
+            </span>
+            Un carácter especial
+            </li>
+          </ul>
+
+        </section>
+
+        <!-- CONFIRMAR CONTRASEÑA -->
+
+        <div class="form-group">
+
+          <label for="confirmarContrasena">
+            Confirmar contraseña
+          </label>
+
+          <div class="input-wrapper password-wrapper">
+
+            <span class="input-icon" aria-hidden="true">
+              🔐
+            </span>
+
+            <input
+              id="confirmarContrasena"
+              name="confirmarContrasena"
+              [type]="mostrarConfirmarContrasena ? 'text' : 'password'"
+              [(ngModel)]="confirmarContrasena"
+              #confirmarContrasenaControl="ngModel"
+              (ngModelChange)="limpiarMensajes()"
+              placeholder="Repite la nueva contraseña"
+              autocomplete="new-password"
+              required
+              [disabled]="isSubmitting"
+              [class.input-invalid]="
+                confirmarContrasenaControl.touched &&
+                (
+                  confirmarContrasenaControl.invalid ||
+                  (
+                    confirmarContrasena.length > 0 &&
+                    nuevaContrasena !== confirmarContrasena
+                  )
+                )
+              "
+              aria-describedby="confirmarContrasenaError">
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="alternarConfirmarContrasena()"
+              [disabled]="isSubmitting"
+              [attr.aria-label]="
+                mostrarConfirmarContrasena
+                  ? 'Ocultar confirmación de contraseña'
+                  : 'Mostrar confirmación de contraseña'
+              "
+              [attr.aria-pressed]="mostrarConfirmarContrasena">
+
+              @if (mostrarConfirmarContrasena) {
+                <span aria-hidden="true">🙈</span>
+              } @else {
+                <span aria-hidden="true">👁️</span>
+              }
+            </button>
+
+          </div>
+
+          @if (
+            confirmarContrasenaControl.touched &&
+            confirmarContrasenaControl.errors?.['required']
+          ) {
+            <p
+              id="confirmarContrasenaError"
+              class="field-error"
+              role="alert">
+
+              Debes confirmar la nueva contraseña.
+            </p>
+          } @else if (
+            confirmarContrasenaControl.touched &&
+            confirmarContrasena.length > 0 &&
+            nuevaContrasena !== confirmarContrasena
+          ) {
+            <p
+              id="confirmarContrasenaError"
+              class="field-error"
+              role="alert">
+
+              Las contraseñas no coinciden.
+            </p>
+          } @else if (contrasenasCoinciden()) {
+            <p class="field-success">
+              Las contraseñas coinciden.
+            </p>
+          }
+
+        </div>
+
+        <!-- BOTÓN PRINCIPAL -->
+
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="
+            isSubmitting ||
+            recoveryForm.invalid ||
+            !cumpleReglasContrasena(nuevaContrasena) ||
+            nuevaContrasena !== confirmarContrasena
+          ">
+
+          @if (isSubmitting) {
+            <span class="spinner" aria-hidden="true"></span>
+            Restableciendo contraseña...
+          } @else {
+            Restablecer contraseña
+          }
+
+        </button>
+
+      </form>
+    }
+
+    <!-- =====================================================
+         ACCIONES PARA TOKEN INVÁLIDO
+    ====================================================== -->
+
+    @if (
+      !isValidating &&
+      !tokenValido &&
+      !successMessage
+    ) {
+      <div class="invalid-token-actions">
+
+        <a
+          routerLink="/solicitar-recuperacion"
+          class="secondary-button">
+
+          Solicitar un nuevo enlace
+        </a>
+
+      </div>
+    }
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    @if (!isSubmitting) {
+      <footer class="recovery-footer">
+        <p>
+          Por seguridad, nunca compartas tu contraseña ni el enlace de
+          recuperación con otras personas.
+        </p>
+
+        <a routerLink="/login">
+          Volver al inicio de sesión
+        </a>
+      </footer>
+    }
+
+  </article>
+
+</section>

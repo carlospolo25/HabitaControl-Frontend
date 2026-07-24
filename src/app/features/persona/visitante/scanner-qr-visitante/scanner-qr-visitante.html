@@ -1,0 +1,334 @@
+<section
+  class="qr-reader"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="qr-reader-title"
+  aria-describedby="qr-reader-description">
+
+  <div class="qr-reader__dialog">
+
+    <!-- =====================================================
+         ENCABEZADO
+    ====================================================== -->
+
+    <header class="qr-reader__header">
+
+      <div class="qr-reader__heading">
+
+        <span class="qr-reader__eyebrow">
+          Escáner QR
+        </span>
+
+        <h2
+          id="qr-reader-title"
+          class="qr-reader__title">
+          Escanear invitación
+        </h2>
+
+        <p
+          id="qr-reader-description"
+          class="qr-reader__description">
+          Apunta la cámara al código QR enviado al visitante.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="qr-reader__close"
+        aria-label="Cerrar escáner"
+        (click)="cerrarScanner()">
+
+        <span aria-hidden="true">
+          ✕
+        </span>
+
+      </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         MENSAJES DEL SISTEMA
+    ====================================================== -->
+
+    <div
+      class="qr-reader__feedback"
+      aria-live="polite"
+      aria-atomic="true">
+
+      @if (errorMessage) {
+        <div
+          class="qr-alert qr-alert--error"
+          role="alert">
+
+          <span
+            class="qr-alert__icon"
+            aria-hidden="true">
+            !
+          </span>
+
+          <p class="qr-alert__message">
+            {{ errorMessage }}
+          </p>
+
+        </div>
+      }
+
+    </div>
+
+
+    <!-- =====================================================
+         SELECTOR DE CÁMARA
+    ====================================================== -->
+
+    @if (camaras.length > 1) {
+      <section
+        class="qr-camera-selector"
+        aria-labelledby="qr-camera-selector-title">
+
+        <div class="qr-camera-selector__heading">
+
+          <span
+            class="qr-camera-selector__icon"
+            aria-hidden="true">
+            ◉
+          </span>
+
+          <div class="qr-camera-selector__text">
+
+            <label
+              id="qr-camera-selector-title"
+              for="camera-selector"
+              class="qr-camera-selector__label">
+              Seleccionar cámara
+            </label>
+
+            <p class="qr-camera-selector__description">
+              Elige la cámara que deseas utilizar para escanear el código.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="qr-camera-selector__control">
+
+          <select
+            id="camera-selector"
+            class="qr-camera-selector__select"
+            [value]="camaraSeleccionada?.deviceId ?? ''"
+            (change)="cambiarCamara($any($event.target).value)">
+
+            @for (camara of camaras; track camara.deviceId) {
+              <option [value]="camara.deviceId">
+                {{ camara.label || 'Cámara disponible' }}
+              </option>
+            }
+
+          </select>
+
+          <span
+            class="qr-camera-selector__arrow"
+            aria-hidden="true">
+          </span>
+
+        </div>
+
+      </section>
+    }
+
+
+    <!-- =====================================================
+         ÁREA PRINCIPAL DEL ESCÁNER
+    ====================================================== -->
+
+    <section
+      class="qr-capture"
+      aria-label="Vista de la cámara">
+
+      <div class="qr-capture__viewport">
+
+        <zxing-scanner
+          class="qr-capture__camera"
+          [enable]="scannerEnabled"
+          [device]="camaraSeleccionada"
+          (scanSuccess)="onCodeResult($event)"
+          (scanError)="onScanError($event)"
+          (camerasFound)="onCamerasFound($event)"
+          (permissionResponse)="onPermissionResponse($event)">
+        </zxing-scanner>
+
+
+        <!-- Guía visual -->
+
+        <div
+          class="qr-capture__overlay"
+          aria-hidden="true">
+
+          <div class="qr-capture__focus-area">
+
+            <span
+              class="
+                qr-capture__corner
+                qr-capture__corner--top-left">
+            </span>
+
+            <span
+              class="
+                qr-capture__corner
+                qr-capture__corner--top-right">
+            </span>
+
+            <span
+              class="
+                qr-capture__corner
+                qr-capture__corner--bottom-left">
+            </span>
+
+            <span
+              class="
+                qr-capture__corner
+                qr-capture__corner--bottom-right">
+            </span>
+
+            <span class="qr-capture__scan-line"></span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Estado después de detectar el código -->
+
+        @if (!scannerEnabled && !errorMessage) {
+          <div
+            class="qr-capture__detected"
+            role="status">
+
+            <span
+              class="qr-capture__detected-icon"
+              aria-hidden="true">
+              ✓
+            </span>
+
+            <div class="qr-capture__detected-text">
+
+              <strong>
+                Código detectado
+              </strong>
+
+              <span>
+                La invitación fue capturada correctamente.
+              </span>
+
+            </div>
+
+          </div>
+        }
+
+      </div>
+
+
+      <!-- Estado inferior del escáner -->
+
+      <div class="qr-capture__status-bar">
+
+        <span
+          class="qr-capture__status-indicator"
+          [class.qr-capture__status-indicator--active]="scannerEnabled"
+          aria-hidden="true">
+        </span>
+
+        <p class="qr-capture__status-text">
+          @if (scannerEnabled) {
+            Cámara activa · Buscando código QR
+          } @else if (!errorMessage) {
+            Lectura completada
+          } @else {
+            Escáner detenido
+          }
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         INSTRUCCIONES
+    ====================================================== -->
+
+    <aside class="qr-reader-help">
+
+      <span
+        class="qr-reader-help__icon"
+        aria-hidden="true">
+        i
+      </span>
+
+      <div class="qr-reader-help__content">
+
+        <strong class="qr-reader-help__title">
+          Recomendaciones para el escaneo
+        </strong>
+
+        <p class="qr-reader-help__description">
+          Mantén el código dentro del recuadro y evita reflejos
+          o movimientos bruscos.
+        </p>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         ACCIONES
+    ====================================================== -->
+
+    <footer class="qr-reader__footer">
+
+      <button
+        type="button"
+        class="
+          qr-reader-action
+          qr-reader-action--secondary"
+        (click)="reintentar()">
+
+        <span
+          class="qr-reader-action__icon"
+          aria-hidden="true">
+          ↻
+        </span>
+
+        <span class="qr-reader-action__label">
+          Reintentar
+        </span>
+
+      </button>
+
+      <button
+        type="button"
+        class="
+          qr-reader-action
+          qr-reader-action--primary"
+        (click)="cerrarScanner()">
+
+        <span
+          class="qr-reader-action__icon"
+          aria-hidden="true">
+          ✕
+        </span>
+
+        <span class="qr-reader-action__label">
+          Cancelar
+        </span>
+
+      </button>
+
+    </footer>
+
+  </div>
+
+</section>

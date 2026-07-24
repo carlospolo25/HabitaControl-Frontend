@@ -1,0 +1,283 @@
+<div class="admin-dashboard">
+
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+  <aside class="admin-dashboard__sidebar">
+
+    <!-- Brand -->
+    <header class="sidebar-brand">
+
+      <div class="sidebar-brand__logo" aria-hidden="true">
+        HC
+      </div>
+
+      <div class="sidebar-brand__content">
+        <h1 class="sidebar-brand__title">
+          HabitaControl
+        </h1>
+
+        <span class="sidebar-brand__subtitle">
+          Panel administrativo
+        </span>
+      </div>
+
+    </header>
+
+    <!-- Navigation -->
+    <nav
+      class="sidebar-navigation"
+      aria-label="Navegación principal">
+
+      <div class="sidebar-navigation__list">
+
+        <button
+          type="button"
+          class="sidebar-navigation__item"
+          [class.sidebar-navigation__item--active]="mostrarResumen"
+          (click)="verResumen()">
+
+          <span
+            class="sidebar-navigation__icon"
+            aria-hidden="true">
+            ▣
+          </span>
+
+          <span class="sidebar-navigation__label">
+            Resumen
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="sidebar-navigation__item"
+          [class.sidebar-navigation__item--active]="mostrarPersonaComponent"
+          (click)="mostrarPersonas()">
+
+          <span
+            class="sidebar-navigation__icon"
+            aria-hidden="true">
+            👥
+          </span>
+
+          <span class="sidebar-navigation__label">
+            Personas
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="sidebar-navigation__item"
+          [class.sidebar-navigation__item--active]="mostrarVisitanteComponent"
+          (click)="mostrarVisitantes()">
+
+          <span
+            class="sidebar-navigation__icon"
+            aria-hidden="true">
+            🚶
+          </span>
+
+          <span class="sidebar-navigation__label">
+            Visitantes
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="sidebar-navigation__item"
+          [class.sidebar-navigation__item--active]="mostrarNovedadComponent"
+          (click)="mostrarNovedades()">
+
+          <span
+            class="sidebar-navigation__icon"
+            aria-hidden="true">
+            ⚠
+          </span>
+
+          <span class="sidebar-navigation__label">
+            Novedades
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="sidebar-navigation__item"
+          [class.sidebar-navigation__item--active]="mostrarPaqueteComponent"
+          (click)="mostrarPaquetes()">
+
+          <span
+            class="sidebar-navigation__icon"
+            aria-hidden="true">
+            📦
+          </span>
+
+          <span class="sidebar-navigation__label">
+            Paquetes
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="sidebar-navigation__item"
+          [class.sidebar-navigation__item--active]="mostrarReservaComponent"
+          (click)="mostrarReservas()">
+
+          <span
+            class="sidebar-navigation__icon"
+            aria-hidden="true">
+            📅
+          </span>
+
+          <span class="sidebar-navigation__label">
+            Reservas
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="sidebar-navigation__item"
+          [class.sidebar-navigation__item--active]="mostrarZonasComunes"
+          (click)="verZonasComunes()">
+
+          <span
+            class="sidebar-navigation__icon"
+            aria-hidden="true">
+            🏢
+          </span>
+
+          <span class="sidebar-navigation__label">
+            Zonas comunes
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="sidebar-navigation__item"
+          [class.sidebar-navigation__item--active]="mostrarFinanzas"
+          (click)="verFinanzas()">
+
+          <span
+            class="sidebar-navigation__icon"
+            aria-hidden="true">
+            💰
+          </span>
+
+          <span class="sidebar-navigation__label">
+            Finanzas
+          </span>
+
+        </button>
+
+      </div>
+
+    </nav>
+
+    <!-- Sidebar footer -->
+    <footer class="sidebar-footer">
+
+      <button
+        type="button"
+        class="sidebar-footer__logout-button"
+        (click)="logout()">
+
+        <span
+          class="sidebar-footer__logout-icon"
+          aria-hidden="true">
+          ↪
+        </span>
+
+        <span class="sidebar-footer__logout-label">
+          Cerrar sesión
+        </span>
+
+      </button>
+
+    </footer>
+
+  </aside>
+
+
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+  <main class="admin-dashboard__main">
+
+    <!-- Main header -->
+    <header class="dashboard-header">
+
+      <div class="dashboard-header__content">
+
+        <span class="dashboard-header__eyebrow">
+          Administración
+        </span>
+
+        <h2 class="dashboard-header__title">
+          Panel administrativo
+        </h2>
+
+        <p class="dashboard-header__description">
+          Gestiona la operación diaria de tu conjunto residencial.
+        </p>
+
+      </div>
+
+    </header>
+
+
+    <!-- Dynamic content -->
+    <section
+      class="dashboard-content"
+      aria-live="polite">
+
+      <div class="dashboard-content__view">
+
+        <app-dashboard-overview
+          *ngIf="mostrarResumen">
+        </app-dashboard-overview>
+
+        <app-persons
+          *ngIf="mostrarPersonaComponent">
+        </app-persons>
+
+        <app-lista-visitantes
+          *ngIf="mostrarVisitanteComponent">
+        </app-lista-visitantes>
+
+        <app-lista-novedades
+          *ngIf="mostrarNovedadComponent"
+          [esAdmin]="true"
+          (iniciarSeguimiento)="verSegumiento($event)"
+          (finalizarSeguimiento)="verFinalizacion($event)">
+        </app-lista-novedades>
+
+        <app-lista-paquetes
+          *ngIf="mostrarPaqueteComponent">
+        </app-lista-paquetes>
+
+        <app-zonas-comunes
+          *ngIf="mostrarZonasComunes">
+        </app-zonas-comunes>
+
+        <app-gestion-finanzas
+          *ngIf="mostrarFinanzas">
+        </app-gestion-finanzas>
+
+        <app-gestion-reservas
+          *ngIf="mostrarReservaComponent">
+        </app-gestion-reservas>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+```

@@ -1,0 +1,249 @@
+<section
+  class="notifications-center"
+  [attr.aria-busy]="isLoading">
+
+  <!-- Encabezado -->
+  <header class="notifications-center__header">
+    <div class="notifications-center__heading">
+      <span class="notifications-center__eyebrow">
+        Centro de notificaciones
+      </span>
+
+      <h2 class="notifications-center__title">
+        Tus notificaciones
+      </h2>
+
+      <p class="notifications-center__description">
+        Consulta los avisos relacionados con tus paquetes.
+      </p>
+    </div>
+
+    <div class="notifications-center__actions">
+      @if (totalNoLeidas > 0) {
+        <span
+          class="notifications-center__unread-counter"
+          [attr.aria-label]="
+            totalNoLeidas === 1
+              ? '1 notificación sin leer'
+              : totalNoLeidas + ' notificaciones sin leer'
+          ">
+          {{ totalNoLeidas }}
+          {{ totalNoLeidas === 1 ? 'sin leer' : 'sin leer' }}
+        </span>
+      }
+
+      <button
+        type="button"
+        class="notifications-center__refresh"
+        [disabled]="isLoading"
+        (click)="cargarNotificaciones()">
+
+        <span
+          class="notifications-center__refresh-icon"
+          aria-hidden="true">
+          ↻
+        </span>
+
+        <span class="notifications-center__refresh-text">
+          {{ isLoading ? 'Actualizando...' : 'Actualizar' }}
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Error general -->
+  @if (errorMessage && !isLoading) {
+    <div
+      class="notifications-feedback notifications-feedback--error"
+      role="alert">
+
+      <span
+        class="notifications-feedback__icon"
+        aria-hidden="true">
+        !
+      </span>
+
+      <div class="notifications-feedback__content">
+        <strong class="notifications-feedback__title">
+          No fue posible cargar las notificaciones
+        </strong>
+
+        <p class="notifications-feedback__message">
+          {{ errorMessage }}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="notifications-feedback__action"
+        (click)="cargarNotificaciones()">
+        Reintentar
+      </button>
+    </div>
+  }
+
+  <!-- Carga -->
+  @if (isLoading) {
+    <div
+      class="notifications-loading"
+      role="status"
+      aria-live="polite">
+
+      <span
+        class="notifications-loading__spinner"
+        aria-hidden="true">
+      </span>
+
+      <div class="notifications-loading__content">
+        <strong class="notifications-loading__title">
+          Cargando notificaciones
+        </strong>
+
+        <p class="notifications-loading__description">
+          Estamos consultando tus avisos más recientes.
+        </p>
+      </div>
+    </div>
+
+  <!-- Estado vacío -->
+  } @else if (!errorMessage && notificaciones.length === 0) {
+    <div class="notifications-empty">
+      <span
+        class="notifications-empty__icon"
+        aria-hidden="true">
+        🔔
+      </span>
+
+      <h3 class="notifications-empty__title">
+        No tienes notificaciones
+      </h3>
+
+      <p class="notifications-empty__description">
+        Cuando se registre una novedad relacionada con tus paquetes,
+        aparecerá en este espacio.
+      </p>
+
+      <button
+        type="button"
+        class="notifications-empty__action"
+        (click)="cargarNotificaciones()">
+        Consultar nuevamente
+      </button>
+    </div>
+
+  <!-- Listado -->
+  } @else if (!errorMessage) {
+    <div
+      class="notifications-list"
+      role="list"
+      aria-label="Listado de notificaciones">
+
+      @for (
+        notificacion of notificaciones;
+        track notificacion.id
+      ) {
+        <article
+          class="notification"
+          role="listitem"
+          [class.notification--unread]="!notificacion.leida"
+          [attr.aria-labelledby]="
+            'notification-title-' + notificacion.id
+          "
+          [attr.aria-describedby]="
+            'notification-message-' +
+            notificacion.id +
+            ' notification-date-' +
+            notificacion.id
+          ">
+
+          <!-- Indicador de estado -->
+          <div
+            class="notification__indicator"
+            aria-hidden="true">
+
+            <span class="notification__dot"></span>
+          </div>
+
+          <!-- Icono -->
+          <div
+            class="notification__icon"
+            aria-hidden="true">
+            🔔
+          </div>
+
+          <!-- Contenido principal -->
+          <div class="notification__content">
+
+            <div class="notification__header">
+              <div class="notification__heading">
+                <h3
+                  class="notification__title"
+                  [id]="'notification-title-' + notificacion.id">
+                  {{ notificacion.titulo }}
+                </h3>
+
+                @if (!notificacion.leida) {
+                  <span class="notification__badge">
+                    Nueva
+                  </span>
+                }
+              </div>
+
+              <time
+                class="notification__date"
+                [id]="'notification-date-' + notificacion.id"
+                [attr.datetime]="notificacion.fechaCreacion">
+                {{
+                  notificacion.fechaCreacion
+                    | date:'dd/MM/yyyy, h:mm a'
+                }}
+              </time>
+            </div>
+
+            <p
+              class="notification__message"
+              [id]="'notification-message-' + notificacion.id">
+              {{ notificacion.mensaje }}
+            </p>
+
+            <footer class="notification__footer">
+              <span class="notification__type">
+                {{ notificacion.tipo || 'Notificación' }}
+              </span>
+
+              @if (notificacion.paqueteId) {
+                <button
+                  type="button"
+                  class="notification__action"
+                  [attr.aria-label]="
+                    'Ver paquete relacionado con la notificación ' +
+                    notificacion.titulo
+                  "
+                  (click)="verPaquete(notificacion.paqueteId)">
+
+                  <span>Ver paquete</span>
+
+                  <span
+                    class="notification__action-icon"
+                    aria-hidden="true">
+                    →
+                  </span>
+                </button>
+              }
+            </footer>
+          </div>
+        </article>
+      }
+    </div>
+  }
+
+</section>
+@if (
+  mostrarDetallePaquete &&
+  paqueteIdSeleccionado
+) {
+  <app-detalle-paquete-notificacion
+    [paqueteId]="paqueteIdSeleccionado"
+    (cerrar)="cerrarDetallePaquete()">
+  </app-detalle-paquete-notificacion>
+}

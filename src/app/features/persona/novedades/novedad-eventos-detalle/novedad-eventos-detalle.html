@@ -1,0 +1,122 @@
+<section class="expediente-container">
+  <header class="expediente-header">
+    <div class="expediente-actions">
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="cargarEventos()"
+        [disabled]="isLoading || isGeneratingPdf">
+        Actualizar
+      </button>
+
+      <button
+        type="button"
+        class="btn-pdf"
+        (click)="exportarPdf()"
+        [disabled]="isLoading || isGeneratingPdf">
+
+        @if (isGeneratingPdf) {
+          Generando PDF...
+        } @else {
+          📄 Exportar PDF
+        }
+
+      </button>
+
+      <button
+        type="button"
+        class="btn-muted"
+        (click)="volver()"
+        [disabled]="isLoading || isGeneratingPdf">
+        Volver
+      </button>
+
+    </div>
+  </header>
+
+  @if (errorMessage) {
+    <div class="expediente-alert">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (isLoading) {
+    <section class="expediente-state">
+      <p>Cargando expediente...</p>
+    </section>
+  } @else if (eventos.length === 0) {
+    <section class="expediente-state">
+      <h3>Sin registros</h3>
+      <p>Cuando esta novedad tenga actuaciones, aparecerán aquí.</p>
+    </section>
+  } @else {
+    <section class="expediente-documento">
+      <header class="documento-resumen">
+        <div>
+          <span>Responsable</span>
+          <strong>{{ responsableNovedad || 'Sin asignar' }}</strong>
+        </div>
+
+        <div>
+          <span>Apertura</span>
+          <strong>{{ fechaApertura | date:'medium' }}</strong>
+        </div>
+
+        <div>
+          <span>Cierre</span>
+          <strong>
+            @if (fechaCierre) {
+              {{ fechaCierre | date:'medium' }}
+            } @else {
+              Pendiente
+            }
+          </strong>
+        </div>
+      </header>
+
+      <div class="documento-title">
+        <h3>Registros</h3>
+        <span>{{ eventos.length }} actuaciones</span>
+      </div>
+
+      <section class="registros-lista">
+        @for (evento of eventos; track evento.id; let index = $index) {
+          <article class="registro">
+            <header class="registro-header">
+              <div>
+                <span class="registro-numero">
+                  Registro {{ (index + 1).toString().padStart(3, '0') }}
+                </span>
+
+                <h4>
+                  {{ evento.tipo || 'Actualización' }}
+                </h4>
+              </div>
+
+              <time>
+                {{ evento.fechaCreacion | date:'medium' }}
+              </time>
+            </header>
+
+            <p class="registro-comentario">
+              {{ evento.comentario || 'Sin comentario registrado.' }}
+            </p>
+
+            <footer class="registro-footer">
+              <span>
+                Registrado por: <strong>{{ evento.registradoPor || '—' }}</strong>
+              </span>
+
+              @if (evento.imagenUrl) {
+                <a [href]="evento.imagenUrl" target="_blank" rel="noopener noreferrer">
+                  Ver evidencia
+                </a>
+              }
+            </footer>
+          </article>
+        }
+      </section>
+    </section>
+  }
+</section>

@@ -1,0 +1,942 @@
+/* ==========================================================
+   PARTE 1 · CONTENEDOR GENERAL
+========================================================== */
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, #DBEAFE 0%, transparent 35%),
+    radial-gradient(circle at bottom right, #E0F2FE 0%, transparent 30%),
+    #F8FAFC;
+}
+
+.recovery-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.recovery-card {
+  width: 100%;
+  max-width: 560px;
+
+  background: #FFFFFF;
+
+  border: 1px solid #E2E8F0;
+  border-radius: 24px;
+
+  padding: 3rem;
+
+  box-shadow:
+    0 12px 40px rgba(15, 23, 42, .08),
+    0 4px 12px rgba(15, 23, 42, .05);
+
+  position: relative;
+  overflow: hidden;
+}
+
+.recovery-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0 auto auto 0;
+
+  width: 100%;
+  height: 6px;
+
+  background: linear-gradient(
+    90deg,
+    #2563EB,
+    #1D4ED8,
+    #3B82F6
+  );
+}
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.recovery-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.recovery-icon {
+  width: 72px;
+  height: 72px;
+
+  margin: 0 auto 1.25rem;
+
+  border-radius: 50%;
+
+  background: #DBEAFE;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2rem;
+}
+
+.recovery-eyebrow {
+  display: inline-block;
+
+  margin-bottom: .75rem;
+
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+
+  color: #2563EB;
+}
+
+.recovery-header h1 {
+  margin: 0;
+
+  font-size: 2rem;
+  font-weight: 700;
+
+  color: #0F172A;
+}
+
+.recovery-header p {
+  margin: 1rem auto 0;
+
+  max-width: 420px;
+
+  line-height: 1.7;
+  font-size: .98rem;
+
+  color: #64748B;
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 640px) {
+
+  .recovery-page {
+    padding: 1.25rem;
+  }
+
+  .recovery-card {
+    padding: 2rem 1.5rem;
+    border-radius: 18px;
+  }
+
+  .recovery-header h1 {
+    font-size: 1.7rem;
+  }
+
+}
+
+/* ==========================================================
+   PARTE 2 · MENSAJES DE ESTADO
+========================================================== */
+
+.alert {
+  width: 100%;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+
+  margin-bottom: 1.75rem;
+  padding: 1rem 1.1rem;
+
+  border: 1px solid transparent;
+  border-radius: 14px;
+
+  animation: alert-enter 0.25s ease-out;
+}
+
+.alert-icon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.alert > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.alert strong {
+  display: block;
+
+  margin-bottom: 0.25rem;
+
+  font-size: 0.93rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.alert p {
+  margin: 0;
+
+  font-size: 0.9rem;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================================
+   MENSAJE DE ÉXITO
+========================================================== */
+
+.alert-success {
+  color: #166534;
+  background: #F0FDF4;
+  border-color: #BBF7D0;
+}
+
+.alert-success .alert-icon {
+  color: #FFFFFF;
+  background: #16A34A;
+
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.2);
+}
+
+.alert-success strong {
+  color: #166534;
+}
+
+.alert-success p {
+  color: #15803D;
+}
+
+/* ==========================================================
+   MENSAJE DE ERROR
+========================================================== */
+
+.alert-error {
+  color: #991B1B;
+  background: #FEF2F2;
+  border-color: #FECACA;
+}
+
+.alert-error .alert-icon {
+  color: #FFFFFF;
+  background: #DC2626;
+
+  box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+}
+
+.alert-error strong {
+  color: #991B1B;
+}
+
+.alert-error p {
+  color: #B91C1C;
+}
+
+/* ==========================================================
+   ANIMACIÓN DE ENTRADA
+========================================================== */
+
+@keyframes alert-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 640px) {
+  .alert {
+    gap: 0.75rem;
+
+    margin-bottom: 1.5rem;
+    padding: 0.9rem;
+
+    border-radius: 12px;
+  }
+
+  .alert-icon {
+    width: 28px;
+    height: 28px;
+
+    font-size: 0.85rem;
+  }
+
+  .alert strong {
+    font-size: 0.88rem;
+  }
+
+  .alert p {
+    font-size: 0.85rem;
+  }
+}
+
+/* ==========================================================
+   PARTE 3 · FORMULARIO Y CAMPO DE CORREO
+========================================================== */
+
+.recovery-form {
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.form-group label {
+  color: #1E293B;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* ==========================================================
+   CONTENEDOR DEL INPUT
+========================================================== */
+
+.input-wrapper {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #64748B;
+
+  font-size: 1rem;
+  font-weight: 700;
+
+  pointer-events: none;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.input-wrapper input {
+  width: 100%;
+  min-height: 52px;
+
+  padding: 0.85rem 1rem 0.85rem 2.8rem;
+
+  color: #0F172A;
+  background: #FFFFFF;
+
+  border: 1px solid #CBD5E1;
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.input-wrapper input::placeholder {
+  color: #94A3B8;
+}
+
+/* ==========================================================
+   ESTADO HOVER
+========================================================== */
+
+.input-wrapper input:hover:not(:disabled) {
+  border-color: #94A3B8;
+}
+
+/* ==========================================================
+   ESTADO FOCUS
+========================================================== */
+
+.input-wrapper:focus-within .input-icon {
+  color: #2563EB;
+  transform: scale(1.05);
+}
+
+.input-wrapper input:focus {
+  border-color: #2563EB;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.12),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+/* ==========================================================
+   ESTADO INVÁLIDO
+========================================================== */
+
+.input-wrapper input.input-invalid {
+  color: #991B1B;
+  background: #FFFBFB;
+
+  border-color: #DC2626;
+
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+.input-wrapper:has(input.input-invalid) .input-icon {
+  color: #DC2626;
+}
+
+.input-wrapper input.input-invalid:focus {
+  border-color: #DC2626;
+
+  box-shadow:
+    0 0 0 4px rgba(220, 38, 38, 0.12),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+/* ==========================================================
+   ESTADO DESHABILITADO
+========================================================== */
+
+.input-wrapper input:disabled {
+  color: #64748B;
+  background: #F1F5F9;
+
+  border-color: #E2E8F0;
+
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.input-wrapper:has(input:disabled) .input-icon {
+  color: #94A3B8;
+}
+
+/* ==========================================================
+   TEXTOS DE AYUDA Y ERROR
+========================================================== */
+
+.field-help,
+.field-error {
+  display: block;
+
+  margin: 0;
+
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.field-help {
+  color: #64748B;
+}
+
+.field-error {
+  color: #DC2626;
+  font-weight: 600;
+
+  animation: field-error-enter 0.2s ease-out;
+}
+
+@keyframes field-error-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================
+   AUTOCOMPLETADO DEL NAVEGADOR
+========================================================== */
+
+.input-wrapper input:-webkit-autofill,
+.input-wrapper input:-webkit-autofill:hover,
+.input-wrapper input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #0F172A;
+
+  box-shadow:
+    0 0 0 1000px #FFFFFF inset,
+    0 0 0 4px rgba(37, 99, 235, 0.1);
+
+  transition: background-color 9999s ease-out;
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 640px) {
+  .form-group {
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    font-size: 0.86rem;
+  }
+
+  .input-wrapper input {
+    min-height: 50px;
+
+    padding:
+      0.8rem
+      0.9rem
+      0.8rem
+      2.65rem;
+
+    font-size: 0.9rem;
+  }
+
+  .input-icon {
+    left: 0.9rem;
+  }
+
+  .field-help,
+  .field-error {
+    font-size: 0.77rem;
+  }
+}
+
+/* ==========================================================
+   PARTE 4 · BOTONES Y ESTADOS DE CARGA
+========================================================== */
+
+.submit-button,
+.secondary-button {
+  width: 100%;
+  min-height: 52px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 0.93rem;
+  font-weight: 700;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+/* ==========================================================
+   BOTÓN PRINCIPAL
+========================================================== */
+
+.submit-button {
+  margin-top: 1.5rem;
+
+  color: #FFFFFF;
+  background: #2563EB;
+
+  border: 1px solid #2563EB;
+
+  box-shadow:
+    0 8px 18px rgba(37, 99, 235, 0.2),
+    0 2px 5px rgba(15, 23, 42, 0.08);
+}
+
+.submit-button:hover:not(:disabled) {
+  background: #1D4ED8;
+  border-color: #1D4ED8;
+
+  box-shadow:
+    0 10px 22px rgba(37, 99, 235, 0.28),
+    0 3px 6px rgba(15, 23, 42, 0.08);
+
+  transform: translateY(-1px);
+}
+
+.submit-button:active:not(:disabled) {
+  background: #1E40AF;
+  border-color: #1E40AF;
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.2),
+    0 1px 3px rgba(15, 23, 42, 0.08);
+
+  transform: translateY(0);
+}
+
+.submit-button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.2),
+    0 8px 18px rgba(37, 99, 235, 0.2);
+}
+
+/* ==========================================================
+   BOTÓN SECUNDARIO
+========================================================== */
+
+.success-actions {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.secondary-button {
+  color: #1E40AF;
+  background: #EFF6FF;
+
+  border: 1px solid #BFDBFE;
+
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.secondary-button:hover:not(:disabled) {
+  color: #1D4ED8;
+  background: #DBEAFE;
+
+  border-color: #93C5FD;
+
+  transform: translateY(-1px);
+}
+
+.secondary-button:active:not(:disabled) {
+  color: #1E3A8A;
+  background: #BFDBFE;
+
+  transform: translateY(0);
+}
+
+.secondary-button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.14),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+/* ==========================================================
+   ESTADO DESHABILITADO
+========================================================== */
+
+.submit-button:disabled,
+.secondary-button:disabled {
+  color: #94A3B8;
+  background: #E2E8F0;
+
+  border-color: #E2E8F0;
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.85;
+}
+
+/* ==========================================================
+   SPINNER
+========================================================== */
+
+.spinner {
+  width: 18px;
+  height: 18px;
+
+  flex-shrink: 0;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+
+  animation: recovery-spinner 0.75s linear infinite;
+}
+
+@keyframes recovery-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================
+   REDUCCIÓN DE MOVIMIENTO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .submit-button,
+  .secondary-button {
+    transition: none;
+  }
+
+  .submit-button:hover:not(:disabled),
+  .secondary-button:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .spinner {
+    animation-duration: 1.4s;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 640px) {
+  .submit-button,
+  .secondary-button {
+    min-height: 50px;
+
+    border-radius: 11px;
+
+    font-size: 0.88rem;
+  }
+
+  .submit-button {
+    margin-top: 1.25rem;
+  }
+
+  .spinner {
+    width: 17px;
+    height: 17px;
+  }
+}
+
+/* ==========================================================
+   PARTE 5 · FOOTER Y ENLACE DE NAVEGACIÓN
+========================================================== */
+
+.recovery-footer {
+  width: 100%;
+
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+
+  text-align: center;
+
+  border-top: 1px solid #E2E8F0;
+}
+
+.recovery-footer p {
+  max-width: 390px;
+
+  margin: 0 auto 1rem;
+
+  color: #64748B;
+
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.recovery-footer a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+
+  padding: 0.35rem 0.5rem;
+
+  color: #2563EB;
+
+  border-radius: 8px;
+
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.recovery-footer a::before {
+  content: "←";
+
+  font-size: 1rem;
+  line-height: 1;
+
+  transition: transform 0.2s ease;
+}
+
+.recovery-footer a:hover {
+  color: #1D4ED8;
+  background: #EFF6FF;
+}
+
+.recovery-footer a:hover::before {
+  transform: translateX(-3px);
+}
+
+.recovery-footer a:active {
+  color: #1E40AF;
+  background: #DBEAFE;
+
+  transform: translateY(1px);
+}
+
+.recovery-footer a:focus-visible {
+  outline: none;
+
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+}
+
+/* ==========================================================
+   AJUSTES PARA ESTADO EXITOSO
+========================================================== */
+
+.success-actions + .recovery-footer {
+  margin-top: 1.75rem;
+}
+
+.recovery-card:has(.alert-success) .recovery-header {
+  margin-bottom: 1.75rem;
+}
+
+/* ==========================================================
+   AJUSTES GENERALES DE ACCESIBILIDAD
+========================================================== */
+
+button,
+input,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ==========================================================
+   PANTALLAS DE BAJA ALTURA
+========================================================== */
+
+@media (max-height: 760px) and (min-width: 641px) {
+  .recovery-page {
+    align-items: flex-start;
+
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .recovery-card {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .recovery-header {
+    margin-bottom: 1.75rem;
+  }
+
+  .recovery-icon {
+    width: 62px;
+    height: 62px;
+
+    margin-bottom: 1rem;
+
+    font-size: 1.7rem;
+  }
+
+  .recovery-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE MÓVIL
+========================================================== */
+
+@media (max-width: 640px) {
+  .recovery-footer {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+  }
+
+  .recovery-footer p {
+    margin-bottom: 0.85rem;
+
+    font-size: 0.78rem;
+  }
+
+  .recovery-footer a {
+    font-size: 0.84rem;
+  }
+
+  .success-actions + .recovery-footer {
+    margin-top: 1.5rem;
+  }
+}
+
+/* ==========================================================
+   MÓVILES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 380px) {
+  .recovery-page {
+    padding: 0.75rem;
+  }
+
+  .recovery-card {
+    padding:
+      1.75rem
+      1.1rem
+      1.5rem;
+
+    border-radius: 16px;
+  }
+
+  .recovery-icon {
+    width: 60px;
+    height: 60px;
+
+    font-size: 1.65rem;
+  }
+
+  .recovery-header h1 {
+    font-size: 1.55rem;
+  }
+
+  .recovery-header p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}

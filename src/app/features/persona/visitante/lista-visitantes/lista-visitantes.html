@@ -1,0 +1,577 @@
+<section class="visitors-page">
+  <header class="visitors-page__header">
+    <div class="visitors-page__heading">
+      <span class="visitors-page__eyebrow">
+        Control de acceso
+      </span>
+
+      <h2 class="visitors-page__title">
+        Visitantes registrados
+      </h2>
+
+      <p class="visitors-page__description">
+        Consulta los ingresos, salidas y el estado actual de los visitantes.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="visitors-page__refresh-button"
+      (click)="cargar()"
+      [disabled]="isLoading || visitanteProcesandoId !== null">
+
+      @if (isLoading) {
+        <span class="visitors-page__spinner" aria-hidden="true"></span>
+        Actualizando...
+      } @else {
+        Actualizar
+      }
+    </button>
+  </header>
+
+  @if (puedeUsarFiltrosAvanzados) {
+    <section class="visitors-filters">
+      <header class="visitors-filters__header">
+        <div>
+          <span class="visitors-filters__eyebrow">
+            Búsqueda avanzada
+          </span>
+
+          <h4 class="visitors-filters__title">
+            Filtrar visitantes
+          </h4>
+
+          <p class="visitors-filters__description">
+            Busca registros o limita los resultados por fecha y apartamento.
+          </p>
+        </div>
+
+        @if (hayFiltrosActivos) {
+          <button
+            type="button"
+            class="visitors-filters__clear-button"
+            (click)="limpiarFiltros()">
+            Limpiar filtros
+          </button>
+        }
+      </header>
+
+      <div class="visitors-filters__grid">
+        <div class="visitors-filters__field visitors-filters__field--search">
+          <label
+            class="visitors-filters__label"
+            for="visitor-search">
+            Buscar
+          </label>
+
+          <div class="visitors-filters__input-wrapper">
+            <span
+              class="visitors-filters__search-icon"
+              aria-hidden="true">
+              ⌕
+            </span>
+
+            <input
+              id="visitor-search"
+              class="visitors-filters__input visitors-filters__input--search"
+              type="search"
+              name="searchTerm"
+              [(ngModel)]="searchTerm"
+              placeholder="Nombre, documento, torre, apartamento..."
+              autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="visitors-filters__field">
+          <label
+            class="visitors-filters__label"
+            for="visitor-date">
+            Día de ingreso
+          </label>
+
+          <input
+            id="visitor-date"
+            class="visitors-filters__input"
+            type="date"
+            name="selectedDate"
+            [(ngModel)]="selectedDate" />
+        </div>
+
+        <div class="visitors-filters__field">
+          <label
+            class="visitors-filters__label"
+            for="visitor-apartment">
+            Apartamento
+          </label>
+
+          <select
+            id="visitor-apartment"
+            class="visitors-filters__select"
+            name="selectedApartment"
+            [(ngModel)]="selectedApartment">
+
+            <option value="">
+              Todos los apartamentos
+            </option>
+
+            @for (
+              apartamento of apartamentosDisponibles;
+              track apartamento
+            ) {
+              <option [value]="apartamento">
+                Apto. {{ apartamento }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="visitors-filters__field">
+          <label
+            class="visitors-filters__label"
+            for="visitor-tower">
+            Torre
+          </label>
+
+          <select
+            id="visitor-tower"
+            class="visitors-filters__select"
+            name="selectedtorre"
+            [(ngModel)]="selectedTorre">
+
+            <option value="">
+              Todas las torres
+            </option>
+
+            @for (
+              torre of torresDisponibles;
+              track torre
+            ) {
+              <option [value]="torre">
+                Torre {{ torre }}
+              </option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <footer class="visitors-filters__summary">
+        <span>
+          Mostrando
+          <strong>{{ visitantesFiltrados.length }}</strong>
+          de
+          <strong>{{ visitantes.length }}</strong>
+          registros
+        </span>
+
+        @if (hayFiltrosActivos && visitantesFiltrados.length === 0) {
+          <span class="visitors-filters__no-results">
+            No se encontraron coincidencias.
+          </span>
+        }
+      </footer>
+    </section>
+  }
+
+  @if (errorMessage) {
+    <div
+      class="visitors-page__alert visitors-page__alert--error"
+      role="alert">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (successMessage) {
+    <div
+      class="visitors-page__alert visitors-page__alert--success"
+      role="status">
+      {{ successMessage }}
+    </div>
+  }
+
+  @if (isLoading) {
+    <section class="visitors-page__loading-state">
+      <span
+        class="visitors-page__loading-spinner"
+        aria-hidden="true">
+      </span>
+
+      <div>
+        <h3>Cargando visitantes</h3>
+        <p>Estamos consultando los registros de acceso.</p>
+      </div>
+    </section>
+  } @else if (visitantes.length === 0) {
+    <section class="visitors-page__empty-state">
+      <div
+        class="visitors-page__empty-icon"
+        aria-hidden="true">
+        🚪
+      </div>
+
+      <h3>No hay visitantes registrados</h3>
+
+      <p>
+        Cuando se registren nuevos ingresos aparecerán en esta sección.
+      </p>
+    </section>
+  } @else {
+    <section class="visitors-table-card">
+      <header class="visitors-table-card__header">
+        <div>
+          <span class="visitors-table-card__eyebrow">
+            Registro de accesos
+          </span>
+
+          <h3 class="visitors-table-card__title">
+            Historial de visitantes
+          </h3>
+
+          <p class="visitors-table-card__description">
+            Se encontraron
+            <strong>{{ visitantes.length }}</strong>
+            registros.
+          </p>
+        </div>
+
+        <div class="visitors-table-card__count">
+          <strong>{{ visitantes.length }}</strong>
+          <span>Visitantes</span>
+        </div>
+      </header>
+
+      <!--
+        Este contenedor tendrá altura máxima y scroll vertical.
+        Así la página no crecerá indefinidamente cuando existan muchos registros.
+      -->
+      <div
+        class="visitors-table-card__scroll"
+        role="region"
+        aria-label="Lista de visitantes registrados"
+        tabindex="0">
+
+        <table class="visitors-table">
+          <thead class="visitors-table__head">
+            <tr>
+              <th scope="col">Visitante</th>
+              <th scope="col">Ubicación</th>
+              <th scope="col">Autorizado por</th>
+              <th scope="col">Ingreso</th>
+              <th scope="col">Salida</th>
+              <th scope="col">Estado</th>
+              <th
+                scope="col"
+                class="visitors-table__actions-heading">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+
+          <tbody class="visitors-table__body">
+            @for (visitante of visitantesFiltrados; track visitante.id) {
+              <tr
+                class="visitors-table__row"
+                [class.visitors-table__row--active]="!estaFinalizado(visitante)"
+                [class.visitors-table__row--finished]="estaFinalizado(visitante)">
+
+                <td>
+                  <div class="visitors-table__person">
+                    <div
+                      class="visitors-table__avatar"
+                      aria-hidden="true">
+                      {{ visitante.nombre.charAt(0).toUpperCase() }}
+                    </div>
+
+                    <div class="visitors-table__person-info">
+                      <strong class="visitors-table__person-name">
+                        {{ visitante.nombre }}
+                      </strong>
+
+                      <span class="visitors-table__person-document">
+                        Doc. {{ mostrarDocumento(visitante.documento) }}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="visitors-table__location">
+                    <strong>
+                      Torre {{ visitante.torre }}
+                    </strong>
+
+                    <span>
+                      Apto. {{ visitante.apartamento }}
+                    </span>
+                  </div>
+                </td>
+
+                <td>
+                  <span class="visitors-table__authorized-by">
+                    {{ visitante.autorizadoPorNombre || 'No disponible' }}
+                  </span>
+                </td>
+
+                <td>
+                  <time
+                    class="visitors-table__date"
+                    [attr.datetime]="visitante.fechaIngreso">
+                    {{ visitante.fechaIngreso | date:'dd/MM/yyyy, h:mm a' }}
+                  </time>
+                </td>
+
+                <td>
+                  @if (visitante.fechaSalida) {
+                    <time
+                      class="visitors-table__date"
+                      [attr.datetime]="visitante.fechaSalida">
+                      {{ visitante.fechaSalida | date:'dd/MM/yyyy, h:mm a' }}
+                    </time>
+                  } @else {
+                    <span class="visitors-table__pending-exit">
+                      Sin salida
+                    </span>
+                  }
+                </td>
+
+                <td>
+                  <span
+                    class="visitors-table__status"
+                    [class.visitors-table__status--active]="
+                      !estaFinalizado(visitante)
+                    "
+                    [class.visitors-table__status--finished]="
+                      estaFinalizado(visitante)
+                    ">
+
+                    <span
+                      class="visitors-table__status-dot"
+                      aria-hidden="true">
+                    </span>
+
+                    {{ estaFinalizado(visitante) ? 'Finalizado' : 'Activo' }}
+                  </span>
+                </td>
+
+                <td class="visitors-table__actions-cell">
+                  <div class="visitors-table__actions">
+                    @if (puedeRegistrarSalida(visitante)) {
+                      <button
+                        type="button"
+                        class="visitors-table__button visitors-table__button--exit"
+                        (click)="darSalida(visitante)"
+                        [disabled]="
+                          visitanteProcesandoId !== null ||
+                          isLoading
+                        ">
+
+                        @if (estaRegistrandoSalida(visitante.id)) {
+                          <span
+                            class="visitors-page__spinner"
+                            aria-hidden="true">
+                          </span>
+
+                          Registrando...
+                        } @else {
+                          Dar salida
+                        }
+                      </button>
+                    }
+
+                    <button
+                      type="button"
+                      class="visitors-table__button visitors-table__button--detail"
+                      (click)="verDetalle(visitante)"
+                      [disabled]="visitanteProcesandoId !== null">
+                      Ver detalle
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+            @if (visitantesFiltrados.length === 0) {
+              <tr>
+                <td
+                  colspan="7"
+                  class="visitors-table__no-results">
+
+                  <div class="visitors-table__no-results-content">
+                    <span aria-hidden="true">⌕</span>
+
+                    <strong>
+                      No hay visitantes que coincidan
+                    </strong>
+
+                    <p>
+                      Modifica la búsqueda, la fecha o el apartamento seleccionado.
+                    </p>
+
+                    <button
+                      type="button"
+                      (click)="limpiarFiltros()">
+                      Limpiar filtros
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="visitors-table-card__footer">
+        <p>
+          Desplázate dentro de la tabla para consultar todos los registros.
+        </p>
+
+        <span>
+          Total: {{ visitantesFiltrados.length }}
+        </span>
+      </footer>
+    </section>
+  }
+</section>
+
+@if (mostrarDetalleVisitante && visitanteDetalle) {
+  <div
+    class="visitor-detail"
+    role="presentation"
+    (click)="cerrarDetalleVisitante()">
+
+    <section
+      class="visitor-detail__modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="visitor-detail-title"
+      (click)="$event.stopPropagation()">
+
+      <header class="visitor-detail__header">
+        <div class="visitor-detail__identity">
+          <div
+            class="visitor-detail__avatar"
+            aria-hidden="true">
+            {{ visitanteDetalle.nombre.charAt(0).toUpperCase() }}
+          </div>
+
+          <div>
+            <span class="visitor-detail__eyebrow">
+              Detalle del visitante
+            </span>
+
+            <h3
+              id="visitor-detail-title"
+              class="visitor-detail__title">
+              {{ visitanteDetalle.nombre }}
+            </h3>
+
+            <p class="visitor-detail__document">
+              Documento:
+              {{ mostrarDocumento(visitanteDetalle.documento) }}
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="visitor-detail__close-button"
+          aria-label="Cerrar detalle del visitante"
+          (click)="cerrarDetalleVisitante()">
+          ✕
+        </button>
+      </header>
+
+      <div class="visitor-detail__status-row">
+        <span
+          class="visitor-detail__status"
+          [class.visitor-detail__status--active]="
+            !estaFinalizado(visitanteDetalle)
+          "
+          [class.visitor-detail__status--finished]="
+            estaFinalizado(visitanteDetalle)
+          ">
+          {{ estaFinalizado(visitanteDetalle) ? 'Finalizado' : 'Activo' }}
+        </span>
+      </div>
+
+      <div class="visitor-detail__grid">
+        <article class="visitor-detail__item">
+          <span class="visitor-detail__label">
+            Torre
+          </span>
+
+          <strong class="visitor-detail__value">
+            {{ visitanteDetalle.torre }}
+          </strong>
+        </article>
+
+        <article class="visitor-detail__item">
+          <span class="visitor-detail__label">
+            Apartamento
+          </span>
+
+          <strong class="visitor-detail__value">
+            {{ visitanteDetalle.apartamento }}
+          </strong>
+        </article>
+
+        <article class="visitor-detail__item visitor-detail__item--wide">
+          <span class="visitor-detail__label">
+            Autorizado por
+          </span>
+
+          <strong class="visitor-detail__value">
+            {{ visitanteDetalle.autorizadoPorNombre || 'No disponible' }}
+          </strong>
+        </article>
+
+        <article class="visitor-detail__item">
+          <span class="visitor-detail__label">
+            Fecha de ingreso
+          </span>
+
+          <strong class="visitor-detail__value">
+            {{ visitanteDetalle.fechaIngreso | date:'medium' }}
+          </strong>
+        </article>
+
+        <article class="visitor-detail__item">
+          <span class="visitor-detail__label">
+            Fecha de salida
+          </span>
+
+          <strong class="visitor-detail__value">
+            @if (visitanteDetalle.fechaSalida) {
+              {{ visitanteDetalle.fechaSalida | date:'medium' }}
+            } @else {
+              Aún no registra salida
+            }
+          </strong>
+        </article>
+      </div>
+
+      <footer class="visitor-detail__footer">
+        @if (puedeRegistrarSalida(visitanteDetalle)) {
+          <button
+            type="button"
+            class="visitor-detail__button visitor-detail__button--exit"
+            (click)="darSalida(visitanteDetalle)"
+            [disabled]="visitanteProcesandoId !== null">
+
+            @if (estaRegistrandoSalida(visitanteDetalle.id)) {
+              Registrando salida...
+            } @else {
+              Registrar salida
+            }
+          </button>
+        }
+
+        <button
+          type="button"
+          class="visitor-detail__button visitor-detail__button--close"
+          (click)="cerrarDetalleVisitante()"
+          [disabled]="visitanteProcesandoId !== null">
+          Cerrar
+        </button>
+      </footer>
+    </section>
+  </div>
+}

@@ -1,0 +1,913 @@
+<section class="admin-overview">
+
+  <!-- =====================================================
+       ENCABEZADO PRINCIPAL
+  ====================================================== -->
+
+  <header class="admin-overview__header">
+
+    <div class="overview-heading">
+      <span class="overview-heading__eyebrow">
+        Centro de operación
+      </span>
+
+      <h2 class="overview-heading__title">
+        Dashboard
+      </h2>
+
+      <p class="overview-heading__description">
+        Estado actual del conjunto residencial y señales que requieren revisión.
+      </p>
+    </div>
+
+    <div class="admin-overview__header-actions">
+      <button
+        type="button"
+        class="overview-refresh-button"
+        title="Actualizar información"
+        aria-label="Actualizar información del dashboard"
+        (click)="retry()"
+        [disabled]="isLoading">
+
+        <span
+          class="overview-refresh-button__icon"
+          aria-hidden="true">
+          ↻
+        </span>
+
+      </button>
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       ALERTA GENERAL DE CARGA
+  ====================================================== -->
+
+  @if (hasErrors) {
+    <section
+      class="overview-global-alert"
+      role="alert">
+
+      <div class="overview-global-alert__content">
+
+        <span
+          class="overview-global-alert__icon"
+          aria-hidden="true">
+          ⚠
+        </span>
+
+        <div class="overview-global-alert__message">
+          <strong class="overview-global-alert__title">
+            Algunas secciones no pudieron cargarse
+          </strong>
+
+          <p class="overview-global-alert__description">
+            La información disponible se muestra normalmente.
+            Puedes intentar actualizar el panel.
+          </p>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="overview-global-alert__action"
+        (click)="retry()">
+        Reintentar
+      </button>
+
+    </section>
+  }
+
+
+  <!-- =====================================================
+       REQUIERE ATENCIÓN
+  ====================================================== -->
+
+  @if (!loadingToday && !loadingNews && (todayActivity || newsSummary)) {
+    <section class="overview-block overview-block--attention">
+
+      <header class="overview-block__header">
+
+        <div class="overview-block__heading">
+          <span class="overview-block__eyebrow">
+            Prioridad operativa
+          </span>
+
+          <h3 class="overview-block__title">
+            Requiere atención
+          </h3>
+        </div>
+
+        <div class="overview-block__status">
+
+          @if (
+            todayActivity?.requiresAttention ||
+            todayActivity?.hasVisitorsWithoutExitAlert ||
+            todayActivity?.hasOldPackagesAlert ||
+            newsSummary?.hasPendingNews
+          ) {
+            <span class="attention-state attention-state--danger">
+              Atención requerida
+            </span>
+          } @else {
+            <span class="attention-state attention-state--success">
+              Sin alertas críticas
+            </span>
+          }
+
+        </div>
+
+      </header>
+
+
+      <div class="attention-list">
+
+        @if (todayActivity?.hasVisitorsWithoutExitAlert) {
+          <article class="attention-card attention-card--danger">
+
+            <div
+              class="attention-card__icon"
+              aria-hidden="true">
+              🚶
+            </div>
+
+            <div class="attention-card__content">
+              <strong class="attention-card__title">
+                {{ todayActivity?.visitorsWithoutExitMoreThanOneDay }}
+                visitantes sin registrar salida
+              </strong>
+
+              <p class="attention-card__description">
+                Continúan dentro desde días anteriores.
+                Se recomienda verificar con portería.
+              </p>
+            </div>
+
+          </article>
+        }
+
+
+        @if (todayActivity?.hasOldPackagesAlert) {
+          <article class="attention-card attention-card--warning">
+
+            <div
+              class="attention-card__icon"
+              aria-hidden="true">
+              📦
+            </div>
+
+            <div class="attention-card__content">
+              <strong class="attention-card__title">
+                {{ todayActivity?.pendingPackagesMoreThanTwoDays }}
+                paquetes con más de dos días
+              </strong>
+
+              <p class="attention-card__description">
+                Requieren revisión para evitar acumulación o reclamos.
+              </p>
+            </div>
+
+          </article>
+        }
+
+
+        @if (newsSummary?.hasPendingNews) {
+          <article class="attention-card attention-card--info">
+
+            <div
+              class="attention-card__icon"
+              aria-hidden="true">
+              📝
+            </div>
+
+            <div class="attention-card__content">
+              <strong class="attention-card__title">
+                {{ newsSummary?.totalPendingNews }}
+                novedades pendientes
+              </strong>
+
+              <p class="attention-card__description">
+                {{ newsSummary?.totalManagementPendingNews }}
+                requieren seguimiento administrativo.
+              </p>
+            </div>
+
+          </article>
+        }
+
+
+        @if (
+          !todayActivity?.requiresAttention &&
+          !todayActivity?.hasVisitorsWithoutExitAlert &&
+          !todayActivity?.hasOldPackagesAlert &&
+          !newsSummary?.hasPendingNews
+        ) {
+          <article class="attention-card attention-card--success">
+
+            <div
+              class="attention-card__icon"
+              aria-hidden="true">
+              ✓
+            </div>
+
+            <div class="attention-card__content">
+              <strong class="attention-card__title">
+                No hay alertas críticas en este momento
+              </strong>
+
+              <p class="attention-card__description">
+                La operación se encuentra estable según la información disponible.
+              </p>
+            </div>
+
+          </article>
+        }
+
+      </div>
+
+    </section>
+  }
+
+
+  <!-- =====================================================
+       RESUMEN GENERAL
+  ====================================================== -->
+
+  <section class="overview-block overview-block--metrics">
+
+    <header class="overview-block__header">
+
+      <div class="overview-block__heading">
+        <span class="overview-block__eyebrow">
+          Indicadores
+        </span>
+
+        <h3 class="overview-block__title">
+          Resumen general
+        </h3>
+
+        <p class="overview-block__description">
+          Indicadores principales de operación.
+        </p>
+      </div>
+
+    </header>
+
+
+    <div class="overview-block__body">
+
+      @if (loadingOverview) {
+        <div
+          class="metrics-grid"
+          aria-label="Cargando resumen general">
+
+          <article class="metric-card metric-card--loading"></article>
+          <article class="metric-card metric-card--loading"></article>
+          <article class="metric-card metric-card--loading"></article>
+          <article class="metric-card metric-card--loading"></article>
+
+        </div>
+      }
+
+
+      @if (!loadingOverview && overviewError) {
+        <div
+          class="overview-section-error"
+          role="alert">
+
+          <span
+            class="overview-section-error__icon"
+            aria-hidden="true">
+            ⚠
+          </span>
+
+          <p class="overview-section-error__message">
+            {{ overviewError }}
+          </p>
+
+        </div>
+      }
+
+
+      @if (!loadingOverview && overview) {
+        <div class="metrics-grid">
+
+          <article class="metric-card metric-card--primary">
+
+            <div
+              class="metric-card__icon"
+              aria-hidden="true">
+              👥
+            </div>
+
+            <div class="metric-card__content">
+              <p class="metric-card__label">
+                Personas activas
+              </p>
+
+              <strong class="metric-card__value">
+                {{ overview.activePersons }}
+              </strong>
+            </div>
+
+          </article>
+
+
+          <article class="metric-card metric-card--info">
+
+            <div
+              class="metric-card__icon"
+              aria-hidden="true">
+              🚶
+            </div>
+
+            <div class="metric-card__content">
+              <p class="metric-card__label">
+                Visitantes actuales
+              </p>
+
+              <strong class="metric-card__value">
+                {{ overview.currentVisitors }}
+              </strong>
+            </div>
+
+          </article>
+
+
+          <article class="metric-card metric-card--warning">
+
+            <div
+              class="metric-card__icon"
+              aria-hidden="true">
+              📦
+            </div>
+
+            <div class="metric-card__content">
+              <p class="metric-card__label">
+                Paquetes pendientes
+              </p>
+
+              <strong class="metric-card__value">
+                {{ overview.pendingPackages }}
+              </strong>
+            </div>
+
+          </article>
+
+
+          <article class="metric-card metric-card--danger">
+
+            <div
+              class="metric-card__icon"
+              aria-hidden="true">
+              📝
+            </div>
+
+            <div class="metric-card__content">
+              <p class="metric-card__label">
+                Novedades pendientes
+              </p>
+
+              <strong class="metric-card__value">
+                {{ overview.pendingNews }}
+              </strong>
+            </div>
+
+          </article>
+
+
+          <article class="metric-card metric-card--success">
+
+            <div
+              class="metric-card__icon"
+              aria-hidden="true">
+              📅
+            </div>
+
+            <div class="metric-card__content">
+              <p class="metric-card__label">
+                Reservas de hoy
+              </p>
+
+              <strong class="metric-card__value">
+                {{ overview.todayReservations }}
+              </strong>
+            </div>
+
+          </article>
+
+
+          <article class="metric-card metric-card--accent">
+
+            <div
+              class="metric-card__icon"
+              aria-hidden="true">
+              ✉️
+            </div>
+
+            <div class="metric-card__content">
+              <p class="metric-card__label">
+                Invitaciones pendientes
+              </p>
+
+              <strong class="metric-card__value">
+                {{ overview.pendingInvitations }}
+              </strong>
+            </div>
+
+          </article>
+
+        </div>
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       RESUMEN OPERATIVO
+  ====================================================== -->
+
+  <section class="overview-block overview-block--operations">
+
+    <header class="overview-block__header">
+
+      <div class="overview-block__heading">
+        <span class="overview-block__eyebrow">
+          Seguimiento
+        </span>
+
+        <h3 class="overview-block__title">
+          Resumen operativo
+        </h3>
+
+        <p class="overview-block__description">
+          Novedades activas que requieren seguimiento.
+        </p>
+      </div>
+
+    </header>
+
+
+    <div class="overview-block__body">
+
+      @if (loadingNews) {
+        <div
+          class="operations-panel operations-panel--loading"
+          aria-label="Cargando resumen operativo">
+        </div>
+      }
+
+
+      @if (!loadingNews && newsError) {
+        <div
+          class="overview-section-error"
+          role="alert">
+
+          <span
+            class="overview-section-error__icon"
+            aria-hidden="true">
+            ⚠
+          </span>
+
+          <p class="overview-section-error__message">
+            {{ newsError }}
+          </p>
+
+        </div>
+      }
+
+
+      @if (!loadingNews && newsSummary) {
+        <article class="operations-panel">
+
+          <header class="operations-panel__message">
+
+            <span
+              class="operations-panel__message-icon"
+              aria-hidden="true">
+              📌
+            </span>
+
+            <p class="operations-panel__message-text">
+              {{ newsSummary.mainMessage }}
+            </p>
+
+          </header>
+
+
+          <div class="news-board">
+
+            <!-- Novedades operativas -->
+
+            <section class="news-column">
+
+              <header class="news-column__header">
+
+                <div class="news-column__heading">
+                  <span
+                    class="news-column__icon"
+                    aria-hidden="true">
+                    ⚙
+                  </span>
+
+                  <h4 class="news-column__title">
+                    Operativas
+                  </h4>
+                </div>
+
+                <span class="news-column__count">
+                  {{ newsSummary.operationalNews.length }}
+                </span>
+
+              </header>
+
+
+              <div class="news-column__body">
+
+                @if (newsSummary.operationalNews.length === 0) {
+                  <div class="news-empty-state">
+
+                    <span
+                      class="news-empty-state__icon"
+                      aria-hidden="true">
+                      ✓
+                    </span>
+
+                    <p class="news-empty-state__message">
+                      No hay novedades operativas pendientes.
+                    </p>
+
+                  </div>
+                }
+
+
+                @for (item of newsSummary.operationalNews; track item.id) {
+                  <article class="news-item">
+
+                    <div class="news-item__content">
+
+                      <strong class="news-item__title">
+                        {{ item.title }}
+                      </strong>
+
+                      <div class="news-item__metadata">
+
+                        <span
+                          class="news-status"
+                          [class.news-status--assigned]="
+                            item.status === 'Asignada' ||
+                            item.status === 'Reportada'
+                          "
+                          [class.news-status--progress]="
+                            item.status === 'EnCurso' ||
+                            item.status === 'En proceso'
+                          ">
+                          {{ item.status }}
+                        </span>
+
+                        <small class="news-item__date">
+                          {{ item.createdAt | date:'mediumDate' }}
+                          ·
+                          {{ item.createdAt | date:'shortTime' }}
+                        </small>
+
+                      </div>
+
+                    </div>
+
+                  </article>
+                }
+
+              </div>
+
+            </section>
+
+
+            <!-- Novedades de gestión -->
+
+            <section class="news-column">
+
+              <header class="news-column__header">
+
+                <div class="news-column__heading">
+                  <span
+                    class="news-column__icon"
+                    aria-hidden="true">
+                    📋
+                  </span>
+
+                  <h4 class="news-column__title">
+                    Gestión
+                  </h4>
+                </div>
+
+                <span class="news-column__count">
+                  {{ newsSummary.managementNews.length }}
+                </span>
+
+              </header>
+
+
+              <div class="news-column__body">
+
+                @if (newsSummary.managementNews.length === 0) {
+                  <div class="news-empty-state">
+
+                    <span
+                      class="news-empty-state__icon"
+                      aria-hidden="true">
+                      ✓
+                    </span>
+
+                    <p class="news-empty-state__message">
+                      No hay novedades de gestión pendientes.
+                    </p>
+
+                  </div>
+                }
+
+
+                @for (item of newsSummary.managementNews; track item.id) {
+                  <article class="news-item">
+
+                    <div class="news-item__content">
+
+                      <strong class="news-item__title">
+                        {{ item.title }}
+                      </strong>
+
+                      <div class="news-item__metadata">
+
+                        <span
+                          class="news-status"
+                          [class.news-status--assigned]="
+                            item.status === 'Asignada' ||
+                            item.status === 'Reportada'
+                          "
+                          [class.news-status--progress]="
+                            item.status === 'EnCurso' ||
+                            item.status === 'En proceso'
+                          ">
+                          {{ item.status }}
+                        </span>
+
+                        <small class="news-item__date">
+                          {{ item.createdAt | date:'mediumDate' }}
+                          ·
+                          {{ item.createdAt | date:'shortTime' }}
+                        </small>
+
+                      </div>
+
+                    </div>
+
+                  </article>
+                }
+
+              </div>
+
+            </section>
+
+          </div>
+
+        </article>
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       ACTIVIDAD DEL DÍA
+  ====================================================== -->
+
+  <section class="overview-block overview-block--daily-activity">
+
+    <header class="overview-block__header">
+
+      <div class="overview-block__heading">
+        <span class="overview-block__eyebrow">
+          Jornada actual
+        </span>
+
+        <h3 class="overview-block__title">
+          Actividad del día
+        </h3>
+
+        <p class="overview-block__description">
+          Movimiento registrado durante la jornada.
+        </p>
+      </div>
+
+    </header>
+
+
+    <div class="overview-block__body">
+
+      @if (loadingToday) {
+        <div
+          class="daily-activity-loading-grid"
+          aria-label="Cargando actividad del día">
+
+          <article class="daily-activity-card daily-activity-card--loading"></article>
+          <article class="daily-activity-card daily-activity-card--loading"></article>
+          <article class="daily-activity-card daily-activity-card--loading"></article>
+
+        </div>
+      }
+
+
+      @if (!loadingToday && todayError) {
+        <div
+          class="overview-section-error"
+          role="alert">
+
+          <span
+            class="overview-section-error__icon"
+            aria-hidden="true">
+            ⚠
+          </span>
+
+          <p class="overview-section-error__message">
+            {{ todayError }}
+          </p>
+
+        </div>
+      }
+
+
+      @if (!loadingToday && todayActivity) {
+        <article class="daily-activity-panel">
+
+          <header class="daily-activity-panel__message">
+
+            <span
+              class="daily-activity-panel__message-icon"
+              aria-hidden="true">
+              📊
+            </span>
+
+            <p class="daily-activity-panel__message-text">
+              {{ todayActivity.mainMessage }}
+            </p>
+
+          </header>
+
+
+          <!-- Actividad registrada hoy -->
+
+          <section class="daily-summary">
+
+            <header class="daily-summary__header">
+              <h4 class="daily-summary__title">
+                Movimiento de hoy
+              </h4>
+            </header>
+
+            <div class="daily-summary__grid">
+
+              <article class="daily-summary-card">
+
+                <span class="daily-summary-card__label">
+                  Ingresos hoy
+                </span>
+
+                <strong class="daily-summary-card__value">
+                  {{ todayActivity.todayVisitors }}
+                </strong>
+
+                <p class="daily-summary-card__description">
+                  Visitantes registrados
+                </p>
+
+              </article>
+
+
+              <article class="daily-summary-card">
+
+                <span class="daily-summary-card__label">
+                  Reservas hoy
+                </span>
+
+                <strong class="daily-summary-card__value">
+                  {{ todayActivity.todayReservations }}
+                </strong>
+
+                <p class="daily-summary-card__description">
+                  Zonas comunes
+                </p>
+
+              </article>
+
+
+              <article class="daily-summary-card">
+
+                <span class="daily-summary-card__label">
+                  Paquetes hoy
+                </span>
+
+                <strong class="daily-summary-card__value">
+                  {{ todayActivity.todayPackages }}
+                </strong>
+
+                <p class="daily-summary-card__description">
+                  Recibidos en portería
+                </p>
+
+              </article>
+
+            </div>
+
+          </section>
+
+
+          <!-- Seguimiento operativo -->
+
+          <section class="daily-monitoring">
+
+            <header class="daily-monitoring__header">
+              <h4 class="daily-monitoring__title">
+                Seguimiento operativo
+              </h4>
+            </header>
+
+            <div class="daily-monitoring__grid">
+
+              <article
+                class="daily-monitoring-card"
+                [class.daily-monitoring-card--danger]="
+                  todayActivity.hasVisitorsWithoutExitAlert
+                ">
+
+                <p class="daily-monitoring-card__label">
+                  Visitantes actuales
+                </p>
+
+                <strong class="daily-monitoring-card__value">
+                  {{ todayActivity.currentVisitors }}
+                </strong>
+
+                <small class="daily-monitoring-card__description">
+                  {{ todayActivity.visitorsWithoutExitMoreThanOneDay }}
+                  sin salida desde días anteriores
+                </small>
+
+              </article>
+
+
+              <article
+                class="daily-monitoring-card"
+                [class.daily-monitoring-card--warning]="
+                  todayActivity.pendingPackages > 0
+                ">
+
+                <p class="daily-monitoring-card__label">
+                  Paquetes pendientes
+                </p>
+
+                <strong class="daily-monitoring-card__value">
+                  {{ todayActivity.pendingPackages }}
+                </strong>
+
+                <small class="daily-monitoring-card__description">
+                  {{ todayActivity.pendingPackagesMoreThanTwoDays }}
+                  con más de dos días
+                </small>
+
+              </article>
+
+
+              <article class="daily-monitoring-card">
+
+                <p class="daily-monitoring-card__label">
+                  Paquetes recibidos ayer
+                </p>
+
+                <strong class="daily-monitoring-card__value">
+                  {{ todayActivity.yesterdayPackages }}
+                </strong>
+
+                <small class="daily-monitoring-card__description">
+                  Referencia para seguimiento operativo
+                </small>
+
+              </article>
+
+            </div>
+
+          </section>
+
+        </article>
+      }
+
+    </div>
+
+  </section>
+
+</section>

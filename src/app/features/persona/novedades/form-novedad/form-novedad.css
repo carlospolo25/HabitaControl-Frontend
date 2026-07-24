@@ -1,0 +1,267 @@
+:host {
+  display: block;
+}
+
+.novedad-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.62);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.novedad-card {
+  width: min(560px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+}
+
+.novedad-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.novedad-eyebrow {
+  color: #0284c7;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.novedad-header h2 {
+  margin: 6px 0 6px;
+  color: #0f172a;
+  font-size: 1.75rem;
+  font-weight: 900;
+}
+
+.novedad-header p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.close-button {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 14px;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background: #e2e8f0;
+}
+
+.alert {
+  padding: 12px 14px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.alert-error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.alert-success {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #bbf7d0;
+}
+
+.novedad-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-group label {
+  color: #1e293b;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  border: 1px solid #dbe3ef;
+  border-radius: 15px;
+  padding: 12px 14px;
+  color: #0f172a;
+  background: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: 0.18s ease;
+}
+
+.form-group textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.16);
+}
+
+.form-group input:disabled,
+.form-group select:disabled,
+.form-group textarea:disabled,
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.upload-box {
+  border: 2px dashed #cbd5e1;
+  border-radius: 20px;
+  padding: 24px;
+  background: #f8fafc;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.upload-box:hover {
+  border-color: #38bdf8;
+  background: #f0f9ff;
+}
+
+.upload-box input {
+  display: none;
+}
+
+.upload-icon {
+  font-size: 2rem;
+  margin-bottom: 6px;
+}
+
+.upload-box strong {
+  color: #0f172a;
+  font-size: 0.98rem;
+}
+
+.upload-box small {
+  margin-top: 4px;
+  color: #64748b;
+}
+
+.preview-box {
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 12px;
+  background: #f8fafc;
+}
+
+.preview-box img {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
+
+.remove-image-button {
+  margin-top: 10px;
+  width: 100%;
+  border: 1px solid #fecaca;
+  border-radius: 14px;
+  padding: 10px 14px;
+  background: #fff;
+  color: #b91c1c;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.remove-image-button:hover {
+  background: #fef2f2;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.btn-primary,
+.btn-secondary {
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #0369a1;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+@media (max-width: 540px) {
+  .novedad-modal {
+    padding: 12px;
+    align-items: flex-start;
+  }
+
+  .novedad-card {
+    border-radius: 22px;
+    padding: 22px;
+  }
+
+  .novedad-header h2 {
+    font-size: 1.45rem;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}

@@ -1,0 +1,2784 @@
+/* ==========================================================
+   HABITACONTROL
+   QR READER
+   PARTE 1
+   VARIABLES + CONTENEDOR + FONDO
+========================================================== */
+
+:host{
+
+    display:block;
+
+    width:100%;
+
+    /* Colores */
+
+    --qr-primary:#2563eb;
+    --qr-primary-dark:#1d4ed8;
+    --qr-cyan:#06b6d4;
+
+    --qr-success:#16a34a;
+    --qr-danger:#dc2626;
+    --qr-warning:#d97706;
+
+    --qr-background:#f8fafc;
+
+    --qr-surface:#ffffff;
+    --qr-surface-soft:#f8fafc;
+
+    --qr-text:#0f172a;
+    --qr-text-soft:#475569;
+    --qr-text-muted:#94a3b8;
+
+    --qr-border:#e2e8f0;
+
+    /* Radios */
+
+    --qr-radius-xs:.5rem;
+    --qr-radius-sm:.75rem;
+    --qr-radius-md:1rem;
+    --qr-radius-lg:1.5rem;
+    --qr-radius-xl:2rem;
+    --qr-radius-pill:999px;
+
+    /* Sombras */
+
+    --qr-shadow-xs:
+        0 .35rem .9rem rgba(15,23,42,.06);
+
+    --qr-shadow-sm:
+        0 .9rem 2rem rgba(15,23,42,.08);
+
+    --qr-shadow-md:
+        0 1.5rem 3rem rgba(15,23,42,.12);
+
+    /* Transiciones */
+
+    --qr-transition-fast:.18s ease;
+
+    --qr-transition:.28s ease;
+
+}
+
+
+/* ==========================================================
+   RESET LOCAL
+========================================================== */
+
+:host *,
+:host *::before,
+:host *::after{
+
+    box-sizing:border-box;
+
+}
+
+:host button,
+:host input,
+:host select{
+
+    font:inherit;
+
+}
+
+:host img,
+:host video{
+
+    display:block;
+
+    max-width:100%;
+
+}
+
+
+/* ==========================================================
+   CONTENEDOR PRINCIPAL
+========================================================== */
+
+.qr-reader{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:1500;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:
+        clamp(
+            1rem,
+            3vw,
+            2rem
+        );
+
+    overflow:auto;
+
+    overscroll-behavior:contain;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,23,42,.86),
+            rgba(2,6,23,.80)
+        );
+
+    backdrop-filter:
+        blur(.9rem)
+        saturate(125%);
+
+    -webkit-backdrop-filter:
+        blur(.9rem)
+        saturate(125%);
+
+    isolation:isolate;
+
+}
+
+
+/* ==========================================================
+   ORBES DECORATIVOS
+========================================================== */
+
+.qr-reader::before,
+.qr-reader::after{
+
+    position:absolute;
+
+    content:"";
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+}
+
+.qr-reader::before{
+
+    top:-14rem;
+    left:-12rem;
+
+    width:32rem;
+    height:32rem;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(37,99,235,.18),
+            transparent 72%
+        );
+
+    animation:
+        qr-orb-left
+        12s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+.qr-reader::after{
+
+    right:-16rem;
+    bottom:-14rem;
+
+    width:34rem;
+    height:34rem;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(6,182,212,.18),
+            transparent 74%
+        );
+
+    animation:
+        qr-orb-right
+        11s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/* ==========================================================
+   DIÁLOGO
+========================================================== */
+
+.qr-reader__dialog{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+    flex-direction:column;
+    gap:1.5rem;
+
+    width:min(100%,56rem);
+
+    max-height:
+        calc(100dvh - 2rem);
+
+    overflow:auto;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.995),
+            rgba(248,250,252,.985)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.78);
+
+    border-radius:
+        var(--qr-radius-xl);
+
+    box-shadow:
+        0 2rem 5rem rgba(2,6,23,.34);
+
+    isolation:isolate;
+
+    animation:
+        qr-dialog-enter
+        .35s
+        cubic-bezier(.22,1,.36,1);
+
+}
+
+
+/* Línea superior */
+
+.qr-reader__dialog::before{
+
+    position:absolute;
+
+    top:0;
+    left:0;
+    right:0;
+
+    height:.25rem;
+
+    content:"";
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--qr-primary),
+            var(--qr-cyan),
+            var(--qr-success)
+        );
+
+}
+
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+.qr-reader__dialog{
+
+    scrollbar-width:thin;
+
+    scrollbar-color:
+        var(--qr-primary)
+        transparent;
+
+}
+
+.qr-reader__dialog::-webkit-scrollbar{
+
+    width:.65rem;
+
+}
+
+.qr-reader__dialog::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+
+.qr-reader__dialog::-webkit-scrollbar-thumb{
+
+    border:.18rem solid transparent;
+
+    border-radius:
+        var(--qr-radius-pill);
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--qr-primary),
+            var(--qr-cyan)
+        );
+
+    background-clip:padding-box;
+
+}
+
+
+/* ==========================================================
+   ANIMACIONES
+========================================================== */
+
+@keyframes qr-dialog-enter{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(1rem)
+            scale(.97);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+@keyframes qr-orb-left{
+
+    from{
+
+        transform:
+            translate3d(0,0,0)
+            scale(1);
+
+    }
+
+    to{
+
+        transform:
+            translate3d(2rem,1rem,0)
+            scale(1.08);
+
+    }
+
+}
+
+@keyframes qr-orb-right{
+
+    from{
+
+        transform:
+            translate3d(0,0,0)
+            scale(1);
+
+    }
+
+    to{
+
+        transform:
+            translate3d(-2rem,-1rem,0)
+            scale(1.06);
+
+    }
+
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width:768px){
+
+    .qr-reader{
+
+        align-items:flex-start;
+
+        padding:1rem;
+
+    }
+
+    .qr-reader__dialog{
+
+        border-radius:
+            var(--qr-radius-lg);
+
+    }
+
+}
+
+
+/* ==========================================================
+   CELULAR
+========================================================== */
+
+@media (max-width:520px){
+
+    .qr-reader{
+
+        align-items:flex-end;
+
+        padding:.5rem;
+
+    }
+
+    .qr-reader__dialog{
+
+        width:100%;
+
+        border-radius:
+            var(--qr-radius-lg)
+            var(--qr-radius-lg)
+            var(--qr-radius-sm)
+            var(--qr-radius-sm);
+
+    }
+
+}
+
+
+/* ==========================================================
+   ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast:more){
+
+    .qr-reader__dialog{
+
+        border-width:2px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+    .qr-reader,
+    .qr-reader::before,
+    .qr-reader::after,
+    .qr-reader__dialog{
+
+        animation:none;
+
+        transition:none;
+
+    }
+
+}
+
+
+/* ==========================================================
+   PRINT
+========================================================== */
+
+@media print{
+
+    .qr-reader{
+
+        position:static;
+
+        background:#ffffff;
+
+        padding:0;
+
+    }
+
+    .qr-reader::before,
+    .qr-reader::after{
+
+        display:none;
+
+    }
+
+    .qr-reader__dialog{
+
+        width:100%;
+
+        border:1px solid #cbd5e1;
+
+        box-shadow:none;
+
+    }
+
+}
+
+/* ==========================================================
+   HABITACONTROL
+   QR READER
+   PARTE 2
+   HEADER
+========================================================== */
+
+
+/* ==========================================================
+   1. HEADER
+========================================================== */
+
+.qr-reader__header{
+
+    position:relative;
+
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:1.5rem;
+
+    padding:
+        1.75rem
+        1.75rem
+        0;
+
+}
+
+
+/* Línea decorativa */
+
+.qr-reader__header::after{
+
+    position:absolute;
+
+    left:1.75rem;
+    right:1.75rem;
+    bottom:-1rem;
+
+    height:1px;
+
+    content:"";
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(148,163,184,.35),
+            transparent
+        );
+
+}
+
+
+/* ==========================================================
+   2. CONTENEDOR DEL TEXTO
+========================================================== */
+
+.qr-reader__heading{
+
+    display:flex;
+    flex-direction:column;
+
+    flex:1;
+
+    min-width:0;
+
+}
+
+
+/* ==========================================================
+   3. EYEBROW
+========================================================== */
+
+.qr-reader__eyebrow{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    width:max-content;
+
+    margin-bottom:.55rem;
+
+    padding:
+        .38rem
+        .85rem;
+
+    color:
+        var(--qr-primary-dark);
+
+    font-size:.68rem;
+    font-weight:800;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+
+    background:
+        rgba(219,234,254,.9);
+
+    border:
+        1px solid rgba(96,165,250,.25);
+
+    border-radius:
+        var(--qr-radius-pill);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.7);
+
+}
+
+
+/* ==========================================================
+   4. TÍTULO
+========================================================== */
+
+.qr-reader__title{
+
+    margin:0;
+
+    color:
+        var(--qr-text);
+
+    font-size:
+        clamp(
+            1.55rem,
+            2vw,
+            2rem
+        );
+
+    font-weight:800;
+
+    line-height:1.15;
+
+    letter-spacing:-.03em;
+
+}
+
+
+/* ==========================================================
+   5. DESCRIPCIÓN
+========================================================== */
+
+.qr-reader__description{
+
+    max-width:38rem;
+
+    margin:
+        .7rem
+        0
+        0;
+
+    color:
+        var(--qr-text-soft);
+
+    font-size:.93rem;
+
+    line-height:1.7;
+
+}
+
+
+/* ==========================================================
+   6. BOTÓN CERRAR
+========================================================== */
+
+.qr-reader__close{
+
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    width:3rem;
+    height:3rem;
+
+    color:
+        var(--qr-text-soft);
+
+    background:
+        rgba(248,250,252,.92);
+
+    border:
+        1px solid
+        var(--qr-border);
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    overflow:hidden;
+
+    transition:
+        color var(--qr-transition),
+        background var(--qr-transition),
+        border-color var(--qr-transition),
+        transform var(--qr-transition),
+        box-shadow var(--qr-transition);
+
+}
+
+
+/* Halo */
+
+.qr-reader__close::before{
+
+    position:absolute;
+
+    inset:0;
+
+    content:"";
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(37,99,235,.15),
+            transparent 70%
+        );
+
+    opacity:0;
+
+    transition:
+        opacity var(--qr-transition);
+
+}
+
+
+/* Icono */
+
+.qr-reader__close span{
+
+    position:relative;
+
+    z-index:2;
+
+    font-size:1.2rem;
+
+    font-weight:700;
+
+    line-height:1;
+
+}
+
+
+/* ==========================================================
+   7. HOVER
+========================================================== */
+
+.qr-reader__close:hover{
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--qr-primary),
+            var(--qr-primary-dark)
+        );
+
+    border-color:
+        var(--qr-primary);
+
+    box-shadow:
+        0 .9rem 1.8rem rgba(37,99,235,.22);
+
+    transform:
+        translateY(-2px);
+
+}
+
+.qr-reader__close:hover::before{
+
+    opacity:1;
+
+}
+
+
+/* ==========================================================
+   8. ACTIVE
+========================================================== */
+
+.qr-reader__close:active{
+
+    transform:
+        scale(.95);
+
+}
+
+
+/* ==========================================================
+   9. FOCUS
+========================================================== */
+
+.qr-reader__close:focus-visible{
+
+    outline:none;
+
+    box-shadow:
+
+        0 0 0 .22rem
+        rgba(37,99,235,.18),
+
+        0 .9rem 1.8rem
+        rgba(37,99,235,.18);
+
+}
+
+
+/* ==========================================================
+   10. DISABLED
+========================================================== */
+
+.qr-reader__close:disabled{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+    box-shadow:none;
+
+}
+
+
+/* ==========================================================
+   11. TABLET
+========================================================== */
+
+@media (max-width:768px){
+
+    .qr-reader__header{
+
+        padding:
+            1.4rem
+            1.4rem
+            0;
+
+    }
+
+    .qr-reader__header::after{
+
+        left:1.4rem;
+        right:1.4rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   12. CELULAR
+========================================================== */
+
+@media (max-width:520px){
+
+    .qr-reader__header{
+
+        flex-direction:column;
+
+        gap:1rem;
+
+        padding:
+            1rem
+            1rem
+            0;
+
+    }
+
+    .qr-reader__header::after{
+
+        left:1rem;
+        right:1rem;
+
+    }
+
+    .qr-reader__close{
+
+        align-self:flex-end;
+
+        width:2.75rem;
+        height:2.75rem;
+
+    }
+
+    .qr-reader__title{
+
+        font-size:1.4rem;
+
+    }
+
+    .qr-reader__description{
+
+        font-size:.86rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   13. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width:360px){
+
+    .qr-reader__eyebrow{
+
+        font-size:.62rem;
+
+    }
+
+    .qr-reader__title{
+
+        font-size:1.25rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   14. TÁCTIL
+========================================================== */
+
+@media (hover:none) and (pointer:coarse){
+
+    .qr-reader__close:hover{
+
+        transform:none;
+
+        color:
+            var(--qr-text-soft);
+
+        background:
+            rgba(248,250,252,.92);
+
+        border-color:
+            var(--qr-border);
+
+        box-shadow:none;
+
+    }
+
+    .qr-reader__close:active{
+
+        transform:
+            scale(.95);
+
+    }
+
+}
+
+
+/* ==========================================================
+   15. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast:more){
+
+    .qr-reader__close{
+
+        border-width:2px;
+
+    }
+
+    .qr-reader__eyebrow{
+
+        border-width:2px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   16. REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+    .qr-reader__close,
+    .qr-reader__close::before{
+
+        transition:none;
+
+    }
+
+}
+
+
+/* ==========================================================
+   17. PRINT
+========================================================== */
+
+@media print{
+
+    .qr-reader__header{
+
+        padding:0;
+
+    }
+
+    .qr-reader__header::after{
+
+        display:none;
+
+    }
+
+    .qr-reader__close{
+
+        display:none;
+
+    }
+
+}
+
+
+/* ==========================================================
+   HABITACONTROL
+   QR READER
+   PARTE 3
+   FEEDBACK Y ALERTAS
+========================================================== */
+
+
+/* ==========================================================
+   1. CONTENEDOR DE FEEDBACK
+========================================================== */
+
+.qr-reader__feedback{
+
+    position:relative;
+
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+
+    padding:
+        0
+        1.75rem;
+
+}
+
+
+/* ==========================================================
+   2. ALERTA BASE
+========================================================== */
+
+.qr-alert{
+
+    position:relative;
+
+    display:flex;
+    align-items:flex-start;
+    gap:1rem;
+
+    width:100%;
+
+    padding:
+        1rem
+        1.15rem;
+
+    border-radius:
+        var(--qr-radius-md);
+
+    border:1px solid transparent;
+
+    overflow:hidden;
+
+    isolation:isolate;
+
+    animation:
+        qr-alert-enter
+        .28s
+        cubic-bezier(.22,1,.36,1);
+
+}
+
+
+/* Línea lateral */
+
+.qr-alert::before{
+
+    position:absolute;
+
+    top:0;
+    bottom:0;
+    left:0;
+
+    width:.3rem;
+
+    content:"";
+
+}
+
+
+/* ==========================================================
+   3. ICONO
+========================================================== */
+
+.qr-alert__icon{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    width:2.2rem;
+    height:2.2rem;
+
+    border-radius:50%;
+
+    font-size:.9rem;
+
+    font-weight:800;
+
+    line-height:1;
+
+}
+
+
+/* ==========================================================
+   4. MENSAJE
+========================================================== */
+
+.qr-alert__message{
+
+    margin:0;
+
+    color:inherit;
+
+    font-size:.92rem;
+
+    line-height:1.65;
+
+    word-break:break-word;
+
+    overflow-wrap:anywhere;
+
+}
+
+
+/* ==========================================================
+   5. ALERTA ERROR
+========================================================== */
+
+.qr-alert--error{
+
+    color:#991b1b;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(254,242,242,.98),
+            rgba(255,255,255,.98)
+        );
+
+    border-color:
+        rgba(248,113,113,.35);
+
+    box-shadow:
+        0 .9rem 1.8rem rgba(220,38,38,.08);
+
+}
+
+.qr-alert--error::before{
+
+    background:
+        linear-gradient(
+            180deg,
+            #ef4444,
+            #dc2626
+        );
+
+}
+
+.qr-alert--error
+.qr-alert__icon{
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ef4444,
+            #dc2626
+        );
+
+    box-shadow:
+        0 .45rem .9rem rgba(220,38,38,.18);
+
+}
+
+
+/* ==========================================================
+   6. ALERTA SUCCESS
+========================================================== */
+
+.qr-alert--success{
+
+    color:#166534;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(240,253,244,.98),
+            rgba(255,255,255,.98)
+        );
+
+    border-color:
+        rgba(34,197,94,.35);
+
+    box-shadow:
+        0 .9rem 1.8rem rgba(22,163,74,.08);
+
+}
+
+.qr-alert--success::before{
+
+    background:
+        linear-gradient(
+            180deg,
+            #22c55e,
+            var(--qr-success)
+        );
+
+}
+
+.qr-alert--success
+.qr-alert__icon{
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #22c55e,
+            var(--qr-success)
+        );
+
+}
+
+
+/* ==========================================================
+   7. ALERTA WARNING
+========================================================== */
+
+.qr-alert--warning{
+
+    color:#92400e;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,251,235,.98),
+            rgba(255,255,255,.98)
+        );
+
+    border-color:
+        rgba(245,158,11,.35);
+
+}
+
+.qr-alert--warning::before{
+
+    background:
+        linear-gradient(
+            180deg,
+            #f59e0b,
+            var(--qr-warning)
+        );
+
+}
+
+.qr-alert--warning
+.qr-alert__icon{
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f59e0b,
+            var(--qr-warning)
+        );
+
+}
+
+
+/* ==========================================================
+   8. HOVER
+========================================================== */
+
+.qr-alert:hover{
+
+    transform:
+        translateY(-2px);
+
+    transition:
+        transform var(--qr-transition),
+        box-shadow var(--qr-transition);
+
+}
+
+.qr-alert--error:hover{
+
+    box-shadow:
+        0 1rem 2rem rgba(220,38,38,.12);
+
+}
+
+.qr-alert--success:hover{
+
+    box-shadow:
+        0 1rem 2rem rgba(22,163,74,.12);
+
+}
+
+.qr-alert--warning:hover{
+
+    box-shadow:
+        0 1rem 2rem rgba(217,119,6,.12);
+
+}
+
+
+/* ==========================================================
+   9. ANIMACIÓN
+========================================================== */
+
+@keyframes qr-alert-enter{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(.5rem);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+/* ==========================================================
+   10. TABLET
+========================================================== */
+
+@media (max-width:768px){
+
+    .qr-reader__feedback{
+
+        padding:
+            0
+            1.4rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   11. CELULAR
+========================================================== */
+
+@media (max-width:520px){
+
+    .qr-reader__feedback{
+
+        padding:
+            0
+            1rem;
+
+    }
+
+    .qr-alert{
+
+        gap:.8rem;
+
+        padding:.9rem;
+
+    }
+
+    .qr-alert__icon{
+
+        width:2rem;
+        height:2rem;
+
+        font-size:.82rem;
+
+    }
+
+    .qr-alert__message{
+
+        font-size:.86rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   12. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width:360px){
+
+    .qr-alert{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+}
+
+
+/* ==========================================================
+   13. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast:more){
+
+    .qr-alert{
+
+        border-width:2px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   14. REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+    .qr-alert{
+
+        animation:none;
+
+        transition:none;
+
+    }
+
+    .qr-alert:hover{
+
+        transform:none;
+
+    }
+
+}
+
+
+/* ==========================================================
+   15. PRINT
+========================================================== */
+
+@media print{
+
+    .qr-reader__feedback{
+
+        padding:0;
+
+    }
+
+    .qr-alert{
+
+        box-shadow:none;
+
+        border:1px solid #cbd5e1;
+
+    }
+
+}
+
+
+/* ==========================================================
+   HABITACONTROL
+   QR READER
+   PARTE 4
+   SELECTOR DE CÁMARA
+========================================================== */
+
+
+/* ==========================================================
+   1. TARJETA PRINCIPAL
+========================================================== */
+
+.qr-camera-selector {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(14rem, 19rem);
+  align-items: center;
+  gap: 1.25rem;
+
+  margin:
+    0
+    1.75rem;
+
+  padding: 1.125rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(248, 250, 252, 0.98),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border:
+    1px solid
+    rgba(203, 213, 225, 0.82);
+
+  border-radius:
+    var(--qr-radius-md);
+
+  box-shadow:
+    var(--qr-shadow-xs);
+
+  overflow: hidden;
+  isolation: isolate;
+
+  transition:
+    border-color var(--qr-transition-fast),
+    box-shadow var(--qr-transition-fast),
+    transform var(--qr-transition-fast);
+
+  animation:
+    qr-camera-selector-enter
+    0.28s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* Línea decorativa lateral */
+
+.qr-camera-selector::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 0.25rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--qr-primary),
+      var(--qr-cyan)
+    );
+}
+
+
+/* Iluminación interior */
+
+.qr-camera-selector::after {
+  position: absolute;
+  top: -6rem;
+  right: -5rem;
+  z-index: -1;
+
+  width: 13rem;
+  height: 13rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(6, 182, 212, 0.08),
+      transparent 72%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* Hover de la tarjeta */
+
+.qr-camera-selector:hover {
+  border-color:
+    rgba(96, 165, 250, 0.52);
+
+  box-shadow:
+    0 0.875rem 1.75rem rgba(37, 99, 235, 0.08);
+
+  transform:
+    translateY(-0.0625rem);
+}
+
+
+/* ==========================================================
+   2. ENCABEZADO DEL SELECTOR
+========================================================== */
+
+.qr-camera-selector__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   3. ICONO
+========================================================== */
+
+.qr-camera-selector__icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+
+  width: 2.75rem;
+  height: 2.75rem;
+
+  color:
+    #ffffff;
+
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--qr-primary),
+      var(--qr-cyan)
+    );
+
+  border:
+    0.1875rem solid
+    rgba(255, 255, 255, 0.88);
+
+  border-radius:
+    var(--qr-radius-sm);
+
+  box-shadow:
+    0 0.625rem 1.25rem rgba(37, 99, 235, 0.2),
+    0 0 0 0.1875rem rgba(37, 99, 235, 0.06);
+
+  transform:
+    rotate(-2deg);
+
+  transition:
+    transform var(--qr-transition),
+    box-shadow var(--qr-transition);
+}
+
+.qr-camera-selector:hover
+.qr-camera-selector__icon {
+  box-shadow:
+    0 0.75rem 1.5rem rgba(37, 99, 235, 0.26),
+    0 0 0 0.25rem rgba(37, 99, 235, 0.07);
+
+  transform:
+    rotate(0deg)
+    scale(1.03);
+}
+
+
+/* ==========================================================
+   4. CONTENEDOR DE TEXTO
+========================================================== */
+
+.qr-camera-selector__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   5. LABEL
+========================================================== */
+
+.qr-camera-selector__label {
+  width: fit-content;
+
+  color:
+    var(--qr-text);
+
+  font-size: 0.875rem;
+  font-weight: 780;
+  line-height: 1.3;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================================
+   6. DESCRIPCIÓN
+========================================================== */
+
+.qr-camera-selector__description {
+  max-width: 31rem;
+
+  margin: 0;
+
+  color:
+    var(--qr-text-soft);
+
+  font-size: 0.775rem;
+  line-height: 1.5;
+}
+
+
+/* ==========================================================
+   7. CONTENEDOR DEL SELECT
+========================================================== */
+
+.qr-camera-selector__control {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   8. SELECT
+========================================================== */
+
+.qr-camera-selector__select {
+  width: 100%;
+  min-width: 0;
+  min-height: 3.125rem;
+
+  padding:
+    0.75rem
+    3rem
+    0.75rem
+    1rem;
+
+  color:
+    var(--qr-text);
+
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.4;
+
+  background:
+    rgba(255, 255, 255, 0.96);
+
+  border:
+    1px solid
+    var(--qr-border);
+
+  border-radius:
+    var(--qr-radius-sm);
+
+  box-shadow:
+    inset 0 1px 2px rgba(15, 23, 42, 0.035),
+    0 0.25rem 0.75rem rgba(15, 23, 42, 0.04);
+
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  outline: none;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  transition:
+    color var(--qr-transition-fast),
+    background var(--qr-transition-fast),
+    border-color var(--qr-transition-fast),
+    box-shadow var(--qr-transition-fast);
+}
+
+
+/* Hover */
+
+.qr-camera-selector__select:hover:not(:disabled) {
+  background:
+    #ffffff;
+
+  border-color:
+    rgba(96, 165, 250, 0.72);
+
+  box-shadow:
+    inset 0 1px 2px rgba(15, 23, 42, 0.025),
+    0 0.5rem 1rem rgba(37, 99, 235, 0.07);
+}
+
+
+/* Focus */
+
+.qr-camera-selector__select:focus {
+  background:
+    #ffffff;
+
+  border-color:
+    var(--qr-primary);
+
+  box-shadow:
+    0 0 0 0.22rem rgba(37, 99, 235, 0.13),
+    0 0.625rem 1.25rem rgba(37, 99, 235, 0.08);
+}
+
+
+/* Focus visual de todo el control */
+
+.qr-camera-selector__control:focus-within
+.qr-camera-selector__arrow {
+  border-color:
+    var(--qr-primary-dark);
+
+  transform:
+    translateY(-70%)
+    rotate(45deg);
+}
+
+
+/* Disabled */
+
+.qr-camera-selector__select:disabled {
+  color:
+    var(--qr-text-muted);
+
+  background:
+    #f1f5f9;
+
+  border-color:
+    #e2e8f0;
+
+  box-shadow:
+    none;
+
+  cursor:
+    not-allowed;
+
+  opacity:
+    0.72;
+}
+
+
+/* Opciones */
+
+.qr-camera-selector__select option {
+  color:
+    var(--qr-text);
+
+  background:
+    #ffffff;
+
+  font-weight:
+    500;
+}
+
+
+/* ==========================================================
+   9. FLECHA PERSONALIZADA
+========================================================== */
+
+.qr-camera-selector__arrow {
+  position: absolute;
+  top: 50%;
+  right: 1.125rem;
+
+  width: 0.625rem;
+  height: 0.625rem;
+
+  border-right:
+    0.125rem solid
+    var(--qr-text-soft);
+
+  border-bottom:
+    0.125rem solid
+    var(--qr-text-soft);
+
+  transform:
+    translateY(-70%)
+    rotate(45deg);
+
+  transform-origin:
+    center;
+
+  pointer-events:
+    none;
+
+  transition:
+    border-color var(--qr-transition-fast),
+    transform var(--qr-transition-fast);
+}
+
+
+/* Hover de la flecha */
+
+.qr-camera-selector__control:hover
+.qr-camera-selector__select:not(:disabled)
++
+.qr-camera-selector__arrow {
+  border-color:
+    var(--qr-primary);
+}
+
+
+/* Flecha deshabilitada */
+
+.qr-camera-selector__select:disabled
++
+.qr-camera-selector__arrow {
+  border-color:
+    var(--qr-text-muted);
+
+  opacity:
+    0.6;
+}
+
+
+/* ==========================================================
+   10. FIREFOX
+========================================================== */
+
+.qr-camera-selector__select::-moz-focus-inner {
+  border:
+    0;
+}
+
+.qr-camera-selector__select:-moz-focusring {
+  color:
+    transparent;
+
+  text-shadow:
+    0 0 0 var(--qr-text);
+}
+
+
+/* ==========================================================
+   11. ANIMACIÓN DE ENTRADA
+========================================================== */
+
+@keyframes qr-camera-selector-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(0.5rem);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* ==========================================================
+   12. TABLET
+========================================================== */
+
+@media (max-width: 768px) {
+  .qr-camera-selector {
+    grid-template-columns:
+      1fr;
+
+    gap:
+      1rem;
+
+    margin:
+      0
+      1.4rem;
+
+    padding:
+      1rem;
+  }
+
+  .qr-camera-selector__control {
+    width:
+      100%;
+  }
+}
+
+
+/* ==========================================================
+   13. CELULAR
+========================================================== */
+
+@media (max-width: 520px) {
+  .qr-camera-selector {
+    margin:
+      0
+      1rem;
+
+    padding:
+      0.875rem;
+  }
+
+  .qr-camera-selector__heading {
+    align-items:
+      flex-start;
+
+    gap:
+      0.75rem;
+  }
+
+  .qr-camera-selector__icon {
+    width:
+      2.5rem;
+    height:
+      2.5rem;
+
+    font-size:
+      0.9rem;
+  }
+
+  .qr-camera-selector__description {
+    font-size:
+      0.75rem;
+  }
+
+  .qr-camera-selector__select {
+    min-height:
+      3rem;
+
+    padding-left:
+      0.875rem;
+
+    font-size:
+      0.825rem;
+  }
+}
+
+
+/* ==========================================================
+   14. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 360px) {
+  .qr-camera-selector__heading {
+    flex-direction:
+      column;
+  }
+
+  .qr-camera-selector__icon {
+    width:
+      2.375rem;
+    height:
+      2.375rem;
+  }
+}
+
+
+/* ==========================================================
+   15. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .qr-camera-selector:hover {
+    border-color:
+      rgba(203, 213, 225, 0.82);
+
+    box-shadow:
+      var(--qr-shadow-xs);
+
+    transform:
+      none;
+  }
+
+  .qr-camera-selector:hover
+  .qr-camera-selector__icon {
+    box-shadow:
+      0 0.625rem 1.25rem rgba(37, 99, 235, 0.2),
+      0 0 0 0.1875rem rgba(37, 99, 235, 0.06);
+
+    transform:
+      rotate(-2deg);
+  }
+
+  .qr-camera-selector__select {
+    min-height:
+      3.25rem;
+  }
+}
+
+
+/* ==========================================================
+   16. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .qr-camera-selector,
+  .qr-camera-selector__select {
+    border-width:
+      0.125rem;
+  }
+
+  .qr-camera-selector__description {
+    color:
+      var(--qr-text);
+  }
+
+  .qr-camera-selector__arrow {
+    border-width:
+      0 0.1875rem 0.1875rem 0;
+  }
+}
+
+
+/* ==========================================================
+   17. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .qr-camera-selector,
+  .qr-camera-selector__icon,
+  .qr-camera-selector__select,
+  .qr-camera-selector__arrow {
+    animation:
+      none;
+
+    transition:
+      none;
+  }
+
+  .qr-camera-selector:hover,
+  .qr-camera-selector:hover
+  .qr-camera-selector__icon {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   18. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .qr-camera-selector {
+    margin:
+      0;
+
+    background:
+      #ffffff;
+
+    border:
+      1px solid
+      #cbd5e1;
+
+    box-shadow:
+      none;
+  }
+
+  .qr-camera-selector::before,
+  .qr-camera-selector::after,
+  .qr-camera-selector__arrow {
+    display:
+      none;
+  }
+
+  .qr-camera-selector__icon {
+    color:
+      #1d4ed8;
+
+    background:
+      transparent;
+
+    border:
+      1px solid
+      #1d4ed8;
+
+    box-shadow:
+      none;
+  }
+
+  .qr-camera-selector__select {
+    padding:
+      0.5rem;
+
+    border:
+      1px solid
+      #cbd5e1;
+
+    box-shadow:
+      none;
+
+    appearance:
+      auto;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL
+   QR READER
+   PARTE 6
+   AYUDA + FOOTER + BOTONES
+========================================================== */
+
+
+/* ==========================================================
+   1. CAJA DE AYUDA
+========================================================== */
+
+.qr-reader-help{
+
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+
+    margin:
+        0
+        1.75rem;
+
+    padding:
+        1.25rem;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(248,250,252,.98),
+            rgba(255,255,255,.98)
+        );
+
+    border:
+        1px solid
+        rgba(203,213,225,.82);
+
+    border-radius:
+        var(--qr-radius-md);
+
+    box-shadow:
+        var(--qr-shadow-xs);
+
+}
+
+
+/* ==========================================================
+   2. TÍTULO
+========================================================== */
+
+.qr-reader-help__title{
+
+    display:flex;
+    align-items:center;
+    gap:.65rem;
+
+    margin:0;
+
+    color:
+        var(--qr-text);
+
+    font-size:1rem;
+    font-weight:800;
+
+}
+
+.qr-reader-help__title-icon{
+
+    display:grid;
+    place-items:center;
+
+    width:2rem;
+    height:2rem;
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--qr-primary),
+            var(--qr-cyan)
+        );
+
+    border-radius:50%;
+
+    font-size:.9rem;
+
+}
+
+
+/* ==========================================================
+   3. LISTA
+========================================================== */
+
+.qr-reader-help__list{
+
+    display:grid;
+
+    gap:.85rem;
+
+    margin:0;
+    padding:0;
+
+    list-style:none;
+
+}
+
+.qr-reader-help__item{
+
+    display:flex;
+    align-items:flex-start;
+    gap:.75rem;
+
+}
+
+.qr-reader-help__bullet{
+
+    flex:0 0 auto;
+
+    width:.65rem;
+    height:.65rem;
+
+    margin-top:.45rem;
+
+    border-radius:50%;
+
+    background:
+        var(--qr-success);
+
+    box-shadow:
+        0 0 .45rem
+        rgba(22,163,74,.35);
+
+}
+
+.qr-reader-help__text{
+
+    color:
+        var(--qr-text-soft);
+
+    font-size:.88rem;
+
+    line-height:1.65;
+
+}
+
+
+/* ==========================================================
+   4. FOOTER
+========================================================== */
+
+.qr-reader__footer{
+
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:1rem;
+
+    padding:
+        0
+        1.75rem
+        1.75rem;
+
+}
+
+
+/* ==========================================================
+   5. BOTONES BASE
+========================================================== */
+
+.qr-reader-action{
+
+    position:relative;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:.65rem;
+
+    min-width:10rem;
+    min-height:3rem;
+
+    padding:
+        .85rem
+        1.4rem;
+
+    font-size:.92rem;
+    font-weight:700;
+
+    border-radius:
+        var(--qr-radius-pill);
+
+    border:1px solid transparent;
+
+    cursor:pointer;
+
+    overflow:hidden;
+
+    transition:
+
+        transform var(--qr-transition),
+
+        background var(--qr-transition),
+
+        border-color var(--qr-transition),
+
+        color var(--qr-transition),
+
+        box-shadow var(--qr-transition);
+
+}
+
+
+/* ==========================================================
+   6. BOTÓN PRIMARIO
+========================================================== */
+
+.qr-reader-action--primary{
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--qr-primary),
+            var(--qr-primary-dark)
+        );
+
+    box-shadow:
+        0 .9rem 1.8rem
+        rgba(37,99,235,.22);
+
+}
+
+.qr-reader-action--primary:hover{
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 1.1rem 2rem
+        rgba(37,99,235,.30);
+
+}
+
+
+/* ==========================================================
+   7. BOTÓN SECUNDARIO
+========================================================== */
+
+.qr-reader-action--secondary{
+
+    color:
+        var(--qr-text);
+
+    background:#ffffff;
+
+    border-color:
+        var(--qr-border);
+
+}
+
+.qr-reader-action--secondary:hover{
+
+    background:
+        var(--qr-surface-soft);
+
+    border-color:
+        rgba(96,165,250,.55);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* ==========================================================
+   8. ACTIVE
+========================================================== */
+
+.qr-reader-action:active{
+
+    transform:
+        scale(.97);
+
+}
+
+
+/* ==========================================================
+   9. FOCUS
+========================================================== */
+
+.qr-reader-action:focus-visible{
+
+    outline:none;
+
+    box-shadow:
+
+        0 0 0 .22rem
+        rgba(37,99,235,.18),
+
+        0 .9rem 1.8rem
+        rgba(37,99,235,.15);
+
+}
+
+
+/* ==========================================================
+   10. DISABLED
+========================================================== */
+
+.qr-reader-action:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+    box-shadow:none;
+
+}
+
+
+/* ==========================================================
+   11. SPINNER
+========================================================== */
+
+.qr-reader-action__spinner{
+
+    width:1rem;
+    height:1rem;
+
+    border-radius:50%;
+
+    border:
+
+        .15rem solid
+        rgba(255,255,255,.35);
+
+    border-top-color:#ffffff;
+
+    animation:
+
+        qr-button-spin
+        .8s
+        linear
+        infinite;
+
+}
+
+@keyframes qr-button-spin{
+
+    to{
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+/* ==========================================================
+   12. TABLET
+========================================================== */
+
+@media (max-width:768px){
+
+    .qr-reader-help{
+
+        margin:
+            0
+            1.4rem;
+
+    }
+
+    .qr-reader__footer{
+
+        padding:
+
+            0
+            1.4rem
+            1.4rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   13. CELULAR
+========================================================== */
+
+@media (max-width:520px){
+
+    .qr-reader-help{
+
+        margin:
+            0
+            1rem;
+
+        padding:1rem;
+
+    }
+
+    .qr-reader-help__title{
+
+        font-size:.95rem;
+
+    }
+
+    .qr-reader-help__text{
+
+        font-size:.82rem;
+
+    }
+
+    .qr-reader__footer{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+        gap:.8rem;
+
+        padding:
+
+            0
+            1rem
+            1rem;
+
+    }
+
+    .qr-reader-action{
+
+        width:100%;
+
+        min-width:0;
+
+    }
+
+}
+
+
+/* ==========================================================
+   14. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width:360px){
+
+    .qr-reader-help__item{
+
+        gap:.55rem;
+
+    }
+
+    .qr-reader-help__title{
+
+        font-size:.9rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   15. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover:none) and (pointer:coarse){
+
+    .qr-reader-action:hover{
+
+        transform:none;
+
+    }
+
+    .qr-reader-action{
+
+        min-height:3.25rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   16. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast:more){
+
+    .qr-reader-help{
+
+        border-width:2px;
+
+    }
+
+    .qr-reader-action{
+
+        border-width:2px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   17. REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+    .qr-reader-action,
+
+    .qr-reader-action__spinner{
+
+        animation:none;
+
+        transition:none;
+
+    }
+
+}
+
+
+/* ==========================================================
+   18. PRINT
+========================================================== */
+
+@media print{
+
+    .qr-reader-help{
+
+        margin:0;
+
+        border:
+
+            1px solid
+            #cbd5e1;
+
+        box-shadow:none;
+
+        background:#ffffff;
+
+    }
+
+    .qr-reader__footer{
+
+        display:none;
+
+    }
+
+}

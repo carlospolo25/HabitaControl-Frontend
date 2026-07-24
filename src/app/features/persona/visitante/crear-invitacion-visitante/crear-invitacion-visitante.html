@@ -1,0 +1,596 @@
+<section class="visitor-pass">
+  <div class="visitor-pass__shell">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="visitor-pass__header">
+      <div class="visitor-pass__heading">
+        <div class="visitor-pass__heading-icon" aria-hidden="true">
+          <span>QR</span>
+        </div>
+
+        <div class="visitor-pass__heading-content">
+          <span class="visitor-pass__eyebrow">
+            Invitaciones digitales
+          </span>
+
+          <h2 class="visitor-pass__title">
+            Autorizar visitante
+          </h2>
+
+          <p class="visitor-pass__description">
+            Registra los datos de la persona que visitará la residencia y
+            envíale una invitación digital con código QR.
+          </p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="visitor-pass__close"
+        (click)="cerrarFormulario()"
+        [disabled]="isLoading"
+        aria-label="Cerrar formulario de invitación">
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+
+
+    <!-- =====================================================
+         MENSAJES
+    ====================================================== -->
+
+    <div class="visitor-pass__feedback">
+      @if (errorMessage) {
+        <div
+          class="visitor-pass-alert visitor-pass-alert--error"
+          role="alert">
+
+          <div class="visitor-pass-alert__icon" aria-hidden="true">
+            !
+          </div>
+
+          <div class="visitor-pass-alert__content">
+            <strong class="visitor-pass-alert__title">
+              No fue posible crear la invitación
+            </strong>
+
+            <p class="visitor-pass-alert__message">
+              {{ errorMessage }}
+            </p>
+          </div>
+        </div>
+      }
+
+      @if (successMessage) {
+        <div
+          class="visitor-pass-alert visitor-pass-alert--success"
+          role="status">
+
+          <div class="visitor-pass-alert__icon" aria-hidden="true">
+            ✓
+          </div>
+
+          <div class="visitor-pass-alert__content">
+            <strong class="visitor-pass-alert__title">
+              Invitación procesada correctamente
+            </strong>
+
+            <p class="visitor-pass-alert__message">
+              {{ successMessage }}
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+
+
+    <!-- =====================================================
+         FORMULARIO
+    ====================================================== -->
+
+    <form
+      class="visitor-pass__form"
+      (ngSubmit)="crearInvitacion()"
+      #invitationForm="ngForm">
+
+      <section class="visitor-pass-form-card">
+        <header class="visitor-pass-form-card__header">
+          <div class="visitor-pass-form-card__marker" aria-hidden="true">
+            01
+          </div>
+
+          <div class="visitor-pass-form-card__heading">
+            <span class="visitor-pass-form-card__eyebrow">
+              Información de ingreso
+            </span>
+
+            <h3 class="visitor-pass-form-card__title">
+              Datos del visitante
+            </h3>
+
+            <p class="visitor-pass-form-card__description">
+              Esta información será incluida en la invitación enviada al correo
+              electrónico del visitante.
+            </p>
+          </div>
+        </header>
+
+        <div class="visitor-pass-form-card__body">
+          <div class="visitor-pass__grid">
+
+            <!-- Nombre -->
+
+            <div class="visitor-pass-field">
+              <label
+                class="visitor-pass-field__label"
+                for="visitor-name">
+
+                <span class="visitor-pass-field__label-text">
+                  Nombre del visitante
+                </span>
+
+                <span
+                  class="visitor-pass-field__required"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <div class="visitor-pass-field__control">
+                <span
+                  class="visitor-pass-field__icon"
+                  aria-hidden="true">
+                  👤
+                </span>
+
+                <input
+                  id="visitor-name"
+                  class="visitor-pass-field__input"
+                  type="text"
+                  name="nombre"
+                  [(ngModel)]="form.nombre"
+                  placeholder="Ej: Juan Pérez"
+                  maxlength="150"
+                  autocomplete="name"
+                  [disabled]="isLoading"
+                  required />
+              </div>
+
+              <span class="visitor-pass-field__hint">
+                Escribe el nombre completo del visitante.
+              </span>
+            </div>
+
+
+            <!-- Documento -->
+
+            <div class="visitor-pass-field">
+              <label
+                class="visitor-pass-field__label"
+                for="visitor-document">
+
+                <span class="visitor-pass-field__label-text">
+                  Documento
+                </span>
+
+                <span
+                  class="visitor-pass-field__required"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <div class="visitor-pass-field__control">
+                <span
+                  class="visitor-pass-field__icon"
+                  aria-hidden="true">
+                  #
+                </span>
+
+                <input
+                  id="visitor-document"
+                  class="visitor-pass-field__input"
+                  type="text"
+                  name="documento"
+                  [(ngModel)]="form.documento"
+                  placeholder="Ej: 12345678"
+                  maxlength="30"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  [disabled]="isLoading"
+                  required />
+              </div>
+
+              <span class="visitor-pass-field__hint">
+                Número del documento presentado en portería.
+              </span>
+            </div>
+
+
+            <!-- Correo -->
+
+            <div class="visitor-pass-field">
+              <label
+                class="visitor-pass-field__label"
+                for="visitor-email">
+
+                <span class="visitor-pass-field__label-text">
+                  Correo electrónico
+                </span>
+
+                <span
+                  class="visitor-pass-field__required"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <div class="visitor-pass-field__control">
+                <span
+                  class="visitor-pass-field__icon"
+                  aria-hidden="true">
+                  @
+                </span>
+
+                <input
+                  id="visitor-email"
+                  class="visitor-pass-field__input"
+                  type="email"
+                  name="emailVisitante"
+                  [(ngModel)]="form.emailVisitante"
+                  placeholder="Ej: ejemplo@gmail.com"
+                  maxlength="200"
+                  autocomplete="email"
+                  [disabled]="isLoading"
+                  required />
+              </div>
+
+              <span class="visitor-pass-field__hint">
+                Aquí se enviará el código QR de acceso.
+              </span>
+            </div>
+
+
+            <!-- Teléfono -->
+
+            <div class="visitor-pass-field">
+              <label
+                class="visitor-pass-field__label"
+                for="visitor-phone">
+
+                <span class="visitor-pass-field__label-text">
+                  Teléfono
+                </span>
+
+                <span class="visitor-pass-field__optional">
+                  Opcional
+                </span>
+              </label>
+
+              <div class="visitor-pass-field__control">
+                <span
+                  class="visitor-pass-field__icon"
+                  aria-hidden="true">
+                  ☎
+                </span>
+
+                <input
+                  id="visitor-phone"
+                  class="visitor-pass-field__input"
+                  type="tel"
+                  name="telefonoVisitante"
+                  [(ngModel)]="form.telefonoVisitante"
+                  placeholder="Ej: 3001234567"
+                  maxlength="20"
+                  inputmode="tel"
+                  autocomplete="tel"
+                  [disabled]="isLoading" />
+              </div>
+
+              <span class="visitor-pass-field__hint">
+                Número de contacto para cualquier eventualidad.
+              </span>
+            </div>
+
+
+            <!-- Torre -->
+
+            <div class="visitor-pass-field">
+              <label
+                class="visitor-pass-field__label"
+                for="visitor-tower">
+
+                <span class="visitor-pass-field__label-text">
+                  Torre
+                </span>
+
+                <span
+                  class="visitor-pass-field__required"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <div class="visitor-pass-field__control">
+                <span
+                  class="visitor-pass-field__icon"
+                  aria-hidden="true">
+                  T
+                </span>
+
+                <input
+                  id="visitor-tower"
+                  class="visitor-pass-field__input"
+                  type="text"
+                  name="torre"
+                  [(ngModel)]="form.torre"
+                  placeholder="Ej: A"
+                  maxlength="20"
+                  autocomplete="off"
+                  [disabled]="isLoading"
+                  required />
+              </div>
+
+              <span class="visitor-pass-field__hint">
+                Torre o bloque al que se dirige.
+              </span>
+            </div>
+
+
+            <!-- Apartamento -->
+
+            <div class="visitor-pass-field">
+              <label
+                class="visitor-pass-field__label"
+                for="visitor-apartment">
+
+                <span class="visitor-pass-field__label-text">
+                  Apartamento
+                </span>
+
+                <span
+                  class="visitor-pass-field__required"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <div class="visitor-pass-field__control">
+                <span
+                  class="visitor-pass-field__icon"
+                  aria-hidden="true">
+                  A
+                </span>
+
+                <input
+                  id="visitor-apartment"
+                  class="visitor-pass-field__input"
+                  type="text"
+                  name="apartamento"
+                  [(ngModel)]="form.apartamento"
+                  placeholder="Ej: 301"
+                  maxlength="20"
+                  autocomplete="off"
+                  [disabled]="isLoading"
+                  required />
+              </div>
+
+              <span class="visitor-pass-field__hint">
+                Apartamento que autoriza la visita.
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- =================================================
+             ACCIONES
+        ================================================== -->
+
+        <footer class="visitor-pass-form-card__footer">
+          <div class="visitor-pass-form-card__footer-info">
+            <span
+              class="visitor-pass-form-card__footer-icon"
+              aria-hidden="true">
+              i
+            </span>
+
+            <p>
+              Los campos marcados con
+              <strong>*</strong>
+              son obligatorios.
+            </p>
+          </div>
+
+          <div class="visitor-pass__actions">
+            <button
+              type="button"
+              class="visitor-pass-action visitor-pass-action--secondary"
+              (click)="limpiarFormulario()"
+              [disabled]="isLoading">
+
+              <span
+                class="visitor-pass-action__icon"
+                aria-hidden="true">
+                ↺
+              </span>
+
+              <span>
+                Limpiar
+              </span>
+            </button>
+
+            <button
+              type="submit"
+              class="visitor-pass-action visitor-pass-action--primary"
+              [disabled]="isLoading || invitationForm.invalid">
+
+              @if (isLoading) {
+                <span
+                  class="visitor-pass-action__spinner"
+                  aria-hidden="true">
+                </span>
+
+                <span>
+                  Enviando invitación...
+                </span>
+              } @else {
+                <span
+                  class="visitor-pass-action__icon"
+                  aria-hidden="true">
+                  ➜
+                </span>
+
+                <span>
+                  Enviar invitación
+                </span>
+              }
+            </button>
+          </div>
+        </footer>
+      </section>
+    </form>
+
+
+    <!-- =====================================================
+         RESULTADO
+    ====================================================== -->
+
+    @if (tokenGenerado || qrBase64) {
+      <section class="visitor-pass-result">
+        <header class="visitor-pass-result__header">
+          <div
+            class="visitor-pass-result__status-icon"
+            aria-hidden="true">
+            ✓
+          </div>
+
+          <div class="visitor-pass-result__heading">
+            <span class="visitor-pass-result__eyebrow">
+              Invitación enviada
+            </span>
+
+            <h3 class="visitor-pass-result__title">
+              Código de acceso generado correctamente
+            </h3>
+
+            <p class="visitor-pass-result__description">
+              El visitante recibió la invitación por correo electrónico y
+              deberá presentar el código generado al llegar a portería.
+            </p>
+          </div>
+        </header>
+
+        <div class="visitor-pass-result__body">
+
+          @if (qrBase64) {
+            <article class="visitor-pass-qr">
+              <header class="visitor-pass-qr__header">
+                <div>
+                  <span class="visitor-pass-qr__eyebrow">
+                    Acceso principal
+                  </span>
+
+                  <h4 class="visitor-pass-qr__title">
+                    Código QR
+                  </h4>
+                </div>
+
+                <span class="visitor-pass-qr__badge">
+                  Un solo uso
+                </span>
+              </header>
+
+              <div class="visitor-pass-qr__visual">
+                <div class="visitor-pass-qr__frame">
+                  <span
+                    class="visitor-pass-qr__corner visitor-pass-qr__corner--top-left"
+                    aria-hidden="true">
+                  </span>
+
+                  <span
+                    class="visitor-pass-qr__corner visitor-pass-qr__corner--top-right"
+                    aria-hidden="true">
+                  </span>
+
+                  <span
+                    class="visitor-pass-qr__corner visitor-pass-qr__corner--bottom-left"
+                    aria-hidden="true">
+                  </span>
+
+                  <span
+                    class="visitor-pass-qr__corner visitor-pass-qr__corner--bottom-right"
+                    aria-hidden="true">
+                  </span>
+
+                  <img
+                    class="visitor-pass-qr__image"
+                    [src]="'data:image/png;base64,' + qrBase64"
+                    alt="Código QR de la invitación del visitante" />
+                </div>
+              </div>
+
+              <footer class="visitor-pass-qr__footer">
+                <span
+                  class="visitor-pass-qr__footer-icon"
+                  aria-hidden="true">
+                  ⏱
+                </span>
+
+                <p class="visitor-pass-qr__help">
+                  El código es de un solo uso y expirará según el tiempo
+                  configurado para la invitación.
+                </p>
+              </footer>
+            </article>
+          }
+
+
+          @if (tokenGenerado) {
+            <article class="visitor-pass-token">
+              <header class="visitor-pass-token__header">
+                <div
+                  class="visitor-pass-token__icon"
+                  aria-hidden="true">
+                  #
+                </div>
+
+                <div>
+                  <span class="visitor-pass-token__eyebrow">
+                    Método alternativo
+                  </span>
+
+                  <h4 class="visitor-pass-token__title">
+                    Token de respaldo
+                  </h4>
+                </div>
+              </header>
+
+              <div class="visitor-pass-token__value-wrapper">
+                <strong class="visitor-pass-token__value">
+                  {{ tokenGenerado }}
+                </strong>
+              </div>
+
+              <div class="visitor-pass-token__notice">
+                <span
+                  class="visitor-pass-token__notice-icon"
+                  aria-hidden="true">
+                  i
+                </span>
+
+                <p class="visitor-pass-token__description">
+                  Utiliza este token únicamente cuando el código QR no pueda
+                  ser escaneado correctamente en portería.
+                </p>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+    }
+  </div>
+</section>

@@ -1,0 +1,1596 @@
+<section
+  class="financial-report"
+  aria-labelledby="financial-report-title">
+
+  <!-- =====================================================
+       ENCABEZADO PRINCIPAL
+  ====================================================== -->
+
+  <header class="financial-report__header">
+    <div class="financial-report__heading">
+      <div
+        class="financial-report__heading-icon"
+        aria-hidden="true">
+        <span>▤</span>
+      </div>
+
+      <div class="financial-report__heading-content">
+        <span class="financial-report__eyebrow">
+          Análisis y auditoría
+        </span>
+
+        <h2
+          id="financial-report-title"
+          class="financial-report__title">
+          Reporte financiero
+        </h2>
+
+        <p class="financial-report__description">
+          Consulta el consolidado financiero, la distribución por
+          categorías y el detalle de cada movimiento registrado.
+        </p>
+      </div>
+    </div>
+
+    <div class="financial-report__header-actions">
+      <button
+        type="button"
+        class="financial-report__secondary-button"
+        [disabled]="isLoading"
+        (click)="actualizar()"
+        aria-label="Actualizar reporte financiero">
+
+        @if (isLoading) {
+          <span
+            class="financial-report__button-loader"
+            aria-hidden="true">
+          </span>
+
+          <span>Actualizando...</span>
+        } @else {
+          <span
+            class="financial-report__button-icon"
+            aria-hidden="true">
+            ↻
+          </span>
+
+          <span>Actualizar</span>
+        }
+      </button>
+
+      <button
+        type="button"
+        class="financial-report__export-button"
+        [disabled]="
+          isLoading ||
+          isExporting ||
+          !reporte
+        "
+        (click)="exportarPdf()">
+
+        @if (isExporting) {
+          <span
+            class="financial-report__button-loader"
+            aria-hidden="true">
+          </span>
+
+          <span>Generando PDF...</span>
+        } @else {
+          <span
+            class="financial-report__button-icon"
+            aria-hidden="true">
+            ↓
+          </span>
+
+          <span>Exportar PDF</span>
+        }
+      </button>
+    </div>
+  </header>
+
+
+  <!-- =====================================================
+       ALERTA DE ERROR
+  ====================================================== -->
+
+  @if (errorMessage) {
+    <section
+      class="report-alert report-alert--error"
+      role="alert"
+      aria-live="assertive">
+
+      <div
+        class="report-alert__icon"
+        aria-hidden="true">
+        !
+      </div>
+
+      <div class="report-alert__content">
+        <strong class="report-alert__title">
+          No fue posible completar la operación
+        </strong>
+
+        <p class="report-alert__message">
+          {{ errorMessage }}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="report-alert__close"
+        (click)="cerrarError()"
+        aria-label="Cerrar mensaje de error">
+        ×
+      </button>
+    </section>
+  }
+
+
+  <!-- =====================================================
+       ALERTA DE ÉXITO
+  ====================================================== -->
+
+  @if (successMessage) {
+    <section
+      class="report-alert report-alert--success"
+      role="status"
+      aria-live="polite">
+
+      <div
+        class="report-alert__icon"
+        aria-hidden="true">
+        ✓
+      </div>
+
+      <div class="report-alert__content">
+        <strong class="report-alert__title">
+          Operación completada
+        </strong>
+
+        <p class="report-alert__message">
+          {{ successMessage }}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="report-alert__close"
+        (click)="cerrarExito()"
+        aria-label="Cerrar mensaje de confirmación">
+        ×
+      </button>
+    </section>
+  }
+
+
+  <!-- =====================================================
+       PANEL DE CONSULTA
+  ====================================================== -->
+
+  <section
+    class="report-query"
+    aria-labelledby="report-query-title">
+
+    <header class="report-query__header">
+      <div>
+        <span class="report-query__eyebrow">
+          Configuración del reporte
+        </span>
+
+        <h3
+          id="report-query-title"
+          class="report-query__title">
+          Selecciona el periodo
+        </h3>
+
+        <p class="report-query__description">
+          Define el rango de tiempo que se utilizará para
+          consolidar el reporte financiero.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="report-query__reset-button"
+        [disabled]="isLoading"
+        (click)="restablecerFiltros()">
+        Restablecer
+      </button>
+    </header>
+
+
+    <!-- ===================================================
+         TIPO DE PERIODO
+    ==================================================== -->
+
+    <div
+      class="report-periods"
+      role="tablist"
+      aria-label="Tipo de periodo del reporte">
+
+      @for (
+        periodo of periodosDisponibles;
+        track periodo.valor
+      ) {
+        <button
+          type="button"
+          role="tab"
+          class="report-periods__button"
+          [class.report-periods__button--active]="
+            tipoPeriodoSeleccionado === periodo.valor
+          "
+          [disabled]="isLoading"
+          [attr.aria-selected]="
+            tipoPeriodoSeleccionado === periodo.valor
+          "
+          [attr.aria-controls]="
+            'report-period-panel-' + periodo.valor
+          "
+          (click)="cambiarTipoPeriodo(periodo.valor)">
+
+          <span class="report-periods__label">
+            {{ periodo.etiqueta }}
+          </span>
+
+          <span class="report-periods__description">
+            {{ periodo.descripcion }}
+          </span>
+        </button>
+      }
+    </div>
+
+
+    <!-- ===================================================
+         FORMULARIO DE FILTROS
+    ==================================================== -->
+
+    <form
+      class="report-query__form"
+      (ngSubmit)="aplicarFiltros()">
+
+      <div
+        class="report-query__fields"
+        role="tabpanel"
+        [attr.id]="
+          'report-period-panel-' +
+          tipoPeriodoSeleccionado
+        ">
+
+        <!-- Año -->
+
+        <div class="report-query__field">
+          <label
+            for="report-year"
+            class="report-query__label">
+            Año
+
+            <span
+              class="report-query__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <div class="report-query__select-wrapper">
+            <select
+              id="report-year"
+              name="anioSeleccionado"
+              class="report-query__control"
+              [(ngModel)]="anioSeleccionado"
+              [disabled]="isLoading"
+              required>
+
+              @for (
+                anio of aniosDisponibles;
+                track anio
+              ) {
+                <option [ngValue]="anio">
+                  {{ anio }}
+                </option>
+              }
+            </select>
+
+            <span
+              class="report-query__select-icon"
+              aria-hidden="true">
+            </span>
+          </div>
+        </div>
+
+
+        <!-- Mes -->
+
+        @if (tipoPeriodoSeleccionado === 'mensual') {
+          <div class="report-query__field">
+            <label
+              for="report-month"
+              class="report-query__label">
+              Mes
+
+              <span
+                class="report-query__required"
+                aria-hidden="true">
+                *
+              </span>
+            </label>
+
+            <div class="report-query__select-wrapper">
+              <select
+                id="report-month"
+                name="mesSeleccionado"
+                class="report-query__control"
+                [(ngModel)]="mesSeleccionado"
+                [disabled]="isLoading"
+                required>
+
+                @for (mes of meses; track mes.valor) {
+                  <option [ngValue]="mes.valor">
+                    {{ mes.etiqueta }}
+                  </option>
+                }
+              </select>
+
+              <span
+                class="report-query__select-icon"
+                aria-hidden="true">
+              </span>
+            </div>
+          </div>
+        }
+
+
+        <!-- Trimestre -->
+
+        @if (
+          tipoPeriodoSeleccionado === 'trimestral'
+        ) {
+          <div class="report-query__field">
+            <label
+              for="report-quarter"
+              class="report-query__label">
+              Trimestre
+
+              <span
+                class="report-query__required"
+                aria-hidden="true">
+                *
+              </span>
+            </label>
+
+            <div class="report-query__select-wrapper">
+              <select
+                id="report-quarter"
+                name="trimestreSeleccionado"
+                class="report-query__control"
+                [(ngModel)]="trimestreSeleccionado"
+                [disabled]="isLoading"
+                required>
+
+                @for (
+                  trimestre of trimestres;
+                  track trimestre.valor
+                ) {
+                  <option [ngValue]="trimestre.valor">
+                    {{ trimestre.etiqueta }}
+                  </option>
+                }
+              </select>
+
+              <span
+                class="report-query__select-icon"
+                aria-hidden="true">
+              </span>
+            </div>
+          </div>
+        }
+
+
+        <!-- Semestre -->
+
+        @if (
+          tipoPeriodoSeleccionado === 'semestral'
+        ) {
+          <div class="report-query__field">
+            <label
+              for="report-semester"
+              class="report-query__label">
+              Semestre
+
+              <span
+                class="report-query__required"
+                aria-hidden="true">
+                *
+              </span>
+            </label>
+
+            <div class="report-query__select-wrapper">
+              <select
+                id="report-semester"
+                name="semestreSeleccionado"
+                class="report-query__control"
+                [(ngModel)]="semestreSeleccionado"
+                [disabled]="isLoading"
+                required>
+
+                @for (
+                  semestre of semestres;
+                  track semestre.valor
+                ) {
+                  <option [ngValue]="semestre.valor">
+                    {{ semestre.etiqueta }}
+                  </option>
+                }
+              </select>
+
+              <span
+                class="report-query__select-icon"
+                aria-hidden="true">
+              </span>
+            </div>
+          </div>
+        }
+
+
+        <!-- Información anual -->
+
+        @if (tipoPeriodoSeleccionado === 'anual') {
+          <div class="report-query__annual">
+            <div
+              class="report-query__annual-icon"
+              aria-hidden="true">
+              12
+            </div>
+
+            <div>
+              <strong>Reporte anual consolidado</strong>
+
+              <p>
+                Se incluirán los movimientos registrados entre
+                enero y diciembre de
+                {{ anioSeleccionado }}.
+              </p>
+            </div>
+          </div>
+        }
+      </div>
+
+
+      <div class="report-query__footer">
+        <div class="report-query__help">
+          <span aria-hidden="true">i</span>
+
+          <p>
+            El reporte incluirá movimientos, categorías,
+            cantidades, valores y porcentajes del periodo.
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          class="report-query__submit-button"
+          [disabled]="isLoading">
+
+          @if (isLoading) {
+            <span
+              class="report-query__button-loader"
+              aria-hidden="true">
+            </span>
+
+            <span>Generando reporte...</span>
+          } @else {
+            <span
+              class="report-query__button-icon"
+              aria-hidden="true">
+              ↗
+            </span>
+
+            <span>Consultar reporte</span>
+          }
+        </button>
+      </div>
+    </form>
+  </section>
+
+
+  <!-- =====================================================
+       ESTADO DE CARGA
+  ====================================================== -->
+
+  @if (isLoading) {
+    <section
+      class="financial-report-loading"
+      role="status"
+      aria-live="polite">
+
+      <div
+        class="financial-report-loading__spinner"
+        aria-hidden="true">
+      </div>
+
+      <div class="financial-report-loading__content">
+        <h3>Consolidando información financiera</h3>
+
+        <p>
+          Estamos organizando movimientos, categorías y totales
+          del periodo seleccionado.
+        </p>
+      </div>
+
+      <div
+        class="financial-report-loading__skeleton"
+        aria-hidden="true">
+
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </section>
+  }
+
+
+  <!-- =====================================================
+       CONTENIDO DEL REPORTE
+  ====================================================== -->
+
+  @if (!isLoading && reporte) {
+    <section
+      class="report-results"
+      aria-labelledby="report-results-title">
+
+      <!-- =================================================
+           ENCABEZADO DEL RESULTADO
+      ================================================== -->
+
+      <header class="report-results__header">
+        <div>
+          <span class="report-results__eyebrow">
+            Reporte consolidado
+          </span>
+
+          <h3
+            id="report-results-title"
+            class="report-results__title">
+            {{ reporte.periodoTexto }}
+          </h3>
+
+          <p class="report-results__description">
+            Movimientos registrados entre el
+
+            <strong>
+              {{ reporte.fechaInicio | date:'dd/MM/yyyy' }}
+            </strong>
+
+            y el
+
+            <strong>
+              {{ reporte.fechaFin | date:'dd/MM/yyyy' }}
+            </strong>.
+          </p>
+        </div>
+
+        <div
+          class="report-results__status"
+          [class.report-results__status--positive]="
+            reporte.saldoDisponible > 0
+          "
+          [class.report-results__status--negative]="
+            reporte.saldoDisponible < 0
+          "
+          [class.report-results__status--neutral]="
+            reporte.saldoDisponible === 0
+          ">
+
+          <span
+            class="report-results__status-indicator"
+            aria-hidden="true">
+          </span>
+
+          <span>
+            {{ obtenerEstadoFinanciero() }}
+          </span>
+        </div>
+      </header>
+
+
+      <!-- =================================================
+           RESUMEN FINANCIERO
+      ================================================== -->
+
+      <div class="report-summary-grid">
+
+        <!-- Ingresos -->
+
+        <article
+          class="
+            report-summary-card
+            report-summary-card--income
+          ">
+
+          <header class="report-summary-card__header">
+            <div
+              class="report-summary-card__icon"
+              aria-hidden="true">
+              ↑
+            </div>
+
+            <div>
+              <span class="report-summary-card__eyebrow">
+                Entradas
+              </span>
+
+              <h4 class="report-summary-card__title">
+                Total ingresos
+              </h4>
+            </div>
+          </header>
+
+          <strong class="report-summary-card__value">
+            {{
+              reporte.totalIngresos
+                | currency:'COP':'symbol-narrow':'1.0-0'
+            }}
+          </strong>
+
+          <footer class="report-summary-card__footer">
+            <span>
+              {{
+                obtenerTextoMovimientos(
+                  reporte.cantidadIngresos
+                )
+              }}
+            </span>
+
+            <strong>
+              {{
+                porcentajeIngresosPorCantidad
+                  | number:'1.0-2'
+              }}%
+            </strong>
+          </footer>
+        </article>
+
+
+        <!-- Egresos -->
+
+        <article
+          class="
+            report-summary-card
+            report-summary-card--expense
+          ">
+
+          <header class="report-summary-card__header">
+            <div
+              class="report-summary-card__icon"
+              aria-hidden="true">
+              ↓
+            </div>
+
+            <div>
+              <span class="report-summary-card__eyebrow">
+                Salidas
+              </span>
+
+              <h4 class="report-summary-card__title">
+                Total egresos
+              </h4>
+            </div>
+          </header>
+
+          <strong class="report-summary-card__value">
+            {{
+              reporte.totalEgresos
+                | currency:'COP':'symbol-narrow':'1.0-0'
+            }}
+          </strong>
+
+          <footer class="report-summary-card__footer">
+            <span>
+              {{
+                obtenerTextoMovimientos(
+                  reporte.cantidadEgresos
+                )
+              }}
+            </span>
+
+            <strong>
+              {{
+                porcentajeEgresosPorCantidad
+                  | number:'1.0-2'
+              }}%
+            </strong>
+          </footer>
+        </article>
+
+
+        <!-- Saldo -->
+
+        <article
+          class="report-summary-card report-summary-card--balance"
+          [ngClass]="obtenerClaseSaldo()">
+
+          <header class="report-summary-card__header">
+            <div
+              class="report-summary-card__icon"
+              aria-hidden="true">
+              =
+            </div>
+
+            <div>
+              <span class="report-summary-card__eyebrow">
+                Resultado
+              </span>
+
+              <h4 class="report-summary-card__title">
+                Saldo disponible
+              </h4>
+            </div>
+          </header>
+
+          <strong class="report-summary-card__value">
+            {{
+              reporte.saldoDisponible
+                | currency:'COP':'symbol-narrow':'1.0-0'
+            }}
+          </strong>
+
+          <footer class="report-summary-card__footer">
+            <span>
+              {{ obtenerDescripcionEstado() }}
+            </span>
+          </footer>
+        </article>
+
+
+        <!-- Cantidad total -->
+
+        <article
+          class="
+            report-summary-card
+            report-summary-card--movements
+          ">
+
+          <header class="report-summary-card__header">
+            <div
+              class="report-summary-card__icon"
+              aria-hidden="true">
+              #
+            </div>
+
+            <div>
+              <span class="report-summary-card__eyebrow">
+                Actividad registrada
+              </span>
+
+              <h4 class="report-summary-card__title">
+                Total movimientos
+              </h4>
+            </div>
+          </header>
+
+          <strong class="report-summary-card__value">
+            {{ totalMovimientosReporte }}
+          </strong>
+
+          <footer class="report-summary-card__footer">
+            <span>
+              Ingresos y egresos del periodo
+            </span>
+          </footer>
+        </article>
+      </div>
+
+
+      <!-- =================================================
+           CATEGORÍAS
+      ================================================== -->
+
+      <section
+        class="report-categories"
+        aria-labelledby="report-categories-title">
+
+        <header class="report-section-header">
+          <div>
+            <span class="report-section-header__eyebrow">
+              Distribución financiera
+            </span>
+
+            <h3
+              id="report-categories-title"
+              class="report-section-header__title">
+              Resumen por categorías
+            </h3>
+
+            <p class="report-section-header__description">
+              Identifica las categorías con mayor participación
+              dentro de los ingresos y egresos.
+            </p>
+          </div>
+        </header>
+
+        <div class="report-categories__grid">
+
+          <!-- Categorías de ingreso -->
+
+          <article
+            class="
+              report-category-panel
+              report-category-panel--income
+            ">
+
+            <header class="report-category-panel__header">
+              <div>
+                <span class="report-category-panel__eyebrow">
+                  Distribución de entradas
+                </span>
+
+                <h4 class="report-category-panel__title">
+                  Ingresos por categoría
+                </h4>
+              </div>
+
+              <span class="report-category-panel__count">
+                {{ reporte.ingresosPorCategoria.length }}
+              </span>
+            </header>
+
+            @if (
+              reporte.ingresosPorCategoria.length > 0
+            ) {
+              <div class="report-category-panel__list">
+                @for (
+                  categoria of reporte.ingresosPorCategoria;
+                  track categoria.categoriaId
+                ) {
+                  <div class="report-category-item">
+                    <div class="report-category-item__header">
+                      <div>
+                        <strong
+                          class="report-category-item__name">
+                          {{ categoria.categoriaNombre }}
+                        </strong>
+
+                        <span class="report-category-item__movements">
+                          {{
+                            obtenerTextoMovimientos(
+                              categoria.cantidadMovimientos
+                            )
+                          }}
+                        </span>
+                      </div>
+
+                      <div class="report-category-item__values">
+                        <strong>
+                          {{
+                            categoria.total
+                              | currency:
+                                'COP':
+                                'symbol-narrow':
+                                '1.0-0'
+                          }}
+                        </strong>
+
+                        <span>
+                          {{
+                            categoria.porcentajeTotal
+                              | number:'1.0-2'
+                          }}%
+                        </span>
+                      </div>
+                    </div>
+
+                    <div
+                      class="report-category-item__progress"
+                      role="progressbar"
+                      aria-label="Participación de la categoría"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      [attr.aria-valuenow]="
+                        categoria.porcentajeTotal
+                      ">
+
+                      <span
+                        class="
+                          report-category-item__bar
+                          report-category-item__bar--income
+                        "
+                        [style.width.%]="
+                          categoria.porcentajeTotal
+                        ">
+                      </span>
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="report-category-panel__empty">
+                <span aria-hidden="true">↑</span>
+
+                <p>
+                  No existen ingresos distribuidos por
+                  categoría para este periodo.
+                </p>
+              </div>
+            }
+          </article>
+
+
+          <!-- Categorías de egreso -->
+
+          <article
+            class="
+              report-category-panel
+              report-category-panel--expense
+            ">
+
+            <header class="report-category-panel__header">
+              <div>
+                <span class="report-category-panel__eyebrow">
+                  Distribución de salidas
+                </span>
+
+                <h4 class="report-category-panel__title">
+                  Egresos por categoría
+                </h4>
+              </div>
+
+              <span class="report-category-panel__count">
+                {{ reporte.egresosPorCategoria.length }}
+              </span>
+            </header>
+
+            @if (
+              reporte.egresosPorCategoria.length > 0
+            ) {
+              <div class="report-category-panel__list">
+                @for (
+                  categoria of reporte.egresosPorCategoria;
+                  track categoria.categoriaId
+                ) {
+                  <div class="report-category-item">
+                    <div class="report-category-item__header">
+                      <div>
+                        <strong
+                          class="report-category-item__name">
+                          {{ categoria.categoriaNombre }}
+                        </strong>
+
+                        <span
+                          class="report-category-item__movements">
+                          {{ categoria.cantidadMovimientos }}
+                          movimiento{{
+                            categoria.cantidadMovimientos === 1
+                              ? ''
+                              : 's'
+                          }}
+                        </span>
+                      </div>
+
+                      <div class="report-category-item__values">
+                        <strong>
+                          {{
+                            categoria.total
+                              | currency:
+                                'COP':
+                                'symbol-narrow':
+                                '1.0-0'
+                          }}
+                        </strong>
+
+                        <span>
+                          {{
+                            categoria.porcentajeTotal
+                              | number:'1.0-2'
+                          }}%
+                        </span>
+                      </div>
+                    </div>
+
+                    <div
+                      class="report-category-item__progress"
+                      role="progressbar"
+                      aria-label="Participación de la categoría"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      [attr.aria-valuenow]="
+                        categoria.porcentajeTotal
+                      ">
+
+                      <span
+                        class="
+                          report-category-item__bar
+                          report-category-item__bar--expense
+                        "
+                        [style.width.%]="
+                          categoria.porcentajeTotal
+                        ">
+                      </span>
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="report-category-panel__empty">
+                <span aria-hidden="true">↓</span>
+
+                <p>
+                  No existen egresos distribuidos por
+                  categoría para este periodo.
+                </p>
+              </div>
+            }
+          </article>
+        </div>
+      </section>
+
+
+      <!-- =================================================
+           DETALLE DE MOVIMIENTOS
+      ================================================== -->
+
+      <section
+        class="report-detail"
+        aria-labelledby="report-detail-title">
+
+        <header class="report-section-header">
+          <div>
+            <span class="report-section-header__eyebrow">
+              Auditoría financiera
+            </span>
+
+            <h3
+              id="report-detail-title"
+              class="report-section-header__title">
+              Detalle de movimientos
+            </h3>
+
+            <p class="report-section-header__description">
+              Consulta los datos individuales de cada ingreso
+              y egreso registrado.
+            </p>
+          </div>
+        </header>
+
+
+        <!-- Pestañas de detalle -->
+
+        <div
+          class="report-detail-tabs"
+          role="tablist"
+          aria-label="Tipo de movimiento">
+
+          <button
+            type="button"
+            role="tab"
+            class="report-detail-tabs__button"
+            [class.report-detail-tabs__button--active]="
+              detalleActivo === 'ingresos'
+            "
+            [attr.aria-selected]="
+              detalleActivo === 'ingresos'
+            "
+            (click)="cambiarDetalle('ingresos')">
+
+            <span
+              class="
+                report-detail-tabs__icon
+                report-detail-tabs__icon--income
+              "
+              aria-hidden="true">
+              ↑
+            </span>
+
+            <span>Ingresos</span>
+
+            <span class="report-detail-tabs__count">
+              {{ reporte.cantidadIngresos }}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            role="tab"
+            class="report-detail-tabs__button"
+            [class.report-detail-tabs__button--active]="
+              detalleActivo === 'egresos'
+            "
+            [attr.aria-selected]="
+              detalleActivo === 'egresos'
+            "
+            (click)="cambiarDetalle('egresos')">
+
+            <span
+              class="
+                report-detail-tabs__icon
+                report-detail-tabs__icon--expense
+              "
+              aria-hidden="true">
+              ↓
+            </span>
+
+            <span>Egresos</span>
+
+            <span class="report-detail-tabs__count">
+              {{ reporte.cantidadEgresos }}
+            </span>
+          </button>
+        </div>
+
+
+        <!-- Filtros del detalle -->
+
+        <div class="report-detail-filters">
+          <div class="report-detail-filters__search">
+            <label
+              for="report-movement-search"
+              class="report-detail-filters__label">
+              Buscar movimiento
+            </label>
+
+            <div class="report-detail-filters__control-wrapper">
+              <span
+                class="report-detail-filters__search-icon"
+                aria-hidden="true">
+                ⌕
+              </span>
+
+              <input
+                id="report-movement-search"
+                type="search"
+                name="busquedaMovimiento"
+                class="report-detail-filters__control"
+                [(ngModel)]="busquedaMovimiento"
+                placeholder="Buscar por concepto, tercero, referencia o estado"
+                autocomplete="off">
+            </div>
+          </div>
+
+          <div class="report-detail-filters__category">
+            <label
+              for="report-category-filter"
+              class="report-detail-filters__label">
+              Categoría
+            </label>
+
+            <div class="report-detail-filters__select-wrapper">
+              <select
+                id="report-category-filter"
+                name="categoriaSeleccionada"
+                class="report-detail-filters__control"
+                [(ngModel)]="categoriaSeleccionada">
+
+                <option value="">
+                  Todas las categorías
+                </option>
+
+                @for (
+                  categoria of categoriasDetalleActivo;
+                  track categoria.categoriaId
+                ) {
+                  <option [value]="categoria.categoriaId">
+                    {{ categoria.categoriaNombre }}
+                  </option>
+                }
+              </select>
+
+              <span
+                class="report-detail-filters__select-icon"
+                aria-hidden="true">
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="report-detail-filters__clear"
+            [disabled]="
+              !busquedaMovimiento &&
+              !categoriaSeleccionada
+            "
+            (click)="limpiarFiltrosDetalle()">
+            Limpiar filtros
+          </button>
+        </div>
+
+        @let movimientos = movimientosFiltrados;
+
+        <!-- Resumen de resultados filtrados -->
+
+        <div class="report-detail-summary">
+          <div>
+            <span class="report-detail-summary__label">
+              Movimientos encontrados
+            </span>
+
+            <strong class="report-detail-summary__value">
+              {{ movimientos.length }}
+            </strong>
+          </div>
+
+          <div>
+            <span class="report-detail-summary__label">
+              Valor filtrado
+            </span>
+
+            <strong class="report-detail-summary__value">
+              {{
+                valorMovimientosFiltrados
+                  | currency:'COP':'symbol-narrow':'1.0-0'
+              }}
+            </strong>
+          </div>
+
+          <div>
+            <span class="report-detail-summary__label">
+              Tipo consultado
+            </span>
+
+            <strong class="report-detail-summary__value">
+              {{
+                detalleActivo === 'ingresos'
+                  ? 'Ingresos'
+                  : 'Egresos'
+              }}
+            </strong>
+          </div>
+        </div>
+
+
+        <!-- Tabla -->
+
+        @if (movimientos.length > 0) {
+          <div
+            class="report-table-wrapper"
+            role="region"
+            aria-label="Tabla de movimientos financieros"
+            tabindex="0">
+
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Categoría</th>
+                  <th scope="col">Concepto</th>
+                  <th scope="col">Descripción</th>
+                  <th scope="col">Tercero</th>
+                  <th scope="col">Referencia</th>
+                  <th scope="col">Estado</th>
+                  <th
+                    scope="col"
+                    class="report-table__amount-heading">
+                    Valor
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (
+                  movimiento of movimientos;
+                  track movimiento.id
+                ) {
+                  <tr>
+                    <td
+                      class="report-table__date"
+                      [attr.data-label]="'Fecha'">
+                      {{
+                        movimiento.fecha
+                          | date:'dd/MM/yyyy'
+                      }}
+                    </td>
+
+                    <td [attr.data-label]="'Categoría'">
+                      <span
+                        class="report-table__category"
+                        [class.report-table__category--income]="
+                          detalleActivo === 'ingresos'
+                        "
+                        [class.report-table__category--expense]="
+                          detalleActivo === 'egresos'
+                        ">
+                        {{ movimiento.categoriaNombre }}
+                      </span>
+                    </td>
+
+                    <td [attr.data-label]="'Concepto'">
+                      <div class="report-table__concept">
+                        <strong>
+                          {{ movimiento.concepto }}
+                        </strong>
+
+                        <span>
+                          {{ movimiento.tipoMovimiento }}
+                        </span>
+                      </div>
+                    </td>
+
+                    <td [attr.data-label]="'Descripción'">
+                      @if (movimiento.descripcion) {
+                        <span
+                          class="report-table__description"
+                          [title]="movimiento.descripcion">
+                          {{ movimiento.descripcion }}
+                        </span>
+                      } @else {
+                        <span class="report-table__empty-value">
+                          Sin descripción
+                        </span>
+                      }
+                    </td>
+
+                    <td [attr.data-label]="'Tercero'">
+                      @if (movimiento.tercero) {
+                        {{ movimiento.tercero }}
+                      } @else {
+                        <span class="report-table__empty-value">
+                          No registrado
+                        </span>
+                      }
+                    </td>
+
+                    <td [attr.data-label]="'Referencia'">
+                      @if (movimiento.referencia) {
+                        <span class="report-table__reference">
+                          {{ movimiento.referencia }}
+                        </span>
+                      } @else {
+                        <span class="report-table__empty-value">
+                          Sin referencia
+                        </span>
+                      }
+                    </td>
+
+                    <td [attr.data-label]="'Estado'">
+                      <span
+                        class="report-table__status"
+                        [class.report-table__status--active]="
+                          esEstadoActivo(movimiento.estado)
+                        "
+                        [class.report-table__status--cancelled]="
+                          esEstadoCancelado(movimiento.estado)
+                        ">
+                        <span aria-hidden="true"></span>
+
+                        {{ movimiento.estado }}
+                      </span>
+                    </td>
+
+                    <td
+                      class="report-table__amount"
+                      [class.report-table__amount--income]="
+                        detalleActivo === 'ingresos'
+                      "
+                      [class.report-table__amount--expense]="
+                        detalleActivo === 'egresos'
+                      "
+                      [attr.data-label]="'Valor'">
+
+                      {{
+                        movimiento.valor
+                          | currency:
+                            'COP':
+                            'symbol-narrow':
+                            '1.0-0'
+                      }}
+                    </td>
+                  </tr>
+
+                  @if (movimiento.observacion) {
+                    <tr class="report-table__observation-row">
+                      <td colspan="8">
+                        <div class="report-table__observation">
+                          <strong>Observación:</strong>
+
+                          <span>
+                            {{ movimiento.observacion }}
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                }
+              </tbody>
+
+              <tfoot>
+                <tr>
+                  <td colspan="7">
+                    Total de movimientos filtrados
+                  </td>
+
+                  <td class="report-table__amount">
+                    {{
+                      valorMovimientosFiltrados
+                        | currency:
+                          'COP':
+                          'symbol-narrow':
+                          '1.0-0'
+                    }}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        } @else {
+          <div class="report-detail-empty">
+            <div
+              class="report-detail-empty__icon"
+              aria-hidden="true">
+              ⌕
+            </div>
+
+            <h4 class="report-detail-empty__title">
+              No se encontraron movimientos
+            </h4>
+
+            <p class="report-detail-empty__description">
+              No existen movimientos que coincidan con los
+              criterios de búsqueda seleccionados.
+            </p>
+
+            @if (
+              busquedaMovimiento ||
+              categoriaSeleccionada
+            ) {
+              <button
+                type="button"
+                class="report-detail-empty__button"
+                (click)="limpiarFiltrosDetalle()">
+                Limpiar filtros
+              </button>
+            }
+          </div>
+        }
+      </section>
+
+
+      <!-- =================================================
+           INFORMACIÓN DEL PERIODO
+      ================================================== -->
+
+      <article class="report-period-detail">
+        <header class="report-period-detail__header">
+          <div
+            class="report-period-detail__icon"
+            aria-hidden="true">
+            i
+          </div>
+
+          <div>
+            <span class="report-period-detail__eyebrow">
+              Información de consulta
+            </span>
+
+            <h4 class="report-period-detail__title">
+              Datos del periodo analizado
+            </h4>
+          </div>
+        </header>
+
+        <dl class="report-period-detail__list">
+          <div class="report-period-detail__item">
+            <dt>Tipo de periodo</dt>
+
+            <dd>
+              {{
+                obtenerPeriodoSeleccionado(
+                  reporte.tipoPeriodo
+                )?.etiqueta ?? reporte.tipoPeriodo
+              }}
+            </dd>
+          </div>
+
+          <div class="report-period-detail__item">
+            <dt>Año</dt>
+
+            <dd>{{ reporte.anio }}</dd>
+          </div>
+
+          @if (reporte.mes != null) {
+            <div class="report-period-detail__item">
+              <dt>Mes</dt>
+
+              <dd>
+                {{ obtenerNombreMes(reporte.mes) }}
+              </dd>
+            </div>
+          }
+
+          @if (reporte.trimestre != null) {
+            <div class="report-period-detail__item">
+              <dt>Trimestre</dt>
+
+              <dd>
+                {{ reporte.trimestre }}
+              </dd>
+            </div>
+          }
+
+          @if (reporte.semestre != null) {
+            <div class="report-period-detail__item">
+              <dt>Semestre</dt>
+
+              <dd>
+                {{ reporte.semestre }}
+              </dd>
+            </div>
+          }
+
+          <div class="report-period-detail__item">
+            <dt>Fecha inicial</dt>
+
+            <dd>
+              {{ reporte.fechaInicio | date:'dd/MM/yyyy' }}
+            </dd>
+          </div>
+
+          <div class="report-period-detail__item">
+            <dt>Fecha final</dt>
+
+            <dd>
+              {{ reporte.fechaFin | date:'dd/MM/yyyy' }}
+            </dd>
+          </div>
+
+          <div class="report-period-detail__item">
+            <dt>Total de categorías</dt>
+
+            <dd>
+              {{
+                reporte.ingresosPorCategoria.length +
+                reporte.egresosPorCategoria.length
+              }}
+            </dd>
+          </div>
+
+          <div class="report-period-detail__item">
+            <dt>Total de movimientos</dt>
+
+            <dd>{{ totalMovimientosReporte }}</dd>
+          </div>
+        </dl>
+      </article>
+    </section>
+  }
+
+
+  <!-- =====================================================
+       ESTADO SIN INFORMACIÓN
+  ====================================================== -->
+
+  @if (
+    !isLoading &&
+    !reporte &&
+    hasLoaded &&
+    !errorMessage
+  ) {
+    <section class="financial-report-empty">
+      <div
+        class="financial-report-empty__illustration"
+        aria-hidden="true">
+
+        <span class="financial-report-empty__document">
+          ▤
+        </span>
+
+        <span class="financial-report-empty__line"></span>
+        <span class="financial-report-empty__line"></span>
+        <span class="financial-report-empty__line"></span>
+      </div>
+
+      <h3 class="financial-report-empty__title">
+        No hay información para generar el reporte
+      </h3>
+
+      <p class="financial-report-empty__description">
+        No se encontraron movimientos financieros dentro del
+        periodo seleccionado. Prueba consultando otro rango.
+      </p>
+
+      <button
+        type="button"
+        class="financial-report-empty__button"
+        (click)="restablecerFiltros()">
+        Consultar periodo actual
+      </button>
+    </section>
+  }
+
+</section>

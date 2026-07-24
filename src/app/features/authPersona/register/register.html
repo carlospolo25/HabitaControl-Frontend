@@ -1,0 +1,325 @@
+<section class="register-page">
+
+  @if (estado === 'loading') {
+    <div class="register-state-card">
+      <div class="loading-dot"></div>
+      <h2>Validando invitación</h2>
+      <p>Estamos verificando que tu enlace sea válido.</p>
+    </div>
+  }
+
+  @if (estado === 'error') {
+    <div class="register-state-card error">
+      <h2>Invitación inválida</h2>
+      <p>{{ errorMessage || 'La invitación es inválida, fue usada o expiró.' }}</p>
+    </div>
+  }
+
+  @if (estado === 'ok') {
+    <main class="register-card">
+
+      <header class="register-header">
+        <div class="register-logo">
+          <img src="assets/brand/logo-habitacontrol.png" alt="HabitaControl">
+        </div>
+
+        <span>Registro de acceso</span>
+        <h1>Completa tu registro</h1>
+        <p>Activa tu cuenta para ingresar a HabitaControl.</p>
+        <span class="person-badge">
+
+          @if(isResident){
+
+          🏠 Residente
+
+          }
+          @else if(isSecurity){
+
+          🛡 Personal de seguridad
+
+          }
+          @else{
+
+          🛠 Personal de mantenimiento
+
+          }
+
+          </span>
+      </header>
+
+      <form class="register-form" (ngSubmit)="registrar()">
+
+        <section class="form-section">
+          <h3>Información personal</h3>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nombre completo</label>
+              <input
+                [(ngModel)]="nombre"
+                name="nombre"
+                (input)="clearMessages()"
+                placeholder="Ej. Carlos Polo">
+            </div>
+
+            <div class="form-group">
+              <label>Documento</label>
+              <input
+                [(ngModel)]="documento"
+                name="documento"
+                (input)="clearMessages()"
+                placeholder="Número de documento">
+            </div>
+
+            <div class="form-group">
+              <label>Teléfono</label>
+              <input
+                [(ngModel)]="telefono"
+                name="telefono"
+                (input)="clearMessages()"
+                placeholder="Número de contacto">
+            </div>
+
+            <div class="form-group">
+              <label>Correo electrónico</label>
+              <input
+                [(ngModel)]="email"
+                name="email"
+                type="email"
+                (input)="clearMessages()"
+                placeholder="ejemplo@correo.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Contraseña</label>
+
+            <div class="password-wrapper">
+              <input
+                [(ngModel)]="password"
+                name="password"
+                [type]="showPassword ? 'text' : 'password'"
+                (input)="clearMessages()"
+                placeholder="Crea una contraseña segura">
+
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="showPassword = !showPassword"
+                [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+
+                @if (showPassword) {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M3 3l18 18"/>
+                    <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+                    <path d="M9.9 4.3A9.8 9.8 0 0 1 12 4c5 0 8.5 4.4 9.7 6.2a2.5 2.5 0 0 1 0 2.6"/>
+                    <path d="M6.4 6.4a16 16 0 0 0-4.1 3.8 2.5 2.5 0 0 0 0 2.6"/>
+                  </svg>
+                } @else {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M2.3 10.2a2.5 2.5 0 0 0 0 2.6C3.5 14.6 7 19 12 19s8.5-4.4 9.7-6.2a2.5 2.5 0 0 0 0-2.6C20.5 8.4 17 4 12 4s-8.5 4.4-9.7 6.2Z"/>
+                    <circle cx="12" cy="11.5" r="3"/>
+                  </svg>
+                }
+
+              </button>
+            </div>
+          </div>
+          <div class="password-help">
+            <p>La contraseña debe contener:</p>
+
+            <div class="password-rule" [class.ok]="password.length >= 8">
+              <span>✓</span>
+              Mínimo 8 caracteres
+            </div>
+
+            <div class="password-rule" [class.ok]="tieneMayuscula(password)">
+              <span>✓</span>
+              Una letra mayúscula
+            </div>
+
+            <div class="password-rule" [class.ok]="tieneMinuscula(password)">
+              <span>✓</span>
+              Una letra minúscula
+            </div>
+
+            <div class="password-rule" [class.ok]="tieneNumero(password)">
+              <span>✓</span>
+              Un número
+            </div>
+
+            <div class="password-rule" [class.ok]="tieneEspecial(password)">
+              <span>✓</span>
+              Un carácter especial
+            </div>
+          </div>
+        </section>
+
+        @if (isResident) {
+          <section class="form-section">
+            <h3>Información residencial</h3>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Torre o bloque</label>
+                <input
+                  [(ngModel)]="torre"
+                  name="torre"
+                  (input)="clearMessages()"
+                  placeholder="Ej. Torre 1">
+              </div>
+
+              <div class="form-group">
+                <label>Apartamento</label>
+                <input
+                  [(ngModel)]="apartamento"
+                  name="apartamento"
+                  (input)="clearMessages()"
+                  placeholder="Ej. 302">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Tipo de ocupante</label>
+              <select
+                [(ngModel)]="parentesco"
+                name="parentesco"
+                (ngModelChange)="clearMessages()">
+                <option value="">Seleccione una opción</option>
+                <option value="Propietario">Propietario</option>
+                <option value="Arrendatario">Arrendatario</option>
+                <option value="Conyuge">Cónyuge</option>
+                <option value="Hijo">Hijo</option>
+                <option value="Familiar">Familiar</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+
+            @if (parentesco === 'Otro') {
+              <div class="form-group">
+                <label>Especifique el tipo de ocupante</label>
+                <input
+                  [(ngModel)]="otroParentesco"
+                  name="otroParentesco"
+                  (input)="clearMessages()"
+                  placeholder="Ej. Cuidador, autorizado, familiar">
+              </div>
+            }
+          </section>
+
+          <section class="form-section">
+            <h3>Información de censo</h3>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Fecha de nacimiento</label>
+                <input
+                  [(ngModel)]="fechaNacimiento"
+                  name="fechaNacimiento"
+                  type="date">
+              </div>
+
+              <div class="form-group">
+                <label>Contacto de emergencia</label>
+                <input
+                  [(ngModel)]="contactoEmergencia"
+                  name="contactoEmergencia"
+                  placeholder="Nombre del contacto">
+              </div>
+
+              <div class="form-group">
+                <label>Teléfono de emergencia</label>
+                <input
+                  [(ngModel)]="telefonoEmergencia"
+                  name="telefonoEmergencia"
+                  placeholder="Número de emergencia">
+              </div>
+            </div>
+          </section>
+        }
+
+        @if (isStaff) {
+          <section class="form-section">
+            <h3>Información laboral</h3>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Cargo</label>
+                <input
+                  [(ngModel)]="cargo"
+                  name="cargo"
+                  (input)="clearMessages()"
+                  placeholder="Ej. Guarda de seguridad">
+              </div>
+
+              <div class="form-group">
+                <label>Empresa contratista</label>
+                <input
+                  [(ngModel)]="empresaContratista"
+                  name="empresaContratista"
+                  placeholder="Nombre de la empresa">
+              </div>
+            </div>
+          </section>
+        }
+
+        <section class="form-section">
+          <h3>Preferencias</h3>
+
+            <label class="checkbox-card">
+
+            <input
+            type="checkbox"
+            [(ngModel)]="recibeNotificaciones"
+            name="recibeNotificaciones">
+
+            <div>
+
+            <strong>Recibir notificaciones</strong>
+
+            <span>
+
+            Paquetes, visitantes y novedades del conjunto.
+
+            </span>
+
+            </div>
+
+            </label>
+
+          <div class="form-group">
+            <label>Observaciones</label>
+            <textarea
+              [(ngModel)]="observaciones"
+              name="observaciones"
+              rows="3"
+              placeholder="Información adicional opcional"></textarea>
+          </div>
+        </section>
+
+        @if (errorMessage) {
+          <div class="register-message error">
+            {{ errorMessage }}
+          </div>
+        }
+
+        @if (successMessage) {
+          <div class="register-message success">
+            {{ successMessage }}
+          </div>
+        }
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Registrando...' : 'Completar registro' }}
+          </button>
+        </div>
+
+      </form>
+    </main>
+  }
+
+</section>

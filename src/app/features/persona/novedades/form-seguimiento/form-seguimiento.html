@@ -1,0 +1,110 @@
+<div class="seguimiento-modal">
+  <section class="seguimiento-card">
+
+    <header class="seguimiento-header">
+      <div>
+        <span class="seguimiento-eyebrow">
+          {{ esFinalizacion ? 'Cierre de novedad' : 'Historial de novedad' }}
+        </span>
+
+        <h2>{{ tituloModal }}</h2>
+        <p>{{ descripcionModal }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="close-button"
+        (click)="cerrar()"
+        [disabled]="isLoading">
+        ×
+      </button>
+    </header>
+
+    @if (errorMessage) {
+      <div class="alert alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (successMessage) {
+      <div class="alert alert-success">
+        {{ successMessage }}
+      </div>
+    }
+
+    <form class="seguimiento-form" (ngSubmit)="guardar()">
+
+      <div class="form-group">
+        <label for="comentario">
+          {{ esFinalizacion ? 'Comentario final' : 'Nuevo comentario' }}
+        </label>
+
+        <textarea
+          id="comentario"
+          name="comentario"
+          [(ngModel)]="comentario"
+          [disabled]="isLoading"
+          [placeholder]="
+            esFinalizacion
+              ? 'Describe cómo se solucionó la novedad...'
+              : 'Escribe una actualización del seguimiento...'
+          ">
+        </textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Evidencia fotográfica</label>
+
+        @if (!imagenBase64) {
+          <label class="upload-box">
+            <input
+              type="file"
+              accept="image/*"
+              capture="environment"
+              (change)="onFileSelected($event)"
+              [disabled]="isLoading"
+            />
+
+            <span class="upload-icon">📷</span>
+            <strong>Agregar imagen</strong>
+            <small>PNG, JPG o WEBP. Máximo 2 MB.</small>
+          </label>
+        }
+
+        @if (imagenBase64) {
+          <div class="preview-box">
+            <img [src]="imagenBase64" alt="Vista previa de la evidencia" />
+
+            <button
+              type="button"
+              class="remove-image-button"
+              (click)="quitarImagen()"
+              [disabled]="isLoading">
+              Quitar imagen
+            </button>
+          </div>
+        }
+      </div>
+
+      <footer class="form-actions">
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="cerrar()"
+          [disabled]="isLoading">
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="btn-primary"
+          [class.danger]="esFinalizacion"
+          [disabled]="isLoading">
+          {{ textoBoton }}
+        </button>
+      </footer>
+
+    </form>
+
+  </section>
+</div>

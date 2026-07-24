@@ -1,0 +1,848 @@
+<div
+  class="package-detail-backdrop"
+  role="presentation"
+  (click)="cerrarModal()">
+
+  <section
+    class="package-detail-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="package-detail-title"
+    aria-describedby="package-detail-description"
+    [attr.aria-busy]="isLoading"
+    (click)="detenerPropagacion($event)">
+
+    <!--====================================================
+      ENCABEZADO
+    =====================================================-->
+
+    <header class="package-detail-modal__header">
+
+      <div class="package-detail-modal__heading">
+
+        <span class="package-detail-modal__eyebrow">
+          Información del paquete
+        </span>
+
+        <h2
+          id="package-detail-title"
+          class="package-detail-modal__title">
+          Detalle del paquete
+        </h2>
+
+        <p
+          id="package-detail-description"
+          class="package-detail-modal__description">
+          Consulta la información registrada durante la recepción
+          y entrega del paquete.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="package-detail-modal__close"
+        aria-label="Cerrar detalle del paquete"
+        [disabled]="isLoading"
+        (click)="cerrarModal()">
+
+        <span
+          class="package-detail-modal__close-icon"
+          aria-hidden="true">
+          ×
+        </span>
+
+      </button>
+
+    </header>
+
+
+    <!--====================================================
+      CONTENIDO PRINCIPAL
+    =====================================================-->
+
+    <main class="package-detail-modal__body">
+
+      <!--==================================================
+        ESTADO DE CARGA
+      ===================================================-->
+
+      @if (isLoading) {
+
+        <section
+          class="
+            package-detail-state
+            package-detail-state--loading
+          "
+          role="status"
+          aria-live="polite">
+
+          <div
+            class="package-detail-state__visual"
+            aria-hidden="true">
+
+            <span class="package-detail-state__spinner"></span>
+
+          </div>
+
+          <div class="package-detail-state__content">
+
+            <strong class="package-detail-state__title">
+              Cargando detalle
+            </strong>
+
+            <p class="package-detail-state__description">
+              Estamos consultando la información registrada
+              para este paquete.
+            </p>
+
+          </div>
+
+        </section>
+
+
+      <!--==================================================
+        ESTADO DE ERROR
+      ===================================================-->
+
+      } @else if (errorMessage) {
+
+        <section
+          class="
+            package-detail-state
+            package-detail-state--error
+          "
+          role="alert">
+
+          <div
+            class="package-detail-state__visual"
+            aria-hidden="true">
+
+            <span class="package-detail-state__error-icon">
+              !
+            </span>
+
+          </div>
+
+          <div class="package-detail-state__content">
+
+            <strong class="package-detail-state__title">
+              No fue posible cargar el paquete
+            </strong>
+
+            <p class="package-detail-state__description">
+              {{ errorMessage }}
+            </p>
+
+          </div>
+
+          <div class="package-detail-state__actions">
+
+            <button
+              type="button"
+              class="
+                package-detail-state__button
+                package-detail-state__button--primary
+              "
+              (click)="cargarDetalle()">
+
+              <span
+                class="package-detail-state__button-icon"
+                aria-hidden="true">
+                ↻
+              </span>
+
+              <span>
+                Reintentar
+              </span>
+
+            </button>
+
+          </div>
+
+        </section>
+
+
+      <!--==================================================
+        INFORMACIÓN DEL PAQUETE
+      ===================================================-->
+
+      } @else if (paqueteDetalle) {
+
+        <article class="package-detail-view">
+
+
+          <!--================================================
+            RESUMEN PRINCIPAL
+          =================================================-->
+
+          <section class="package-detail-view__hero">
+
+            <div class="package-detail-view__identity">
+
+              <div
+                class="package-detail-view__package-icon"
+                aria-hidden="true">
+                📦
+              </div>
+
+              <div class="package-detail-view__identity-content">
+
+                <span class="package-detail-view__identity-label">
+                  Destinatario
+                </span>
+
+                <strong class="package-detail-view__recipient">
+                  {{
+                    paqueteDetalle.nombreDestinatario ||
+                    'Destinatario no registrado'
+                  }}
+                </strong>
+
+                <div class="package-detail-view__location">
+
+                  <span class="package-detail-view__location-item">
+                    <span
+                      class="package-detail-view__location-label">
+                      Torre
+                    </span>
+
+                    <strong
+                      class="package-detail-view__location-value">
+                      {{ paqueteDetalle.torre || '—' }}
+                    </strong>
+                  </span>
+
+                  <span
+                    class="package-detail-view__location-separator"
+                    aria-hidden="true">
+                  </span>
+
+                  <span class="package-detail-view__location-item">
+                    <span
+                      class="package-detail-view__location-label">
+                      Apartamento
+                    </span>
+
+                    <strong
+                      class="package-detail-view__location-value">
+                      {{ paqueteDetalle.apartamento || '—' }}
+                    </strong>
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="package-detail-view__status-container">
+
+              <span class="package-detail-view__status-label">
+                Estado actual
+              </span>
+
+              <span
+                class="package-detail-view__status"
+                [class.package-detail-view__status--pending]="
+                  paqueteDetalle.estado === 'Pendiente'
+                "
+                [class.package-detail-view__status--received]="
+                  paqueteDetalle.estado === 'Recibido'
+                "
+                [class.package-detail-view__status--delivered]="
+                  paqueteDetalle.estado === 'Entregado'
+                ">
+
+                <span
+                  class="package-detail-view__status-indicator"
+                  aria-hidden="true">
+                </span>
+
+                <span class="package-detail-view__status-text">
+                  {{ paqueteDetalle.estado }}
+                </span>
+
+              </span>
+
+            </div>
+
+          </section>
+
+
+          <!--================================================
+            UBICACIÓN
+          =================================================-->
+
+          <section class="package-detail-card">
+
+            <header class="package-detail-card__header">
+
+              <div
+                class="package-detail-card__icon"
+                aria-hidden="true">
+                ⌂
+              </div>
+
+              <div class="package-detail-card__heading">
+
+                <span class="package-detail-card__eyebrow">
+                  Destino
+                </span>
+
+                <h3 class="package-detail-card__title">
+                  Ubicación residencial
+                </h3>
+
+                <p class="package-detail-card__description">
+                  Unidad residencial asociada con el destinatario
+                  del paquete.
+                </p>
+
+              </div>
+
+            </header>
+
+            <div class="package-detail-card__grid">
+
+              <article class="package-detail-card__field">
+
+                <div
+                  class="package-detail-card__field-icon"
+                  aria-hidden="true">
+                  T
+                </div>
+
+                <div class="package-detail-card__field-content">
+
+                  <span class="package-detail-card__field-label">
+                    Torre
+                  </span>
+
+                  <strong class="package-detail-card__field-value">
+                    {{ paqueteDetalle.torre || 'No registrada' }}
+                  </strong>
+
+                </div>
+
+              </article>
+
+              <article class="package-detail-card__field">
+
+                <div
+                  class="package-detail-card__field-icon"
+                  aria-hidden="true">
+                  A
+                </div>
+
+                <div class="package-detail-card__field-content">
+
+                  <span class="package-detail-card__field-label">
+                    Apartamento
+                  </span>
+
+                  <strong class="package-detail-card__field-value">
+                    {{ paqueteDetalle.apartamento || 'No registrado' }}
+                  </strong>
+
+                </div>
+
+              </article>
+
+            </div>
+
+          </section>
+
+
+          <!--================================================
+            DESCRIPCIÓN
+          =================================================-->
+
+          <section class="package-detail-card">
+
+            <header class="package-detail-card__header">
+
+              <div
+                class="package-detail-card__icon"
+                aria-hidden="true">
+                ≡
+              </div>
+
+              <div class="package-detail-card__heading">
+
+                <span class="package-detail-card__eyebrow">
+                  Registro
+                </span>
+
+                <h3 class="package-detail-card__title">
+                  Información del paquete
+                </h3>
+
+                <p class="package-detail-card__description">
+                  Descripción proporcionada durante el proceso
+                  de recepción.
+                </p>
+
+              </div>
+
+            </header>
+
+            <article
+              class="
+                package-detail-card__field
+                package-detail-card__field--full
+                package-detail-card__field--description
+              ">
+
+              <div
+                class="package-detail-card__field-icon"
+                aria-hidden="true">
+                i
+              </div>
+
+              <div class="package-detail-card__field-content">
+
+                <span class="package-detail-card__field-label">
+                  Descripción registrada
+                </span>
+
+                <p class="package-detail-card__field-text">
+                  {{
+                    paqueteDetalle.descripcion ||
+                    'No se registró una descripción para este paquete.'
+                  }}
+                </p>
+
+              </div>
+
+            </article>
+
+          </section>
+
+
+          <!--================================================
+            HISTORIAL
+          =================================================-->
+
+          <section class="package-detail-card">
+
+            <header class="package-detail-card__header">
+
+              <div
+                class="package-detail-card__icon"
+                aria-hidden="true">
+                ◷
+              </div>
+
+              <div class="package-detail-card__heading">
+
+                <span class="package-detail-card__eyebrow">
+                  Seguimiento
+                </span>
+
+                <h3 class="package-detail-card__title">
+                  Historial del proceso
+                </h3>
+
+                <p class="package-detail-card__description">
+                  Fechas registradas durante la recepción
+                  y entrega del paquete.
+                </p>
+
+              </div>
+
+            </header>
+
+            <div class="package-detail-timeline">
+
+
+              <!-- Recepción -->
+
+              <article
+                class="
+                  package-detail-timeline__item
+                  package-detail-timeline__item--received
+                ">
+
+                <div class="package-detail-timeline__track">
+
+                  <span
+                    class="
+                      package-detail-timeline__marker
+                      package-detail-timeline__marker--received
+                    "
+                    aria-hidden="true">
+                  </span>
+
+                </div>
+
+                <div class="package-detail-timeline__content">
+
+                  <span class="package-detail-timeline__label">
+                    Fecha de recepción
+                  </span>
+
+                  <strong class="package-detail-timeline__value">
+                    {{
+                      paqueteDetalle.fechaRecepcion
+                        | date:'dd/MM/yyyy, h:mm a'
+                    }}
+                  </strong>
+
+                  <span class="package-detail-timeline__status">
+                    Paquete registrado en portería
+                  </span>
+
+                </div>
+
+              </article>
+
+
+              <!-- Entrega -->
+
+              <article
+                class="
+                  package-detail-timeline__item
+                  package-detail-timeline__item--delivered
+                "
+                [class.package-detail-timeline__item--inactive]="
+                  !paqueteDetalle.fechaEntrega
+                ">
+
+                <div class="package-detail-timeline__track">
+
+                  <span
+                    class="
+                      package-detail-timeline__marker
+                      package-detail-timeline__marker--delivered
+                    "
+                    aria-hidden="true">
+                  </span>
+
+                </div>
+
+                <div class="package-detail-timeline__content">
+
+                  <span class="package-detail-timeline__label">
+                    Fecha de entrega
+                  </span>
+
+                  <strong class="package-detail-timeline__value">
+                    {{
+                      paqueteDetalle.fechaEntrega
+                        ? (
+                            paqueteDetalle.fechaEntrega
+                              | date:'dd/MM/yyyy, h:mm a'
+                          )
+                        : 'Entrega pendiente'
+                    }}
+                  </strong>
+
+                  <span class="package-detail-timeline__status">
+                    {{
+                      paqueteDetalle.fechaEntrega
+                        ? 'Proceso de entrega finalizado'
+                        : 'El paquete aún se encuentra pendiente'
+                    }}
+                  </span>
+
+                </div>
+
+              </article>
+
+            </div>
+
+          </section>
+
+
+          <!--================================================
+            INFORMACIÓN DE ENTREGA
+          =================================================-->
+
+          @if (
+            paqueteDetalle.fechaEntrega ||
+            paqueteDetalle.entregadoA ||
+            paqueteDetalle.entregadoPorId
+          ) {
+
+            <section
+              class="
+                package-detail-card
+                package-detail-card--delivery
+              ">
+
+              <header class="package-detail-card__header">
+
+                <div
+                  class="
+                    package-detail-card__icon
+                    package-detail-card__icon--success
+                  "
+                  aria-hidden="true">
+                  ✓
+                </div>
+
+                <div class="package-detail-card__heading">
+
+                  <span class="package-detail-card__eyebrow">
+                    Entrega
+                  </span>
+
+                  <h3 class="package-detail-card__title">
+                    Información de entrega
+                  </h3>
+
+                  <p class="package-detail-card__description">
+                    Personas registradas durante la finalización
+                    del proceso.
+                  </p>
+
+                </div>
+
+              </header>
+
+              <div class="package-detail-card__grid">
+
+                <article class="package-detail-card__field">
+
+                  <div
+                    class="package-detail-card__field-icon"
+                    aria-hidden="true">
+                    R
+                  </div>
+
+                  <div class="package-detail-card__field-content">
+
+                    <span class="package-detail-card__field-label">
+                      Entregado a
+                    </span>
+
+                    <strong class="package-detail-card__field-value">
+                      {{
+                        paqueteDetalle.entregadoA ||
+                        'Persona no registrada'
+                      }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+                <article class="package-detail-card__field">
+
+                  <div
+                    class="package-detail-card__field-icon"
+                    aria-hidden="true">
+                    E
+                  </div>
+
+                  <div class="package-detail-card__field-content">
+
+                    <span class="package-detail-card__field-label">
+                      Responsable de la entrega
+                    </span>
+
+                    <strong class="package-detail-card__field-value">
+                      {{
+                        paqueteDetalle.entregadoPorNombre ||
+                        'No disponible'
+                      }}
+                    </strong>
+
+                  </div>
+
+                </article>
+
+              </div>
+
+            </section>
+
+          }
+
+
+          <!--================================================
+            FIRMA
+          =================================================-->
+
+          @if (paqueteDetalle.firmaRecibido) {
+
+            <section
+              class="
+                package-detail-card
+                package-detail-card--signature
+              ">
+
+              <header class="package-detail-card__header">
+
+                <div
+                  class="package-detail-card__icon"
+                  aria-hidden="true">
+                  ✎
+                </div>
+
+                <div class="package-detail-card__heading">
+
+                  <span class="package-detail-card__eyebrow">
+                    Evidencia
+                  </span>
+
+                  <h3 class="package-detail-card__title">
+                    Firma de recibido
+                  </h3>
+
+                  <p class="package-detail-card__description">
+                    Evidencia registrada durante la entrega
+                    del paquete.
+                  </p>
+
+                </div>
+
+              </header>
+
+              <figure class="package-detail-signature">
+
+                <div class="package-detail-signature__frame">
+
+                  <div class="package-detail-signature__canvas">
+
+                    <img
+                      class="package-detail-signature__image"
+                      [src]="paqueteDetalle.firmaRecibido"
+                      alt="Firma registrada al entregar el paquete">
+
+                  </div>
+
+                </div>
+
+                <figcaption class="package-detail-signature__caption">
+
+                  <span
+                    class="package-detail-signature__caption-icon"
+                    aria-hidden="true">
+                    ✓
+                  </span>
+
+                  <span>
+                    Firma almacenada como evidencia de recepción.
+                  </span>
+
+                </figcaption>
+
+              </figure>
+
+            </section>
+
+          }
+
+        </article>
+
+
+      <!--==================================================
+        ESTADO SIN INFORMACIÓN
+      ===================================================-->
+
+      } @else {
+
+        <section
+          class="
+            package-detail-state
+            package-detail-state--empty
+          ">
+
+          <div
+            class="package-detail-state__visual"
+            aria-hidden="true">
+
+            <span class="package-detail-state__empty-icon">
+              📦
+            </span>
+
+          </div>
+
+          <div class="package-detail-state__content">
+
+            <strong class="package-detail-state__title">
+              No hay información disponible
+            </strong>
+
+            <p class="package-detail-state__description">
+              No fue posible obtener la información asociada
+              con este paquete.
+            </p>
+
+          </div>
+
+          <div class="package-detail-state__actions">
+
+            <button
+              type="button"
+              class="
+                package-detail-state__button
+                package-detail-state__button--primary
+              "
+              (click)="cargarDetalle()">
+
+              <span
+                class="package-detail-state__button-icon"
+                aria-hidden="true">
+                ↻
+              </span>
+
+              <span>
+                Consultar nuevamente
+              </span>
+
+            </button>
+
+          </div>
+
+        </section>
+
+      }
+
+    </main>
+
+
+    <!--====================================================
+      PIE DEL MODAL
+    =====================================================-->
+
+    <footer class="package-detail-modal__footer">
+
+      <div class="package-detail-modal__footer-info">
+
+        <span
+          class="package-detail-modal__footer-indicator"
+          aria-hidden="true">
+        </span>
+
+        <span class="package-detail-modal__footer-text">
+          Información protegida de HabitaControl
+        </span>
+
+      </div>
+
+      <button
+        type="button"
+        class="package-detail-modal__close-button"
+        [disabled]="isLoading"
+        (click)="cerrarModal()">
+
+        <span
+          class="package-detail-modal__close-button-icon"
+          aria-hidden="true">
+          ×
+        </span>
+
+        <span>
+          Cerrar
+        </span>
+
+      </button>
+
+    </footer>
+
+  </section>
+
+</div>

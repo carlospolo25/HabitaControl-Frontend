@@ -1,0 +1,390 @@
+<section
+  class="invitation-access"
+  aria-labelledby="invitation-access-title">
+
+  <!-- =====================================================
+       ENCABEZADO PRINCIPAL
+  ====================================================== -->
+
+  <header class="invitation-access__header">
+
+    <div class="invitation-access__heading">
+
+      <span class="invitation-access__eyebrow">
+        Control de acceso
+      </span>
+
+      <h2
+        id="invitation-access-title"
+        class="invitation-access__title">
+        Escanear invitación
+      </h2>
+
+      <p class="invitation-access__description">
+        Escanea el código QR del visitante o utiliza el token manual como respaldo.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="invitation-access__close"
+      (click)="cerrarFormulario()"
+      [disabled]="estaProcesando"
+      aria-label="Cerrar formulario de validación">
+      Cerrar
+    </button>
+
+  </header>
+
+
+  <!-- =====================================================
+       MENSAJES DEL SISTEMA
+  ====================================================== -->
+
+  <div
+    class="invitation-access__feedback"
+    aria-live="polite">
+
+    @if (errorMessage) {
+      <div
+        class="invitation-alert invitation-alert--error"
+        role="alert">
+
+        <span
+          class="invitation-alert__icon"
+          aria-hidden="true">
+          !
+        </span>
+
+        <p class="invitation-alert__message">
+          {{ errorMessage }}
+        </p>
+
+      </div>
+    }
+
+    @if (successMessage) {
+      <div
+        class="invitation-alert invitation-alert--success"
+        role="status">
+
+        <span
+          class="invitation-alert__icon"
+          aria-hidden="true">
+          ✓
+        </span>
+
+        <p class="invitation-alert__message">
+          {{ successMessage }}
+        </p>
+
+      </div>
+    }
+
+  </div>
+
+
+  <!-- =====================================================
+       PANEL DE VALIDACIÓN
+  ====================================================== -->
+
+  <section
+    class="invitation-validation"
+    aria-labelledby="invitation-validation-title">
+
+    <!-- Encabezado del panel -->
+
+    <header class="invitation-validation__header">
+
+      <div class="invitation-validation__heading">
+
+        <span class="invitation-validation__eyebrow">
+          Validación
+        </span>
+
+        <h3
+          id="invitation-validation-title"
+          class="invitation-validation__title">
+          Código de la invitación
+        </h3>
+
+        <p class="invitation-validation__description">
+          Usa la cámara para una lectura rápida o escribe el token recibido por correo.
+        </p>
+
+      </div>
+
+      <div
+        class="invitation-validation__badge"
+        aria-label="Validación mediante código QR">
+        QR
+      </div>
+
+    </header>
+
+
+    <!-- Campo del token -->
+
+    <div class="invitation-validation__field">
+
+      <label
+        class="invitation-validation__label"
+        for="invitation-token">
+        Token de la invitación
+      </label>
+
+      <div class="invitation-validation__control">
+
+        <input
+          id="invitation-token"
+          class="invitation-validation__input"
+          type="text"
+          name="token"
+          [(ngModel)]="token"
+          placeholder="Escanea el QR o pega el token aquí"
+          autocomplete="off"
+          spellcheck="false"
+          [disabled]="estaProcesando"
+          (keyup.enter)="validarInvitacion()" />
+
+        @if (token) {
+          <span class="invitation-validation__indicator">
+            Listo
+          </span>
+        }
+
+      </div>
+
+    </div>
+
+
+    <!-- Acciones de validación -->
+
+    <div class="invitation-validation__actions">
+
+      <button
+        type="button"
+        class="invitation-action invitation-action--scanner"
+        (click)="abrirScanner()"
+        [disabled]="estaProcesando">
+
+        <span
+          class="invitation-action__icon"
+          aria-hidden="true">
+          ▣
+        </span>
+
+        <span class="invitation-action__label">
+          Escanear QR
+        </span>
+
+      </button>
+
+      <button
+        type="button"
+        class="invitation-action invitation-action--primary"
+        (click)="validarInvitacion()"
+        [disabled]="estaProcesando || !token.trim()">
+
+        @if (isLoading) {
+          <span
+            class="invitation-action__spinner"
+            aria-hidden="true">
+          </span>
+
+          <span class="invitation-action__label">
+            Validando...
+          </span>
+        } @else {
+          <span class="invitation-action__label">
+            Validar invitación
+          </span>
+        }
+
+      </button>
+
+    </div>
+
+
+    <!-- Ayuda de uso -->
+
+    <aside class="invitation-validation__help">
+
+      <span
+        class="invitation-validation__help-icon"
+        aria-hidden="true">
+        i
+      </span>
+
+      <p class="invitation-validation__help-text">
+        El token manual solo debe utilizarse cuando la cámara no esté disponible
+        o el código QR no pueda leerse correctamente.
+      </p>
+
+    </aside>
+
+  </section>
+
+
+  <!-- =====================================================
+       INFORMACIÓN DEL VISITANTE
+  ====================================================== -->
+
+  @if (visitante) {
+    <section
+      class="validated-visitor"
+      aria-labelledby="validated-visitor-title">
+
+      <!-- Encabezado del resultado -->
+
+      <header class="validated-visitor__header">
+
+        <div
+          class="validated-visitor__status-icon"
+          aria-hidden="true">
+          ✓
+        </div>
+
+        <div class="validated-visitor__heading">
+
+          <span class="validated-visitor__eyebrow">
+            Invitación validada
+          </span>
+
+          <h3
+            id="validated-visitor-title"
+            class="validated-visitor__title">
+            Información del visitante
+          </h3>
+
+          <p class="validated-visitor__description">
+            Verifica los datos antes de registrar el ingreso.
+          </p>
+
+        </div>
+
+      </header>
+
+
+      <!-- Datos del visitante -->
+
+      <div class="validated-visitor__grid">
+
+        <article class="validated-visitor__item">
+
+          <span class="validated-visitor__label">
+            Nombre
+          </span>
+
+          <strong class="validated-visitor__value">
+            {{ visitante.nombre }}
+          </strong>
+
+        </article>
+
+        <article class="validated-visitor__item">
+
+          <span class="validated-visitor__label">
+            Documento
+          </span>
+
+          <strong class="validated-visitor__value">
+            {{ visitante.documento }}
+          </strong>
+
+        </article>
+
+        <article class="validated-visitor__item">
+
+          <span class="validated-visitor__label">
+            Torre
+          </span>
+
+          <strong class="validated-visitor__value">
+            {{ visitante.torre }}
+          </strong>
+
+        </article>
+
+        <article class="validated-visitor__item">
+
+          <span class="validated-visitor__label">
+            Apartamento
+          </span>
+
+          <strong class="validated-visitor__value">
+            {{ visitante.apartamento }}
+          </strong>
+
+        </article>
+
+        <article
+          class="validated-visitor__item validated-visitor__item--wide">
+
+          <span class="validated-visitor__label">
+            Autorizado por
+          </span>
+
+          <strong class="validated-visitor__value">
+            {{ visitante.autorizadoPorNombre || 'No disponible' }}
+          </strong>
+
+        </article>
+
+      </div>
+
+
+      <!-- Acción de ingreso -->
+
+      <footer class="validated-visitor__footer">
+
+        <button
+          type="button"
+          class="invitation-action invitation-action--success"
+          (click)="registrarIngreso()"
+          [disabled]="estaProcesando">
+
+          @if (isRegistering) {
+            <span
+              class="invitation-action__spinner"
+              aria-hidden="true">
+            </span>
+
+            <span class="invitation-action__label">
+              Registrando ingreso...
+            </span>
+          } @else {
+            <span class="invitation-action__label">
+              Registrar ingreso
+            </span>
+          }
+
+        </button>
+
+      </footer>
+
+    </section>
+  }
+
+</section>
+
+
+<!-- =======================================================
+     MODAL DEL ESCÁNER QR
+======================================================== -->
+
+@if (mostrarScanner) {
+  <div class="invitation-scanner">
+
+    <div class="invitation-scanner__dialog">
+
+      <app-scanner-qr-visitante
+        (tokenDetectado)="onTokenDetectado($event)"
+        (cerrar)="cerrarScanner()">
+      </app-scanner-qr-visitante>
+
+    </div>
+
+  </div>
+}

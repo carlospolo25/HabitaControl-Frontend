@@ -1,0 +1,4039 @@
+/*==========================================================
+  HABITACONTROL
+  PACKAGES LIST
+  PARTE 1
+  VARIABLES · CONTAINER · HEADER · REFRESH BUTTON
+==========================================================*/
+
+
+/*==========================================================
+  VARIABLES DEL COMPONENTE
+==========================================================*/
+
+:host {
+  --packages-primary: #2563eb;
+  --packages-primary-dark: #1d4ed8;
+  --packages-primary-soft: #dbeafe;
+
+  --packages-success: #16a34a;
+  --packages-warning: #f59e0b;
+  --packages-danger: #dc2626;
+  --packages-cyan: #0ea5e9;
+
+  --packages-text: #111827;
+  --packages-text-soft: #475569;
+  --packages-text-muted: #64748b;
+
+  --packages-border: #dbe4ef;
+  --packages-border-soft: #e2e8f0;
+
+  --packages-surface: #ffffff;
+  --packages-surface-alt: #f8fafc;
+  --packages-background: #f1f5f9;
+
+  --packages-radius-sm: 0.75rem;
+  --packages-radius-md: 1rem;
+  --packages-radius-lg: 1.4rem;
+  --packages-radius-pill: 999px;
+
+  --packages-shadow-sm:
+    0 0.4rem 1rem rgba(15, 23, 42, 0.05);
+
+  --packages-shadow-md:
+    0 1rem 2.3rem rgba(15, 23, 42, 0.08);
+
+  --packages-transition:
+    0.28s cubic-bezier(0.22, 1, 0.36, 1);
+
+  display: block;
+  min-width: 0;
+}
+
+
+/*==========================================================
+  CONTENEDOR PRINCIPAL
+==========================================================*/
+
+.packages-list {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+
+  width: 100%;
+  min-width: 0;
+
+  padding: 1.5rem;
+
+  overflow: hidden;
+
+  color:
+    var(--packages-text);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(248, 250, 252, 0.97)
+    );
+
+  border:
+    1px solid
+    rgba(203, 213, 225, 0.78);
+
+  border-radius:
+    var(--packages-radius-lg);
+
+  box-shadow:
+    var(--packages-shadow-md);
+
+  isolation: isolate;
+}
+
+
+/* Línea superior de identidad */
+
+.packages-list::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  z-index: 3;
+
+  height: 0.25rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--packages-primary),
+      var(--packages-cyan),
+      var(--packages-success)
+    );
+}
+
+
+/* Luz ambiental */
+
+.packages-list::after {
+  position: absolute;
+  top: -10rem;
+  right: -9rem;
+
+  z-index: -1;
+
+  width: 25rem;
+  height: 25rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.09),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/*==========================================================
+  HEADER
+==========================================================*/
+
+.packages-list__header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+
+  min-width: 0;
+
+  padding:
+    0.5rem
+    0.25rem
+    1.35rem;
+
+  border-bottom:
+    1px solid
+    rgba(226, 232, 240, 0.92);
+}
+
+
+/*==========================================================
+  CONTENEDOR DE TÍTULOS
+==========================================================*/
+
+.packages-list__heading {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.42rem;
+
+  min-width: 0;
+}
+
+
+/*==========================================================
+  EYEBROW
+==========================================================*/
+
+.packages-list__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.48rem;
+
+  width: max-content;
+  max-width: 100%;
+
+  color:
+    var(--packages-primary);
+
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1.3;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* Indicador visual */
+
+.packages-list__eyebrow::before {
+  flex: 0 0 auto;
+
+  width: 0.48rem;
+  height: 0.48rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--packages-primary),
+      var(--packages-cyan)
+    );
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.22rem rgba(37, 99, 235, 0.08);
+}
+
+
+/*==========================================================
+  TÍTULO
+==========================================================*/
+
+.packages-list__title {
+  margin: 0;
+
+  color:
+    var(--packages-text);
+
+  font-size:
+    clamp(
+      1.45rem,
+      2vw,
+      1.85rem
+    );
+
+  font-weight: 900;
+  line-height: 1.18;
+
+  letter-spacing: -0.025em;
+
+  overflow-wrap: anywhere;
+}
+
+
+/*==========================================================
+  DESCRIPCIÓN
+==========================================================*/
+
+.packages-list__description {
+  max-width: 48rem;
+
+  margin: 0;
+
+  color:
+    var(--packages-text-soft);
+
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.7;
+
+  overflow-wrap: anywhere;
+}
+
+
+/*==========================================================
+  ACCIONES DEL HEADER
+==========================================================*/
+
+.packages-list__header-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+
+  min-width: 0;
+}
+
+
+/*==========================================================
+  BOTÓN ACTUALIZAR
+==========================================================*/
+
+.packages-list__refresh-button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.58rem;
+
+  min-width: 8.5rem;
+  min-height: 2.8rem;
+
+  padding:
+    0.72rem
+    1.1rem;
+
+  overflow: hidden;
+
+  color:
+    var(--packages-primary);
+
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.2;
+
+  white-space: nowrap;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #eff6ff
+    );
+
+  border:
+    1px solid
+    rgba(147, 197, 253, 0.88);
+
+  border-radius:
+    0.9rem;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 0.45rem 1rem rgba(37, 99, 235, 0.08);
+
+  transition:
+    color var(--packages-transition),
+    background var(--packages-transition),
+    border-color var(--packages-transition),
+    box-shadow var(--packages-transition),
+    opacity var(--packages-transition),
+    transform var(--packages-transition);
+}
+
+
+/* Brillo interno */
+
+.packages-list__refresh-button::before {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.32),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+/* Elementos sobre el brillo */
+
+.packages-list__refresh-button > * {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* Hover */
+
+.packages-list__refresh-button:hover:not(:disabled) {
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--packages-primary),
+      var(--packages-primary-dark)
+    );
+
+  border-color:
+    var(--packages-primary);
+
+  box-shadow:
+    0 0.9rem 1.7rem rgba(37, 99, 235, 0.22);
+
+  transform:
+    translateY(-0.12rem);
+}
+
+
+/* Active */
+
+.packages-list__refresh-button:active:not(:disabled) {
+  transform:
+    scale(0.97);
+}
+
+
+/* Focus */
+
+.packages-list__refresh-button:focus-visible {
+  outline:
+    0.18rem solid
+    rgba(37, 99, 235, 0.3);
+
+  outline-offset:
+    0.16rem;
+}
+
+
+/* Disabled */
+
+.packages-list__refresh-button:disabled {
+  color:
+    #64748b;
+
+  background:
+    #f1f5f9;
+
+  border-color:
+    #dbe4ef;
+
+  opacity: 0.68;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+
+/*==========================================================
+  ICONO ACTUALIZAR
+==========================================================*/
+
+.packages-list__refresh-icon {
+  display: inline-grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 1.15rem;
+  height: 1.15rem;
+
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+
+  transform-origin: center;
+}
+
+
+/* Giro durante la carga */
+
+.packages-list__refresh-button:disabled
+.packages-list__refresh-icon {
+  animation:
+    packagesRefreshSpin
+    0.9s linear infinite;
+}
+
+
+/*==========================================================
+  PROTECCIÓN CONTRA DESBORDAMIENTOS
+==========================================================*/
+
+.packages-list,
+.packages-list__header,
+.packages-list__heading,
+.packages-list__title,
+.packages-list__description,
+.packages-list__header-actions {
+  min-width: 0;
+}
+
+
+/*==========================================================
+  ANIMACIÓN
+==========================================================*/
+
+@keyframes packagesRefreshSpin {
+  from {
+    transform:
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+/*==========================================================
+  HABITACONTROL
+  PACKAGES LIST
+  PARTE 2
+  ALERTS · LOADING STATE · EMPTY STATE
+==========================================================*/
+
+
+/*==========================================================
+  ALERTA BASE
+==========================================================*/
+
+.packages-list__alert {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-start;
+  gap: 0.8rem;
+
+  min-width: 0;
+
+  padding:
+    0.95rem
+    1rem;
+
+  overflow: hidden;
+
+  border:
+    1px solid transparent;
+
+  border-radius:
+    var(--packages-radius-md);
+
+  box-shadow:
+    var(--packages-shadow-sm);
+
+  animation:
+    packagesAlertEnter
+    0.34s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* Línea lateral decorativa */
+
+.packages-list__alert::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 0.24rem;
+
+  content: "";
+
+  border-radius:
+    var(--packages-radius-pill);
+}
+
+
+/* Brillo interno */
+
+.packages-list__alert::after {
+  position: absolute;
+  top: -4rem;
+  right: -3rem;
+
+  width: 10rem;
+  height: 10rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.5),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/*==========================================================
+  ALERTA DE ERROR
+==========================================================*/
+
+.packages-list__alert--error {
+  color:
+    #991b1b;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(254, 242, 242, 0.99),
+      rgba(255, 247, 237, 0.95)
+    );
+
+  border-color:
+    rgba(252, 165, 165, 0.82);
+}
+
+
+.packages-list__alert--error::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--packages-danger),
+      #f97316
+    );
+}
+
+
+/*==========================================================
+  ICONO DE ALERTA
+==========================================================*/
+
+.packages-list__alert-icon {
+  position: relative;
+  z-index: 2;
+
+  display: inline-grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 1.85rem;
+  height: 1.85rem;
+
+  color:
+    #ffffff;
+
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--packages-danger),
+      #b91c1c
+    );
+
+  border:
+    0.15rem solid
+    rgba(255, 255, 255, 0.86);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0.4rem 0.9rem rgba(220, 38, 38, 0.2);
+}
+
+
+/*==========================================================
+  MENSAJE DE ALERTA
+==========================================================*/
+
+.packages-list__alert-message {
+  position: relative;
+  z-index: 2;
+
+  flex: 1 1 auto;
+
+  min-width: 0;
+
+  margin: 0;
+  padding-top: 0.2rem;
+
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+
+/*==========================================================
+  ESTADO BASE
+==========================================================*/
+
+.packages-list__state {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 1.15rem;
+
+  min-width: 0;
+  min-height: 16rem;
+
+  padding:
+    2.5rem
+    2rem;
+
+  overflow: hidden;
+
+  text-align: left;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(248, 250, 252, 0.95)
+    );
+
+  border:
+    1px dashed
+    rgba(148, 163, 184, 0.58);
+
+  border-radius:
+    var(--packages-radius-lg);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.72),
+    var(--packages-shadow-sm);
+
+  animation:
+    packagesStateEnter
+    0.38s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* Cuadrícula decorativa */
+
+.packages-list__state::before {
+  position: absolute;
+  inset: 0;
+
+  z-index: -1;
+
+  content: "";
+
+  background-image:
+    linear-gradient(
+      rgba(148, 163, 184, 0.055) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(148, 163, 184, 0.055) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    1.75rem
+    1.75rem;
+
+  pointer-events: none;
+}
+
+
+/* Luz ambiental */
+
+.packages-list__state::after {
+  position: absolute;
+  right: -5rem;
+  bottom: -6rem;
+
+  z-index: -1;
+
+  width: 17rem;
+  height: 17rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.09),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/*==========================================================
+  CONTENIDO DEL ESTADO
+==========================================================*/
+
+.packages-list__state-content {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  min-width: 0;
+  max-width: 30rem;
+}
+
+
+/*==========================================================
+  TÍTULO DEL ESTADO
+==========================================================*/
+
+.packages-list__state-title {
+  margin: 0;
+
+  color:
+    var(--packages-text);
+
+  font-size: 1.05rem;
+  font-weight: 850;
+  line-height: 1.3;
+
+  letter-spacing: -0.015em;
+
+  overflow-wrap: anywhere;
+}
+
+
+/*==========================================================
+  DESCRIPCIÓN DEL ESTADO
+==========================================================*/
+
+.packages-list__state-description {
+  margin: 0;
+
+  color:
+    var(--packages-text-muted);
+
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.65;
+
+  overflow-wrap: anywhere;
+}
+
+
+/*==========================================================
+  ESTADO DE CARGA
+==========================================================*/
+
+.packages-list__state--loading {
+  border-color:
+    rgba(147, 197, 253, 0.72);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(239, 246, 255, 0.88),
+      rgba(255, 255, 255, 0.98)
+    );
+}
+
+
+/*==========================================================
+  LOADER
+==========================================================*/
+
+.packages-list__loader {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 3.6rem;
+  height: 3.6rem;
+
+  border:
+    0.24rem solid
+    rgba(147, 197, 253, 0.42);
+
+  border-top-color:
+    var(--packages-primary);
+
+  border-right-color:
+    var(--packages-cyan);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.45rem rgba(37, 99, 235, 0.05),
+    0 0.8rem 1.5rem rgba(37, 99, 235, 0.12);
+
+  animation:
+    packagesLoaderSpin
+    0.82s linear infinite;
+}
+
+
+/* Núcleo del loader */
+
+.packages-list__loader::before {
+  width: 0.72rem;
+  height: 0.72rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--packages-primary),
+      var(--packages-cyan)
+    );
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.28rem rgba(37, 99, 235, 0.08);
+}
+
+
+/*==========================================================
+  ESTADO VACÍO
+==========================================================*/
+
+.packages-list__state--empty {
+  flex-direction: column;
+  gap: 0.9rem;
+
+  text-align: center;
+
+  border-color:
+    rgba(203, 213, 225, 0.85);
+}
+
+
+/*==========================================================
+  ICONO DEL ESTADO VACÍO
+==========================================================*/
+
+.packages-list__state-icon {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 5.1rem;
+  height: 5.1rem;
+
+  font-size: 2.15rem;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #eff6ff
+    );
+
+  border:
+    1px solid
+    rgba(147, 197, 253, 0.7);
+
+  border-radius:
+    1.45rem;
+
+  box-shadow:
+    0 0.9rem 1.8rem rgba(37, 99, 235, 0.12);
+
+  transform:
+    rotate(-3deg);
+
+  transition:
+    box-shadow var(--packages-transition),
+    transform var(--packages-transition);
+}
+
+
+/* Halo decorativo */
+
+.packages-list__state-icon::before {
+  position: absolute;
+  inset: -0.55rem;
+
+  z-index: -1;
+
+  content: "";
+
+  border:
+    1px dashed
+    rgba(96, 165, 250, 0.5);
+
+  border-radius:
+    1.7rem;
+}
+
+
+/* Hover visual del estado vacío */
+
+.packages-list__state--empty:hover
+.packages-list__state-icon {
+  box-shadow:
+    0 1.2rem 2.2rem rgba(37, 99, 235, 0.16);
+
+  transform:
+    translateY(-0.15rem)
+    rotate(0deg);
+}
+
+
+/* Centrado del contenido vacío */
+
+.packages-list__state--empty
+.packages-list__state-content {
+  align-items: center;
+}
+
+
+/*==========================================================
+  PROTECCIÓN CONTRA DESBORDAMIENTOS
+==========================================================*/
+
+.packages-list__alert,
+.packages-list__alert-message,
+.packages-list__state,
+.packages-list__state-content,
+.packages-list__state-title,
+.packages-list__state-description {
+  min-width: 0;
+}
+
+
+/*==========================================================
+  ANIMACIONES
+==========================================================*/
+
+@keyframes packagesAlertEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-0.45rem);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+@keyframes packagesStateEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(0.65rem)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+@keyframes packagesLoaderSpin {
+  from {
+    transform:
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+/*==========================================================
+  HABITACONTROL
+  PACKAGES LIST
+  PARTE 3
+  CONTENT · SUMMARY · TABLE WRAPPER · TABLE BASE
+==========================================================*/
+
+
+/*==========================================================
+  CONTENIDO PRINCIPAL
+==========================================================*/
+
+.packages-list__content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 1rem;
+
+  min-width: 0;
+
+  animation:
+    packagesContentEnter
+    0.38s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/*==========================================================
+  ENCABEZADO DEL CONTENIDO
+==========================================================*/
+
+.packages-list__content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  min-width: 0;
+
+  padding:
+    0.1rem
+    0.15rem;
+}
+
+
+/*==========================================================
+  RESUMEN
+==========================================================*/
+
+.packages-list__summary {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.48rem;
+
+  min-width: 0;
+
+  padding:
+    0.62rem
+    0.8rem;
+
+  color:
+    var(--packages-text-soft);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(239, 246, 255, 0.85)
+    );
+
+  border:
+    1px solid
+    rgba(191, 219, 254, 0.82);
+
+  border-radius:
+    var(--packages-radius-pill);
+
+  box-shadow:
+    0 0.4rem 0.95rem rgba(37, 99, 235, 0.055);
+}
+
+
+/*==========================================================
+  ETIQUETA DEL RESUMEN
+==========================================================*/
+
+.packages-list__summary-label {
+  color:
+    var(--packages-text-muted);
+
+  font-size: 0.7rem;
+  font-weight: 750;
+  line-height: 1.2;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+/* Separador */
+
+.packages-list__summary-label::after {
+  margin-left: 0.46rem;
+
+  color:
+    rgba(100, 116, 139, 0.55);
+
+  content: "·";
+}
+
+
+/*==========================================================
+  VALOR DEL RESUMEN
+==========================================================*/
+
+.packages-list__summary-value {
+  display: inline-grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  min-width: 1.7rem;
+  min-height: 1.7rem;
+
+  padding:
+    0.2rem
+    0.48rem;
+
+  color:
+    #ffffff;
+
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--packages-primary),
+      var(--packages-primary-dark)
+    );
+
+  border:
+    0.12rem solid
+    rgba(255, 255, 255, 0.82);
+
+  border-radius:
+    var(--packages-radius-pill);
+
+  box-shadow:
+    0 0.35rem 0.8rem rgba(37, 99, 235, 0.2);
+}
+
+
+/*==========================================================
+  TEXTO DEL RESUMEN
+==========================================================*/
+
+.packages-list__summary-text {
+  color:
+    var(--packages-text-soft);
+
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+
+/*==========================================================
+  CONTENEDOR DE LA TABLA
+==========================================================*/
+
+.packages-list__table-wrapper {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  background:
+    rgba(255, 255, 255, 0.98);
+
+  border:
+    1px solid
+    rgba(203, 213, 225, 0.84);
+
+  border-radius:
+    var(--packages-radius-md);
+
+  box-shadow:
+    0 0.8rem 1.9rem rgba(15, 23, 42, 0.065);
+
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    rgba(100, 116, 139, 0.55)
+    transparent;
+
+  -webkit-overflow-scrolling:
+    touch;
+}
+
+
+/* Línea superior de la tabla */
+
+.packages-list__table-wrapper::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  z-index: 4;
+
+  height: 0.2rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--packages-primary),
+      var(--packages-cyan)
+    );
+
+  pointer-events: none;
+}
+
+
+/* Sombra visual para indicar desplazamiento horizontal */
+
+.packages-list__table-wrapper::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 5;
+
+  width: 2.5rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(15, 23, 42, 0.06)
+    );
+
+  opacity: 0.7;
+
+  pointer-events: none;
+}
+
+
+/*==========================================================
+  SCROLLBAR WEBKIT
+==========================================================*/
+
+.packages-list__table-wrapper::-webkit-scrollbar {
+  height: 0.65rem;
+}
+
+
+.packages-list__table-wrapper::-webkit-scrollbar-track {
+  background:
+    rgba(241, 245, 249, 0.92);
+
+  border-radius:
+    var(--packages-radius-pill);
+}
+
+
+.packages-list__table-wrapper::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(100, 116, 139, 0.65),
+      rgba(37, 99, 235, 0.62)
+    );
+
+  border:
+    0.14rem solid
+    rgba(241, 245, 249, 0.92);
+
+  border-radius:
+    var(--packages-radius-pill);
+}
+
+
+.packages-list__table-wrapper::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      90deg,
+      var(--packages-text-muted),
+      var(--packages-primary)
+    );
+}
+
+
+/*==========================================================
+  TABLA BASE
+==========================================================*/
+
+.packages-list__table {
+  width: 100%;
+  min-width: 82rem;
+
+  margin: 0;
+
+  color:
+    var(--packages-text);
+
+  font-size: 0.82rem;
+  line-height: 1.45;
+
+  background:
+    transparent;
+
+  border-spacing: 0;
+  border-collapse: separate;
+
+  table-layout: auto;
+}
+
+
+/*==========================================================
+  CABECERA DE LA TABLA
+==========================================================*/
+
+.packages-list__table-head {
+  position: relative;
+  z-index: 3;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8fafc,
+      #f1f5f9
+    );
+}
+
+
+/*==========================================================
+  FILA BASE
+==========================================================*/
+
+.packages-list__table-row {
+  min-width: 0;
+}
+
+
+/*==========================================================
+  ENCABEZADOS
+==========================================================*/
+
+.packages-list__table-heading {
+  position: relative;
+
+  padding:
+    1rem
+    0.95rem;
+
+  color:
+    var(--packages-text-soft);
+
+  font-size: 0.68rem;
+  font-weight: 850;
+  line-height: 1.3;
+
+  letter-spacing: 0.075em;
+  text-align: left;
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  background:
+    transparent;
+
+  border-bottom:
+    1px solid
+    rgba(203, 213, 225, 0.9);
+}
+
+
+/* Separador entre encabezados */
+
+.packages-list__table-heading:not(:last-child)::after {
+  position: absolute;
+  top: 30%;
+  right: 0;
+
+  width: 1px;
+  height: 40%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(148, 163, 184, 0.45),
+      transparent
+    );
+}
+
+
+/*==========================================================
+  ENCABEZADO DE DESCRIPCIÓN
+==========================================================*/
+
+.packages-list__table-heading--description {
+  min-width: 15rem;
+}
+
+
+/*==========================================================
+  ENCABEZADO DE ACCIONES
+==========================================================*/
+
+.packages-list__table-heading--actions {
+  min-width: 8.5rem;
+
+  text-align: center;
+}
+
+
+/*==========================================================
+  CUERPO DE LA TABLA
+==========================================================*/
+
+.packages-list__table-body {
+  background:
+    rgba(255, 255, 255, 0.98);
+}
+
+
+/*==========================================================
+  ANCHOS MÍNIMOS DE COLUMNAS
+==========================================================*/
+
+.packages-list__table-heading:nth-child(1) {
+  min-width: 16rem;
+}
+
+
+.packages-list__table-heading:nth-child(2),
+.packages-list__table-heading:nth-child(3) {
+  min-width: 7rem;
+}
+
+
+.packages-list__table-heading:nth-child(5),
+.packages-list__table-heading:nth-child(6) {
+  min-width: 10rem;
+}
+
+
+.packages-list__table-heading:nth-child(7) {
+  min-width: 8.5rem;
+}
+
+
+.packages-list__table-heading:nth-child(8),
+.packages-list__table-heading:nth-child(9) {
+  min-width: 10rem;
+}
+
+
+/*==========================================================
+  PROTECCIÓN CONTRA DESBORDAMIENTOS
+==========================================================*/
+
+.packages-list__content,
+.packages-list__content-header,
+.packages-list__summary,
+.packages-list__table-wrapper,
+.packages-list__table,
+.packages-list__table-head,
+.packages-list__table-body {
+  min-width: 0;
+}
+
+
+/* La tabla conserva su ancho mínimo para permitir scroll */
+
+.packages-list__table {
+  min-width: 82rem;
+}
+
+
+/*==========================================================
+  ANIMACIÓN
+==========================================================*/
+
+@keyframes packagesContentEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(0.6rem);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+/*==========================================================
+  HABITACONTROL
+  PACKAGES LIST
+  PARTE 4
+  ROWS · CELLS · RECIPIENT · LOCATION · DESCRIPTION · DATES
+==========================================================*/
+
+
+/*==========================================================
+  FILAS DE DATOS
+==========================================================*/
+
+.packages-list__table-row--data {
+  position: relative;
+
+  transition:
+    background var(--packages-transition),
+    box-shadow var(--packages-transition),
+    transform var(--packages-transition);
+}
+
+
+/* Alternancia ligera entre filas */
+
+.packages-list__table-row--data:nth-child(even) {
+  background:
+    rgba(248, 250, 252, 0.58);
+}
+
+
+/* Hover de fila */
+
+.packages-list__table-row--data:hover {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(239, 246, 255, 0.9),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  box-shadow:
+    inset 0.22rem 0 0 var(--packages-primary);
+}
+
+
+/*==========================================================
+  CELDAS BASE
+==========================================================*/
+
+.packages-list__table-cell {
+  position: relative;
+
+  min-width: 0;
+
+  padding:
+    1rem
+    0.95rem;
+
+  color:
+    var(--packages-text-soft);
+
+  font-size: 0.79rem;
+  font-weight: 550;
+  line-height: 1.5;
+
+  vertical-align: middle;
+
+  background:
+    transparent;
+
+  border-bottom:
+    1px solid
+    rgba(226, 232, 240, 0.88);
+
+  transition:
+    color var(--packages-transition),
+    background var(--packages-transition),
+    border-color var(--packages-transition);
+}
+
+
+/* Última fila sin borde inferior fuerte */
+
+.packages-list__table-row--data:last-child
+.packages-list__table-cell {
+  border-bottom-color:
+    transparent;
+}
+
+
+/* Separación vertical sutil entre columnas */
+
+.packages-list__table-cell:not(:last-child)::after {
+  position: absolute;
+  top: 22%;
+  right: 0;
+
+  width: 1px;
+  height: 56%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(226, 232, 240, 0.72),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+/* Refuerzo de texto durante hover */
+
+.packages-list__table-row--data:hover
+.packages-list__table-cell {
+  color:
+    var(--packages-text);
+}
+
+
+/*==========================================================
+  CELDA DEL DESTINATARIO
+==========================================================*/
+
+.packages-list__table-cell--recipient {
+  min-width: 16rem;
+}
+
+
+/*==========================================================
+  CONTENEDOR DEL DESTINATARIO
+==========================================================*/
+
+.packages-list__recipient {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+
+  min-width: 0;
+}
+
+
+/*==========================================================
+  AVATAR DEL DESTINATARIO
+==========================================================*/
+
+.packages-list__recipient-avatar {
+  position: relative;
+
+  display: inline-grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 2.55rem;
+  height: 2.55rem;
+
+  overflow: hidden;
+
+  color:
+    #ffffff;
+
+  font-size: 0.88rem;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--packages-primary),
+      var(--packages-primary-dark)
+    );
+
+  border:
+    0.14rem solid
+    rgba(255, 255, 255, 0.9);
+
+  border-radius:
+    0.86rem;
+
+  box-shadow:
+    0 0.45rem 0.95rem rgba(37, 99, 235, 0.18);
+
+  transform:
+    rotate(-2deg);
+
+  transition:
+    border-radius var(--packages-transition),
+    box-shadow var(--packages-transition),
+    transform var(--packages-transition);
+}
+
+
+/* Brillo del avatar */
+
+.packages-list__recipient-avatar::before {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.28),
+      transparent 58%
+    );
+
+  pointer-events: none;
+}
+
+
+/* Avatar reactivo al hover de fila */
+
+.packages-list__table-row--data:hover
+.packages-list__recipient-avatar {
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0.7rem 1.25rem rgba(37, 99, 235, 0.24);
+
+  transform:
+    translateY(-0.08rem)
+    rotate(0deg);
+}
+
+
+/*==========================================================
+  INFORMACIÓN DEL DESTINATARIO
+==========================================================*/
+
+.packages-list__recipient-info {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.18rem;
+
+  min-width: 0;
+}
+
+
+/*==========================================================
+  NOMBRE DEL DESTINATARIO
+==========================================================*/
+
+.packages-list__recipient-name {
+  display: block;
+
+  min-width: 0;
+
+  color:
+    var(--packages-text);
+
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1.35;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/*==========================================================
+  UBICACIÓN SECUNDARIA DEL DESTINATARIO
+==========================================================*/
+
+.packages-list__recipient-location {
+  display: block;
+
+  min-width: 0;
+
+  color:
+    var(--packages-text-muted);
+
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.35;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/*==========================================================
+  BADGE DE TORRE Y APARTAMENTO
+==========================================================*/
+
+.packages-list__location-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 2.25rem;
+  min-height: 1.8rem;
+
+  padding:
+    0.3rem
+    0.58rem;
+
+  color:
+    #1e3a8a;
+
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+
+  white-space: nowrap;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(239, 246, 255, 0.98),
+      rgba(219, 234, 254, 0.88)
+    );
+
+  border:
+    1px solid
+    rgba(147, 197, 253, 0.74);
+
+  border-radius:
+    0.62rem;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  transition:
+    color var(--packages-transition),
+    background var(--packages-transition),
+    border-color var(--packages-transition),
+    box-shadow var(--packages-transition),
+    transform var(--packages-transition);
+}
+
+
+/* Hover de ubicación */
+
+.packages-list__table-row--data:hover
+.packages-list__location-badge {
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--packages-primary),
+      var(--packages-primary-dark)
+    );
+
+  border-color:
+    var(--packages-primary);
+
+  box-shadow:
+    0 0.4rem 0.85rem rgba(37, 99, 235, 0.18);
+
+  transform:
+    translateY(-0.05rem);
+}
+
+
+/*==========================================================
+  CELDA DE DESCRIPCIÓN
+==========================================================*/
+
+.packages-list__table-cell--description {
+  width: 19rem;
+  min-width: 15rem;
+  max-width: 22rem;
+}
+
+
+/*==========================================================
+  DESCRIPCIÓN DEL PAQUETE
+==========================================================*/
+
+.packages-list__package-description {
+  display:
+    -webkit-box;
+
+  max-width: 20rem;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  color:
+    var(--packages-text-soft);
+
+  font-size: 0.76rem;
+  font-weight: 520;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+
+  -webkit-box-orient:
+    vertical;
+
+  -webkit-line-clamp:
+    2;
+
+  line-clamp:
+    2;
+}
+
+
+/* Texto de descripción más fuerte en hover */
+
+.packages-list__table-row--data:hover
+.packages-list__package-description {
+  color:
+    var(--packages-text);
+}
+
+
+/*==========================================================
+  CONTENEDOR DE FECHA
+==========================================================*/
+
+.packages-list__date {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.48rem;
+
+  min-width: 0;
+
+  color:
+    var(--packages-text-soft);
+
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.35;
+
+  white-space: nowrap;
+}
+
+
+/*==========================================================
+  ICONO DE FECHA
+==========================================================*/
+
+.packages-list__date-icon {
+  display: inline-grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 1.62rem;
+  height: 1.62rem;
+
+  color:
+    var(--packages-primary);
+
+  font-size: 0.68rem;
+  font-weight: 900;
+  line-height: 1;
+
+  background:
+    rgba(219, 234, 254, 0.72);
+
+  border:
+    1px solid
+    rgba(147, 197, 253, 0.68);
+
+  border-radius:
+    0.52rem;
+
+  transition:
+    color var(--packages-transition),
+    background var(--packages-transition),
+    border-color var(--packages-transition),
+    transform var(--packages-transition);
+}
+
+
+/*==========================================================
+  VALOR DE FECHA
+==========================================================*/
+
+.packages-list__date-value {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* Icono de fecha al hacer hover */
+
+.packages-list__table-row--data:hover
+.packages-list__date-icon {
+  color:
+    #ffffff;
+
+  background:
+    var(--packages-primary);
+
+  border-color:
+    var(--packages-primary);
+
+  transform:
+    translateY(-0.05rem);
+}
+
+
+/*==========================================================
+  FECHA PENDIENTE
+==========================================================*/
+
+.packages-list__date--pending {
+  color:
+    #92400e;
+}
+
+
+/* Icono de fecha pendiente */
+
+.packages-list__date--pending
+.packages-list__date-icon {
+  color:
+    #b45309;
+
+  background:
+    rgba(254, 243, 199, 0.88);
+
+  border-color:
+    rgba(252, 211, 77, 0.82);
+}
+
+
+/* Conserva color de advertencia durante hover */
+
+.packages-list__table-row--data:hover
+.packages-list__date--pending
+.packages-list__date-icon {
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f59e0b,
+      #d97706
+    );
+
+  border-color:
+    #f59e0b;
+}
+
+
+/*==========================================================
+  ALINEACIÓN DE COLUMNAS ESPECÍFICAS
+==========================================================*/
+
+.packages-list__table-cell:nth-child(2),
+.packages-list__table-cell:nth-child(3) {
+  text-align: center;
+}
+
+
+/*==========================================================
+  PROTECCIÓN CONTRA DESBORDAMIENTOS
+==========================================================*/
+
+.packages-list__table-row--data,
+.packages-list__table-cell,
+.packages-list__recipient,
+.packages-list__recipient-info,
+.packages-list__recipient-name,
+.packages-list__recipient-location,
+.packages-list__package-description,
+.packages-list__date,
+.packages-list__date-value {
+  min-width: 0;
+}
+
+/*==========================================================
+  HABITACONTROL
+  PACKAGES LIST
+  PARTE 5
+  STATUS · PEOPLE · ACTIONS · DELIVERY BUTTON
+==========================================================*/
+
+
+/*==========================================================
+  ESTADO DEL PAQUETE
+==========================================================*/
+
+.packages-list__status {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+
+  min-width: 6.7rem;
+  min-height: 2rem;
+
+  padding:
+    0.38rem
+    0.72rem;
+
+  overflow: hidden;
+
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1.15;
+
+  white-space: nowrap;
+
+  border:
+    1px solid transparent;
+
+  border-radius:
+    var(--packages-radius-pill);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  transition:
+    color var(--packages-transition),
+    background var(--packages-transition),
+    border-color var(--packages-transition),
+    box-shadow var(--packages-transition),
+    transform var(--packages-transition);
+}
+
+
+/* Brillo interno */
+
+.packages-list__status::before {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.32),
+      transparent 58%
+    );
+
+  pointer-events: none;
+}
+
+
+/* Contenido por encima del brillo */
+
+.packages-list__status > * {
+  position: relative;
+  z-index: 2;
+}
+
+
+/*==========================================================
+  INDICADOR DEL ESTADO
+==========================================================*/
+
+.packages-list__status-indicator {
+  position: relative;
+
+  flex: 0 0 auto;
+
+  width: 0.48rem;
+  height: 0.48rem;
+
+  border-radius: 50%;
+}
+
+
+/* Halo del indicador */
+
+.packages-list__status-indicator::before {
+  position: absolute;
+  inset: -0.22rem;
+
+  content: "";
+
+  border:
+    1px solid currentColor;
+
+  border-radius: 50%;
+
+  opacity: 0.28;
+}
+
+
+/*==========================================================
+  TEXTO DEL ESTADO
+==========================================================*/
+
+.packages-list__status-text {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/*==========================================================
+  ESTADO PENDIENTE
+==========================================================*/
+
+.packages-list__status--pending {
+  color:
+    #92400e;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 251, 235, 0.98),
+      rgba(254, 243, 199, 0.92)
+    );
+
+  border-color:
+    rgba(251, 191, 36, 0.72);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0.35rem 0.8rem rgba(245, 158, 11, 0.08);
+}
+
+
+.packages-list__status--pending
+.packages-list__status-indicator {
+  color:
+    #d97706;
+
+  background:
+    #f59e0b;
+
+  box-shadow:
+    0 0 0.65rem rgba(245, 158, 11, 0.42);
+
+  animation:
+    packagesPendingPulse
+    1.8s ease-in-out infinite;
+}
+
+
+/*==========================================================
+  ESTADO ENTREGADO
+==========================================================*/
+
+.packages-list__status--delivered {
+  color:
+    #166534;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(240, 253, 244, 0.98),
+      rgba(220, 252, 231, 0.92)
+    );
+
+  border-color:
+    rgba(134, 239, 172, 0.85);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0.35rem 0.8rem rgba(22, 163, 74, 0.08);
+}
+
+
+.packages-list__status--delivered
+.packages-list__status-indicator {
+  color:
+    #16a34a;
+
+  background:
+    var(--packages-success);
+
+  box-shadow:
+    0 0 0.55rem rgba(22, 163, 74, 0.34);
+}
+
+
+/* Hover de estados */
+
+.packages-list__table-row--data:hover
+.packages-list__status {
+  box-shadow:
+    0 0.5rem 1rem rgba(15, 23, 42, 0.1);
+
+  transform:
+    translateY(-0.06rem);
+}
+
+
+/*==========================================================
+  PERSONA QUE RECOGE / ENTREGA
+==========================================================*/
+
+.packages-list__person-value {
+  display: inline-flex;
+  align-items: center;
+
+  max-width: 10rem;
+
+  color:
+    var(--packages-text-soft);
+
+  font-size: 0.74rem;
+  font-weight: 650;
+  line-height: 1.45;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  transition:
+    color var(--packages-transition);
+}
+
+
+/* Punto identificador */
+
+.packages-list__person-value:not(
+  .packages-list__person-value--empty
+)::before {
+  flex: 0 0 auto;
+
+  width: 0.4rem;
+  height: 0.4rem;
+
+  margin-right: 0.42rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--packages-primary),
+      var(--packages-cyan)
+    );
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.18rem rgba(37, 99, 235, 0.08);
+}
+
+
+/*==========================================================
+  PERSONA SIN REGISTRO
+==========================================================*/
+
+.packages-list__person-value--empty {
+  color:
+    #94a3b8;
+
+  font-size: 0.7rem;
+  font-style: italic;
+  font-weight: 550;
+}
+
+
+/* Hover */
+
+.packages-list__table-row--data:hover
+.packages-list__person-value:not(
+  .packages-list__person-value--empty
+) {
+  color:
+    var(--packages-text);
+}
+
+
+/*==========================================================
+  CELDA DE ACCIONES
+==========================================================*/
+
+.packages-list__table-cell--actions {
+  min-width: 8.5rem;
+
+  text-align: center;
+}
+
+
+/*==========================================================
+  CONTENEDOR DE ACCIONES
+==========================================================*/
+
+.packages-list__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+
+  min-width: 0;
+}
+
+
+/*==========================================================
+  BOTÓN DE ACCIÓN BASE
+==========================================================*/
+
+.packages-list__action-button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.48rem;
+
+  min-width: 6.8rem;
+  min-height: 2.45rem;
+
+  padding:
+    0.62rem
+    0.9rem;
+
+  overflow: hidden;
+
+  font: inherit;
+  font-size: 0.73rem;
+  font-weight: 850;
+  line-height: 1.15;
+
+  white-space: nowrap;
+
+  border:
+    1px solid transparent;
+
+  border-radius:
+    0.78rem;
+
+  cursor: pointer;
+
+  transition:
+    color var(--packages-transition),
+    background var(--packages-transition),
+    border-color var(--packages-transition),
+    box-shadow var(--packages-transition),
+    opacity var(--packages-transition),
+    transform var(--packages-transition);
+}
+
+
+/* Brillo interno */
+
+.packages-list__action-button::before {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.28),
+      transparent 60%
+    );
+
+  pointer-events: none;
+}
+
+
+/* Elementos por encima del brillo */
+
+.packages-list__action-button > * {
+  position: relative;
+  z-index: 2;
+}
+
+
+/*==========================================================
+  BOTÓN ENTREGAR
+==========================================================*/
+
+.packages-list__action-button--primary {
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--packages-primary),
+      var(--packages-primary-dark)
+    );
+
+  border-color:
+    rgba(29, 78, 216, 0.94);
+
+  box-shadow:
+    0 0.5rem 1rem rgba(37, 99, 235, 0.2);
+}
+
+
+/* Hover */
+
+.packages-list__action-button--primary:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      145deg,
+      var(--packages-primary-dark),
+      #1e40af
+    );
+
+  border-color:
+    #1e40af;
+
+  box-shadow:
+    0 0.85rem 1.5rem rgba(37, 99, 235, 0.29);
+
+  transform:
+    translateY(-0.12rem);
+}
+
+
+/* Active */
+
+.packages-list__action-button--primary:active:not(:disabled) {
+  box-shadow:
+    0 0.3rem 0.7rem rgba(37, 99, 235, 0.2);
+
+  transform:
+    scale(0.96);
+}
+
+
+/* Focus accesible */
+
+.packages-list__action-button:focus-visible {
+  outline:
+    0.18rem solid
+    rgba(37, 99, 235, 0.32);
+
+  outline-offset:
+    0.16rem;
+}
+
+
+/* Disabled futuro */
+
+.packages-list__action-button:disabled {
+  color:
+    #64748b;
+
+  background:
+    #e2e8f0;
+
+  border-color:
+    #cbd5e1;
+
+  opacity: 0.65;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+
+/*==========================================================
+  ICONO DEL BOTÓN
+==========================================================*/
+
+.packages-list__action-icon {
+  display: inline-grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 1.25rem;
+  height: 1.25rem;
+
+  color:
+    var(--packages-primary);
+
+  font-size: 0.65rem;
+  font-weight: 900;
+  line-height: 1;
+
+  background:
+    rgba(255, 255, 255, 0.94);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0.22rem 0.5rem rgba(15, 23, 42, 0.16);
+
+  transition:
+    color var(--packages-transition),
+    background var(--packages-transition),
+    transform var(--packages-transition);
+}
+
+
+/* Movimiento del icono */
+
+.packages-list__action-button--primary:hover
+.packages-list__action-icon {
+  color:
+    var(--packages-primary-dark);
+
+  background:
+    #ffffff;
+
+  transform:
+    scale(1.08)
+    rotate(-5deg);
+}
+
+
+/*==========================================================
+  SIN ACCIONES DISPONIBLES
+==========================================================*/
+
+.packages-list__no-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+
+  min-width: 5.8rem;
+  min-height: 2rem;
+
+  padding:
+    0.35rem
+    0.58rem;
+
+  color:
+    #94a3b8;
+
+  font-size: 0.7rem;
+  font-weight: 650;
+  line-height: 1.2;
+
+  background:
+    rgba(241, 245, 249, 0.72);
+
+  border:
+    1px dashed
+    rgba(203, 213, 225, 0.86);
+
+  border-radius:
+    0.7rem;
+}
+
+
+/*==========================================================
+  TEXTO AUXILIAR SIN ACCIONES
+==========================================================*/
+
+.packages-list__no-action-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/*==========================================================
+  ALINEACIÓN DE COLUMNAS
+==========================================================*/
+
+.packages-list__table-cell:nth-child(7),
+.packages-list__table-cell:nth-child(10) {
+  text-align: center;
+}
+
+
+/*==========================================================
+  PROTECCIÓN CONTRA DESBORDAMIENTOS
+==========================================================*/
+
+.packages-list__status,
+.packages-list__status-text,
+.packages-list__person-value,
+.packages-list__actions,
+.packages-list__action-button,
+.packages-list__no-action,
+.packages-list__no-action-text {
+  min-width: 0;
+}
+
+
+/* Se conservan mínimos funcionales */
+
+.packages-list__status {
+  min-width: 6.7rem;
+}
+
+
+.packages-list__action-button {
+  min-width: 6.8rem;
+}
+
+
+.packages-list__no-action {
+  min-width: 5.8rem;
+}
+
+
+/*==========================================================
+  ANIMACIÓN DE ESTADO PENDIENTE
+==========================================================*/
+
+@keyframes packagesPendingPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0.45rem rgba(245, 158, 11, 0.28);
+
+    transform:
+      scale(1);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0.85rem rgba(245, 158, 11, 0.5);
+
+    transform:
+      scale(1.08);
+  }
+}
+
+/*==========================================================
+  HABITACONTROL
+  PACKAGES LIST
+  PARTE 6
+  RESPONSIVE · MOBILE CARDS · ACCESSIBILITY · PRINT
+==========================================================*/
+
+
+/*==========================================================
+  DESKTOP MEDIO
+==========================================================*/
+
+@media (max-width: 75rem) {
+
+  .packages-list {
+    padding: 1.3rem;
+  }
+
+
+  .packages-list__header {
+    gap: 1.5rem;
+  }
+
+
+  .packages-list__table {
+    min-width: 78rem;
+  }
+
+
+  .packages-list__table-heading,
+  .packages-list__table-cell {
+    padding-right: 0.82rem;
+    padding-left: 0.82rem;
+  }
+
+
+  .packages-list__recipient-avatar {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+}
+
+
+/*==========================================================
+  TABLET
+==========================================================*/
+
+@media (max-width: 62rem) {
+
+  .packages-list {
+    gap: 1.15rem;
+
+    padding: 1.15rem;
+
+    border-radius: 1.2rem;
+  }
+
+
+  /* Header apilado */
+
+  .packages-list__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+
+    padding-bottom: 1.15rem;
+  }
+
+
+  .packages-list__header-actions {
+    justify-content: flex-start;
+  }
+
+
+  .packages-list__refresh-button {
+    min-width: 9rem;
+  }
+
+
+  /* Estado */
+
+  .packages-list__state {
+    min-height: 14rem;
+
+    padding:
+      2rem
+      1.5rem;
+  }
+
+
+  /* Contenido */
+
+  .packages-list__content-header {
+    align-items: flex-start;
+  }
+
+
+  /* Tabla horizontal */
+
+  .packages-list__table {
+    min-width: 75rem;
+  }
+
+
+  .packages-list__table-heading {
+    padding:
+      0.9rem
+      0.75rem;
+  }
+
+
+  .packages-list__table-cell {
+    padding:
+      0.9rem
+      0.75rem;
+  }
+}
+
+
+/*==========================================================
+  MÓVIL
+  TRANSFORMACIÓN DE TABLA A TARJETAS
+==========================================================*/
+
+@media (max-width: 48rem) {
+
+  /*========================================================
+    CONTENEDOR
+  ========================================================*/
+
+  .packages-list {
+    gap: 1rem;
+
+    padding: 1rem;
+
+    overflow: visible;
+
+    border-radius: 1.05rem;
+
+    box-shadow:
+      0 0.75rem 1.8rem rgba(15, 23, 42, 0.07);
+  }
+
+
+  .packages-list::after {
+    top: -7rem;
+    right: -9rem;
+
+    width: 19rem;
+    height: 19rem;
+  }
+
+
+  /*========================================================
+    HEADER
+  ========================================================*/
+
+  .packages-list__header {
+    gap: 0.9rem;
+
+    padding:
+      0.35rem
+      0
+      1rem;
+  }
+
+
+  .packages-list__eyebrow {
+    font-size: 0.66rem;
+  }
+
+
+  .packages-list__title {
+    font-size:
+      clamp(
+        1.32rem,
+        7vw,
+        1.65rem
+      );
+  }
+
+
+  .packages-list__description {
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+
+  .packages-list__header-actions {
+    width: 100%;
+  }
+
+
+  .packages-list__refresh-button {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.9rem;
+  }
+
+
+  /*========================================================
+    ALERTAS
+  ========================================================*/
+
+  .packages-list__alert {
+    gap: 0.7rem;
+
+    padding:
+      0.88rem
+      0.9rem;
+  }
+
+
+  .packages-list__alert-icon {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+
+
+  .packages-list__alert-message {
+    font-size: 0.79rem;
+  }
+
+
+  /*========================================================
+    ESTADOS
+  ========================================================*/
+
+  .packages-list__state {
+    flex-direction: column;
+    gap: 0.95rem;
+
+    min-height: 13rem;
+
+    padding:
+      1.8rem
+      1rem;
+
+    text-align: center;
+  }
+
+
+  .packages-list__state-content {
+    align-items: center;
+  }
+
+
+  .packages-list__state-title {
+    font-size: 1rem;
+  }
+
+
+  .packages-list__state-description {
+    max-width: 24rem;
+
+    font-size: 0.8rem;
+  }
+
+
+  .packages-list__loader {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+
+
+  .packages-list__state-icon {
+    width: 4.6rem;
+    height: 4.6rem;
+
+    font-size: 1.95rem;
+  }
+
+
+  /*========================================================
+    RESUMEN
+  ========================================================*/
+
+  .packages-list__content-header {
+    align-items: stretch;
+  }
+
+
+  .packages-list__summary {
+    width: 100%;
+
+    justify-content: center;
+
+    padding:
+      0.68rem
+      0.8rem;
+
+    border-radius:
+      var(--packages-radius-md);
+  }
+
+
+  /*========================================================
+    CONTENEDOR DE TABLA
+  ========================================================*/
+
+  .packages-list__table-wrapper {
+    overflow: visible;
+
+    background:
+      transparent;
+
+    border: 0;
+
+    border-radius: 0;
+
+    box-shadow: none;
+  }
+
+
+  .packages-list__table-wrapper::before,
+  .packages-list__table-wrapper::after {
+    display: none;
+  }
+
+
+  /*========================================================
+    TABLA CONVERTIDA EN BLOQUES
+  ========================================================*/
+
+  .packages-list__table {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+
+    background:
+      transparent;
+  }
+
+
+  .packages-list__table-head {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    margin: -1px;
+    padding: 0;
+
+    overflow: hidden;
+
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+
+    white-space: nowrap;
+
+    border: 0;
+  }
+
+
+  .packages-list__table-body {
+    display: grid;
+    gap: 1rem;
+
+    width: 100%;
+
+    background:
+      transparent;
+  }
+
+
+  /*========================================================
+    TARJETA DE PAQUETE
+  ========================================================*/
+
+  .packages-list__table-row--data {
+    position: relative;
+
+    display: block;
+
+    width: 100%;
+
+    padding:
+      0.35rem
+      1rem
+      0.9rem;
+
+    overflow: hidden;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.99),
+        rgba(248, 250, 252, 0.96)
+      );
+
+    border:
+      1px solid
+      rgba(203, 213, 225, 0.85);
+
+    border-radius:
+      var(--packages-radius-md);
+
+    box-shadow:
+      0 0.65rem 1.35rem rgba(15, 23, 42, 0.07);
+
+    animation:
+      packagesMobileCardEnter
+      0.35s
+      cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+
+  /* Línea superior de la tarjeta */
+
+  .packages-list__table-row--data::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+
+    height: 0.22rem;
+
+    content: "";
+
+    background:
+      linear-gradient(
+        90deg,
+        var(--packages-primary),
+        var(--packages-cyan)
+      );
+  }
+
+
+  .packages-list__table-row--data:nth-child(even) {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.99),
+        rgba(248, 250, 252, 0.96)
+      );
+  }
+
+
+  .packages-list__table-row--data:hover {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.99),
+        rgba(239, 246, 255, 0.93)
+      );
+
+    box-shadow:
+      0 0.9rem 1.7rem rgba(37, 99, 235, 0.11);
+
+    transform:
+      translateY(-0.08rem);
+  }
+
+
+  /*========================================================
+    CELDAS MÓVILES
+  ========================================================*/
+
+  .packages-list__table-cell {
+    display: grid;
+    grid-template-columns:
+      minmax(6.8rem, 0.72fr)
+      minmax(0, 1fr);
+    align-items: center;
+    gap: 0.8rem;
+
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+
+    padding:
+      0.72rem
+      0;
+
+    text-align: right;
+
+    border-bottom:
+      1px solid
+      rgba(226, 232, 240, 0.82);
+  }
+
+
+  /* Etiqueta generada mediante data-label */
+
+  .packages-list__table-cell::before {
+    align-self: center;
+
+    color:
+      var(--packages-text-muted);
+
+    content:
+      attr(data-label);
+
+    font-size: 0.64rem;
+    font-weight: 850;
+    line-height: 1.3;
+
+    letter-spacing: 0.07em;
+    text-align: left;
+    text-transform: uppercase;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* Se desactiva el separador vertical de desktop */
+
+  .packages-list__table-cell:not(:last-child)::after {
+    display: none;
+  }
+
+
+  /* Última celda */
+
+  .packages-list__table-cell:last-child {
+    padding-bottom: 0;
+
+    border-bottom: 0;
+  }
+
+
+  /*========================================================
+    DESTINATARIO EN MÓVIL
+  ========================================================*/
+
+  .packages-list__table-cell--recipient {
+    grid-template-columns: 1fr;
+
+    min-width: 0;
+
+    padding:
+      1rem
+      0
+      0.85rem;
+
+    text-align: left;
+  }
+
+
+  .packages-list__table-cell--recipient::before {
+    display: none;
+  }
+
+
+  .packages-list__recipient {
+    width: 100%;
+  }
+
+
+  .packages-list__recipient-avatar {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+
+  .packages-list__recipient-name {
+    font-size: 0.9rem;
+  }
+
+
+  .packages-list__recipient-location {
+    font-size: 0.72rem;
+  }
+
+
+  /*========================================================
+    UBICACIÓN
+  ========================================================*/
+
+  .packages-list__location-badge {
+    justify-self: end;
+  }
+
+
+  /*========================================================
+    DESCRIPCIÓN
+  ========================================================*/
+
+  .packages-list__table-cell--description {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+
+
+  .packages-list__package-description {
+    justify-self: end;
+
+    max-width: 100%;
+
+    text-align: right;
+
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+
+
+  /*========================================================
+    FECHAS
+  ========================================================*/
+
+  .packages-list__date {
+    justify-self: end;
+
+    white-space: normal;
+  }
+
+
+  .packages-list__date-value {
+    text-align: right;
+    white-space: normal;
+  }
+
+
+  /*========================================================
+    ESTADO
+  ========================================================*/
+
+  .packages-list__status {
+    justify-self: end;
+  }
+
+
+  /*========================================================
+    PERSONAS
+  ========================================================*/
+
+  .packages-list__person-value {
+    justify-self: end;
+
+    max-width: 100%;
+
+    text-align: right;
+    white-space: normal;
+  }
+
+
+  /*========================================================
+    ACCIONES
+  ========================================================*/
+
+  .packages-list__table-cell--actions {
+    grid-template-columns: 1fr;
+
+    min-width: 0;
+
+    padding-top: 0.9rem;
+
+    text-align: center;
+  }
+
+
+  .packages-list__table-cell--actions::before {
+    display: none;
+  }
+
+
+  .packages-list__actions {
+    width: 100%;
+  }
+
+
+  .packages-list__action-button {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.85rem;
+  }
+
+
+  .packages-list__no-action {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.5rem;
+  }
+}
+
+
+/*==========================================================
+  MÓVIL PEQUEÑO
+==========================================================*/
+
+@media (max-width: 30rem) {
+
+  .packages-list {
+    padding: 0.82rem;
+
+    border-radius: 0.95rem;
+  }
+
+
+  .packages-list__title {
+    font-size: 1.35rem;
+  }
+
+
+  .packages-list__description {
+    font-size: 0.78rem;
+  }
+
+
+  .packages-list__summary {
+    gap: 0.38rem;
+
+    padding:
+      0.65rem
+      0.7rem;
+  }
+
+
+  .packages-list__summary-label {
+    font-size: 0.64rem;
+  }
+
+
+  .packages-list__summary-text {
+    font-size: 0.72rem;
+  }
+
+
+  .packages-list__table-row--data {
+    padding:
+      0.32rem
+      0.82rem
+      0.8rem;
+  }
+
+
+  .packages-list__table-cell {
+    grid-template-columns:
+      minmax(5.8rem, 0.68fr)
+      minmax(0, 1fr);
+
+    gap: 0.55rem;
+  }
+
+
+  .packages-list__table-cell::before {
+    font-size: 0.6rem;
+  }
+
+
+  .packages-list__recipient {
+    align-items: flex-start;
+  }
+
+
+  .packages-list__recipient-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+
+  .packages-list__status {
+    min-width: 6.1rem;
+
+    padding:
+      0.36rem
+      0.58rem;
+  }
+
+
+  .packages-list__date {
+    gap: 0.35rem;
+
+    font-size: 0.68rem;
+  }
+
+
+  .packages-list__date-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+
+/*==========================================================
+  PANTALLAS BAJAS
+==========================================================*/
+
+@media (max-height: 42rem) and (min-width: 48.01rem) {
+
+  .packages-list {
+    gap: 1rem;
+
+    padding: 1.05rem;
+  }
+
+
+  .packages-list__header {
+    padding-bottom: 0.9rem;
+  }
+
+
+  .packages-list__state {
+    min-height: 11rem;
+
+    padding:
+      1.5rem
+      1.25rem;
+  }
+
+
+  .packages-list__table-heading,
+  .packages-list__table-cell {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+}
+
+
+/*==========================================================
+  DISPOSITIVOS SIN HOVER
+==========================================================*/
+
+@media (hover: none) {
+
+  .packages-list__refresh-button:hover:not(:disabled),
+  .packages-list__action-button--primary:hover:not(:disabled) {
+    transform: none;
+  }
+
+
+  .packages-list__table-row--data:hover {
+    background:
+      inherit;
+
+    box-shadow:
+      none;
+
+    transform:
+      none;
+  }
+
+
+  .packages-list__table-row--data:hover
+  .packages-list__recipient-avatar,
+  .packages-list__table-row--data:hover
+  .packages-list__location-badge,
+  .packages-list__table-row--data:hover
+  .packages-list__date-icon,
+  .packages-list__table-row--data:hover
+  .packages-list__status {
+    transform: none;
+  }
+}
+
+
+/*==========================================================
+  DISPOSITIVOS TÁCTILES
+==========================================================*/
+
+@media (pointer: coarse) {
+
+  .packages-list__refresh-button,
+  .packages-list__action-button {
+    min-height: 2.85rem;
+  }
+
+
+  .packages-list__action-button {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+}
+
+
+/*==========================================================
+  REDUCCIÓN DE MOVIMIENTO
+==========================================================*/
+
+@media (prefers-reduced-motion: reduce) {
+
+  .packages-list *,
+  .packages-list *::before,
+  .packages-list *::after {
+    scroll-behavior: auto !important;
+
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+  }
+
+
+  .packages-list__refresh-button:disabled
+  .packages-list__refresh-icon,
+  .packages-list__loader,
+  .packages-list__status--pending
+  .packages-list__status-indicator {
+    animation: none;
+  }
+}
+
+
+/*==========================================================
+  ALTO CONTRASTE DEL SISTEMA
+==========================================================*/
+
+@media (forced-colors: active) {
+
+  .packages-list,
+  .packages-list__alert,
+  .packages-list__state,
+  .packages-list__summary,
+  .packages-list__table-wrapper,
+  .packages-list__table-row--data,
+  .packages-list__status,
+  .packages-list__location-badge,
+  .packages-list__no-action {
+    border:
+      1px solid
+      CanvasText;
+
+    box-shadow: none;
+  }
+
+
+  .packages-list::before,
+  .packages-list::after,
+  .packages-list__alert::before,
+  .packages-list__alert::after,
+  .packages-list__state::before,
+  .packages-list__state::after,
+  .packages-list__table-wrapper::before,
+  .packages-list__table-wrapper::after,
+  .packages-list__table-row--data::before {
+    display: none;
+  }
+
+
+  .packages-list__refresh-button,
+  .packages-list__action-button {
+    border:
+      1px solid
+      ButtonText;
+  }
+
+
+  .packages-list__refresh-button:focus-visible,
+  .packages-list__action-button:focus-visible {
+    outline:
+      2px solid
+      Highlight;
+  }
+
+
+  .packages-list__status-indicator,
+  .packages-list__recipient-avatar,
+  .packages-list__date-icon,
+  .packages-list__action-icon {
+    forced-color-adjust: none;
+  }
+}
+
+
+/*==========================================================
+  IMPRESIÓN
+==========================================================*/
+
+@media print {
+
+  :host {
+    display: block;
+  }
+
+
+  .packages-list {
+    display: block;
+
+    padding: 0;
+
+    overflow: visible;
+
+    color: #000000;
+
+    background: #ffffff;
+
+    border: 0;
+
+    border-radius: 0;
+
+    box-shadow: none;
+  }
+
+
+  .packages-list::before,
+  .packages-list::after {
+    display: none;
+  }
+
+
+  .packages-list__header {
+    display: block;
+
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+
+    border-bottom:
+      1px solid
+      #000000;
+  }
+
+
+  .packages-list__eyebrow,
+  .packages-list__description {
+    color: #333333;
+  }
+
+
+  .packages-list__header-actions,
+  .packages-list__alert,
+  .packages-list__state,
+  .packages-list__action-button,
+  .packages-list__no-action {
+    display: none !important;
+  }
+
+
+  .packages-list__summary {
+    margin-bottom: 0.75rem;
+
+    color: #000000;
+
+    background: #ffffff;
+
+    border:
+      1px solid
+      #000000;
+
+    box-shadow: none;
+  }
+
+
+  .packages-list__summary-value {
+    color: #000000;
+
+    background: #ffffff;
+
+    border:
+      1px solid
+      #000000;
+
+    box-shadow: none;
+  }
+
+
+  .packages-list__table-wrapper {
+    overflow: visible;
+
+    border:
+      1px solid
+      #000000;
+
+    border-radius: 0;
+
+    box-shadow: none;
+  }
+
+
+  .packages-list__table-wrapper::before,
+  .packages-list__table-wrapper::after {
+    display: none;
+  }
+
+
+  .packages-list__table {
+    width: 100%;
+    min-width: 0;
+
+    color: #000000;
+
+    font-size: 8pt;
+
+    table-layout: fixed;
+  }
+
+
+  .packages-list__table-head {
+    display: table-header-group;
+
+    background: #eeeeee;
+  }
+
+
+  .packages-list__table-row--data {
+    break-inside: avoid;
+    page-break-inside: avoid;
+
+    background: #ffffff;
+
+    box-shadow: none;
+  }
+
+
+  .packages-list__table-heading,
+  .packages-list__table-cell {
+    padding:
+      0.35rem
+      0.3rem;
+
+    color: #000000;
+
+    border-right:
+      1px solid
+      #999999;
+
+    border-bottom:
+      1px solid
+      #999999;
+  }
+
+
+  .packages-list__table-heading:last-child,
+  .packages-list__table-cell:last-child {
+    border-right: 0;
+  }
+
+
+  .packages-list__table-heading::after,
+  .packages-list__table-cell::after {
+    display: none;
+  }
+
+
+  .packages-list__recipient-avatar,
+  .packages-list__date-icon,
+  .packages-list__action-icon {
+    display: none;
+  }
+
+
+  .packages-list__recipient-name,
+  .packages-list__recipient-location,
+  .packages-list__package-description,
+  .packages-list__date-value,
+  .packages-list__person-value {
+    color: #000000;
+
+    white-space: normal;
+  }
+
+
+  .packages-list__package-description {
+    display: block;
+
+    max-width: none;
+
+    overflow: visible;
+
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+  }
+
+
+  .packages-list__status,
+  .packages-list__location-badge {
+    min-width: 0;
+
+    padding:
+      0.15rem
+      0.25rem;
+
+    color: #000000;
+
+    background: #ffffff;
+
+    border:
+      1px solid
+      #000000;
+
+    box-shadow: none;
+  }
+
+
+  .packages-list__table-cell--actions,
+  .packages-list__table-heading--actions {
+    display: none;
+  }
+}
+
+
+/*==========================================================
+  ANIMACIÓN DE TARJETAS MÓVILES
+==========================================================*/
+
+@keyframes packagesMobileCardEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(0.55rem)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}

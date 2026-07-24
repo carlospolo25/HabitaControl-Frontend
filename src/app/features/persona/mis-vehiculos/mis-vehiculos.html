@@ -1,0 +1,965 @@
+<section class="vehicle-management">
+
+  <!-- =====================================================
+       ENCABEZADO PRINCIPAL
+  ====================================================== -->
+
+  <header class="vehicle-management__header">
+
+    <div class="vehicle-management__heading">
+
+      <span class="vehicle-management__eyebrow">
+        Censo residencial
+      </span>
+
+      <h1 class="vehicle-management__title">
+        Mis vehículos
+      </h1>
+
+      <p class="vehicle-management__description">
+        Registra, actualiza y administra los vehículos asociados a tu
+        residencia.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="vehicle-management__refresh"
+      (click)="cargarVehiculos()"
+      [disabled]="isLoading || isSubmitting"
+      aria-label="Actualizar lista de vehículos">
+
+      <span
+        class="vehicle-management__refresh-icon"
+        [class.vehicle-management__refresh-icon--loading]="isLoading"
+        aria-hidden="true">
+        ↻
+      </span>
+
+      <span class="vehicle-management__refresh-label">
+        {{ isLoading ? 'Actualizando...' : 'Actualizar' }}
+      </span>
+
+    </button>
+
+  </header>
+
+
+  <!-- =====================================================
+       MENSAJES DEL SISTEMA
+  ====================================================== -->
+
+  <div
+    class="vehicle-management__notifications"
+    aria-live="polite">
+
+    @if (errorMessage) {
+      <article
+        class="vehicle-notification vehicle-notification--error"
+        role="alert">
+
+        <div class="vehicle-notification__body">
+
+          <span
+            class="vehicle-notification__icon"
+            aria-hidden="true">
+            !
+          </span>
+
+          <div class="vehicle-notification__content">
+
+            <strong class="vehicle-notification__title">
+              No fue posible completar la operación
+            </strong>
+
+            <p class="vehicle-notification__message">
+              {{ errorMessage }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="vehicle-notification__close"
+          (click)="cerrarError()"
+          aria-label="Cerrar mensaje de error">
+          ×
+        </button>
+
+      </article>
+    }
+
+
+    @if (successMessage) {
+      <article
+        class="vehicle-notification vehicle-notification--success"
+        role="status">
+
+        <div class="vehicle-notification__body">
+
+          <span
+            class="vehicle-notification__icon"
+            aria-hidden="true">
+            ✓
+          </span>
+
+          <div class="vehicle-notification__content">
+
+            <strong class="vehicle-notification__title">
+              Operación completada
+            </strong>
+
+            <p class="vehicle-notification__message">
+              {{ successMessage }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="vehicle-notification__close"
+          (click)="cerrarExito()"
+          aria-label="Cerrar mensaje de éxito">
+          ×
+        </button>
+
+      </article>
+    }
+
+  </div>
+
+
+  <!-- =====================================================
+       DISTRIBUCIÓN PRINCIPAL
+  ====================================================== -->
+
+  <div class="vehicle-management__layout">
+
+
+    <!-- ===================================================
+         EDITOR DE VEHÍCULO
+    ==================================================== -->
+
+    <article class="vehicle-editor">
+
+      <header class="vehicle-editor__header">
+
+        <div class="vehicle-editor-heading">
+
+          <span class="vehicle-editor-heading__eyebrow">
+            {{ vehiculoEditandoId ? 'Edición de vehículo' : 'Nuevo registro' }}
+          </span>
+
+          <h2 class="vehicle-editor-heading__title">
+            {{
+              vehiculoEditandoId
+                ? 'Actualizar vehículo'
+                : 'Registrar vehículo'
+            }}
+          </h2>
+
+          <p class="vehicle-editor-heading__description">
+            {{
+              vehiculoEditandoId
+                ? 'Modifica los datos del vehículo seleccionado.'
+                : 'Completa la información del vehículo que deseas asociar a tu cuenta.'
+            }}
+          </p>
+
+        </div>
+
+        @if (vehiculoEditandoId) {
+          <span class="vehicle-editor__mode">
+            Editando
+          </span>
+        }
+
+      </header>
+
+
+      <!-- =================================================
+           FORMULARIO
+      ================================================== -->
+
+      <form
+        class="vehicle-editor-form"
+        (ngSubmit)="guardarVehiculo()"
+        #vehicleForm="ngForm"
+        novalidate>
+
+
+        <!-- Tipo de vehículo -->
+
+        <div class="vehicle-field vehicle-field--wide">
+
+          <label
+            class="vehicle-field__label"
+            for="vehicleType">
+
+            Tipo de vehículo
+
+            <span
+              class="vehicle-field__required"
+              aria-hidden="true">
+              *
+            </span>
+
+          </label>
+
+          <select
+            id="vehicleType"
+            name="tipoSeleccionado"
+            class="vehicle-field__control vehicle-field__control--select"
+            [(ngModel)]="tipoSeleccionado"
+            [disabled]="isSubmitting"
+            required>
+
+            <option [ngValue]="null">
+              Selecciona un tipo de vehículo
+            </option>
+
+            @for (
+              opcion of tiposVehiculo;
+              track opcion.valor
+            ) {
+              <option [ngValue]="opcion.valor">
+                {{ opcion.etiqueta }}
+              </option>
+            }
+
+          </select>
+
+          @if (tipoSeleccionado !== null) {
+            <p class="vehicle-field__helper">
+              {{ obtenerDescripcionTipo(tipoSeleccionado) }}
+            </p>
+          }
+
+        </div>
+
+
+        <!-- Placa -->
+
+        <div class="vehicle-field">
+
+          <label
+            class="vehicle-field__label"
+            for="vehiclePlate">
+
+            Placa
+
+            <span
+              class="vehicle-field__required"
+              aria-hidden="true">
+              *
+            </span>
+
+          </label>
+
+          <input
+            id="vehiclePlate"
+            name="placa"
+            type="text"
+            class="
+              vehicle-field__control
+              vehicle-field__control--input
+              vehicle-field__control--uppercase
+            "
+            [(ngModel)]="placa"
+            [disabled]="isSubmitting"
+            maxlength="20"
+            autocomplete="off"
+            placeholder="Ej. ABC123"
+            required>
+
+          <div class="vehicle-field__footer">
+
+            <span class="vehicle-field__hint">
+              Ingresa la placa sin espacios innecesarios.
+            </span>
+
+            <span class="vehicle-field__counter">
+              {{ placa.trim().length }}/20
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Marca -->
+
+        <div class="vehicle-field">
+
+          <label
+            class="vehicle-field__label"
+            for="vehicleBrand">
+
+            Marca
+
+            <span
+              class="vehicle-field__required"
+              aria-hidden="true">
+              *
+            </span>
+
+          </label>
+
+          <input
+            id="vehicleBrand"
+            name="marca"
+            type="text"
+            class="
+              vehicle-field__control
+              vehicle-field__control--input
+            "
+            [(ngModel)]="marca"
+            [disabled]="isSubmitting"
+            maxlength="80"
+            autocomplete="off"
+            placeholder="Ej. Mazda"
+            required>
+
+          <div class="vehicle-field__footer">
+
+            <span class="vehicle-field__hint">
+              Marca o fabricante del vehículo.
+            </span>
+
+            <span class="vehicle-field__counter">
+              {{ marca.trim().length }}/80
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Color -->
+
+        <div class="vehicle-field vehicle-field--wide">
+
+          <label
+            class="vehicle-field__label"
+            for="vehicleColor">
+
+            Color
+
+            <span
+              class="vehicle-field__required"
+              aria-hidden="true">
+              *
+            </span>
+
+          </label>
+
+          <input
+            id="vehicleColor"
+            name="color"
+            type="text"
+            class="
+              vehicle-field__control
+              vehicle-field__control--input
+            "
+            [(ngModel)]="color"
+            [disabled]="isSubmitting"
+            maxlength="50"
+            autocomplete="off"
+            placeholder="Ej. Gris oscuro"
+            required>
+
+          <div class="vehicle-field__footer">
+
+            <span class="vehicle-field__hint">
+              Indica el color predominante del vehículo.
+            </span>
+
+            <span class="vehicle-field__counter">
+              {{ color.trim().length }}/50
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FOTOGRAFÍA DEL VEHÍCULO
+        ================================================== -->
+
+        <div class="vehicle-field vehicle-field--wide">
+
+          <label
+            class="vehicle-field__label"
+            for="vehiclePhoto">
+            Fotografía del vehículo
+          </label>
+
+          <div class="vehicle-photo-uploader">
+
+            <input
+              #photoInput
+              id="vehiclePhoto"
+              name="foto"
+              type="file"
+              class="vehicle-photo-uploader__input"
+              accept="image/jpeg,image/png,image/webp"
+              (change)="seleccionarFoto($event)"
+              [disabled]="isSubmitting">
+
+
+            <!-- Selector de archivo -->
+
+            <label
+              class="vehicle-photo-uploader__selector"
+              for="vehiclePhoto"
+              [class.vehicle-photo-uploader__selector--disabled]="isSubmitting">
+
+              <span
+                class="vehicle-photo-uploader__icon"
+                aria-hidden="true">
+                📷
+              </span>
+
+              <span class="vehicle-photo-uploader__content">
+
+                <strong class="vehicle-photo-uploader__title">
+                  {{
+                    fotoSeleccionada
+                      ? 'Cambiar fotografía seleccionada'
+                      : 'Seleccionar fotografía'
+                  }}
+                </strong>
+
+                <small class="vehicle-photo-uploader__description">
+                  Formatos permitidos: JPG, PNG o WebP. Máximo 5 MB.
+                </small>
+
+              </span>
+
+            </label>
+
+
+            <!-- Vista previa -->
+
+            @if (fotoPreview || fotoActualUrl) {
+              <div class="vehicle-photo-preview">
+
+                <div class="vehicle-photo-preview__media">
+
+                  <img
+                    class="vehicle-photo-preview__image"
+                    [src]="fotoPreview || fotoActualUrl"
+                    [alt]="
+                      fotoPreview
+                        ? 'Vista previa de la nueva fotografía del vehículo'
+                        : 'Fotografía actual del vehículo'
+                    ">
+
+                </div>
+
+                <div class="vehicle-photo-preview__content">
+
+                  <span class="vehicle-photo-preview__eyebrow">
+                    {{
+                      fotoPreview
+                        ? 'Nueva fotografía'
+                        : 'Fotografía actual'
+                    }}
+                  </span>
+
+                  <strong class="vehicle-photo-preview__title">
+                    {{
+                      fotoSeleccionada?.name ||
+                      'Imagen registrada'
+                    }}
+                  </strong>
+
+                  @if (fotoSeleccionada) {
+                    <span class="vehicle-photo-preview__meta">
+                      {{
+                        fotoSeleccionada.size / 1024 / 1024
+                          | number: '1.2-2'
+                      }}
+                      MB
+                    </span>
+                  } @else {
+                    <span class="vehicle-photo-preview__meta">
+                      Se conservará si no seleccionas una nueva imagen.
+                    </span>
+                  }
+
+                  @if (fotoPreview) {
+                    <button
+                      type="button"
+                      class="vehicle-photo-preview__remove"
+                      (click)="quitarFotoSeleccionada(photoInput)"
+                      [disabled]="isSubmitting">
+
+                      <span aria-hidden="true">
+                        ×
+                      </span>
+
+                      <span>
+                        Quitar selección
+                      </span>
+
+                    </button>
+                  }
+
+                </div>
+
+              </div>
+            } @else {
+
+              <!-- Estado sin fotografía -->
+
+              <div class="vehicle-photo-empty">
+
+                <span
+                  class="vehicle-photo-empty__icon"
+                  aria-hidden="true">
+                  🚗
+                </span>
+
+                <p class="vehicle-photo-empty__message">
+                  La fotografía es opcional, pero facilita la identificación
+                  del vehículo.
+                </p>
+
+              </div>
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ACCIONES DEL FORMULARIO
+        ================================================== -->
+
+        <footer class="vehicle-editor-form__actions">
+
+          @if (vehiculoEditandoId) {
+            <button
+              type="button"
+              class="vehicle-action vehicle-action--secondary"
+              (click)="cancelarEdicion()"
+              [disabled]="isSubmitting">
+
+              <span class="vehicle-action__label">
+                Cancelar edición
+              </span>
+
+            </button>
+          }
+
+          <button
+            type="submit"
+            class="vehicle-action vehicle-action--primary"
+            [disabled]="
+              isSubmitting ||
+              !personaId ||
+              vehicleForm.invalid
+            ">
+
+            @if (isSubmitting) {
+
+              <span
+                class="vehicle-action__spinner"
+                aria-hidden="true">
+              </span>
+
+              <span class="vehicle-action__label">
+                {{
+                  vehiculoEditandoId
+                    ? 'Guardando cambios...'
+                    : 'Registrando vehículo...'
+                }}
+              </span>
+
+            } @else {
+
+              <span
+                class="vehicle-action__icon"
+                aria-hidden="true">
+                {{ vehiculoEditandoId ? '✓' : '+' }}
+              </span>
+
+              <span class="vehicle-action__label">
+                {{
+                  vehiculoEditandoId
+                    ? 'Guardar cambios'
+                    : 'Registrar vehículo'
+                }}
+              </span>
+
+            }
+
+          </button>
+
+        </footer>
+
+      </form>
+
+    </article>
+
+
+    <!-- ===================================================
+         REGISTRO DE VEHÍCULOS
+    ==================================================== -->
+
+    <section class="vehicle-registry">
+
+      <header class="vehicle-registry__header">
+
+        <div class="vehicle-registry-heading">
+
+          <span class="vehicle-registry-heading__eyebrow">
+            Vehículos asociados
+          </span>
+
+          <h2 class="vehicle-registry-heading__title">
+            Registros activos
+          </h2>
+
+          <p class="vehicle-registry-heading__description">
+            Consulta y administra los vehículos registrados actualmente.
+          </p>
+
+        </div>
+
+        <span
+          class="vehicle-registry__counter"
+          [attr.aria-label]="vehiculos.length + ' vehículos registrados'">
+          {{ vehiculos.length }}
+        </span>
+
+      </header>
+
+
+      <!-- =================================================
+           ESTADO DE CARGA
+      ================================================== -->
+
+      @if (isLoading) {
+        <div
+          class="
+            vehicle-registry-state
+            vehicle-registry-state--loading
+          "
+          role="status">
+
+          <span
+            class="vehicle-registry-state__spinner"
+            aria-hidden="true">
+          </span>
+
+          <div class="vehicle-registry-state__content">
+
+            <h3 class="vehicle-registry-state__title">
+              Cargando vehículos
+            </h3>
+
+            <p class="vehicle-registry-state__description">
+              Estamos consultando tus registros activos.
+            </p>
+
+          </div>
+
+        </div>
+      } @else if (vehiculos.length === 0) {
+
+
+        <!-- ===============================================
+             ESTADO VACÍO
+        ================================================ -->
+
+        <div
+          class="
+            vehicle-registry-state
+            vehicle-registry-state--empty
+          ">
+
+          <div
+            class="vehicle-registry-state__illustration"
+            aria-hidden="true">
+            🚗
+          </div>
+
+          <div class="vehicle-registry-state__content">
+
+            <h3 class="vehicle-registry-state__title">
+              No tienes vehículos registrados
+            </h3>
+
+            <p class="vehicle-registry-state__description">
+              Completa el formulario para registrar tu primer vehículo.
+            </p>
+
+          </div>
+
+        </div>
+      } @else {
+
+
+        <!-- ===============================================
+             CUADRÍCULA DE VEHÍCULOS
+        ================================================ -->
+
+        <div class="vehicle-registry-grid">
+
+          @for (
+            vehiculo of vehiculos;
+            track vehiculo.id
+          ) {
+            <article
+              class="vehicle-profile-card"
+              [class.vehicle-profile-card--editing]="
+                vehiculoEditandoId === vehiculo.id
+              ">
+
+
+              <!-- Encabezado de la tarjeta -->
+
+              <header class="vehicle-profile-card__header">
+
+                <div class="vehicle-profile-card__identity">
+
+                  <div
+                    class="vehicle-profile-card__avatar"
+                    aria-hidden="true">
+
+                    @switch (vehiculo.tipo) {
+                      @case (TipoVehiculo.Carro) {
+                        🚗
+                      }
+
+                      @case (TipoVehiculo.Moto) {
+                        🏍️
+                      }
+
+                      @case (TipoVehiculo.NoMotorizado) {
+                        🚲
+                      }
+
+                      @default {
+                        🚘
+                      }
+                    }
+
+                  </div>
+
+                  <div class="vehicle-profile-card__heading">
+
+                    <span class="vehicle-profile-card__type">
+                      {{ obtenerNombreTipo(vehiculo.tipo) }}
+                    </span>
+
+                    <h3 class="vehicle-profile-card__plate">
+                      {{ vehiculo.placa }}
+                    </h3>
+
+                  </div>
+
+                </div>
+
+                <span class="vehicle-profile-card__status">
+
+                  <span
+                    class="vehicle-profile-card__status-indicator"
+                    aria-hidden="true">
+                  </span>
+
+                  <span class="vehicle-profile-card__status-label">
+                    Activo
+                  </span>
+
+                </span>
+
+              </header>
+
+
+              <!-- Fotografía -->
+
+              @if (obtenerFotoVehiculo(vehiculo); as fotoVehiculo) {
+                <figure class="vehicle-profile-card__media">
+
+                  <img
+                    class="vehicle-profile-card__image"
+                    [src]="fotoVehiculo"
+                    [alt]="'Fotografía del vehículo con placa ' + vehiculo.placa"
+                    loading="lazy">
+
+                </figure>
+              } @else {
+                <div class="vehicle-profile-card__media-placeholder">
+
+                  <span
+                    class="vehicle-profile-card__media-icon"
+                    aria-hidden="true">
+                    📷
+                  </span>
+
+                  <p class="vehicle-profile-card__media-message">
+                    Sin fotografía registrada
+                  </p>
+
+                </div>
+              }
+
+
+              <!-- Cuerpo de la tarjeta -->
+
+              <div class="vehicle-profile-card__body">
+
+                <dl class="vehicle-profile-card__details">
+
+                  <div class="vehicle-profile-detail">
+
+                    <dt class="vehicle-profile-detail__label">
+                      Marca
+                    </dt>
+
+                    <dd class="vehicle-profile-detail__value">
+                      {{ vehiculo.marca }}
+                    </dd>
+
+                  </div>
+
+                  <div class="vehicle-profile-detail">
+
+                    <dt class="vehicle-profile-detail__label">
+                      Color
+                    </dt>
+
+                    <dd class="vehicle-profile-detail__value">
+                      {{ vehiculo.color }}
+                    </dd>
+
+                  </div>
+
+                  <div class="vehicle-profile-detail vehicle-profile-detail--wide">
+
+                    <dt class="vehicle-profile-detail__label">
+                      Tipo
+                    </dt>
+
+                    <dd class="vehicle-profile-detail__value">
+                      {{ obtenerNombreTipo(vehiculo.tipo) }}
+                    </dd>
+
+                  </div>
+
+                </dl>
+
+
+                <!-- Aviso de edición -->
+
+                @if (vehiculoEditandoId === vehiculo.id) {
+                  <div class="vehicle-profile-card__editing-notice">
+
+                    <span
+                      class="vehicle-profile-card__editing-icon"
+                      aria-hidden="true">
+                      ✎
+                    </span>
+
+                    <span class="vehicle-profile-card__editing-text">
+                      Este vehículo está siendo editado.
+                    </span>
+
+                  </div>
+                }
+
+              </div>
+
+
+              <!-- Acciones de la tarjeta -->
+
+              <footer class="vehicle-profile-card__footer">
+
+                <button
+                  type="button"
+                  class="
+                    vehicle-profile-card__action
+                    vehicle-profile-card__action--edit
+                  "
+                  (click)="editarVehiculo(vehiculo)"
+                  [disabled]="
+                    isSubmitting ||
+                    vehiculoDesactivandoId !== null
+                  ">
+
+                  <span
+                    class="vehicle-profile-card__action-icon"
+                    aria-hidden="true">
+                    ✎
+                  </span>
+
+                  <span class="vehicle-profile-card__action-label">
+                    Editar
+                  </span>
+
+                </button>
+
+                <button
+                  type="button"
+                  class="
+                    vehicle-profile-card__action
+                    vehicle-profile-card__action--deactivate
+                  "
+                  (click)="desactivarVehiculo(vehiculo.id)"
+                  [disabled]="
+                    isSubmitting ||
+                    vehiculoDesactivandoId !== null
+                  ">
+
+                  @if (
+                    vehiculoDesactivandoId === vehiculo.id
+                  ) {
+
+                    <span
+                      class="vehicle-profile-card__action-spinner"
+                      aria-hidden="true">
+                    </span>
+
+                    <span class="vehicle-profile-card__action-label">
+                      Desactivando...
+                    </span>
+
+                  } @else {
+
+                    <span
+                      class="vehicle-profile-card__action-icon"
+                      aria-hidden="true">
+                      ⊘
+                    </span>
+
+                    <span class="vehicle-profile-card__action-label">
+                      Desactivar
+                    </span>
+
+                  }
+
+                </button>
+
+              </footer>
+
+            </article>
+          }
+
+        </div>
+      }
+
+    </section>
+
+  </div>
+
+</section>

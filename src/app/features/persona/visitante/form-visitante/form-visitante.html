@@ -1,0 +1,253 @@
+<div class="visitor-modal" (click)="cerrar()">
+
+  <section
+    class="visitor-modal__card"
+    (click)="$event.stopPropagation()">
+
+    <!-- ========================================= -->
+    <!-- HEADER                                    -->
+    <!-- ========================================= -->
+
+    <header class="visitor-modal__header">
+
+      <div class="visitor-modal__heading">
+
+        <span class="visitor-modal__eyebrow">
+          Control de acceso
+        </span>
+
+        <h2 class="visitor-modal__title">
+          Registrar visitante
+        </h2>
+
+        <p class="visitor-modal__description">
+          Registra el ingreso de un visitante autorizado al conjunto residencial.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="visitor-modal__close"
+        (click)="cerrar()"
+        [disabled]="isSaving">
+
+        ✕
+
+      </button>
+
+    </header>
+
+    <!-- ========================================= -->
+    <!-- ALERTAS                                   -->
+    <!-- ========================================= -->
+
+    @if (errorMessage) {
+      <div class="visitor-alert visitor-alert--error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (successMessage) {
+      <div class="visitor-alert visitor-alert--success">
+        {{ successMessage }}
+      </div>
+    }
+
+    <!-- ========================================= -->
+    <!-- FORMULARIO                                -->
+    <!-- ========================================= -->
+
+    <form
+      class="visitor-form"
+      (ngSubmit)="guardar()">
+
+      <div class="visitor-form__grid">
+
+        <!-- Nombre -->
+
+        <div class="visitor-field">
+
+          <label
+            class="visitor-field__label"
+            for="nombre">
+
+            Nombre del visitante
+
+          </label>
+
+          <input
+            id="nombre"
+            class="visitor-field__control"
+            type="text"
+            [(ngModel)]="nombre"
+            name="nombre"
+            placeholder="Ej. Juan Pérez"
+            [disabled]="isSaving">
+
+        </div>
+
+        <!-- Documento -->
+
+        <div class="visitor-field">
+
+          <label
+            class="visitor-field__label"
+            for="documento">
+
+            Documento
+
+          </label>
+
+          <input
+            id="documento"
+            class="visitor-field__control"
+            type="text"
+            [(ngModel)]="documento"
+            name="documento"
+            placeholder="Número de documento"
+            [disabled]="isSaving">
+
+        </div>
+
+        <!-- Torre -->
+
+        <div class="visitor-field">
+
+          <label
+            class="visitor-field__label"
+            for="torre">
+
+            Torre
+
+          </label>
+
+          <input
+            id="torre"
+            class="visitor-field__control"
+            type="text"
+            [(ngModel)]="torre"
+            name="torre"
+            placeholder="Ej. Torre A"
+            [disabled]="isSaving">
+
+        </div>
+
+        <!-- Apartamento -->
+
+        <div class="visitor-field">
+
+          <label
+            class="visitor-field__label"
+            for="apartamento">
+
+            Apartamento
+
+          </label>
+
+          <input
+            id="apartamento"
+            class="visitor-field__control"
+            type="text"
+            [(ngModel)]="apartamento"
+            name="apartamento"
+            placeholder="Ej. 302"
+            [disabled]="isSaving">
+
+        </div>
+
+      </div>
+
+      <!-- ========================================= -->
+      <!-- AUTORIZADO POR                           -->
+      <!-- ========================================= -->
+
+      <div class="visitor-field visitor-field--full">
+
+        <label
+          class="visitor-field__label"
+          for="autorizadoPor">
+
+          Autorizado por
+
+        </label>
+
+        <input
+          id="autorizadoPor"
+          class="visitor-field__control"
+          type="text"
+          [(ngModel)]="autorizadoPorNombre"
+          name="autorizadoPorNombre"
+          placeholder="Nombre del residente que autoriza"
+          [disabled]="isSaving">
+
+      </div>
+
+      <!-- ========================================= -->
+      <!-- ACCIONES                                 -->
+      <!-- ========================================= -->
+
+      <footer class="visitor-form__actions">
+
+        <button
+          type="button"
+          class="visitor-action visitor-action--secondary"
+          (click)="cerrar($event)"
+          [disabled]="isSaving">
+
+          Cancelar
+
+        </button>
+
+        <button
+          type="submit"
+          class="visitor-action visitor-action--primary"
+          [disabled]="isSaving">
+
+          @if (isSaving) {
+            Registrando...
+          } @else {
+            Registrar visitante
+          }
+
+        </button>
+
+        <button
+          type="button"
+          class="visitor-action visitor-action--scanner"
+          [class.active]="vistaActiva === 'app-escanear-invitacion-visitante'"
+          (click)="escanearInvitacionVisitante()">
+
+          Escanear invitación
+
+        </button>
+
+      </footer>
+
+    </form>
+
+  </section>
+
+  <!-- ========================================= -->
+  <!-- MODAL ESCÁNER QR                          -->
+  <!-- ========================================= -->
+
+  @if (vistaActiva === 'app-escanear-invitacion-visitante') {
+
+    <div class="visitor-scanner">
+
+      <div
+        class="visitor-scanner__dialog"
+        (click)="$event.stopPropagation()">
+
+        <app-escanear-invitacion-visitante
+          (cerrar)="cerrarVistaActual()">
+        </app-escanear-invitacion-visitante>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

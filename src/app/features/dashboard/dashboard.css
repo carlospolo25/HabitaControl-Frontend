@@ -1,0 +1,2281 @@
+/* ==========================================================
+   HABITACONTROL — DASHBOARD ADMINISTRATIVO
+   PARTE 1: VARIABLES, BASE Y ESTRUCTURA GENERAL
+========================================================== */
+
+
+/* ==========================================================
+   1. VARIABLES VISUALES DEL COMPONENTE
+========================================================== */
+
+:host {
+  /* Colores principales */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-light: #dbeafe;
+  --color-primary-dark: #1e40af;
+
+  /* Escala de grises */
+  --gray-950: #020617;
+  --gray-900: #0f172a;
+  --gray-800: #1e293b;
+  --gray-700: #334155;
+  --gray-600: #475569;
+  --gray-500: #64748b;
+  --gray-400: #94a3b8;
+  --gray-300: #cbd5e1;
+  --gray-200: #e2e8f0;
+  --gray-100: #f1f5f9;
+  --gray-50: #f8fafc;
+
+  /* Estados */
+  --success: #16a34a;
+  --success-light: #dcfce7;
+  --success-border: #86efac;
+  --success-dark: #166534;
+
+  --danger: #dc2626;
+  --danger-light: #fee2e2;
+  --danger-border: #fca5a5;
+  --danger-dark: #991b1b;
+
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --warning-dark: #92400e;
+
+  --info: #0ea5e9;
+  --info-light: #e0f2fe;
+  --info-dark: #075985;
+
+  --accent: #7c3aed;
+  --accent-light: #ede9fe;
+
+  /* Fondos */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --surface-secondary: #f8fafc;
+
+  /* Bordes */
+  --border-light: #e2e8f0;
+  --border: #cbd5e1;
+  --border-dark: #94a3b8;
+
+  /* Textos */
+  --text-primary: #111827;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-disabled: #94a3b8;
+  --text-white: #ffffff;
+
+  /* Sombras */
+  --shadow-sm:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 1px 3px rgba(15, 23, 42, 0.06);
+
+  --shadow-md:
+    0 4px 6px -1px rgba(15, 23, 42, 0.08),
+    0 2px 4px -2px rgba(15, 23, 42, 0.06);
+
+  --shadow-lg:
+    0 10px 15px -3px rgba(15, 23, 42, 0.1),
+    0 4px 6px -4px rgba(15, 23, 42, 0.06);
+
+  --shadow-xl:
+    0 20px 25px -5px rgba(15, 23, 42, 0.12),
+    0 8px 10px -6px rgba(15, 23, 42, 0.08);
+
+  /* Radios */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+
+  /* Espaciados */
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-20: 1.25rem;
+  --space-24: 1.5rem;
+  --space-28: 1.75rem;
+  --space-32: 2rem;
+  --space-40: 2.5rem;
+  --space-48: 3rem;
+  --space-64: 4rem;
+
+  /* Dimensiones */
+  --sidebar-width: 17.5rem;
+  --dashboard-max-width: 100%;
+
+  /* Transiciones */
+  --transition-fast: 150ms ease;
+  --transition-normal: 220ms ease;
+  --transition-slow: 320ms ease;
+
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+/* ==========================================================
+   2. REINICIO BÁSICO DEL COMPONENTE
+========================================================== */
+
+:host,
+:host *,
+:host *::before,
+:host *::after {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+
+/* ==========================================================
+   3. CONTENEDOR PRINCIPAL
+========================================================== */
+
+.admin-dashboard {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+
+  width: 100%;
+  max-width: var(--dashboard-max-width);
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37, 99, 235, 0.05),
+      transparent 26rem
+    ),
+    var(--background);
+
+  color: var(--text-primary);
+
+  overflow-x: hidden;
+}
+
+
+/* ==========================================================
+   4. COLUMNA LATERAL
+========================================================== */
+
+.admin-dashboard__sidebar {
+  position: sticky;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--gray-950) 0%,
+      var(--gray-900) 52%,
+      var(--gray-800) 100%
+    );
+
+  border-right: 1px solid rgba(148, 163, 184, 0.14);
+
+  box-shadow:
+    8px 0 30px rgba(2, 6, 23, 0.08);
+
+  overflow: hidden;
+  z-index: 20;
+}
+
+
+/* ==========================================================
+   5. ÁREA PRINCIPAL
+========================================================== */
+
+.admin-dashboard__main {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 100vh;
+
+  background: transparent;
+}
+
+
+/* ==========================================================
+   6. CONTENEDOR DEL CONTENIDO DINÁMICO
+========================================================== */
+
+.dashboard-content {
+  flex: 1;
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--space-24)
+    var(--space-32)
+    var(--space-40);
+
+  background: transparent;
+}
+
+
+/* Evita que tablas, gráficas o componentes hijos
+   ensanchen el dashboard completo. */
+
+.dashboard-content__view {
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* Los componentes Angular dinámicos ocuparán
+   correctamente todo el ancho disponible. */
+
+.dashboard-content__view > * {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   7. SELECCIÓN Y SCROLLBAR GENERAL
+========================================================== */
+
+.admin-dashboard ::selection {
+  color: var(--text-white);
+  background: var(--color-primary);
+}
+
+.admin-dashboard {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-300) transparent;
+}
+
+.admin-dashboard::-webkit-scrollbar {
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+.admin-dashboard::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-dashboard::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border: 0.1875rem solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+.admin-dashboard::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+  border: 0.1875rem solid transparent;
+  background-clip: padding-box;
+}
+
+
+/* ==========================================================
+   8. AJUSTE INICIAL PARA PANTALLAS MEDIANAS
+========================================================== */
+
+@media (max-width: 1200px) {
+  :host {
+    --sidebar-width: 16rem;
+  }
+
+  .dashboard-content {
+    padding:
+      var(--space-24)
+      var(--space-24)
+      var(--space-32);
+  }
+}
+
+
+/* ==========================================================
+   HABITACONTROL — DASHBOARD ADMINISTRATIVO
+   PARTE 2: SIDEBAR, MARCA Y NAVEGACIÓN
+========================================================== */
+
+
+/* ==========================================================
+   1. MARCA DEL SIDEBAR
+========================================================== */
+
+.sidebar-brand {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+
+  min-height: 6.5rem;
+  padding:
+    var(--space-20)
+    var(--space-20)
+    var(--space-16);
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+
+/* Línea decorativa superior */
+
+.sidebar-brand::before {
+  position: absolute;
+  top: 0;
+  left: var(--space-20);
+  right: var(--space-20);
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--color-primary),
+      var(--info),
+      transparent
+    );
+
+  border-radius: 0 0 999px 999px;
+
+  opacity: 0.9;
+}
+
+
+/* ==========================================================
+   2. LOGOTIPO
+========================================================== */
+
+.sidebar-brand__logo {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 3rem;
+  height: 3rem;
+
+  color: var(--text-white);
+
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.05em;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--color-primary) 0%,
+      var(--color-primary-dark) 100%
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-lg);
+
+  box-shadow:
+    0 0 0 0.25rem rgba(37, 99, 235, 0.1),
+    0 0.625rem 1.5rem rgba(37, 99, 235, 0.28);
+
+  overflow: hidden;
+}
+
+
+/* Reflejo visual del logotipo */
+
+.sidebar-brand__logo::before {
+  position: absolute;
+  top: -55%;
+  left: -35%;
+
+  width: 80%;
+  height: 160%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.22),
+      transparent
+    );
+
+  transform: rotate(28deg);
+}
+
+
+/* Punto decorativo */
+
+.sidebar-brand__logo::after {
+  position: absolute;
+  right: 0.3125rem;
+  bottom: 0.3125rem;
+
+  width: 0.375rem;
+  height: 0.375rem;
+
+  content: "";
+
+  background: var(--success);
+  border: 0.125rem solid var(--gray-900);
+  border-radius: 50%;
+
+  box-shadow: 0 0 0.625rem rgba(22, 163, 74, 0.8);
+}
+
+
+/* ==========================================================
+   3. INFORMACIÓN DE MARCA
+========================================================== */
+
+.sidebar-brand__content {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.sidebar-brand__title {
+  color: var(--text-white);
+
+  font-size: 1.0625rem;
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-brand__subtitle {
+  margin-top: var(--space-4);
+
+  color: var(--gray-400);
+
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.35;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* ==========================================================
+   4. CONTENEDOR DE NAVEGACIÓN
+========================================================== */
+
+.sidebar-navigation {
+  flex: 1;
+
+  min-height: 0;
+
+  padding:
+    var(--space-16)
+    var(--space-12);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(148, 163, 184, 0.3)
+    transparent;
+}
+
+.sidebar-navigation::-webkit-scrollbar {
+  width: 0.375rem;
+}
+
+.sidebar-navigation::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-navigation::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.28);
+  border-radius: 999px;
+}
+
+.sidebar-navigation::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+}
+
+.sidebar-navigation__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+
+/* ==========================================================
+   5. ELEMENTO DEL MENÚ
+========================================================== */
+
+.sidebar-navigation__item {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-8);
+
+  width: 100%;
+  min-height: 3rem;
+
+  padding:
+    var(--space-8)
+    var(--space-12);
+
+  color: var(--gray-300);
+
+  text-align: left;
+
+  background: transparent;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+
+  cursor: pointer;
+
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+
+/* Indicador lateral */
+
+.sidebar-navigation__item::before {
+  position: absolute;
+  top: 50%;
+  left: -0.0625rem;
+
+  width: 0.1875rem;
+  height: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--info),
+      var(--color-primary)
+    );
+
+  border-radius: 0 999px 999px 0;
+
+  transform: translateY(-50%);
+
+  opacity: 0;
+
+  transition:
+    height var(--transition-normal),
+    opacity var(--transition-fast);
+}
+
+
+/* Brillo interno */
+
+.sidebar-navigation__item::after {
+  position: absolute;
+  inset: 0;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(37, 99, 235, 0.08),
+      transparent 65%
+    );
+
+  border-radius: inherit;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity var(--transition-fast);
+}
+
+
+/* ==========================================================
+   6. ESTADO HOVER
+========================================================== */
+
+.sidebar-navigation__item:hover {
+  color: var(--text-white);
+
+  background: rgba(255, 255, 255, 0.055);
+
+  border-color: rgba(148, 163, 184, 0.1);
+
+  transform: translateX(0.1875rem);
+}
+
+.sidebar-navigation__item:hover::after {
+  opacity: 1;
+}
+
+
+/* ==========================================================
+   7. ESTADO ACTIVO
+========================================================== */
+
+.sidebar-navigation__item--active {
+  color: var(--text-white);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(37, 99, 235, 0.2),
+      rgba(37, 99, 235, 0.08)
+    );
+
+  border-color: rgba(96, 165, 250, 0.18);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(37, 99, 235, 0.04),
+    0 0.375rem 1.125rem rgba(2, 6, 23, 0.12);
+}
+
+.sidebar-navigation__item--active::before {
+  height: 1.75rem;
+  opacity: 1;
+}
+
+.sidebar-navigation__item--active::after {
+  opacity: 1;
+}
+
+
+/* Mantiene el estado activo estable al pasar el cursor */
+
+.sidebar-navigation__item--active:hover {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(37, 99, 235, 0.26),
+      rgba(37, 99, 235, 0.1)
+    );
+
+  border-color: rgba(96, 165, 250, 0.25);
+}
+
+
+/* ==========================================================
+   8. ICONOS DEL MENÚ
+========================================================== */
+
+.sidebar-navigation__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  width: 2.25rem;
+  height: 2.25rem;
+
+  color: var(--gray-300);
+
+  font-size: 1rem;
+  line-height: 1;
+
+  background: rgba(255, 255, 255, 0.045);
+
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  border-radius: var(--radius-sm);
+
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.sidebar-navigation__item:hover
+.sidebar-navigation__icon {
+  color: var(--text-white);
+
+  background: rgba(255, 255, 255, 0.075);
+
+  border-color: rgba(148, 163, 184, 0.16);
+
+  transform: scale(1.03);
+}
+
+.sidebar-navigation__item--active
+.sidebar-navigation__icon {
+  color: var(--text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--color-primary),
+      var(--color-primary-dark)
+    );
+
+  border-color: rgba(147, 197, 253, 0.28);
+
+  box-shadow:
+    0 0.375rem 1rem rgba(37, 99, 235, 0.25);
+}
+
+
+/* ==========================================================
+   9. ETIQUETAS DEL MENÚ
+========================================================== */
+
+.sidebar-navigation__label {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+
+  font-size: 0.875rem;
+  font-weight: 560;
+  line-height: 1.25;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-navigation__item--active
+.sidebar-navigation__label {
+  font-weight: 650;
+}
+
+
+/* ==========================================================
+   10. ESTADOS DE ENFOQUE Y PULSACIÓN
+========================================================== */
+
+.sidebar-navigation__item:focus-visible,
+.sidebar-footer__logout-button:focus-visible {
+  outline: 0.1875rem solid rgba(96, 165, 250, 0.42);
+  outline-offset: 0.125rem;
+}
+
+.sidebar-navigation__item:active {
+  transform: translateX(0.125rem) scale(0.985);
+}
+
+
+/* ==========================================================
+   11. PIE DEL SIDEBAR
+========================================================== */
+
+.sidebar-footer {
+  position: relative;
+
+  padding:
+    var(--space-16)
+    var(--space-12)
+    var(--space-20);
+
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.25),
+      rgba(2, 6, 23, 0.42)
+    );
+}
+
+
+/* Sombra que separa el footer del menú */
+
+.sidebar-footer::before {
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  right: 0;
+
+  height: 1.5rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(2, 6, 23, 0.18)
+    );
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   12. BOTÓN CERRAR SESIÓN
+========================================================== */
+
+.sidebar-footer__logout-button {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-8);
+
+  width: 100%;
+  min-height: 3rem;
+
+  padding:
+    var(--space-8)
+    var(--space-12);
+
+  color: var(--danger-border);
+
+  text-align: left;
+
+  background: rgba(220, 38, 38, 0.07);
+
+  border: 1px solid rgba(248, 113, 113, 0.12);
+  border-radius: var(--radius-md);
+
+  cursor: pointer;
+
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.sidebar-footer__logout-button:hover {
+  color: var(--text-white);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(220, 38, 38, 0.2),
+      rgba(220, 38, 38, 0.1)
+    );
+
+  border-color: rgba(248, 113, 113, 0.28);
+
+  box-shadow:
+    0 0.5rem 1.25rem rgba(127, 29, 29, 0.16);
+
+  transform: translateY(-0.0625rem);
+}
+
+.sidebar-footer__logout-button:active {
+  transform: scale(0.985);
+}
+
+
+/* ==========================================================
+   13. ICONO Y TEXTO DE CERRAR SESIÓN
+========================================================== */
+
+.sidebar-footer__logout-icon {
+  display: grid;
+  place-items: center;
+
+  width: 2.25rem;
+  height: 2.25rem;
+
+  font-size: 1rem;
+  line-height: 1;
+
+  background: rgba(220, 38, 38, 0.08);
+
+  border: 1px solid rgba(248, 113, 113, 0.12);
+  border-radius: var(--radius-sm);
+
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.sidebar-footer__logout-button:hover
+.sidebar-footer__logout-icon {
+  background: rgba(220, 38, 38, 0.2);
+  border-color: rgba(248, 113, 113, 0.24);
+  transform: translateX(0.125rem);
+}
+
+.sidebar-footer__logout-label {
+  min-width: 0;
+
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* ==========================================================
+   14. ACCESIBILIDAD: MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-navigation__item,
+  .sidebar-navigation__item::before,
+  .sidebar-navigation__item::after,
+  .sidebar-navigation__icon,
+  .sidebar-footer__logout-button,
+  .sidebar-footer__logout-icon {
+    transition: none;
+  }
+
+  .sidebar-navigation__item:hover,
+  .sidebar-navigation__item:active,
+  .sidebar-footer__logout-button:hover,
+  .sidebar-footer__logout-button:active {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   HABITACONTROL — DASHBOARD ADMINISTRATIVO
+   PARTE 3: HEADER Y ÁREA DE CONTENIDO
+========================================================== */
+
+
+/* ==========================================================
+   1. ENCABEZADO PRINCIPAL
+========================================================== */
+
+.dashboard-header {
+  position: relative;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-24);
+
+  min-height: 8.5rem;
+
+  padding:
+    var(--space-24)
+    var(--space-32);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(255, 255, 255, 0.9)
+    );
+
+  border-bottom: 1px solid var(--border-light);
+
+  box-shadow:
+    0 0.25rem 1.5rem rgba(15, 23, 42, 0.035);
+
+  backdrop-filter: blur(0.75rem);
+  -webkit-backdrop-filter: blur(0.75rem);
+}
+
+
+/* Línea de identidad visual */
+
+.dashboard-header::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary-dark),
+      var(--color-primary),
+      var(--info),
+      var(--accent)
+    );
+}
+
+
+/* Brillo suave decorativo */
+
+.dashboard-header::after {
+  position: absolute;
+  top: -7rem;
+  right: -5rem;
+
+  width: 18rem;
+  height: 18rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.12),
+      rgba(37, 99, 235, 0.03) 45%,
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   2. CONTENIDO TEXTUAL DEL HEADER
+========================================================== */
+
+.dashboard-header__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  max-width: 48rem;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   3. ETIQUETA SUPERIOR
+========================================================== */
+
+.dashboard-header__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  margin-bottom: var(--space-8);
+
+  color: var(--color-primary-dark);
+
+  font-size: 0.75rem;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+
+/* Indicador visual del eyebrow */
+
+.dashboard-header__eyebrow::before {
+  width: 1.75rem;
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info)
+    );
+
+  border-radius: 999px;
+}
+
+
+/* ==========================================================
+   4. TÍTULO PRINCIPAL
+========================================================== */
+
+.dashboard-header__title {
+  color: var(--text-primary);
+
+  font-size: clamp(1.75rem, 2vw, 2.25rem);
+  font-weight: 780;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+
+
+/* ==========================================================
+   5. DESCRIPCIÓN DEL HEADER
+========================================================== */
+
+.dashboard-header__description {
+  max-width: 42rem;
+
+  margin-top: var(--space-8);
+
+  color: var(--text-secondary);
+
+  font-size: 0.9375rem;
+  font-weight: 450;
+  line-height: 1.65;
+}
+
+
+/* ==========================================================
+   6. ÁREA GENERAL DE CONTENIDO
+========================================================== */
+
+.dashboard-content {
+  position: relative;
+
+  flex: 1;
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--space-24)
+    var(--space-32)
+    var(--space-40);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.72),
+      var(--background)
+    );
+}
+
+
+/* Decoración ambiental de fondo */
+
+.dashboard-content::before {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+
+  width: 14rem;
+  height: 14rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(14, 165, 233, 0.055),
+      transparent 68%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.dashboard-content::after {
+  position: absolute;
+  bottom: 3rem;
+  left: 2rem;
+
+  width: 12rem;
+  height: 12rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(124, 58, 237, 0.04),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   7. VISTA DINÁMICA
+========================================================== */
+
+.dashboard-content__view {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+
+  animation:
+    dashboard-view-enter
+    var(--transition-slow)
+    ease-out;
+}
+
+
+/* Asegura que cada componente ocupe el espacio disponible */
+
+.dashboard-content__view > * {
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   8. ENTRADA SUAVE DEL CONTENIDO
+========================================================== */
+
+@keyframes dashboard-view-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* ==========================================================
+   9. CONTENEDORES INTERNOS GENÉRICOS
+========================================================== */
+
+/*
+  Estas reglas ayudan a mantener controlados los componentes
+  internos sin modificar sus estilos propios.
+*/
+
+.dashboard-content__view section,
+.dashboard-content__view article,
+.dashboard-content__view div {
+  max-width: 100%;
+}
+
+.dashboard-content__view table {
+  max-width: 100%;
+}
+
+.dashboard-content__view img,
+.dashboard-content__view canvas,
+.dashboard-content__view svg {
+  max-width: 100%;
+}
+
+
+/* ==========================================================
+   10. PREVENCIÓN DE DESBORDAMIENTOS
+========================================================== */
+
+.admin-dashboard__main,
+.dashboard-header,
+.dashboard-header__content,
+.dashboard-content,
+.dashboard-content__view {
+  min-width: 0;
+}
+
+.dashboard-header__title,
+.dashboard-header__description {
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   11. AJUSTES PARA PANTALLAS MEDIANAS
+========================================================== */
+
+@media (max-width: 1200px) {
+  .dashboard-header {
+    min-height: 8rem;
+
+    padding:
+      var(--space-24)
+      var(--space-24);
+  }
+
+  .dashboard-content {
+    padding:
+      var(--space-24)
+      var(--space-24)
+      var(--space-32);
+  }
+}
+
+
+/* ==========================================================
+   12. AJUSTES PARA ALTURAS REDUCIDAS
+========================================================== */
+
+@media (max-height: 720px) and (min-width: 769px) {
+  .dashboard-header {
+    min-height: auto;
+
+    padding-top: var(--space-20);
+    padding-bottom: var(--space-20);
+  }
+
+  .dashboard-header__eyebrow {
+    margin-bottom: var(--space-4);
+  }
+
+  .dashboard-header__description {
+    margin-top: var(--space-4);
+  }
+
+  .dashboard-content {
+    padding-top: var(--space-20);
+  }
+}
+
+
+/* ==========================================================
+   13. ACCESIBILIDAD: MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-content__view {
+    animation: none;
+  }
+}
+
+
+/* ==========================================================
+   HABITACONTROL — DASHBOARD ADMINISTRATIVO
+   PARTE 4: RESPONSIVE PARA TABLET Y CELULAR
+========================================================== */
+
+
+/* ==========================================================
+   1. TABLET Y PORTÁTILES PEQUEÑOS
+   Hasta 1024 px
+========================================================== */
+
+@media (max-width: 1024px) {
+
+  :host {
+    --sidebar-width: 14.5rem;
+  }
+
+
+  /* Sidebar */
+
+  .sidebar-brand {
+    min-height: 6rem;
+
+    padding:
+      var(--space-20)
+      var(--space-16)
+      var(--space-16);
+  }
+
+  .sidebar-brand::before {
+    left: var(--space-16);
+    right: var(--space-16);
+  }
+
+  .sidebar-brand__logo {
+    width: 2.75rem;
+    height: 2.75rem;
+
+    font-size: 0.8125rem;
+  }
+
+  .sidebar-brand__title {
+    font-size: 1rem;
+  }
+
+  .sidebar-brand__subtitle {
+    font-size: 0.6875rem;
+  }
+
+
+  /* Navegación */
+
+  .sidebar-navigation {
+    padding:
+      var(--space-12)
+      var(--space-8);
+  }
+
+  .sidebar-navigation__item {
+    grid-template-columns: 2.125rem minmax(0, 1fr);
+
+    min-height: 2.875rem;
+
+    padding:
+      var(--space-8)
+      var(--space-8);
+  }
+
+  .sidebar-navigation__icon {
+    width: 2.125rem;
+    height: 2.125rem;
+
+    font-size: 0.9375rem;
+  }
+
+  .sidebar-navigation__label {
+    font-size: 0.8125rem;
+  }
+
+
+  /* Footer */
+
+  .sidebar-footer {
+    padding:
+      var(--space-12)
+      var(--space-8)
+      var(--space-16);
+  }
+
+  .sidebar-footer__logout-button {
+    grid-template-columns: 2.125rem minmax(0, 1fr);
+
+    padding:
+      var(--space-8)
+      var(--space-8);
+  }
+
+  .sidebar-footer__logout-icon {
+    width: 2.125rem;
+    height: 2.125rem;
+  }
+
+  .sidebar-footer__logout-label {
+    font-size: 0.8125rem;
+  }
+
+
+  /* Header */
+
+  .dashboard-header {
+    min-height: 7.5rem;
+
+    padding:
+      var(--space-20)
+      var(--space-24);
+  }
+
+  .dashboard-header__title {
+    font-size: clamp(1.625rem, 2.8vw, 2rem);
+  }
+
+  .dashboard-header__description {
+    max-width: 36rem;
+
+    font-size: 0.875rem;
+  }
+
+
+  /* Contenido */
+
+  .dashboard-content {
+    padding:
+      var(--space-20)
+      var(--space-24)
+      var(--space-32);
+  }
+}
+
+
+/* ==========================================================
+   2. TABLET VERTICAL
+   Hasta 860 px
+
+   El sidebar sigue siendo lateral, pero se convierte
+   en una barra compacta de iconos.
+========================================================== */
+
+@media (max-width: 860px) and (min-width: 769px) {
+
+  :host {
+    --sidebar-width: 5.5rem;
+  }
+
+
+  /* Marca compacta */
+
+  .sidebar-brand {
+    justify-content: center;
+
+    min-height: 5.75rem;
+
+    padding:
+      var(--space-16)
+      var(--space-8);
+  }
+
+  .sidebar-brand::before {
+    left: var(--space-12);
+    right: var(--space-12);
+  }
+
+  .sidebar-brand__logo {
+    width: 2.875rem;
+    height: 2.875rem;
+  }
+
+  .sidebar-brand__content {
+    display: none;
+  }
+
+
+  /* Menú compacto */
+
+  .sidebar-navigation {
+    padding:
+      var(--space-12)
+      var(--space-8);
+  }
+
+  .sidebar-navigation__list {
+    align-items: center;
+
+    gap: var(--space-8);
+  }
+
+  .sidebar-navigation__item {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+
+    width: 3.75rem;
+    min-height: 3.75rem;
+
+    padding: var(--space-8);
+
+    text-align: center;
+  }
+
+  .sidebar-navigation__item::before {
+    top: 50%;
+    left: -0.5rem;
+
+    transform: translateY(-50%);
+  }
+
+  .sidebar-navigation__item:hover {
+    transform: translateX(0);
+  }
+
+  .sidebar-navigation__item:active {
+    transform: scale(0.96);
+  }
+
+  .sidebar-navigation__icon {
+    width: 2.375rem;
+    height: 2.375rem;
+
+    font-size: 1.0625rem;
+  }
+
+  .sidebar-navigation__label {
+    position: absolute;
+    left: calc(100% + var(--space-8));
+    top: 50%;
+
+    width: max-content;
+    max-width: 11rem;
+
+    padding:
+      var(--space-8)
+      var(--space-12);
+
+    color: var(--text-white);
+
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    background: var(--gray-900);
+
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: var(--radius-sm);
+
+    box-shadow: var(--shadow-lg);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform:
+      translateY(-50%)
+      translateX(-0.25rem);
+
+    pointer-events: none;
+
+    transition:
+      opacity var(--transition-fast),
+      visibility var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .sidebar-navigation__item:hover
+  .sidebar-navigation__label,
+  .sidebar-navigation__item:focus-visible
+  .sidebar-navigation__label {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+      translateY(-50%)
+      translateX(0);
+  }
+
+
+  /* Footer compacto */
+
+  .sidebar-footer {
+    display: flex;
+    justify-content: center;
+
+    padding:
+      var(--space-12)
+      var(--space-8)
+      var(--space-16);
+  }
+
+  .sidebar-footer__logout-button {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+
+    width: 3.75rem;
+    min-height: 3.75rem;
+
+    padding: var(--space-8);
+
+    text-align: center;
+  }
+
+  .sidebar-footer__logout-label {
+    position: absolute;
+    left: calc(100% + var(--space-8));
+    top: 50%;
+
+    width: max-content;
+
+    padding:
+      var(--space-8)
+      var(--space-12);
+
+    color: var(--text-white);
+
+    font-size: 0.75rem;
+
+    background: var(--danger-dark);
+
+    border: 1px solid rgba(252, 165, 165, 0.25);
+    border-radius: var(--radius-sm);
+
+    box-shadow: var(--shadow-lg);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform:
+      translateY(-50%)
+      translateX(-0.25rem);
+
+    pointer-events: none;
+
+    transition:
+      opacity var(--transition-fast),
+      visibility var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .sidebar-footer__logout-button:hover
+  .sidebar-footer__logout-label,
+  .sidebar-footer__logout-button:focus-visible
+  .sidebar-footer__logout-label {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+      translateY(-50%)
+      translateX(0);
+  }
+}
+
+
+/* ==========================================================
+   3. CELULAR Y TABLET PEQUEÑA
+   Hasta 768 px
+
+   El sidebar deja de ser lateral y se convierte
+   en una cabecera superior con navegación horizontal.
+========================================================== */
+
+@media (max-width: 768px) {
+
+  :host {
+    min-height: 100%;
+  }
+
+
+  /* Layout vertical */
+
+  .admin-dashboard {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 100vh;
+  }
+
+
+  /* Sidebar superior */
+
+  .admin-dashboard__sidebar {
+    position: relative;
+    top: auto;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand logout"
+      "navigation navigation";
+
+    width: 100%;
+    height: auto;
+    min-height: auto;
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--gray-950),
+        var(--gray-900) 55%,
+        var(--gray-800)
+      );
+
+    border-right: 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+
+    box-shadow:
+      0 0.5rem 1.5rem rgba(2, 6, 23, 0.12);
+
+    overflow: visible;
+  }
+
+
+  /* Marca superior */
+
+  .sidebar-brand {
+    grid-area: brand;
+
+    min-width: 0;
+    min-height: 4.75rem;
+
+    padding:
+      var(--space-12)
+      var(--space-16);
+
+    border-bottom: 0;
+  }
+
+  .sidebar-brand::before {
+    left: var(--space-16);
+    right: auto;
+
+    width: 5rem;
+  }
+
+  .sidebar-brand__logo {
+    width: 2.625rem;
+    height: 2.625rem;
+
+    border-radius: var(--radius-md);
+  }
+
+  .sidebar-brand__title {
+    font-size: 0.9375rem;
+  }
+
+  .sidebar-brand__subtitle {
+    font-size: 0.6875rem;
+  }
+
+
+  /* Navegación horizontal */
+
+  .sidebar-navigation {
+    grid-area: navigation;
+
+    width: 100%;
+
+    padding:
+      var(--space-8)
+      var(--space-12)
+      var(--space-12);
+
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-width: none;
+
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar-navigation::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sidebar-navigation__list {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    width: max-content;
+    min-width: 100%;
+
+    gap: var(--space-8);
+  }
+
+  .sidebar-navigation__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+
+    flex: 0 0 auto;
+
+    width: 5.25rem;
+    min-height: 4.5rem;
+
+    padding:
+      var(--space-8)
+      var(--space-8);
+
+    text-align: center;
+
+    scroll-snap-align: start;
+  }
+
+  .sidebar-navigation__item::before {
+    top: auto;
+    bottom: -0.0625rem;
+    left: 50%;
+
+    width: 0;
+    height: 0.1875rem;
+
+    border-radius: 999px 999px 0 0;
+
+    transform: translateX(-50%);
+  }
+
+  .sidebar-navigation__item--active::before {
+    width: 2.25rem;
+    height: 0.1875rem;
+  }
+
+  .sidebar-navigation__item:hover {
+    transform: translateY(-0.125rem);
+  }
+
+  .sidebar-navigation__item:active {
+    transform: scale(0.97);
+  }
+
+  .sidebar-navigation__icon {
+    width: 2.125rem;
+    height: 2.125rem;
+
+    font-size: 0.9375rem;
+  }
+
+  .sidebar-navigation__label {
+    width: 100%;
+
+    font-size: 0.6875rem;
+    line-height: 1.15;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+
+  /* Cerrar sesión en cabecera */
+
+  .sidebar-footer {
+    grid-area: logout;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    padding:
+      var(--space-12)
+      var(--space-16)
+      var(--space-12)
+      var(--space-8);
+
+    border-top: 0;
+
+    background: transparent;
+  }
+
+  .sidebar-footer::before {
+    display: none;
+  }
+
+  .sidebar-footer__logout-button {
+    display: grid;
+    grid-template-columns: 2.25rem;
+
+    width: 2.75rem;
+    min-height: 2.75rem;
+
+    padding: var(--space-4);
+
+    border-radius: var(--radius-md);
+  }
+
+  .sidebar-footer__logout-icon {
+    width: 2.125rem;
+    height: 2.125rem;
+  }
+
+  .sidebar-footer__logout-label {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+
+    border: 0;
+  }
+
+
+  /* Área principal */
+
+  .admin-dashboard__main {
+    min-height: 0;
+  }
+
+
+  /* Header principal */
+
+  .dashboard-header {
+    min-height: auto;
+
+    padding:
+      var(--space-20)
+      var(--space-16);
+
+    background: rgba(255, 255, 255, 0.96);
+
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .dashboard-header::after {
+    top: -5rem;
+    right: -7rem;
+
+    width: 15rem;
+    height: 15rem;
+  }
+
+  .dashboard-header__eyebrow {
+    margin-bottom: var(--space-8);
+
+    font-size: 0.6875rem;
+  }
+
+  .dashboard-header__eyebrow::before {
+    width: 1.25rem;
+  }
+
+  .dashboard-header__title {
+    font-size: clamp(1.5rem, 7vw, 1.875rem);
+    line-height: 1.15;
+  }
+
+  .dashboard-header__description {
+    margin-top: var(--space-8);
+
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+
+
+  /* Contenido principal */
+
+  .dashboard-content {
+    padding:
+      var(--space-16)
+      var(--space-12)
+      var(--space-24);
+  }
+
+  .dashboard-content::before {
+    top: 1rem;
+    right: -5rem;
+  }
+
+  .dashboard-content::after {
+    display: none;
+  }
+}
+
+
+/* ==========================================================
+   4. CELULARES PEQUEÑOS
+   Hasta 480 px
+========================================================== */
+
+@media (max-width: 480px) {
+
+  /* Marca */
+
+  .sidebar-brand {
+    min-height: 4.375rem;
+
+    padding:
+      var(--space-12)
+      var(--space-12);
+  }
+
+  .sidebar-brand::before {
+    left: var(--space-12);
+  }
+
+  .sidebar-brand__logo {
+    width: 2.375rem;
+    height: 2.375rem;
+
+    font-size: 0.75rem;
+  }
+
+  .sidebar-brand__title {
+    font-size: 0.875rem;
+  }
+
+  .sidebar-brand__subtitle {
+    font-size: 0.625rem;
+  }
+
+
+  /* Cerrar sesión */
+
+  .sidebar-footer {
+    padding:
+      var(--space-8)
+      var(--space-12)
+      var(--space-8)
+      var(--space-4);
+  }
+
+  .sidebar-footer__logout-button {
+    width: 2.625rem;
+    min-height: 2.625rem;
+  }
+
+
+  /* Navegación */
+
+  .sidebar-navigation {
+    padding:
+      var(--space-8)
+      var(--space-8)
+      var(--space-12);
+  }
+
+  .sidebar-navigation__list {
+    gap: var(--space-4);
+  }
+
+  .sidebar-navigation__item {
+    width: 4.75rem;
+    min-height: 4.25rem;
+  }
+
+  .sidebar-navigation__icon {
+    width: 2rem;
+    height: 2rem;
+
+    font-size: 0.875rem;
+  }
+
+  .sidebar-navigation__label {
+    font-size: 0.625rem;
+  }
+
+
+  /* Header */
+
+  .dashboard-header {
+    padding:
+      var(--space-16)
+      var(--space-12);
+  }
+
+  .dashboard-header__eyebrow {
+    margin-bottom: var(--space-4);
+  }
+
+  .dashboard-header__title {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-header__description {
+    font-size: 0.78125rem;
+  }
+
+
+  /* Contenido */
+
+  .dashboard-content {
+    padding:
+      var(--space-12)
+      var(--space-8)
+      var(--space-20);
+  }
+}
+
+
+/* ==========================================================
+   5. CELULARES MUY PEQUEÑOS
+   Hasta 360 px
+========================================================== */
+
+@media (max-width: 360px) {
+
+  .sidebar-brand__subtitle {
+    display: none;
+  }
+
+  .sidebar-navigation__item {
+    width: 4.375rem;
+  }
+
+  .dashboard-header__title {
+    font-size: 1.375rem;
+  }
+
+  .dashboard-header__description {
+    line-height: 1.5;
+  }
+}
+
+
+/* ==========================================================
+   6. ORIENTACIÓN HORIZONTAL EN CELULAR
+========================================================== */
+
+@media (max-width: 768px) and (orientation: landscape) {
+
+  .sidebar-brand {
+    min-height: 4rem;
+  }
+
+  .sidebar-navigation__item {
+    min-height: 3.875rem;
+  }
+
+  .sidebar-navigation__icon {
+    width: 1.875rem;
+    height: 1.875rem;
+  }
+
+  .dashboard-header {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .dashboard-header__description {
+    margin-top: var(--space-4);
+  }
+}
+
+
+/* ==========================================================
+   7. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .sidebar-navigation__item:hover,
+  .sidebar-footer__logout-button:hover {
+    transform: none;
+  }
+
+  .sidebar-navigation__item {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .sidebar-navigation__item:active {
+    background: rgba(255, 255, 255, 0.09);
+  }
+
+  .sidebar-footer__logout-button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .sidebar-footer__logout-button:active {
+    background: rgba(220, 38, 38, 0.22);
+  }
+}
+
+
+/* ==========================================================
+   8. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .sidebar-navigation {
+    scroll-behavior: auto;
+  }
+
+  .sidebar-navigation__item,
+  .sidebar-navigation__label,
+  .sidebar-footer__logout-button,
+  .sidebar-footer__logout-label {
+    transition: none;
+  }
+}
+
+

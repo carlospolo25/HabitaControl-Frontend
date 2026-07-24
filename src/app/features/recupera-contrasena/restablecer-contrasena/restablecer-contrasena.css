@@ -1,0 +1,1975 @@
+/* ==========================================================
+   PARTE 1 · ESTRUCTURA GENERAL Y ENCABEZADO
+========================================================== */
+
+:host {
+  display: block;
+
+  min-height: 100vh;
+
+  color: #0F172A;
+  background: #F8FAFC;
+}
+
+/* ==========================================================
+   CONTENEDOR PRINCIPAL
+========================================================== */
+
+.recovery-page {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2rem 1rem;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(37, 99, 235, 0.14),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(15, 23, 42, 0.08),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #F8FAFC 0%,
+      #EFF6FF 52%,
+      #F8FAFC 100%
+    );
+}
+
+/* Elemento decorativo superior */
+
+.recovery-page::before {
+  content: "";
+
+  position: absolute;
+  top: -170px;
+  right: -130px;
+
+  width: 360px;
+  height: 360px;
+
+  border: 1px solid rgba(37, 99, 235, 0.11);
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+/* Elemento decorativo inferior */
+
+.recovery-page::after {
+  content: "";
+
+  position: absolute;
+  bottom: -190px;
+  left: -150px;
+
+  width: 390px;
+  height: 390px;
+
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+/* ==========================================================
+   TARJETA
+========================================================== */
+
+.recovery-card {
+  position: relative;
+  z-index: 1;
+
+  width: min(100%, 520px);
+
+  padding: 3rem;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  border-radius: 24px;
+
+  box-shadow:
+    0 28px 60px rgba(15, 23, 42, 0.12),
+    0 10px 24px rgba(15, 23, 42, 0.06);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  animation: recovery-card-enter 0.4s ease-out;
+}
+
+/* Línea azul superior de HabitaControl */
+
+.recovery-card::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 2.5rem;
+  right: 2.5rem;
+
+  height: 4px;
+
+  background: linear-gradient(
+    90deg,
+    #2563EB,
+    #60A5FA
+  );
+
+  border-radius: 0 0 999px 999px;
+}
+
+/* ==========================================================
+   ENCABEZADO
+========================================================== */
+
+.recovery-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-bottom: 2rem;
+
+  text-align: center;
+}
+
+.recovery-icon {
+  width: 72px;
+  height: 72px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 1.25rem;
+
+  color: #1D4ED8;
+  background:
+    linear-gradient(
+      145deg,
+      #EFF6FF,
+      #DBEAFE
+    );
+
+  border: 1px solid #BFDBFE;
+  border-radius: 22px;
+
+  font-size: 2rem;
+  line-height: 1;
+
+  box-shadow:
+    0 12px 24px rgba(37, 99, 235, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.recovery-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 0.55rem;
+
+  color: #2563EB;
+
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.recovery-header h1 {
+  margin: 0;
+
+  color: #0F172A;
+
+  font-size: clamp(1.75rem, 4vw, 2.15rem);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+}
+
+.recovery-header p {
+  max-width: 420px;
+
+  margin: 0.9rem auto 0;
+
+  color: #64748B;
+
+  font-size: 0.96rem;
+  line-height: 1.7;
+}
+
+/* ==========================================================
+   ANIMACIÓN DE ENTRADA
+========================================================== */
+
+@keyframes recovery-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================
+   REDUCCIÓN DE MOVIMIENTO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .recovery-card {
+    animation: none;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 640px) {
+  .recovery-page {
+    align-items: flex-start;
+
+    padding:
+      max(1rem, env(safe-area-inset-top))
+      1rem
+      max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .recovery-card {
+    width: 100%;
+
+    padding:
+      2.25rem
+      1.5rem
+      2rem;
+
+    border-radius: 20px;
+  }
+
+  .recovery-card::before {
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .recovery-header {
+    margin-bottom: 1.75rem;
+  }
+
+  .recovery-icon {
+    width: 64px;
+    height: 64px;
+
+    margin-bottom: 1rem;
+
+    border-radius: 19px;
+
+    font-size: 1.75rem;
+  }
+
+  .recovery-eyebrow {
+    font-size: 0.7rem;
+  }
+
+  .recovery-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .recovery-header p {
+    margin-top: 0.75rem;
+
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+}
+
+@media (max-width: 380px) {
+  .recovery-page {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .recovery-card {
+    padding:
+      2rem
+      1.15rem
+      1.75rem;
+
+    border-radius: 18px;
+  }
+
+  .recovery-header h1 {
+    font-size: 1.55rem;
+  }
+}
+
+/* ==========================================================
+   PARTE 2 · VALIDACIÓN DEL TOKEN Y MENSAJES
+========================================================== */
+
+/* ==========================================================
+   ESTADO DE VALIDACIÓN
+========================================================== */
+
+.validation-state {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  margin-bottom: 1.75rem;
+  padding: 1.15rem;
+
+  color: #1E3A8A;
+  background: #EFF6FF;
+
+  border: 1px solid #BFDBFE;
+  border-radius: 14px;
+
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.06);
+
+  animation: state-enter 0.25s ease-out;
+}
+
+.validation-state > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.validation-state strong {
+  display: block;
+
+  margin-bottom: 0.25rem;
+
+  color: #1E40AF;
+
+  font-size: 0.93rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.validation-state p {
+  margin: 0;
+
+  color: #475569;
+
+  font-size: 0.87rem;
+  line-height: 1.55;
+}
+
+/* ==========================================================
+   SPINNER DE VALIDACIÓN
+========================================================== */
+
+.validation-spinner {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  border: 3px solid #BFDBFE;
+  border-top-color: #2563EB;
+  border-radius: 50%;
+
+  animation: validation-spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes validation-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================
+   ALERTAS GENERALES
+========================================================== */
+
+.alert {
+  width: 100%;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+
+  margin-bottom: 1.75rem;
+  padding: 1rem 1.1rem;
+
+  border: 1px solid transparent;
+  border-radius: 14px;
+
+  animation: state-enter 0.25s ease-out;
+}
+
+.alert > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.alert-icon {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 0.92rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.alert strong {
+  display: block;
+
+  margin-bottom: 0.25rem;
+
+  font-size: 0.93rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.alert p {
+  margin: 0;
+
+  font-size: 0.87rem;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================================
+   ALERTA DE ERROR
+========================================================== */
+
+.alert-error {
+  color: #991B1B;
+  background: #FEF2F2;
+
+  border-color: #FECACA;
+
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.06);
+}
+
+.alert-error .alert-icon {
+  color: #FFFFFF;
+  background: #DC2626;
+
+  box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+}
+
+.alert-error strong {
+  color: #991B1B;
+}
+
+.alert-error p {
+  color: #B91C1C;
+}
+
+/* ==========================================================
+   ALERTA DE ÉXITO
+========================================================== */
+
+.alert-success {
+  color: #166534;
+  background: #F0FDF4;
+
+  border-color: #BBF7D0;
+
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.06);
+}
+
+.alert-success .alert-icon {
+  color: #FFFFFF;
+  background: #16A34A;
+
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.2);
+}
+
+.alert-success strong {
+  color: #166534;
+}
+
+.alert-success p {
+  color: #15803D;
+}
+
+/* ==========================================================
+   ACCIONES POSTERIORES AL ÉXITO
+========================================================== */
+
+.success-actions {
+  width: 100%;
+
+  margin-top: -0.25rem;
+  margin-bottom: 0.5rem;
+
+  animation: state-enter 0.25s ease-out;
+}
+
+/* ==========================================================
+   ANIMACIÓN DE ENTRADA
+========================================================== */
+
+@keyframes state-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================
+   REDUCCIÓN DE MOVIMIENTO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .validation-state,
+  .alert,
+  .success-actions {
+    animation: none;
+  }
+
+  .validation-spinner {
+    animation-duration: 1.4s;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 640px) {
+  .validation-state {
+    gap: 0.8rem;
+
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+
+    border-radius: 12px;
+  }
+
+  .validation-spinner {
+    width: 30px;
+    height: 30px;
+
+    border-width: 2.5px;
+  }
+
+  .validation-state strong {
+    font-size: 0.88rem;
+  }
+
+  .validation-state p {
+    font-size: 0.82rem;
+  }
+
+  .alert {
+    gap: 0.75rem;
+
+    margin-bottom: 1.5rem;
+    padding: 0.9rem;
+
+    border-radius: 12px;
+  }
+
+  .alert-icon {
+    width: 28px;
+    height: 28px;
+
+    font-size: 0.85rem;
+  }
+
+  .alert strong {
+    font-size: 0.88rem;
+  }
+
+  .alert p {
+    font-size: 0.82rem;
+  }
+}
+
+/* ==========================================================
+   PARTE 3 · FORMULARIO Y CAMPOS DE CONTRASEÑA
+========================================================== */
+
+.recovery-form {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.form-group {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.form-group label {
+  color: #1E293B;
+
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+/* ==========================================================
+   CONTENEDOR DEL INPUT
+========================================================== */
+
+.input-wrapper {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper {
+  isolation: isolate;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #64748B;
+
+  font-size: 1rem;
+  line-height: 1;
+
+  pointer-events: none;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* ==========================================================
+   INPUT
+========================================================== */
+
+.input-wrapper input {
+  width: 100%;
+  min-height: 52px;
+
+  padding:
+    0.85rem
+    3.35rem
+    0.85rem
+    2.8rem;
+
+  color: #0F172A;
+  background: #FFFFFF;
+
+  border: 1px solid #CBD5E1;
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+
+  outline: none;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input-wrapper input::placeholder {
+  color: #94A3B8;
+}
+
+.input-wrapper input:hover:not(:disabled) {
+  border-color: #94A3B8;
+}
+
+/* ==========================================================
+   ESTADO FOCUS
+========================================================== */
+
+.input-wrapper:focus-within .input-icon {
+  color: #2563EB;
+  transform: scale(1.05);
+}
+
+.input-wrapper input:focus {
+  border-color: #2563EB;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.12),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+/* ==========================================================
+   BOTÓN MOSTRAR / OCULTAR CONTRASEÑA
+========================================================== */
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.55rem;
+  z-index: 3;
+
+  width: 38px;
+  height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  color: #64748B;
+  background: transparent;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.password-toggle:hover:not(:disabled) {
+  color: #2563EB;
+  background: #EFF6FF;
+
+  border-color: #DBEAFE;
+}
+
+.password-toggle:active:not(:disabled) {
+  color: #1D4ED8;
+  background: #DBEAFE;
+}
+
+.password-toggle:focus-visible {
+  outline: none;
+
+  color: #2563EB;
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+.password-toggle:disabled {
+  color: #94A3B8;
+
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* ==========================================================
+   ESTADO INVÁLIDO
+========================================================== */
+
+.input-wrapper input.input-invalid {
+  color: #991B1B;
+  background: #FFFBFB;
+
+  border-color: #DC2626;
+
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+.input-wrapper:has(input.input-invalid) .input-icon {
+  color: #DC2626;
+}
+
+.input-wrapper:has(input.input-invalid) .password-toggle {
+  color: #B91C1C;
+}
+
+.input-wrapper input.input-invalid:focus {
+  border-color: #DC2626;
+
+  box-shadow:
+    0 0 0 4px rgba(220, 38, 38, 0.12),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+/* ==========================================================
+   ESTADO DESHABILITADO
+========================================================== */
+
+.input-wrapper input:disabled {
+  color: #64748B;
+  background: #F1F5F9;
+
+  border-color: #E2E8F0;
+
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.input-wrapper:has(input:disabled) .input-icon {
+  color: #94A3B8;
+}
+
+/* ==========================================================
+   TEXTOS DE AYUDA, ERROR Y ÉXITO
+========================================================== */
+
+.field-help,
+.field-error,
+.field-success {
+  display: block;
+
+  margin: 0;
+
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.field-help {
+  color: #64748B;
+}
+
+.field-error {
+  color: #DC2626;
+  font-weight: 650;
+
+  animation: field-message-enter 0.2s ease-out;
+}
+
+.field-success {
+  color: #15803D;
+  font-weight: 650;
+
+  animation: field-message-enter 0.2s ease-out;
+}
+
+.field-success::before {
+  content: "✓";
+
+  display: inline-block;
+
+  margin-right: 0.35rem;
+
+  color: #16A34A;
+  font-weight: 900;
+}
+
+@keyframes field-message-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================
+   AUTOCOMPLETADO DEL NAVEGADOR
+========================================================== */
+
+.input-wrapper input:-webkit-autofill,
+.input-wrapper input:-webkit-autofill:hover,
+.input-wrapper input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #0F172A;
+
+  box-shadow:
+    0 0 0 1000px #FFFFFF inset,
+    0 0 0 4px rgba(37, 99, 235, 0.1);
+
+  transition: background-color 9999s ease-out;
+}
+
+/* ==========================================================
+   REDUCCIÓN DE MOVIMIENTO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .input-icon,
+  .input-wrapper input,
+  .password-toggle {
+    transition: none;
+  }
+
+  .field-error,
+  .field-success {
+    animation: none;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 640px) {
+  .recovery-form {
+    gap: 1.2rem;
+  }
+
+  .form-group {
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    font-size: 0.86rem;
+  }
+
+  .input-wrapper input {
+    min-height: 50px;
+
+    padding:
+      0.8rem
+      3.15rem
+      0.8rem
+      2.65rem;
+
+    font-size: 0.9rem;
+  }
+
+  .input-icon {
+    left: 0.9rem;
+  }
+
+  .password-toggle {
+    right: 0.45rem;
+
+    width: 37px;
+    height: 37px;
+  }
+
+  .field-help,
+  .field-error,
+  .field-success {
+    font-size: 0.77rem;
+  }
+}
+
+/* ==========================================================
+   PARTE 4 · REQUISITOS DE CONTRASEÑA
+========================================================== */
+
+.password-requirements {
+  width: 100%;
+
+  padding: 1rem 1.05rem;
+
+  background: #F8FAFC;
+
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Resalta suavemente el panel mientras se escribe */
+
+.recovery-form:has(
+  input[name="nuevaContrasena"]:focus
+) .password-requirements {
+  background: #F8FBFF;
+  border-color: #BFDBFE;
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.06);
+}
+
+/* ==========================================================
+   TÍTULO DEL PANEL
+========================================================== */
+
+.requirements-title {
+  display: block;
+
+  margin-bottom: 0.8rem;
+
+  color: #334155;
+
+  font-size: 0.79rem;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0.015em;
+}
+
+/* ==========================================================
+   LISTA DE REQUISITOS
+========================================================== */
+
+.password-requirements ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem 0.75rem;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.password-requirements li {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  color: #64748B;
+
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.4;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* ==========================================================
+   INDICADOR DE CADA REGLA
+========================================================== */
+
+.password-requirements li > span {
+  width: 21px;
+  height: 21px;
+
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #64748B;
+  background: #FFFFFF;
+
+  border: 1px solid #CBD5E1;
+  border-radius: 50%;
+
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* ==========================================================
+   REGLA CUMPLIDA
+========================================================== */
+
+.password-requirements li.rule-valid {
+  color: #15803D;
+}
+
+.password-requirements li.rule-valid > span {
+  color: #FFFFFF;
+  background: #16A34A;
+
+  border-color: #16A34A;
+
+  box-shadow: 0 3px 8px rgba(22, 163, 74, 0.2);
+
+  transform: scale(1.03);
+}
+
+/* ==========================================================
+   CONTRASEÑA COMPLETAMENTE VÁLIDA
+========================================================== */
+
+.password-requirements:has(
+  li.rule-valid:nth-child(5)
+) {
+  border-color: #BBF7D0;
+}
+
+/*
+  Este bloque se aplica correctamente cuando las cinco reglas
+  tienen la clase rule-valid.
+*/
+
+.password-requirements:has(
+  li:nth-child(1).rule-valid
+):has(
+  li:nth-child(2).rule-valid
+):has(
+  li:nth-child(3).rule-valid
+):has(
+  li:nth-child(4).rule-valid
+):has(
+  li:nth-child(5).rule-valid
+) {
+  background: #F0FDF4;
+  border-color: #86EFAC;
+
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.07);
+}
+
+.password-requirements:has(
+  li:nth-child(1).rule-valid
+):has(
+  li:nth-child(2).rule-valid
+):has(
+  li:nth-child(3).rule-valid
+):has(
+  li:nth-child(4).rule-valid
+):has(
+  li:nth-child(5).rule-valid
+) .requirements-title {
+  color: #166534;
+}
+
+/* ==========================================================
+   ANIMACIÓN AL VALIDAR UNA REGLA
+========================================================== */
+
+.password-requirements li.rule-valid > span {
+  animation: requirement-valid-enter 0.22s ease-out;
+}
+
+@keyframes requirement-valid-enter {
+  0% {
+    transform: scale(0.82);
+  }
+
+  65% {
+    transform: scale(1.12);
+  }
+
+  100% {
+    transform: scale(1.03);
+  }
+}
+
+/* ==========================================================
+   REDUCCIÓN DE MOVIMIENTO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .password-requirements,
+  .password-requirements li,
+  .password-requirements li > span {
+    transition: none;
+  }
+
+  .password-requirements li.rule-valid > span {
+    animation: none;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 640px) {
+  .password-requirements {
+    padding: 0.9rem;
+
+    border-radius: 12px;
+  }
+
+  .requirements-title {
+    margin-bottom: 0.7rem;
+
+    font-size: 0.76rem;
+  }
+
+  .password-requirements ul {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .password-requirements li {
+    font-size: 0.75rem;
+  }
+
+  .password-requirements li > span {
+    width: 20px;
+    height: 20px;
+
+    font-size: 0.68rem;
+  }
+}
+
+/* ==========================================================
+   PARTE 5 · BOTONES Y ACCIONES
+========================================================== */
+
+/* ==========================================================
+   BOTÓN PRINCIPAL
+========================================================== */
+
+.submit-button {
+  position: relative;
+
+  width: 100%;
+  min-height: 52px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+
+  padding: 0.85rem 1.25rem;
+
+  color: #FFFFFF;
+  background:
+    linear-gradient(
+      135deg,
+      #2563EB 0%,
+      #1D4ED8 100%
+    );
+
+  border: 1px solid #1D4ED8;
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 0.94rem;
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 20px rgba(37, 99, 235, 0.2),
+    0 3px 8px rgba(15, 23, 42, 0.08);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* Brillo sutil del botón */
+
+.submit-button::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -110%;
+
+  width: 65%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.18),
+      transparent
+    );
+
+  transform: skewX(-18deg);
+
+  transition: left 0.55s ease;
+
+  pointer-events: none;
+}
+
+.submit-button:hover:not(:disabled)::before {
+  left: 145%;
+}
+
+.submit-button:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      #1D4ED8 0%,
+      #1E40AF 100%
+    );
+
+  border-color: #1E40AF;
+
+  box-shadow:
+    0 14px 26px rgba(37, 99, 235, 0.24),
+    0 5px 12px rgba(15, 23, 42, 0.1);
+
+  transform: translateY(-2px);
+}
+
+.submit-button:active:not(:disabled) {
+  box-shadow:
+    0 6px 14px rgba(37, 99, 235, 0.2),
+    0 2px 5px rgba(15, 23, 42, 0.08);
+
+  transform: translateY(0);
+}
+
+.submit-button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.18),
+    0 10px 20px rgba(37, 99, 235, 0.2);
+}
+
+/* ==========================================================
+   BOTÓN DESHABILITADO
+========================================================== */
+
+.submit-button:disabled {
+  color: #94A3B8;
+  background: #E2E8F0;
+
+  border-color: #CBD5E1;
+
+  cursor: not-allowed;
+  opacity: 0.85;
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+.submit-button:disabled::before {
+  display: none;
+}
+
+/* ==========================================================
+   SPINNER DEL BOTÓN
+========================================================== */
+
+.spinner {
+  width: 19px;
+  height: 19px;
+
+  flex-shrink: 0;
+
+  border: 2px solid rgba(255, 255, 255, 0.42);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+
+  animation: submit-spinner-rotate 0.75s linear infinite;
+}
+
+@keyframes submit-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================
+   ACCIONES CUANDO EL TOKEN NO ES VÁLIDO
+========================================================== */
+
+.invalid-token-actions {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: -0.35rem;
+  margin-bottom: 1rem;
+
+  animation: action-enter 0.25s ease-out;
+}
+
+/* ==========================================================
+   BOTÓN SECUNDARIO
+========================================================== */
+
+.secondary-button {
+  width: 100%;
+  min-height: 50px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+
+  padding: 0.8rem 1.15rem;
+
+  color: #1D4ED8;
+  background: #EFF6FF;
+
+  border: 1px solid #BFDBFE;
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.06);
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.secondary-button:hover {
+  color: #1E40AF;
+  background: #DBEAFE;
+
+  border-color: #93C5FD;
+
+  box-shadow: 0 7px 15px rgba(37, 99, 235, 0.11);
+
+  transform: translateY(-1px);
+}
+
+.secondary-button:active {
+  background: #BFDBFE;
+
+  box-shadow: 0 3px 7px rgba(37, 99, 235, 0.08);
+
+  transform: translateY(0);
+}
+
+.secondary-button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.14),
+    0 4px 10px rgba(37, 99, 235, 0.06);
+}
+
+/* ==========================================================
+   ACCIONES POSTERIORES AL ÉXITO
+========================================================== */
+
+.success-actions .submit-button {
+  background:
+    linear-gradient(
+      135deg,
+      #16A34A 0%,
+      #15803D 100%
+    );
+
+  border-color: #15803D;
+
+  box-shadow:
+    0 10px 20px rgba(22, 163, 74, 0.2),
+    0 3px 8px rgba(15, 23, 42, 0.07);
+}
+
+.success-actions .submit-button:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      #15803D 0%,
+      #166534 100%
+    );
+
+  border-color: #166534;
+
+  box-shadow:
+    0 14px 26px rgba(22, 163, 74, 0.24),
+    0 5px 12px rgba(15, 23, 42, 0.09);
+}
+
+.success-actions .submit-button:focus-visible {
+  box-shadow:
+    0 0 0 4px rgba(22, 163, 74, 0.17),
+    0 10px 20px rgba(22, 163, 74, 0.2);
+}
+
+/* ==========================================================
+   ANIMACIÓN DE ENTRADA
+========================================================== */
+
+@keyframes action-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================
+   REDUCCIÓN DE MOVIMIENTO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .submit-button,
+  .submit-button::before,
+  .secondary-button {
+    transition: none;
+  }
+
+  .submit-button::before {
+    display: none;
+  }
+
+  .spinner {
+    animation-duration: 1.3s;
+  }
+
+  .invalid-token-actions {
+    animation: none;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 640px) {
+  .submit-button {
+    min-height: 50px;
+
+    padding: 0.8rem 1rem;
+
+    font-size: 0.89rem;
+    border-radius: 11px;
+  }
+
+  .secondary-button {
+    min-height: 48px;
+
+    padding: 0.75rem 1rem;
+
+    font-size: 0.86rem;
+    border-radius: 11px;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+  }
+
+  .invalid-token-actions {
+    margin-bottom: 0.8rem;
+  }
+}
+
+/* ==========================================================
+   PARTE 6 · FOOTER, ACCESIBILIDAD Y AJUSTES FINALES
+========================================================== */
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.recovery-footer {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+
+  text-align: center;
+
+  border-top: 1px solid #E2E8F0;
+}
+
+.recovery-footer p {
+  max-width: 420px;
+
+  margin: 0;
+
+  color: #64748B;
+
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+/* ==========================================================
+   ENLACE PARA VOLVER
+========================================================== */
+
+.recovery-footer a {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+
+  min-height: 38px;
+
+  padding: 0.4rem 0.65rem;
+
+  color: #2563EB;
+  background: transparent;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1.4;
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Flecha de regreso */
+
+.recovery-footer a::before {
+  content: "←";
+
+  display: inline-block;
+
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+
+  transition: transform 0.2s ease;
+}
+
+.recovery-footer a:hover {
+  color: #1D4ED8;
+  background: #EFF6FF;
+
+  border-color: #DBEAFE;
+
+  transform: translateY(-1px);
+}
+
+.recovery-footer a:hover::before {
+  transform: translateX(-3px);
+}
+
+.recovery-footer a:active {
+  color: #1E40AF;
+  background: #DBEAFE;
+
+  transform: translateY(0);
+}
+
+.recovery-footer a:focus-visible {
+  outline: none;
+
+  color: #1D4ED8;
+  background: #EFF6FF;
+
+  border-color: #BFDBFE;
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ==========================================================
+   SELECCIÓN DE TEXTO
+========================================================== */
+
+.recovery-card ::selection {
+  color: #FFFFFF;
+  background: #2563EB;
+}
+
+/* ==========================================================
+   NAVEGACIÓN POR TECLADO
+========================================================== */
+
+.recovery-card button:focus-visible,
+.recovery-card input:focus-visible,
+.recovery-card a:focus-visible {
+  scroll-margin: 1.5rem;
+}
+
+/* Evita que los elementos activos queden tapados en móvil */
+
+.recovery-form input,
+.recovery-form button,
+.recovery-footer a,
+.secondary-button {
+  scroll-margin-block: 2rem;
+}
+
+/* ==========================================================
+   AJUSTES PARA PANTALLAS DE POCA ALTURA
+========================================================== */
+
+@media (max-height: 760px) and (min-width: 641px) {
+  .recovery-page {
+    align-items: flex-start;
+
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .recovery-card {
+    padding-top: 2.5rem;
+    padding-bottom: 2.25rem;
+  }
+
+  .recovery-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .recovery-icon {
+    width: 62px;
+    height: 62px;
+
+    margin-bottom: 1rem;
+
+    border-radius: 19px;
+
+    font-size: 1.7rem;
+  }
+
+  .recovery-header p {
+    margin-top: 0.65rem;
+  }
+
+  .recovery-footer {
+    margin-top: 1.4rem;
+    padding-top: 1.2rem;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 640px) {
+  .recovery-footer {
+    gap: 0.7rem;
+
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+  }
+
+  .recovery-footer p {
+    max-width: 340px;
+
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+
+  .recovery-footer a {
+    min-height: 36px;
+
+    padding: 0.35rem 0.55rem;
+
+    font-size: 0.81rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .recovery-footer {
+    margin-top: 1.3rem;
+    padding-top: 1.1rem;
+  }
+
+  .recovery-footer p {
+    font-size: 0.73rem;
+  }
+
+  .recovery-footer a {
+    font-size: 0.78rem;
+  }
+}
+
+/* ==========================================================
+   DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) {
+  .submit-button:hover:not(:disabled),
+  .secondary-button:hover,
+  .recovery-footer a:hover {
+    transform: none;
+  }
+
+  .submit-button:hover:not(:disabled)::before {
+    left: -110%;
+  }
+
+  .recovery-footer a:hover::before {
+    transform: none;
+  }
+}
+
+/* ==========================================================
+   CONTRASTE FORZADO
+========================================================== */
+
+@media (forced-colors: active) {
+  .recovery-card,
+  .validation-state,
+  .alert,
+  .password-requirements,
+  .input-wrapper input,
+  .submit-button,
+  .secondary-button {
+    border: 1px solid CanvasText;
+  }
+
+  .recovery-card::before,
+  .submit-button::before {
+    display: none;
+  }
+
+  .validation-spinner,
+  .spinner {
+    border-color: GrayText;
+    border-top-color: Highlight;
+  }
+
+  .password-requirements li > span,
+  .alert-icon {
+    border: 1px solid CanvasText;
+  }
+
+  .password-requirements li.rule-valid > span {
+    color: HighlightText;
+    background: Highlight;
+  }
+
+  .submit-button:not(:disabled) {
+    color: HighlightText;
+    background: Highlight;
+  }
+
+  .recovery-footer a,
+  .secondary-button {
+    color: LinkText;
+  }
+}
+
+/* ==========================================================
+   MODO IMPRESIÓN
+========================================================== */
+
+@media print {
+  :host,
+  .recovery-page {
+    min-height: auto;
+
+    color: #000000;
+    background: #FFFFFF;
+  }
+
+  .recovery-page {
+    display: block;
+
+    padding: 0;
+  }
+
+  .recovery-page::before,
+  .recovery-page::after,
+  .recovery-card::before,
+  .password-toggle,
+  .submit-button,
+  .secondary-button,
+  .invalid-token-actions,
+  .success-actions,
+  .recovery-footer a,
+  .spinner,
+  .validation-spinner {
+    display: none !important;
+  }
+
+  .recovery-card {
+    width: 100%;
+
+    padding: 1.5rem;
+
+    background: #FFFFFF;
+
+    border: 1px solid #000000;
+    border-radius: 0;
+
+    box-shadow: none;
+
+    animation: none;
+  }
+
+  .recovery-header,
+  .recovery-footer {
+    color: #000000;
+  }
+
+  .alert,
+  .validation-state,
+  .password-requirements {
+    color: #000000;
+    background: #FFFFFF;
+
+    border-color: #000000;
+
+    box-shadow: none;
+  }
+}
+
+/* ==========================================================
+   REDUCCIÓN DE MOVIMIENTO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .recovery-footer a,
+  .recovery-footer a::before {
+    transition: none;
+  }
+
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+}

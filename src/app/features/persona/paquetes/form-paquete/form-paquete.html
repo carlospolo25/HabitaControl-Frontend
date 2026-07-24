@@ -1,0 +1,314 @@
+<div
+  class="package-form__backdrop"
+  role="presentation"
+  (click)="cerrarFormulario()">
+
+  <section
+    class="package-form__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="package-form-title"
+    aria-describedby="package-form-description"
+    (click)="$event.stopPropagation()">
+
+    <header class="package-form__header">
+
+      <div class="package-form__heading">
+        <span class="package-form__eyebrow">
+          Recepción en portería
+        </span>
+
+        <h3
+          id="package-form-title"
+          class="package-form__title">
+          Registrar paquete
+        </h3>
+
+        <p
+          id="package-form-description"
+          class="package-form__description">
+          Registra los datos del paquete recibido para informar correctamente al
+          residente.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="package-form__close-button"
+        aria-label="Cerrar formulario de registro de paquete"
+        [disabled]="isSubmitting"
+        (click)="cerrarFormulario()">
+
+        <span aria-hidden="true">
+          ×
+        </span>
+
+      </button>
+
+    </header>
+
+    <form
+      class="package-form__form"
+      (ngSubmit)="guardar()"
+      novalidate>
+
+      <div class="package-form__content">
+
+        @if (errorMessage) {
+          <div
+            class="package-form__alert package-form__alert--error"
+            role="alert">
+
+            <span
+              class="package-form__alert-icon"
+              aria-hidden="true">
+              !
+            </span>
+
+            <p class="package-form__alert-message">
+              {{ errorMessage }}
+            </p>
+
+          </div>
+        }
+
+        <section
+          class="package-form__card"
+          aria-labelledby="recipient-information-title">
+
+          <header class="package-form__card-header">
+
+            <span
+              class="package-form__step"
+              aria-hidden="true">
+              1
+            </span>
+
+            <div class="package-form__card-heading">
+
+              <h4
+                id="recipient-information-title"
+                class="package-form__card-title">
+                Información del destinatario
+              </h4>
+
+              <p class="package-form__card-description">
+                Indica el residente y la ubicación a la que pertenece el paquete.
+              </p>
+
+            </div>
+
+          </header>
+
+          <div class="package-form__grid">
+
+            <div class="package-form__field package-form__field--full">
+
+              <label
+                for="nombreDestinatario"
+                class="package-form__label">
+                Nombre del destinatario
+
+                <span
+                  class="package-form__required"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <p
+                id="nombreDestinatario-help"
+                class="package-form__help">
+                Escribe el nombre completo del residente.
+              </p>
+
+              <input
+                id="nombreDestinatario"
+                name="nombreDestinatario"
+                class="package-form__input"
+                type="text"
+                autocomplete="name"
+                maxlength="150"
+                required
+                aria-describedby="nombreDestinatario-help"
+                [(ngModel)]="nombreDestinatario"
+                [disabled]="isSubmitting"
+                placeholder="Ej. Andrea Martínez">
+
+            </div>
+
+            <div class="package-form__field">
+
+              <label
+                for="torre"
+                class="package-form__label">
+                Torre
+
+                <span
+                  class="package-form__required"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <input
+                id="torre"
+                name="torre"
+                class="package-form__input"
+                type="text"
+                maxlength="20"
+                required
+                [(ngModel)]="torre"
+                [disabled]="isSubmitting"
+                placeholder="Ej. Torre 2">
+
+            </div>
+
+            <div class="package-form__field">
+
+              <label
+                for="apartamento"
+                class="package-form__label">
+                Apartamento
+
+                <span
+                  class="package-form__required"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <input
+                id="apartamento"
+                name="apartamento"
+                class="package-form__input"
+                type="text"
+                maxlength="20"
+                required
+                [(ngModel)]="apartamento"
+                [disabled]="isSubmitting"
+                placeholder="Ej. 504">
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <section
+          class="package-form__card"
+          aria-labelledby="package-information-title">
+
+          <header class="package-form__card-header">
+
+            <span
+              class="package-form__step"
+              aria-hidden="true">
+              2
+            </span>
+
+            <div class="package-form__card-heading">
+
+              <h4
+                id="package-information-title"
+                class="package-form__card-title">
+                Información del paquete
+              </h4>
+
+              <p class="package-form__card-description">
+                Describe el paquete para facilitar su identificación en portería.
+              </p>
+
+            </div>
+
+          </header>
+
+          <div class="package-form__field">
+
+            <div class="package-form__label-row">
+
+              <label
+                for="descripcion"
+                class="package-form__label">
+                Descripción del paquete
+
+                <span
+                  class="package-form__required"
+                  aria-hidden="true">
+                  *
+                </span>
+              </label>
+
+              <span
+                class="package-form__counter"
+                aria-live="polite">
+                {{ descripcion.length }}/300
+              </span>
+
+            </div>
+
+            <p
+              id="descripcion-help"
+              class="package-form__help">
+              Incluye información útil como tipo, tamaño, color o empresa de
+              mensajería.
+            </p>
+
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              class="package-form__textarea"
+              rows="4"
+              maxlength="300"
+              required
+              aria-describedby="descripcion-help"
+              [(ngModel)]="descripcion"
+              [disabled]="isSubmitting"
+              placeholder="Ej. Caja mediana color café, entregada por Servientrega">
+            </textarea>
+
+          </div>
+
+        </section>
+
+      </div>
+
+      <footer class="package-form__footer">
+
+        <button
+          type="button"
+          class="package-form__button package-form__button--secondary"
+          [disabled]="isSubmitting"
+          (click)="cerrarFormulario()">
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="package-form__button package-form__button--primary"
+          [disabled]="isSubmitting">
+
+          @if (isSubmitting) {
+            <span
+              class="package-form__button-spinner"
+              aria-hidden="true">
+            </span>
+
+            <span>
+              Registrando paquete...
+            </span>
+          } @else {
+            <span>
+              Guardar paquete
+            </span>
+          }
+
+        </button>
+
+      </footer>
+
+    </form>
+
+  </section>
+
+</div>

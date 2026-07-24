@@ -1,0 +1,3917 @@
+/* ==========================================================
+   HABITACONTROL — REGISTRO DE VISITANTE
+   PARTE 1: VARIABLES, RESET, FONDO DEL MODAL,
+   TARJETA PRINCIPAL Y ANIMACIONES
+========================================================== */
+
+
+/* ==========================================================
+   1. VARIABLES DEL COMPONENTE
+========================================================== */
+
+:host {
+  /* Marca */
+
+  --visitor-primary-50: #eff6ff;
+  --visitor-primary-100: #dbeafe;
+  --visitor-primary-200: #bfdbfe;
+  --visitor-primary-300: #93c5fd;
+  --visitor-primary-400: #60a5fa;
+  --visitor-primary-500: #3b82f6;
+  --visitor-primary-600: #2563eb;
+  --visitor-primary-700: #1d4ed8;
+  --visitor-primary-800: #1e40af;
+  --visitor-primary-900: #1e3a8a;
+
+  /* Azul oscuro HabitaControl */
+
+  --visitor-navy-700: #334155;
+  --visitor-navy-800: #1e293b;
+  --visitor-navy-900: #0f172a;
+  --visitor-navy-950: #020617;
+
+  /* Éxito */
+
+  --visitor-success-50: #f0fdf4;
+  --visitor-success-100: #dcfce7;
+  --visitor-success-200: #bbf7d0;
+  --visitor-success-400: #4ade80;
+  --visitor-success-500: #22c55e;
+  --visitor-success-600: #16a34a;
+  --visitor-success-700: #15803d;
+  --visitor-success-800: #166534;
+
+  /* Error */
+
+  --visitor-danger-50: #fef2f2;
+  --visitor-danger-100: #fee2e2;
+  --visitor-danger-200: #fecaca;
+  --visitor-danger-400: #f87171;
+  --visitor-danger-500: #ef4444;
+  --visitor-danger-600: #dc2626;
+  --visitor-danger-700: #b91c1c;
+  --visitor-danger-800: #991b1b;
+
+  /* Advertencia */
+
+  --visitor-warning-50: #fffbeb;
+  --visitor-warning-100: #fef3c7;
+  --visitor-warning-200: #fde68a;
+  --visitor-warning-400: #fbbf24;
+  --visitor-warning-500: #f59e0b;
+  --visitor-warning-600: #d97706;
+  --visitor-warning-800: #92400e;
+  --visitor-warning-900: #78350f;
+
+  /* Cian / Escáner */
+
+  --visitor-cyan-50: #ecfeff;
+  --visitor-cyan-100: #cffafe;
+  --visitor-cyan-200: #a5f3fc;
+  --visitor-cyan-400: #22d3ee;
+  --visitor-cyan-500: #06b6d4;
+  --visitor-cyan-600: #0891b2;
+  --visitor-cyan-700: #0e7490;
+  --visitor-cyan-800: #155e75;
+
+  /* Superficies */
+
+  --visitor-surface: #ffffff;
+  --visitor-surface-muted: #f8fafc;
+  --visitor-surface-strong: #f1f5f9;
+  --visitor-surface-dark: #0f172a;
+
+  /* Texto */
+
+  --visitor-text-primary: #111827;
+  --visitor-text-secondary: #334155;
+  --visitor-text-muted: #64748b;
+  --visitor-text-soft: #94a3b8;
+  --visitor-text-disabled: #a1a1aa;
+  --visitor-text-white: #ffffff;
+
+  /* Bordes */
+
+  --visitor-border-light: #e2e8f0;
+  --visitor-border: #cbd5e1;
+  --visitor-border-strong: #94a3b8;
+
+  /* Espaciado */
+
+  --visitor-space-2: 0.125rem;
+  --visitor-space-4: 0.25rem;
+  --visitor-space-6: 0.375rem;
+  --visitor-space-8: 0.5rem;
+  --visitor-space-10: 0.625rem;
+  --visitor-space-12: 0.75rem;
+  --visitor-space-14: 0.875rem;
+  --visitor-space-16: 1rem;
+  --visitor-space-18: 1.125rem;
+  --visitor-space-20: 1.25rem;
+  --visitor-space-24: 1.5rem;
+  --visitor-space-28: 1.75rem;
+  --visitor-space-32: 2rem;
+  --visitor-space-36: 2.25rem;
+  --visitor-space-40: 2.5rem;
+
+  /* Radios */
+
+  --visitor-radius-xs: 0.375rem;
+  --visitor-radius-sm: 0.625rem;
+  --visitor-radius-md: 0.875rem;
+  --visitor-radius-lg: 1.25rem;
+  --visitor-radius-xl: 1.625rem;
+  --visitor-radius-pill: 999px;
+
+  /* Sombras */
+
+  --visitor-shadow-xs:
+    0 0.25rem 0.625rem rgba(15, 23, 42, 0.06);
+
+  --visitor-shadow-sm:
+    0 0.625rem 1.5rem rgba(15, 23, 42, 0.08);
+
+  --visitor-shadow-md:
+    0 1rem 2.5rem rgba(15, 23, 42, 0.12);
+
+  --visitor-shadow-lg:
+    0 1.75rem 4rem rgba(2, 6, 23, 0.22);
+
+  --visitor-shadow-primary:
+    0 0.875rem 1.875rem rgba(37, 99, 235, 0.22);
+
+  --visitor-shadow-success:
+    0 0.875rem 1.875rem rgba(22, 163, 74, 0.2);
+
+  --visitor-shadow-danger:
+    0 0.875rem 1.875rem rgba(220, 38, 38, 0.2);
+
+  --visitor-shadow-cyan:
+    0 0.875rem 1.875rem rgba(8, 145, 178, 0.2);
+
+  /* Transiciones */
+
+  --visitor-transition-fast: 160ms ease;
+  --visitor-transition-normal: 240ms ease;
+  --visitor-transition-slow: 380ms ease;
+
+  /* Tipografía */
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* ==========================================================
+   2. RESET LOCAL
+========================================================== */
+
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+:host button,
+:host input {
+  font: inherit;
+}
+
+:host button {
+  margin: 0;
+}
+
+:host input {
+  min-width: 0;
+}
+
+:host h2,
+:host p {
+  margin: 0;
+}
+
+
+/* ==========================================================
+   3. CONTENEDOR PRINCIPAL DEL MODAL
+========================================================== */
+
+.visitor-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 100dvh;
+
+  padding:
+    clamp(
+      var(--visitor-space-14),
+      3vw,
+      var(--visitor-space-32)
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(2, 6, 23, 0.76),
+      rgba(15, 23, 42, 0.7)
+    );
+
+  backdrop-filter:
+    blur(0.625rem)
+    saturate(118%);
+
+  -webkit-backdrop-filter:
+    blur(0.625rem)
+    saturate(118%);
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
+
+  isolation: isolate;
+
+  animation:
+    visitor-backdrop-enter
+    220ms
+    ease-out;
+}
+
+
+/* ==========================================================
+   4. DECORACIÓN AMBIENTAL DEL FONDO
+========================================================== */
+
+.visitor-modal::before {
+  position: fixed;
+  top: -18rem;
+  left: -14rem;
+  z-index: -1;
+
+  width: 35rem;
+  height: 35rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.24),
+      transparent 68%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  animation:
+    visitor-orb-primary
+    9s
+    ease-in-out
+    infinite alternate;
+}
+
+.visitor-modal::after {
+  position: fixed;
+  right: -15rem;
+  bottom: -20rem;
+  z-index: -1;
+
+  width: 40rem;
+  height: 40rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(6, 182, 212, 0.17),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  animation:
+    visitor-orb-secondary
+    11s
+    ease-in-out
+    infinite alternate;
+}
+
+
+/* ==========================================================
+   5. TARJETA PRINCIPAL
+========================================================== */
+
+.visitor-modal__card {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  width:
+    min(
+      100%,
+      52rem
+    );
+
+  max-height:
+    calc(100dvh - 3rem);
+
+  color:
+    var(--visitor-text-primary);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(248, 250, 252, 0.985)
+    );
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.82);
+
+  border-radius:
+    var(--visitor-radius-xl);
+
+  box-shadow:
+    var(--visitor-shadow-lg),
+    0 0 0 1px rgba(148, 163, 184, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
+
+  isolation: isolate;
+
+  animation:
+    visitor-card-enter
+    340ms
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* ==========================================================
+   6. LÍNEA SUPERIOR DE IDENTIDAD
+========================================================== */
+
+.visitor-modal__card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+
+  height: 0.25rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--visitor-primary-600),
+      var(--visitor-cyan-500),
+      var(--visitor-success-500)
+    );
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   7. ILUMINACIÓN INTERIOR DE LA TARJETA
+========================================================== */
+
+.visitor-modal__card::after {
+  position: absolute;
+  top: -11rem;
+  right: -10rem;
+  z-index: -1;
+
+  width: 25rem;
+  height: 25rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.095),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   8. SCROLLBAR DE LA TARJETA
+========================================================== */
+
+.visitor-modal__card {
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--visitor-primary-300)
+    transparent;
+}
+
+.visitor-modal__card::-webkit-scrollbar {
+  width: 0.625rem;
+}
+
+.visitor-modal__card::-webkit-scrollbar-track {
+  background:
+    transparent;
+}
+
+.visitor-modal__card::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      var(--visitor-primary-300),
+      var(--visitor-primary-500)
+    );
+
+  border:
+    0.1875rem solid
+    transparent;
+
+  border-radius:
+    var(--visitor-radius-pill);
+
+  background-clip:
+    padding-box;
+}
+
+.visitor-modal__card::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      var(--visitor-primary-400),
+      var(--visitor-primary-600)
+    );
+
+  border:
+    0.1875rem solid
+    transparent;
+
+  background-clip:
+    padding-box;
+}
+
+
+/* ==========================================================
+   9. ANIMACIÓN DEL FONDO
+========================================================== */
+
+@keyframes visitor-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* ==========================================================
+   10. ANIMACIÓN DE ENTRADA DE LA TARJETA
+========================================================== */
+
+@keyframes visitor-card-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(1rem)
+      scale(0.975);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* ==========================================================
+   11. MOVIMIENTO AMBIENTAL PRIMARIO
+========================================================== */
+
+@keyframes visitor-orb-primary {
+  from {
+    transform:
+      translate3d(0, 0, 0)
+      scale(1);
+  }
+
+  to {
+    transform:
+      translate3d(2.25rem, 1.25rem, 0)
+      scale(1.08);
+  }
+}
+
+
+/* ==========================================================
+   12. MOVIMIENTO AMBIENTAL SECUNDARIO
+========================================================== */
+
+@keyframes visitor-orb-secondary {
+  from {
+    transform:
+      translate3d(0, 0, 0)
+      scale(1);
+  }
+
+  to {
+    transform:
+      translate3d(-2rem, -1.5rem, 0)
+      scale(1.06);
+  }
+}
+
+
+/* ==========================================================
+   13. PANTALLAS MEDIANAS
+========================================================== */
+
+@media (max-width: 900px) {
+  .visitor-modal {
+    align-items:
+      flex-start;
+
+    padding:
+      var(--visitor-space-20);
+  }
+
+  .visitor-modal__card {
+    width:
+      min(
+        100%,
+        46rem
+      );
+
+    max-height:
+      calc(100dvh - 2.5rem);
+  }
+}
+
+
+/* ==========================================================
+   14. TABLET
+========================================================== */
+
+@media (max-width: 720px) {
+  .visitor-modal {
+    padding:
+      var(--visitor-space-14);
+  }
+
+  .visitor-modal__card {
+    max-height:
+      calc(100dvh - 1.75rem);
+
+    border-radius:
+      var(--visitor-radius-lg);
+  }
+}
+
+
+/* ==========================================================
+   15. CELULAR
+========================================================== */
+
+@media (max-width: 520px) {
+  .visitor-modal {
+    align-items:
+      flex-end;
+
+    padding:
+      var(--visitor-space-8);
+  }
+
+  .visitor-modal__card {
+    width:
+      100%;
+
+    max-height:
+      calc(100dvh - 1rem);
+
+    border-radius:
+      var(--visitor-radius-lg)
+      var(--visitor-radius-lg)
+      var(--visitor-radius-sm)
+      var(--visitor-radius-sm);
+  }
+}
+
+
+/* ==========================================================
+   16. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 360px) {
+  .visitor-modal {
+    padding:
+      var(--visitor-space-4);
+  }
+
+  .visitor-modal__card {
+    max-height:
+      calc(100dvh - 0.5rem);
+
+    border-radius:
+      var(--visitor-radius-md);
+  }
+}
+
+
+/* ==========================================================
+   17. NAVEGADORES SIN BACKDROP-FILTER
+========================================================== */
+
+@supports not (
+  (backdrop-filter: blur(0.625rem))
+  or
+  (-webkit-backdrop-filter: blur(0.625rem))
+) {
+  .visitor-modal {
+    background:
+      rgba(2, 6, 23, 0.88);
+  }
+}
+
+
+/* ==========================================================
+   18. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .visitor-modal {
+    background:
+      rgba(2, 6, 23, 0.92);
+  }
+
+  .visitor-modal__card {
+    border:
+      0.125rem solid
+      var(--visitor-border-strong);
+  }
+}
+
+
+/* ==========================================================
+   19. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .visitor-modal,
+  .visitor-modal::before,
+  .visitor-modal::after,
+  .visitor-modal__card {
+    animation:
+      none;
+  }
+
+  .visitor-modal::before,
+  .visitor-modal::after {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   20. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .visitor-modal {
+    position:
+      static;
+
+    display:
+      block;
+
+    min-height:
+      auto;
+
+    padding:
+      0;
+
+    background:
+      transparent;
+
+    backdrop-filter:
+      none;
+
+    -webkit-backdrop-filter:
+      none;
+
+    overflow:
+      visible;
+  }
+
+  .visitor-modal::before,
+  .visitor-modal::after,
+  .visitor-modal__card::after {
+    display:
+      none;
+  }
+
+  .visitor-modal__card {
+    width:
+      100%;
+
+    max-height:
+      none;
+
+    background:
+      #ffffff;
+
+    border:
+      1px solid #cbd5e1;
+
+    border-radius:
+      0;
+
+    box-shadow:
+      none;
+
+    overflow:
+      visible;
+
+    animation:
+      none;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — REGISTRO DE VISITANTE
+   PARTE 2: HEADER DEL MODAL
+========================================================== */
+
+
+/* ==========================================================
+   1. HEADER
+========================================================== */
+
+.visitor-modal__header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--visitor-space-20);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--visitor-space-28)
+    var(--visitor-space-28)
+    var(--visitor-space-22);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.99),
+      rgba(248,250,252,.95)
+    );
+
+  border-bottom:
+    1px solid
+    var(--visitor-border-light);
+}
+
+
+/* Línea decorativa */
+
+.visitor-modal__header::after{
+  position:absolute;
+  left:var(--visitor-space-28);
+  bottom:-1px;
+
+  width:6rem;
+  height:.1875rem;
+
+  content:"";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--visitor-primary-600),
+      var(--visitor-cyan-500),
+      transparent
+    );
+
+  border-radius:
+    var(--visitor-radius-pill);
+
+  transition:
+    width var(--visitor-transition-normal);
+}
+
+.visitor-modal__card:hover
+.visitor-modal__header::after{
+  width:9rem;
+}
+
+
+/* ==========================================================
+   2. CONTENEDOR DEL TÍTULO
+========================================================== */
+
+.visitor-modal__heading{
+  display:flex;
+  flex-direction:column;
+  gap:var(--visitor-space-10);
+
+  flex:1;
+
+  min-width:0;
+}
+
+
+/* ==========================================================
+   3. EYEBROW
+========================================================== */
+
+.visitor-modal__eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--visitor-space-6);
+
+  width:fit-content;
+
+  color:
+    var(--visitor-primary-700);
+
+  font-size:.68rem;
+  font-weight:800;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.visitor-modal__eyebrow::before{
+
+  width:.5rem;
+  height:.5rem;
+
+  content:"";
+
+  background:
+    var(--visitor-primary-500);
+
+  border-radius:50%;
+
+  box-shadow:
+    0 0 0 .18rem
+    rgba(59,130,246,.12);
+}
+
+
+/* ==========================================================
+   4. TÍTULO
+========================================================== */
+
+.visitor-modal__title{
+
+  color:
+    var(--visitor-navy-900);
+
+  font-size:
+    clamp(
+      1.45rem,
+      2vw,
+      2rem
+    );
+
+  font-weight:800;
+  line-height:1.15;
+  letter-spacing:-.03em;
+
+  text-wrap:balance;
+}
+
+
+/* ==========================================================
+   5. DESCRIPCIÓN
+========================================================== */
+
+.visitor-modal__description{
+
+  max-width:40rem;
+
+  color:
+    var(--visitor-text-muted);
+
+  font-size:.95rem;
+  line-height:1.65;
+
+  text-wrap:pretty;
+}
+
+
+/* ==========================================================
+   6. BOTÓN CERRAR
+========================================================== */
+
+.visitor-modal__close{
+  position:relative;
+
+  display:grid;
+  place-items:center;
+
+  flex:0 0 auto;
+
+  width:3rem;
+  height:3rem;
+
+  color:
+    var(--visitor-text-secondary);
+
+  font-size:1.05rem;
+  font-weight:700;
+  line-height:1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-surface),
+      var(--visitor-surface-strong)
+    );
+
+  border:
+    1px solid
+    var(--visitor-border-light);
+
+  border-radius:
+    var(--visitor-radius-md);
+
+  box-shadow:
+    var(--visitor-shadow-xs),
+    inset 0 1px 0 rgba(255,255,255,.9);
+
+  cursor:pointer;
+
+  overflow:hidden;
+
+  transition:
+    color var(--visitor-transition-fast),
+    background var(--visitor-transition-fast),
+    border-color var(--visitor-transition-fast),
+    box-shadow var(--visitor-transition-fast),
+    transform var(--visitor-transition-fast);
+}
+
+
+/* Brillo */
+
+.visitor-modal__close::before{
+  position:absolute;
+  inset:0;
+
+  content:"";
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,.45),
+      transparent
+    );
+
+  opacity:0;
+
+  transform:
+    translateX(-60%);
+
+  transition:
+    opacity var(--visitor-transition-fast),
+    transform var(--visitor-transition-normal);
+}
+
+
+/* ==========================================================
+   7. HOVER
+========================================================== */
+
+.visitor-modal__close:hover:not(:disabled){
+
+  color:
+    var(--visitor-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-danger-600),
+      var(--visitor-danger-800)
+    );
+
+  border-color:
+    var(--visitor-danger-600);
+
+  box-shadow:
+    var(--visitor-shadow-danger);
+
+  transform:
+    translateY(-2px);
+}
+
+.visitor-modal__close:hover:not(:disabled)::before{
+  opacity:1;
+
+  transform:
+    translateX(60%);
+}
+
+
+/* ==========================================================
+   8. ACTIVE
+========================================================== */
+
+.visitor-modal__close:active:not(:disabled){
+  transform:
+    translateY(0)
+    scale(.95);
+}
+
+
+/* ==========================================================
+   9. FOCUS
+========================================================== */
+
+.visitor-modal__close:focus-visible{
+
+  outline:
+    .2rem solid
+    rgba(59,130,246,.22);
+
+  outline-offset:
+    .12rem;
+}
+
+
+/* ==========================================================
+   10. DESHABILITADO
+========================================================== */
+
+.visitor-modal__close:disabled{
+
+  opacity:.55;
+
+  color:
+    var(--visitor-text-disabled);
+
+  background:
+    var(--visitor-surface-muted);
+
+  border-color:
+    var(--visitor-border-light);
+
+  cursor:not-allowed;
+
+  box-shadow:none;
+
+  transform:none;
+}
+
+.visitor-modal__close:disabled::before{
+  display:none;
+}
+
+
+/* ==========================================================
+   11. PANTALLAS MEDIANAS
+========================================================== */
+
+@media (max-width:900px){
+
+  .visitor-modal__header{
+
+    padding:
+      var(--visitor-space-24)
+      var(--visitor-space-24)
+      var(--visitor-space-20);
+  }
+
+  .visitor-modal__header::after{
+    left:
+      var(--visitor-space-24);
+  }
+}
+
+
+/* ==========================================================
+   12. TABLET
+========================================================== */
+
+@media (max-width:720px){
+
+  .visitor-modal__header{
+
+    gap:
+      var(--visitor-space-16);
+
+    padding:
+      var(--visitor-space-22)
+      var(--visitor-space-22)
+      var(--visitor-space-18);
+  }
+
+  .visitor-modal__header::after{
+    left:
+      var(--visitor-space-22);
+  }
+
+  .visitor-modal__title{
+    font-size:1.6rem;
+  }
+
+  .visitor-modal__description{
+    font-size:.9rem;
+  }
+}
+
+
+/* ==========================================================
+   13. CELULAR
+========================================================== */
+
+@media (max-width:520px){
+
+  .visitor-modal__header{
+    flex-direction:column;
+
+    align-items:flex-start;
+  }
+
+  .visitor-modal__close{
+    align-self:flex-end;
+
+    width:2.75rem;
+    height:2.75rem;
+  }
+
+  .visitor-modal__title{
+    font-size:1.45rem;
+  }
+
+  .visitor-modal__description{
+    font-size:.88rem;
+    line-height:1.55;
+  }
+}
+
+
+/* ==========================================================
+   14. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width:360px){
+
+  .visitor-modal__header{
+
+    padding:
+      var(--visitor-space-18)
+      var(--visitor-space-18)
+      var(--visitor-space-16);
+  }
+
+  .visitor-modal__header::after{
+    left:
+      var(--visitor-space-18);
+  }
+
+  .visitor-modal__close{
+    width:2.6rem;
+    height:2.6rem;
+  }
+
+  .visitor-modal__eyebrow{
+    font-size:.62rem;
+  }
+
+  .visitor-modal__title{
+    font-size:1.3rem;
+  }
+}
+
+
+/* ==========================================================
+   15. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast:more){
+
+  .visitor-modal__close{
+    border-width:.12rem;
+  }
+
+  .visitor-modal__description{
+    color:
+      var(--visitor-text-secondary);
+  }
+}
+
+
+/* ==========================================================
+   16. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+  .visitor-modal__header::after,
+  .visitor-modal__close,
+  .visitor-modal__close::before{
+
+    transition:none;
+  }
+
+  .visitor-modal__close:hover,
+  .visitor-modal__close:active{
+
+    transform:none;
+  }
+}
+
+
+/* ==========================================================
+   17. IMPRESIÓN
+========================================================== */
+
+@media print{
+
+  .visitor-modal__header{
+    padding:1rem;
+
+    background:#ffffff;
+  }
+
+  .visitor-modal__header::after{
+    display:none;
+  }
+
+  .visitor-modal__close{
+    display:none;
+  }
+
+  .visitor-modal__eyebrow{
+    color:#2563eb;
+  }
+
+  .visitor-modal__description{
+    color:#475569;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — REGISTRO DE VISITANTE
+   PARTE 3: ALERTAS DEL FORMULARIO
+========================================================== */
+
+
+/* ==========================================================
+   1. CONTENEDOR BASE
+========================================================== */
+
+.visitor-alert {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--visitor-space-14);
+
+  width: calc(100% - (var(--visitor-space-28) * 2));
+  min-width: 0;
+
+  margin:
+    var(--visitor-space-22)
+    auto
+    0;
+
+  padding:
+    var(--visitor-space-16)
+    var(--visitor-space-18)
+    var(--visitor-space-16)
+    var(--visitor-space-20);
+
+  border:
+    1px solid transparent;
+
+  border-radius:
+    var(--visitor-radius-md);
+
+  box-shadow:
+    var(--visitor-shadow-xs);
+
+  overflow: hidden;
+
+  animation:
+    visitor-alert-enter
+    280ms
+    ease-out;
+}
+
+
+/* ==========================================================
+   2. BARRA LATERAL
+========================================================== */
+
+.visitor-alert::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.3125rem;
+
+  content: "";
+
+  border-radius:
+    var(--visitor-radius-md)
+    0
+    0
+    var(--visitor-radius-md);
+}
+
+
+/* ==========================================================
+   3. ICONO
+========================================================== */
+
+.visitor-alert::after {
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 2rem;
+  height: 2rem;
+
+  margin-top: 0.05rem;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+
+  border-radius: 50%;
+}
+
+
+/* ==========================================================
+   4. ALERTA ERROR
+========================================================== */
+
+.visitor-alert--error {
+
+  color:
+    var(--visitor-danger-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-danger-50),
+      #ffffff
+    );
+
+  border-color:
+    var(--visitor-danger-200);
+}
+
+.visitor-alert--error::before {
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--visitor-danger-500),
+      var(--visitor-danger-700)
+    );
+}
+
+.visitor-alert--error::after {
+
+  content: "✕";
+
+  color:
+    var(--visitor-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-danger-500),
+      var(--visitor-danger-700)
+    );
+
+  box-shadow:
+    0 0.5rem 1rem
+    rgba(220,38,38,.18);
+}
+
+
+/* ==========================================================
+   5. ALERTA ÉXITO
+========================================================== */
+
+.visitor-alert--success {
+
+  color:
+    var(--visitor-success-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-success-50),
+      #ffffff
+    );
+
+  border-color:
+    var(--visitor-success-200);
+}
+
+.visitor-alert--success::before {
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--visitor-success-500),
+      var(--visitor-success-700)
+    );
+}
+
+.visitor-alert--success::after {
+
+  content: "✓";
+
+  color:
+    var(--visitor-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-success-500),
+      var(--visitor-success-700)
+    );
+
+  box-shadow:
+    0 .5rem 1rem
+    rgba(22,163,74,.18);
+}
+
+
+/* ==========================================================
+   6. HOVER
+========================================================== */
+
+.visitor-alert:hover{
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    var(--visitor-shadow-sm);
+}
+
+
+/* ==========================================================
+   7. ANIMACIÓN
+========================================================== */
+
+@keyframes visitor-alert-enter{
+
+  from{
+
+    opacity:0;
+
+    transform:
+      translateY(-8px);
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+/* ==========================================================
+   8. TABLET
+========================================================== */
+
+@media (max-width:720px){
+
+  .visitor-alert{
+
+    width:
+      calc(100% - (var(--visitor-space-22) * 2));
+
+    margin-top:
+      var(--visitor-space-18);
+
+    padding:
+      var(--visitor-space-14)
+      var(--visitor-space-16)
+      var(--visitor-space-14)
+      var(--visitor-space-18);
+  }
+
+}
+
+
+/* ==========================================================
+   9. CELULAR
+========================================================== */
+
+@media (max-width:520px){
+
+  .visitor-alert{
+
+    width:
+      calc(100% - (var(--visitor-space-18) * 2));
+
+    gap:
+      var(--visitor-space-12);
+
+    padding:
+      var(--visitor-space-14);
+  }
+
+  .visitor-alert::after{
+
+    width:1.75rem;
+    height:1.75rem;
+
+    font-size:.8rem;
+  }
+
+}
+
+
+/* ==========================================================
+   10. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width:360px){
+
+  .visitor-alert{
+
+    width:
+      calc(100% - (var(--visitor-space-14) * 2));
+
+    padding:
+      var(--visitor-space-12);
+
+    font-size:.88rem;
+  }
+
+}
+
+
+/* ==========================================================
+   11. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast:more){
+
+  .visitor-alert{
+
+    border-width:
+      .125rem;
+  }
+
+  .visitor-alert::before{
+
+    width:.375rem;
+  }
+
+}
+
+
+/* ==========================================================
+   12. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+  .visitor-alert{
+
+    animation:none;
+
+    transition:none;
+  }
+
+  .visitor-alert:hover{
+
+    transform:none;
+  }
+
+}
+
+
+/* ==========================================================
+   13. IMPRESIÓN
+========================================================== */
+
+@media print{
+
+  .visitor-alert{
+
+    width:100%;
+
+    margin:0 0 .75rem;
+
+    background:#ffffff;
+
+    box-shadow:none;
+
+    border:1px solid #cbd5e1;
+  }
+
+  .visitor-alert::after{
+
+    box-shadow:none;
+  }
+
+}
+
+/* ==========================================================
+   HABITACONTROL — REGISTRO DE VISITANTE
+   PARTE 4: FORMULARIO, GRID, CAMPOS Y CONTROLES
+========================================================== */
+
+
+/* ==========================================================
+   1. FORMULARIO PRINCIPAL
+========================================================== */
+
+.visitor-form {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--visitor-space-22, 1.375rem);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--visitor-space-24)
+    var(--visitor-space-28)
+    var(--visitor-space-28);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.72),
+      rgba(248, 250, 252, 0.94)
+    );
+}
+
+
+/* Iluminación ambiental del formulario */
+
+.visitor-form::before {
+  position: absolute;
+  top: -7rem;
+  left: -7rem;
+  z-index: -1;
+
+  width: 18rem;
+  height: 18rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.045),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   2. GRID DEL FORMULARIO
+========================================================== */
+
+.visitor-form__grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    var(--visitor-space-18)
+    var(--visitor-space-20);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* Protección de las columnas */
+
+.visitor-form__grid > * {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   3. CAMPO BASE
+========================================================== */
+
+.visitor-field {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--visitor-space-8);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   4. CAMPO A ANCHO COMPLETO
+========================================================== */
+
+.visitor-field--full {
+  width: 100%;
+}
+
+
+/* ==========================================================
+   5. ETIQUETA
+========================================================== */
+
+.visitor-field__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--visitor-space-6);
+
+  width: fit-content;
+  max-width: 100%;
+
+  color:
+    var(--visitor-text-secondary);
+
+  font-size: 0.75rem;
+  font-weight: 760;
+  line-height: 1.4;
+  letter-spacing: 0.015em;
+
+  cursor: pointer;
+
+  transition:
+    color var(--visitor-transition-fast);
+}
+
+
+/* Indicador decorativo */
+
+.visitor-field__label::before {
+  display: block;
+  flex: 0 0 auto;
+
+  width: 0.375rem;
+  height: 0.375rem;
+
+  content: "";
+
+  background:
+    var(--visitor-primary-500);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(59, 130, 246, 0.09);
+
+  transition:
+    background-color var(--visitor-transition-fast),
+    box-shadow var(--visitor-transition-fast),
+    transform var(--visitor-transition-fast);
+}
+
+
+/* La etiqueta responde al foco del campo */
+
+.visitor-field:focus-within
+.visitor-field__label {
+  color:
+    var(--visitor-primary-700);
+}
+
+.visitor-field:focus-within
+.visitor-field__label::before {
+  background:
+    var(--visitor-primary-600);
+
+  box-shadow:
+    0 0 0 0.25rem rgba(59, 130, 246, 0.13);
+
+  transform:
+    scale(1.08);
+}
+
+
+/* ==========================================================
+   6. CONTROL BASE
+========================================================== */
+
+.visitor-field__control {
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 3rem;
+
+  padding:
+    var(--visitor-space-12)
+    var(--visitor-space-14);
+
+  color:
+    var(--visitor-text-primary);
+
+  font-size: 0.875rem;
+  font-weight: 540;
+  line-height: 1.45;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(248, 250, 252, 0.94)
+    );
+
+  border:
+    1px solid
+    var(--visitor-border);
+
+  border-radius:
+    var(--visitor-radius-sm);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    0 0.25rem 0.75rem rgba(15, 23, 42, 0.035);
+
+  outline: none;
+
+  caret-color:
+    var(--visitor-primary-600);
+
+  transition:
+    color var(--visitor-transition-fast),
+    background-color var(--visitor-transition-fast),
+    border-color var(--visitor-transition-fast),
+    box-shadow var(--visitor-transition-fast),
+    opacity var(--visitor-transition-fast),
+    transform var(--visitor-transition-fast);
+}
+
+
+/* ==========================================================
+   7. PLACEHOLDER
+========================================================== */
+
+.visitor-field__control::placeholder {
+  color:
+    var(--visitor-text-soft);
+
+  font-size: 0.8125rem;
+  font-weight: 430;
+
+  opacity: 1;
+
+  transition:
+    color var(--visitor-transition-fast),
+    opacity var(--visitor-transition-fast),
+    transform var(--visitor-transition-fast);
+}
+
+
+/* ==========================================================
+   8. HOVER DEL CONTROL
+========================================================== */
+
+.visitor-field__control:hover:not(:disabled) {
+  background:
+    var(--visitor-surface);
+
+  border-color:
+    var(--visitor-primary-300);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    0 0.375rem 1rem rgba(37, 99, 235, 0.07);
+}
+
+
+/* ==========================================================
+   9. FOCO DEL CONTROL
+========================================================== */
+
+.visitor-field__control:focus {
+  color:
+    var(--visitor-navy-900);
+
+  background:
+    var(--visitor-surface);
+
+  border-color:
+    var(--visitor-primary-500);
+
+  box-shadow:
+    0 0 0 0.21875rem rgba(59, 130, 246, 0.13),
+    0 0.75rem 1.5rem rgba(37, 99, 235, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+
+  transform:
+    translateY(-0.0625rem);
+}
+
+.visitor-field__control:focus::placeholder {
+  color:
+    var(--visitor-primary-300);
+
+  opacity: 0.78;
+
+  transform:
+    translateX(0.125rem);
+}
+
+
+/* ==========================================================
+   10. CONTROL CON CONTENIDO
+========================================================== */
+
+.visitor-field__control:not(:placeholder-shown) {
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-surface),
+      var(--visitor-primary-50)
+    );
+
+  border-color:
+    var(--visitor-primary-200);
+}
+
+.visitor-field__control:not(:placeholder-shown):focus {
+  border-color:
+    var(--visitor-primary-500);
+}
+
+
+/* ==========================================================
+   11. CONTROL DESHABILITADO
+========================================================== */
+
+.visitor-field__control:disabled {
+  color:
+    var(--visitor-text-disabled);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-surface-strong),
+      var(--visitor-surface-muted)
+    );
+
+  border-color:
+    var(--visitor-border-light);
+
+  box-shadow:
+    none;
+
+  cursor:
+    not-allowed;
+
+  opacity:
+    0.76;
+
+  transform:
+    none;
+}
+
+.visitor-field__control:disabled::placeholder {
+  color:
+    var(--visitor-text-disabled);
+}
+
+
+/* Etiqueta cuando el input está deshabilitado */
+
+.visitor-field:has(.visitor-field__control:disabled)
+.visitor-field__label {
+  color:
+    var(--visitor-text-disabled);
+
+  cursor:
+    not-allowed;
+}
+
+.visitor-field:has(.visitor-field__control:disabled)
+.visitor-field__label::before {
+  background:
+    var(--visitor-border-strong);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(148, 163, 184, 0.1);
+}
+
+
+/* ==========================================================
+   12. AUTOCOMPLETADO DEL NAVEGADOR
+========================================================== */
+
+.visitor-field__control:-webkit-autofill,
+.visitor-field__control:-webkit-autofill:hover,
+.visitor-field__control:-webkit-autofill:focus,
+.visitor-field__control:-webkit-autofill:active {
+  -webkit-text-fill-color:
+    var(--visitor-text-primary);
+
+  caret-color:
+    var(--visitor-primary-600);
+
+  -webkit-box-shadow:
+    0 0 0 62.5rem
+    var(--visitor-primary-50)
+    inset;
+
+  box-shadow:
+    0 0 0 62.5rem
+    var(--visitor-primary-50)
+    inset;
+
+  border-color:
+    var(--visitor-primary-300);
+
+  transition:
+    background-color 9999s ease-out 0s;
+}
+
+
+/* ==========================================================
+   13. VALIDACIÓN ANGULAR — CONTROL INVÁLIDO
+========================================================== */
+
+.visitor-field__control.ng-invalid.ng-touched,
+.visitor-field__control.ng-invalid.ng-dirty {
+  color:
+    var(--visitor-danger-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-danger-50),
+      var(--visitor-surface)
+    );
+
+  border-color:
+    var(--visitor-danger-400);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(239, 68, 68, 0.09);
+}
+
+.visitor-field:has(
+  .visitor-field__control.ng-invalid.ng-touched
+)
+.visitor-field__label,
+.visitor-field:has(
+  .visitor-field__control.ng-invalid.ng-dirty
+)
+.visitor-field__label {
+  color:
+    var(--visitor-danger-700);
+}
+
+.visitor-field:has(
+  .visitor-field__control.ng-invalid.ng-touched
+)
+.visitor-field__label::before,
+.visitor-field:has(
+  .visitor-field__control.ng-invalid.ng-dirty
+)
+.visitor-field__label::before {
+  background:
+    var(--visitor-danger-500);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(239, 68, 68, 0.12);
+}
+
+
+/* Foco sobre control inválido */
+
+.visitor-field__control.ng-invalid.ng-touched:focus,
+.visitor-field__control.ng-invalid.ng-dirty:focus {
+  border-color:
+    var(--visitor-danger-600);
+
+  box-shadow:
+    0 0 0 0.21875rem rgba(239, 68, 68, 0.14),
+    0 0.75rem 1.5rem rgba(220, 38, 38, 0.08);
+}
+
+
+/* ==========================================================
+   14. VALIDACIÓN ANGULAR — CONTROL VÁLIDO
+========================================================== */
+
+.visitor-field__control.ng-valid.ng-touched:not(:placeholder-shown),
+.visitor-field__control.ng-valid.ng-dirty:not(:placeholder-shown) {
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-success-50),
+      var(--visitor-surface)
+    );
+
+  border-color:
+    var(--visitor-success-300, #86efac);
+}
+
+.visitor-field:has(
+  .visitor-field__control.ng-valid.ng-touched:not(:placeholder-shown)
+)
+.visitor-field__label::before,
+.visitor-field:has(
+  .visitor-field__control.ng-valid.ng-dirty:not(:placeholder-shown)
+)
+.visitor-field__label::before {
+  background:
+    var(--visitor-success-500);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(34, 197, 94, 0.12);
+}
+
+
+/* Foco sobre control válido */
+
+.visitor-field__control.ng-valid.ng-touched:not(:placeholder-shown):focus,
+.visitor-field__control.ng-valid.ng-dirty:not(:placeholder-shown):focus {
+  border-color:
+    var(--visitor-success-500);
+
+  box-shadow:
+    0 0 0 0.21875rem rgba(34, 197, 94, 0.13),
+    0 0.75rem 1.5rem rgba(22, 163, 74, 0.08);
+}
+
+
+/* ==========================================================
+   15. ESTADO DE SOLO LECTURA
+========================================================== */
+
+.visitor-field__control[readonly] {
+  color:
+    var(--visitor-text-secondary);
+
+  background:
+    var(--visitor-surface-muted);
+
+  border-style:
+    dashed;
+
+  cursor:
+    default;
+}
+
+
+/* ==========================================================
+   16. SELECCIÓN DE TEXTO
+========================================================== */
+
+.visitor-field__control::selection {
+  color:
+    var(--visitor-text-white);
+
+  background:
+    var(--visitor-primary-600);
+}
+
+
+/* ==========================================================
+   17. PREVENCIÓN DE DESBORDAMIENTOS
+========================================================== */
+
+.visitor-form,
+.visitor-form__grid,
+.visitor-field,
+.visitor-field__control {
+  min-inline-size:
+    0;
+}
+
+
+/* ==========================================================
+   18. PANTALLAS MEDIANAS
+========================================================== */
+
+@media (max-width: 900px) {
+  .visitor-form {
+    gap:
+      var(--visitor-space-20);
+
+    padding:
+      var(--visitor-space-22)
+      var(--visitor-space-24)
+      var(--visitor-space-24);
+  }
+
+  .visitor-form__grid {
+    gap:
+      var(--visitor-space-16)
+      var(--visitor-space-18);
+  }
+}
+
+
+/* ==========================================================
+   19. TABLET
+========================================================== */
+
+@media (max-width: 720px) {
+  .visitor-form {
+    padding:
+      var(--visitor-space-20)
+      var(--visitor-space-22)
+      var(--visitor-space-22);
+  }
+
+  .visitor-form__grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap:
+      var(--visitor-space-16);
+  }
+
+  .visitor-field__control {
+    min-height:
+      3.125rem;
+  }
+}
+
+
+/* ==========================================================
+   20. CELULAR
+========================================================== */
+
+@media (max-width: 520px) {
+  .visitor-form {
+    gap:
+      var(--visitor-space-18);
+
+    padding:
+      var(--visitor-space-18);
+  }
+
+  .visitor-form__grid {
+    gap:
+      var(--visitor-space-14);
+  }
+
+  .visitor-field {
+    gap:
+      var(--visitor-space-6);
+  }
+
+  .visitor-field__label {
+    font-size:
+      0.71875rem;
+  }
+
+  .visitor-field__control {
+    min-height:
+      3.125rem;
+
+    padding:
+      var(--visitor-space-12);
+
+    font-size:
+      0.875rem;
+
+    border-radius:
+      var(--visitor-radius-sm);
+  }
+
+  .visitor-field__control::placeholder {
+    font-size:
+      0.78125rem;
+  }
+}
+
+
+/* ==========================================================
+   21. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 360px) {
+  .visitor-form {
+    gap:
+      var(--visitor-space-16);
+
+    padding:
+      var(--visitor-space-16)
+      var(--visitor-space-14)
+      var(--visitor-space-18);
+  }
+
+  .visitor-field__control {
+    padding:
+      var(--visitor-space-10)
+      var(--visitor-space-12);
+  }
+}
+
+
+/* ==========================================================
+   22. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .visitor-field__control {
+    min-height:
+      3.25rem;
+  }
+
+  .visitor-field__control:hover:not(:disabled) {
+    border-color:
+      var(--visitor-border);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.96),
+      0 0.25rem 0.75rem rgba(15, 23, 42, 0.035);
+  }
+
+  .visitor-field__control:focus {
+    border-color:
+      var(--visitor-primary-500);
+
+    box-shadow:
+      0 0 0 0.21875rem rgba(59, 130, 246, 0.13);
+
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   23. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .visitor-field__control {
+    border-width:
+      0.125rem;
+  }
+
+  .visitor-field__label {
+    color:
+      var(--visitor-text-primary);
+  }
+
+  .visitor-field__control::placeholder {
+    color:
+      var(--visitor-text-secondary);
+  }
+
+  .visitor-field__control:focus {
+    outline:
+      0.125rem solid
+      var(--visitor-primary-700);
+
+    outline-offset:
+      0.125rem;
+  }
+}
+
+
+/* ==========================================================
+   24. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .visitor-field__label,
+  .visitor-field__label::before,
+  .visitor-field__control,
+  .visitor-field__control::placeholder {
+    transition:
+      none;
+  }
+
+  .visitor-field__control:focus,
+  .visitor-field__label::before {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   25. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .visitor-form {
+    gap:
+      0.75rem;
+
+    padding:
+      1rem;
+
+    background:
+      #ffffff;
+  }
+
+  .visitor-form::before {
+    display:
+      none;
+  }
+
+  .visitor-form__grid {
+    gap:
+      0.75rem;
+  }
+
+  .visitor-field {
+    gap:
+      0.25rem;
+  }
+
+  .visitor-field__label {
+    color:
+      #334155;
+
+    font-size:
+      0.6875rem;
+  }
+
+  .visitor-field__label::before {
+    display:
+      none;
+  }
+
+  .visitor-field__control,
+  .visitor-field__control:focus,
+  .visitor-field__control:not(:placeholder-shown),
+  .visitor-field__control.ng-valid.ng-touched:not(:placeholder-shown),
+  .visitor-field__control.ng-valid.ng-dirty:not(:placeholder-shown),
+  .visitor-field__control.ng-invalid.ng-touched,
+  .visitor-field__control.ng-invalid.ng-dirty {
+    min-height:
+      auto;
+
+    padding:
+      0.5rem 0.625rem;
+
+    color:
+      #111827;
+
+    background:
+      #ffffff;
+
+    border:
+      1px solid #cbd5e1;
+
+    box-shadow:
+      none;
+
+    transform:
+      none;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — REGISTRO DE VISITANTE
+   PARTE 5: PIE DEL FORMULARIO Y BOTONES DE ACCIÓN
+========================================================== */
+
+
+/* ==========================================================
+   1. PIE DE ACCIONES
+========================================================== */
+
+.visitor-form__actions {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(11rem, 1fr)
+    auto;
+
+  align-items: center;
+  gap: var(--visitor-space-12);
+
+  width: 100%;
+  min-width: 0;
+
+  margin-top:
+    var(--visitor-space-4);
+
+  padding-top:
+    var(--visitor-space-22);
+
+  border-top:
+    1px solid
+    var(--visitor-border-light);
+}
+
+
+/* Línea decorativa superior */
+
+.visitor-form__actions::before {
+  position: absolute;
+  top: -1px;
+  left: 0;
+
+  width: 7rem;
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--visitor-primary-600),
+      var(--visitor-cyan-500),
+      transparent
+    );
+
+  border-radius:
+    var(--visitor-radius-pill);
+
+  pointer-events: none;
+
+  transition:
+    width var(--visitor-transition-normal);
+}
+
+.visitor-form__actions:focus-within::before {
+  width:
+    10rem;
+}
+
+
+/* ==========================================================
+   2. BOTÓN BASE
+========================================================== */
+
+.visitor-action {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--visitor-space-8);
+
+  min-width: 0;
+  min-height: 3rem;
+
+  padding:
+    var(--visitor-space-12)
+    var(--visitor-space-18);
+
+  color:
+    var(--visitor-text-secondary);
+
+  font-size: 0.8125rem;
+  font-weight: 760;
+  line-height: 1.2;
+  letter-spacing: 0.005em;
+  text-align: center;
+
+  background:
+    var(--visitor-surface);
+
+  border:
+    1px solid
+    var(--visitor-border);
+
+  border-radius:
+    var(--visitor-radius-sm);
+
+  box-shadow:
+    var(--visitor-shadow-xs),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+
+  cursor:
+    pointer;
+
+  overflow:
+    hidden;
+
+  isolation:
+    isolate;
+
+  user-select:
+    none;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+  transition:
+    color var(--visitor-transition-fast),
+    background var(--visitor-transition-fast),
+    border-color var(--visitor-transition-fast),
+    box-shadow var(--visitor-transition-fast),
+    opacity var(--visitor-transition-fast),
+    transform var(--visitor-transition-fast);
+}
+
+
+/* ==========================================================
+   3. BRILLO INTERIOR
+========================================================== */
+
+.visitor-action::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 18%,
+      rgba(255, 255, 255, 0.44) 48%,
+      transparent 78%
+    );
+
+  opacity:
+    0;
+
+  transform:
+    translateX(-70%);
+
+  pointer-events:
+    none;
+
+  transition:
+    opacity var(--visitor-transition-fast),
+    transform var(--visitor-transition-normal);
+}
+
+.visitor-action:hover:not(:disabled)::before {
+  opacity:
+    1;
+
+  transform:
+    translateX(70%);
+}
+
+
+/* ==========================================================
+   4. BOTÓN SECUNDARIO — CANCELAR
+========================================================== */
+
+.visitor-action--secondary {
+  color:
+    var(--visitor-text-secondary);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-surface),
+      var(--visitor-surface-muted)
+    );
+
+  border-color:
+    var(--visitor-border);
+}
+
+.visitor-action--secondary:hover:not(:disabled) {
+  color:
+    var(--visitor-danger-700);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-danger-50),
+      var(--visitor-surface)
+    );
+
+  border-color:
+    var(--visitor-danger-300, #fca5a5);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(220, 38, 38, 0.1);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+
+/* ==========================================================
+   5. BOTÓN PRINCIPAL — REGISTRAR
+========================================================== */
+
+.visitor-action--primary {
+  color:
+    var(--visitor-text-white);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--visitor-primary-600),
+      var(--visitor-primary-700)
+    );
+
+  border-color:
+    var(--visitor-primary-700);
+
+  box-shadow:
+    var(--visitor-shadow-primary),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.visitor-action--primary:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      var(--visitor-primary-500),
+      var(--visitor-primary-700)
+    );
+
+  border-color:
+    var(--visitor-primary-600);
+
+  box-shadow:
+    0 1rem 2rem rgba(37, 99, 235, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+
+/* ==========================================================
+   6. BOTÓN ESCÁNER
+========================================================== */
+
+.visitor-action--scanner {
+  color:
+    var(--visitor-cyan-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-cyan-50),
+      var(--visitor-surface)
+    );
+
+  border-color:
+    var(--visitor-cyan-200);
+
+  box-shadow:
+    0 0.5rem 1.25rem rgba(8, 145, 178, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.visitor-action--scanner:hover:not(:disabled) {
+  color:
+    var(--visitor-text-white);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--visitor-cyan-500),
+      var(--visitor-cyan-700)
+    );
+
+  border-color:
+    var(--visitor-cyan-600);
+
+  box-shadow:
+    var(--visitor-shadow-cyan);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+
+/* ==========================================================
+   7. ESTADO ACTIVO DEL ESCÁNER
+========================================================== */
+
+.visitor-action--scanner.active {
+  color:
+    var(--visitor-text-white);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--visitor-cyan-600),
+      var(--visitor-primary-700)
+    );
+
+  border-color:
+    var(--visitor-cyan-600);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(6, 182, 212, 0.12),
+    0 0.875rem 1.875rem rgba(8, 145, 178, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.visitor-action--scanner.active::after {
+  display:
+    block;
+
+  flex:
+    0 0 auto;
+
+  width:
+    0.5rem;
+
+  height:
+    0.5rem;
+
+  content:
+    "";
+
+  background:
+    var(--visitor-success-400);
+
+  border:
+    0.125rem solid rgba(255, 255, 255, 0.78);
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0 0 0 rgba(74, 222, 128, 0.5);
+
+  animation:
+    visitor-scanner-status-pulse
+    1.8s
+    ease-out
+    infinite;
+}
+
+
+/* ==========================================================
+   8. ESTADO ACTIVE / PRESIONADO
+========================================================== */
+
+.visitor-action:active:not(:disabled) {
+  box-shadow:
+    var(--visitor-shadow-xs);
+
+  transform:
+    translateY(0)
+    scale(0.975);
+}
+
+
+/* ==========================================================
+   9. FOCO VISIBLE
+========================================================== */
+
+.visitor-action:focus-visible {
+  outline:
+    0.2rem solid
+    rgba(59, 130, 246, 0.2);
+
+  outline-offset:
+    0.125rem;
+}
+
+.visitor-action--secondary:focus-visible {
+  outline-color:
+    rgba(220, 38, 38, 0.18);
+}
+
+.visitor-action--scanner:focus-visible {
+  outline-color:
+    rgba(6, 182, 212, 0.24);
+}
+
+
+/* ==========================================================
+   10. BOTONES DESHABILITADOS
+========================================================== */
+
+.visitor-action:disabled {
+  color:
+    var(--visitor-text-disabled);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--visitor-surface-strong),
+      var(--visitor-surface-muted)
+    );
+
+  border-color:
+    var(--visitor-border-light);
+
+  box-shadow:
+    none;
+
+  cursor:
+    not-allowed;
+
+  opacity:
+    0.68;
+
+  transform:
+    none;
+}
+
+.visitor-action:disabled::before,
+.visitor-action:disabled::after {
+  display:
+    none;
+}
+
+
+/* ==========================================================
+   11. CARGA DEL BOTÓN PRINCIPAL
+========================================================== */
+
+/*
+   El botón principal está deshabilitado mientras isSaving
+   es verdadero. Debido a que el HTML conserva exactamente
+   esa lógica, usamos :disabled para mostrar el spinner.
+*/
+
+.visitor-action--primary:disabled {
+  color:
+    var(--visitor-text-white);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--visitor-primary-500),
+      var(--visitor-primary-700)
+    );
+
+  border-color:
+    var(--visitor-primary-600);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(37, 99, 235, 0.18);
+
+  opacity:
+    0.82;
+}
+
+.visitor-action--primary:disabled::after {
+  display:
+    block;
+
+  flex:
+    0 0 auto;
+
+  width:
+    1rem;
+
+  height:
+    1rem;
+
+  content:
+    "";
+
+  border:
+    0.125rem solid rgba(255, 255, 255, 0.38);
+
+  border-top-color:
+    var(--visitor-text-white);
+
+  border-radius:
+    50%;
+
+  animation:
+    visitor-action-spinner
+    700ms
+    linear
+    infinite;
+}
+
+
+/* ==========================================================
+   12. ANIMACIÓN DEL SPINNER
+========================================================== */
+
+@keyframes visitor-action-spinner {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* ==========================================================
+   13. PULSO DEL ESCÁNER
+========================================================== */
+
+@keyframes visitor-scanner-status-pulse {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(74, 222, 128, 0.48);
+  }
+
+  65% {
+    box-shadow:
+      0 0 0 0.5rem rgba(74, 222, 128, 0);
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(74, 222, 128, 0);
+  }
+}
+
+
+/* ==========================================================
+   14. PANTALLAS MEDIANAS
+========================================================== */
+
+@media (max-width: 900px) {
+  .visitor-form__actions {
+    grid-template-columns:
+      auto
+      minmax(10rem, 1fr)
+      auto;
+
+    gap:
+      var(--visitor-space-10);
+  }
+
+  .visitor-action {
+    padding:
+      var(--visitor-space-12)
+      var(--visitor-space-16);
+  }
+}
+
+
+/* ==========================================================
+   15. TABLET
+========================================================== */
+
+@media (max-width: 720px) {
+  .visitor-form__actions {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap:
+      var(--visitor-space-10);
+
+    padding-top:
+      var(--visitor-space-20);
+  }
+
+  .visitor-action--primary {
+    grid-column:
+      1 / -1;
+
+    grid-row:
+      1;
+  }
+
+  .visitor-action--secondary {
+    grid-column:
+      1;
+
+    grid-row:
+      2;
+  }
+
+  .visitor-action--scanner {
+    grid-column:
+      2;
+
+    grid-row:
+      2;
+  }
+
+  .visitor-action {
+    width:
+      100%;
+  }
+}
+
+
+/* ==========================================================
+   16. CELULAR
+========================================================== */
+
+@media (max-width: 520px) {
+  .visitor-form__actions {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap:
+      var(--visitor-space-10);
+
+    padding-top:
+      var(--visitor-space-18);
+  }
+
+  .visitor-form__actions::before {
+    width:
+      5rem;
+  }
+
+  .visitor-form__actions:focus-within::before {
+    width:
+      8rem;
+  }
+
+  .visitor-action--primary,
+  .visitor-action--secondary,
+  .visitor-action--scanner {
+    grid-column:
+      1;
+
+    grid-row:
+      auto;
+  }
+
+  .visitor-action--primary {
+    order:
+      1;
+  }
+
+  .visitor-action--scanner {
+    order:
+      2;
+  }
+
+  .visitor-action--secondary {
+    order:
+      3;
+  }
+
+  .visitor-action {
+    min-height:
+      3.125rem;
+
+    padding:
+      var(--visitor-space-12)
+      var(--visitor-space-14);
+
+    font-size:
+      0.8125rem;
+  }
+}
+
+
+/* ==========================================================
+   17. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 360px) {
+  .visitor-form__actions {
+    gap:
+      var(--visitor-space-8);
+  }
+
+  .visitor-action {
+    min-height:
+      3rem;
+
+    padding:
+      var(--visitor-space-10)
+      var(--visitor-space-12);
+
+    font-size:
+      0.78125rem;
+  }
+}
+
+
+/* ==========================================================
+   18. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .visitor-action {
+    min-height:
+      3.25rem;
+  }
+
+  .visitor-action:hover:not(:disabled) {
+    transform:
+      none;
+  }
+
+  .visitor-action--secondary:hover:not(:disabled) {
+    color:
+      var(--visitor-text-secondary);
+
+    background:
+      linear-gradient(
+        145deg,
+        var(--visitor-surface),
+        var(--visitor-surface-muted)
+      );
+
+    border-color:
+      var(--visitor-border);
+
+    box-shadow:
+      var(--visitor-shadow-xs);
+  }
+
+  .visitor-action--primary:hover:not(:disabled) {
+    color:
+      var(--visitor-text-white);
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--visitor-primary-600),
+        var(--visitor-primary-700)
+      );
+
+    border-color:
+      var(--visitor-primary-700);
+
+    box-shadow:
+      var(--visitor-shadow-primary);
+  }
+
+  .visitor-action--scanner:hover:not(:disabled) {
+    color:
+      var(--visitor-cyan-800);
+
+    background:
+      linear-gradient(
+        145deg,
+        var(--visitor-cyan-50),
+        var(--visitor-surface)
+      );
+
+    border-color:
+      var(--visitor-cyan-200);
+
+    box-shadow:
+      0 0.5rem 1.25rem rgba(8, 145, 178, 0.08);
+  }
+
+  .visitor-action--scanner.active:hover:not(:disabled) {
+    color:
+      var(--visitor-text-white);
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--visitor-cyan-600),
+        var(--visitor-primary-700)
+      );
+
+    border-color:
+      var(--visitor-cyan-600);
+
+    box-shadow:
+      0 0 0 0.1875rem rgba(6, 182, 212, 0.12),
+      0 0.875rem 1.875rem rgba(8, 145, 178, 0.24);
+  }
+
+  .visitor-action:active:not(:disabled) {
+    transform:
+      scale(0.98);
+  }
+}
+
+
+/* ==========================================================
+   19. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .visitor-form__actions {
+    border-top-width:
+      0.125rem;
+  }
+
+  .visitor-action {
+    border-width:
+      0.125rem;
+  }
+
+  .visitor-action:focus-visible {
+    outline-width:
+      0.1875rem;
+  }
+
+  .visitor-action--primary,
+  .visitor-action--scanner.active {
+    border-color:
+      var(--visitor-navy-900);
+  }
+}
+
+
+/* ==========================================================
+   20. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .visitor-form__actions::before,
+  .visitor-action,
+  .visitor-action::before {
+    transition:
+      none;
+  }
+
+  .visitor-action:hover,
+  .visitor-action:active {
+    transform:
+      none;
+  }
+
+  .visitor-action--scanner.active::after {
+    animation:
+      none;
+  }
+
+  .visitor-action--primary:disabled::after {
+    animation-duration:
+      1.4s;
+  }
+}
+
+
+/* ==========================================================
+   21. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .visitor-form__actions {
+    display:
+      none;
+  }
+}
+
+
+
+/* ==========================================================
+   HABITACONTROL — REGISTRO DE VISITANTE
+   PARTE 6: MODAL DEL ESCÁNER QR
+========================================================== */
+
+
+/* ==========================================================
+   1. OVERLAY DEL ESCÁNER
+========================================================== */
+
+.visitor-scanner {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1200;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    clamp(
+      var(--visitor-space-14),
+      3vw,
+      var(--visitor-space-28)
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(2,6,23,.82),
+      rgba(15,23,42,.76)
+    );
+
+  backdrop-filter:
+    blur(.75rem)
+    saturate(125%);
+
+  -webkit-backdrop-filter:
+    blur(.75rem)
+    saturate(125%);
+
+  overflow:auto;
+
+  isolation:isolate;
+
+  animation:
+    visitor-scanner-backdrop
+    .25s
+    ease-out;
+}
+
+
+/* ==========================================================
+   2. DECORACIÓN DEL FONDO
+========================================================== */
+
+.visitor-scanner::before{
+
+  position:absolute;
+  top:-12rem;
+  left:-12rem;
+
+  width:30rem;
+  height:30rem;
+
+  content:"";
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(6,182,212,.18),
+      transparent 70%
+    );
+
+  pointer-events:none;
+
+  animation:
+    visitor-scanner-orb-left
+    10s
+    ease-in-out
+    infinite alternate;
+}
+
+.visitor-scanner::after{
+
+  position:absolute;
+  right:-14rem;
+  bottom:-16rem;
+
+  width:34rem;
+  height:34rem;
+
+  content:"";
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37,99,235,.16),
+      transparent 72%
+    );
+
+  pointer-events:none;
+
+  animation:
+    visitor-scanner-orb-right
+    11s
+    ease-in-out
+    infinite alternate;
+}
+
+
+/* ==========================================================
+   3. DIÁLOGO
+========================================================== */
+
+.visitor-scanner__dialog{
+
+  position:relative;
+  z-index:2;
+
+  display:flex;
+  flex-direction:column;
+
+  width:
+    min(
+      100%,
+      58rem
+    );
+
+  max-height:
+    calc(100dvh - 3rem);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.995),
+      rgba(248,250,252,.985)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.82);
+
+  border-radius:
+    var(--visitor-radius-xl);
+
+  box-shadow:
+    0 2rem 5rem rgba(2,6,23,.32),
+    0 0 0 1px rgba(148,163,184,.08);
+
+  overflow:auto;
+
+  isolation:isolate;
+
+  animation:
+    visitor-scanner-dialog
+    .34s
+    cubic-bezier(.22,1,.36,1);
+}
+
+
+/* ==========================================================
+   4. BORDE SUPERIOR
+========================================================== */
+
+.visitor-scanner__dialog::before{
+
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+
+  height:.25rem;
+
+  content:"";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--visitor-cyan-500),
+      var(--visitor-primary-600),
+      var(--visitor-success-500)
+    );
+
+  border-radius:
+    var(--visitor-radius-xl)
+    var(--visitor-radius-xl)
+    0
+    0;
+}
+
+
+/* ==========================================================
+   5. ILUMINACIÓN INTERNA
+========================================================== */
+
+.visitor-scanner__dialog::after{
+
+  position:absolute;
+  top:-10rem;
+  right:-8rem;
+
+  width:22rem;
+  height:22rem;
+
+  content:"";
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(6,182,212,.08),
+      transparent 72%
+    );
+
+  pointer-events:none;
+}
+
+
+/* ==========================================================
+   6. SCROLLBAR
+========================================================== */
+
+.visitor-scanner__dialog{
+  scrollbar-width:thin;
+
+  scrollbar-color:
+    var(--visitor-cyan-400)
+    transparent;
+}
+
+.visitor-scanner__dialog::-webkit-scrollbar{
+  width:.625rem;
+}
+
+.visitor-scanner__dialog::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.visitor-scanner__dialog::-webkit-scrollbar-thumb{
+
+  border:
+    .18rem solid transparent;
+
+  border-radius:
+    var(--visitor-radius-pill);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--visitor-cyan-400),
+      var(--visitor-cyan-600)
+    );
+
+  background-clip:
+    padding-box;
+}
+
+
+/* ==========================================================
+   7. ANIMACIONES
+========================================================== */
+
+@keyframes visitor-scanner-backdrop{
+
+  from{
+    opacity:0;
+  }
+
+  to{
+    opacity:1;
+  }
+
+}
+
+@keyframes visitor-scanner-dialog{
+
+  from{
+
+    opacity:0;
+
+    transform:
+      translateY(1rem)
+      scale(.97);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+@keyframes visitor-scanner-orb-left{
+
+  from{
+    transform:
+      translate3d(0,0,0)
+      scale(1);
+  }
+
+  to{
+    transform:
+      translate3d(2rem,1rem,0)
+      scale(1.08);
+  }
+
+}
+
+@keyframes visitor-scanner-orb-right{
+
+  from{
+    transform:
+      translate3d(0,0,0)
+      scale(1);
+  }
+
+  to{
+    transform:
+      translate3d(-2rem,-1rem,0)
+      scale(1.06);
+  }
+
+}
+
+
+/* ==========================================================
+   8. PANTALLAS MEDIANAS
+========================================================== */
+
+@media (max-width:900px){
+
+  .visitor-scanner{
+
+    align-items:flex-start;
+
+    padding:
+      var(--visitor-space-20);
+  }
+
+  .visitor-scanner__dialog{
+
+    width:min(
+      100%,
+      52rem
+    );
+  }
+
+}
+
+
+/* ==========================================================
+   9. TABLET
+========================================================== */
+
+@media (max-width:720px){
+
+  .visitor-scanner{
+
+    padding:
+      var(--visitor-space-14);
+  }
+
+  .visitor-scanner__dialog{
+
+    max-height:
+      calc(100dvh - 2rem);
+
+    border-radius:
+      var(--visitor-radius-lg);
+  }
+
+}
+
+
+/* ==========================================================
+   10. CELULAR
+========================================================== */
+
+@media (max-width:520px){
+
+  .visitor-scanner{
+
+    align-items:flex-end;
+
+    padding:
+      var(--visitor-space-8);
+  }
+
+  .visitor-scanner__dialog{
+
+    width:100%;
+
+    max-height:
+      calc(100dvh - .75rem);
+
+    border-radius:
+      var(--visitor-radius-lg)
+      var(--visitor-radius-lg)
+      var(--visitor-radius-sm)
+      var(--visitor-radius-sm);
+  }
+
+}
+
+
+/* ==========================================================
+   11. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width:360px){
+
+  .visitor-scanner{
+
+    padding:
+      var(--visitor-space-4);
+  }
+
+  .visitor-scanner__dialog{
+
+    border-radius:
+      var(--visitor-radius-md);
+  }
+
+}
+
+
+/* ==========================================================
+   12. TOUCH
+========================================================== */
+
+@media (hover:none) and (pointer:coarse){
+
+  .visitor-scanner{
+    overscroll-behavior:contain;
+  }
+
+}
+
+
+/* ==========================================================
+   13. SIN BACKDROP FILTER
+========================================================== */
+
+@supports not (
+(backdrop-filter:blur(.5rem))
+or
+(-webkit-backdrop-filter:blur(.5rem))
+){
+
+  .visitor-scanner{
+
+    background:
+      rgba(2,6,23,.9);
+
+  }
+
+}
+
+
+/* ==========================================================
+   14. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast:more){
+
+  .visitor-scanner__dialog{
+
+    border:
+      .125rem solid
+      var(--visitor-border-strong);
+
+  }
+
+}
+
+
+/* ==========================================================
+   15. REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+  .visitor-scanner,
+  .visitor-scanner::before,
+  .visitor-scanner::after,
+  .visitor-scanner__dialog{
+
+    animation:none;
+
+  }
+
+}
+
+
+/* ==========================================================
+   16. IMPRESIÓN
+========================================================== */
+
+@media print{
+
+  .visitor-scanner{
+
+    display:none;
+
+  }
+
+}

@@ -1,0 +1,458 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: Inter, "Segoe UI", sans-serif;
+  color: #0f172a;
+}
+
+/* ===========================
+   PAGE
+=========================== */
+
+.persona-login-page {
+  position: relative;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 3rem;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at top right,#dbeafe 0%,transparent 35%),
+    radial-gradient(circle at bottom left,#e0f2fe 0%,transparent 30%),
+    linear-gradient(180deg,#f8fbff,#eef5ff);
+}
+
+.persona-login-background{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+/* ===========================
+   CARD
+=========================== */
+
+.persona-login-card {
+  position: relative;
+  width: min(100%, 470px);
+  background: #ffffffee;
+  backdrop-filter: blur(14px);
+  border: 1px solid #d9e4f2;
+  border-radius: 28px;
+  padding: 3rem;
+  box-shadow:
+    0 20px 60px rgba(15, 23, 42, 0.08),
+    0 8px 24px rgba(37, 99, 235, 0.06);
+  animation: cardEnter 0.35s ease both;
+}
+
+/* ===========================
+   BRAND
+=========================== */
+
+.persona-login-brand{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin-bottom:1.8rem;
+}
+
+.persona-login-logo{
+
+    width:130px;
+    height:130px;
+
+    border-radius:28px;
+
+    background:#fff;
+
+    display:grid;
+    place-items:center;
+
+    border:1px solid #dbe5f2;
+
+    box-shadow:
+        0 12px 35px rgba(37,99,235,.12);
+}
+
+.persona-login-logo img{
+
+    width:105px;
+    height:105px;
+
+    object-fit:contain;
+}
+
+.persona-login-brand span{
+
+  font-size:.95rem;
+
+  color:#64748b;
+
+  font-weight:500;
+}
+
+
+.persona-login-card--error {
+  animation: cardShake 0.28s ease both;
+}
+/* ===========================
+   TITLES
+=========================== */
+
+.persona-login-heading{
+
+    text-align:center;
+
+    margin-bottom:1.8rem;
+}
+
+.persona-login-heading h1{
+
+  margin:0;
+
+  font-size:2rem;
+
+  font-weight:800;
+
+  color:#0f172a;
+}
+
+.persona-login-heading p{
+
+  margin-top:.7rem;
+
+  color:#64748b;
+
+  line-height:1.6;
+}
+
+/* ===========================
+   FORM
+=========================== */
+
+.persona-login-form{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:1.4rem;
+}
+
+.form-group{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:.55rem;
+}
+
+.form-group label{
+
+  font-weight:700;
+
+  color:#334155;
+
+  font-size:.93rem;
+}
+
+.form-group input{
+
+  height:56px;
+
+  padding:0 1rem;
+
+  border-radius:14px;
+
+  border:1px solid #cfd8e7;
+
+  font-size:1rem;
+
+  background:white;
+
+  transition:.25s;
+}
+
+.form-group input:hover{
+
+  border-color:#94a3b8;
+}
+
+.form-group input:focus{
+
+  outline:none;
+
+  border-color:#2563eb;
+
+  box-shadow:0 0 0 4px rgba(37,99,235,.12);
+}
+
+/* ===========================
+ PASSWORD
+=========================== */
+
+.password-label-row{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+}
+
+.password-field{
+
+  position:relative;
+}
+
+.password-field input{
+
+  width:100%;
+
+  padding-right:90px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.8rem;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: #2563eb;
+  background: #eff6ff;
+}
+
+
+.password-toggle:active {
+
+  transform: translateY(-50%) scale(.95);
+}
+
+.password-toggle svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.forgot-link{
+
+  text-decoration:none;
+
+  font-size:.88rem;
+
+  color:#2563eb;
+
+  font-weight:600;
+}
+
+.forgot-link:hover{
+
+  text-decoration:underline;
+}
+
+/* ===========================
+ ERROR
+=========================== */
+
+.login-error{
+
+  display:flex;
+
+  gap:.8rem;
+
+  align-items:flex-start;
+
+  padding:1rem;
+
+  border-radius:14px;
+
+  background:#fff5f5;
+
+  border:1px solid #fecaca;
+
+  color:#b91c1c;
+}
+
+.login-error span{
+
+  width:26px;
+  height:26px;
+
+  border-radius:50%;
+
+  background:#dc2626;
+
+  color:white;
+
+  display:grid;
+  place-items:center;
+
+  font-weight:700;
+
+  flex-shrink:0;
+}
+
+.login-error p{
+
+  margin:0;
+
+  line-height:1.5;
+}
+
+/* ===========================
+ BUTTON
+=========================== */
+
+.btn-login{
+
+  height:58px;
+
+  border:none;
+
+  border-radius:16px;
+
+  background:#2563eb;
+
+  color:white;
+
+  font-size:1rem;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.25s;
+
+  box-shadow:0 10px 24px rgba(37,99,235,.25);
+}
+
+.btn-login:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.32);
+}
+
+.btn-login:disabled{
+
+  cursor:not-allowed;
+
+  opacity:.65;
+}
+
+/* ===========================
+ FOOTER
+=========================== */
+
+.persona-login-footer{
+
+  margin-top:2rem;
+
+  text-align:center;
+
+  font-size:.88rem;
+
+  color:#64748b;
+
+  line-height:1.7;
+}
+
+.persona-login-footer a{
+
+  color:#2563eb;
+
+  text-decoration:none;
+
+  font-weight:600;
+}
+
+.persona-login-footer a:hover{
+
+  text-decoration:underline;
+}
+
+/* ===========================
+ MOBILE
+=========================== */
+
+@media (max-width:640px){
+
+  .persona-login-page{
+
+    padding:1.2rem;
+  }
+
+  .persona-login-card{
+
+    padding:2rem 1.5rem;
+  }
+
+  .persona-login-heading h1{
+
+    font-size:1.7rem;
+  }
+
+  .password-label-row{
+
+    flex-direction:column;
+    align-items:flex-start;
+
+    gap:.45rem;
+  }
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cardShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-3px);
+  }
+}

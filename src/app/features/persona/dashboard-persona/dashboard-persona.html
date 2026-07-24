@@ -1,0 +1,243 @@
+<div class="persona-layout">
+
+  <aside class="persona-sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-mark">H</span>
+      <div>
+        <h2>HabitaControl</h2>
+        <p>Panel persona</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+      <button
+        type="button"
+        [class.active]="vistaActiva === 'inicio'"
+        (click)="abrirInicio()">
+        Inicio
+      </button>
+
+      @if (puedeRegistrarVisitantes) {
+        <button
+          type="button"
+          [class.active]="vistaActiva === 'registrar-visitante'"
+          (click)="abrirVisitante()">
+          Registrar visitante
+        </button>
+      }
+
+      @if (tipo === 'Seguridad' || tipo === 'Residente') {
+        <button
+          type="button"
+          [class.active]="vistaActiva === 'lista-visitantes'"
+          (click)="abrirListaVisitantes()">
+          Ver visitantes
+        </button>
+      }
+
+      @if (puedeGestionarPaquetes) {
+        <button
+          type="button"
+          [class.active]="vistaActiva === 'registrar-paquete'"
+          (click)="abrirFormularioPaquete()">
+          Registrar paquete
+        </button>
+
+        <button
+          type="button"
+          [class.active]="vistaActiva === 'lista-paquetes'"
+          (click)="abrirPaquetes()">
+          Ver paquetes
+        </button>
+      }
+
+      @if (puedeReportarNovedad) {
+        <button
+          type="button"
+          [class.active]="vistaActiva === 'crear-novedad'"
+          (click)="abrirNovedad()">
+          Reportar novedad
+        </button>
+      }
+
+      <button
+        type="button"
+        [class.active]="vistaActiva === 'lista-novedades'"
+        (click)="abrirListaNovedades()">
+        Ver novedades
+      </button>
+
+      @if (tipo === 'Residente') {
+        <button
+          type="button"
+          [class.active]="vistaActiva === 'notificaciones'"
+          (click)="abrirNotificaciones()">
+          Notificaciones
+        </button>
+
+        @if (puedeVerReservas) {
+          <button
+            type="button"
+            [class.active]="vistaActiva === 'mis-reservas'"
+            (click)="abrirReservas()">
+            Mis reservas
+          </button>
+        }
+
+        @if (puedeVerVehiculosYMascotas) {
+          <button
+            type="button"
+            [class.active]="vistaActiva === 'mis-vehiculos'"
+            (click)="abrirMisVehiculos()">
+            Mis vehículos
+          </button>
+
+          <button
+            type="button"
+            [class.active]="vistaActiva === 'mis-mascotas'"
+            (click)="abrirMisMascotas()">
+            Mis mascotas
+          </button>
+        }
+
+        <button
+          type="button"
+          [class.active]="
+            vistaActiva ===
+            'app-crear-invitacion-visitante'
+          "
+          (click)="invitarVisitantes()">
+          Generar invitación QR
+        </button>
+      }
+    </nav>
+
+    <button type="button" class="logout-button" (click)="logout()">
+      Cerrar sesión
+    </button>
+  </aside>
+
+  <main class="persona-content">
+
+    <header class="persona-header">
+      <div>
+        <span class="eyebrow">Dashboard persona</span>
+        <h1>Panel {{ tipo }}</h1>
+        <p>
+          Gestiona tus operaciones según tu rol dentro del conjunto residencial.
+        </p>
+      </div>
+    </header>
+
+    <section class="persona-panel">
+
+      @if (vistaActiva === 'inicio') {
+        <div class="welcome-card">
+          <h2>Bienvenido al panel {{ tipo }}</h2>
+
+          @if (tipo === 'Seguridad') {
+            <p>
+              Desde aquí puedes registrar visitantes, controlar paquetes y reportar novedades.
+            </p>
+          }
+
+          @if (tipo === 'Residente') {
+            <p>
+              Desde aquí puedes consultar tus visitantes, reportar novedades, revisar notificaciones,
+              gestionar reservas, vehículos y mascotas.
+            </p>
+          }
+
+          @if (tipo === 'Mantenimiento') {
+            <p>
+              Desde aquí puedes revisar novedades y registrar el seguimiento correspondiente.
+            </p>
+          }
+        </div>
+      }
+
+      @if (vistaActiva === 'lista-visitantes') {
+        <app-lista-visitantes></app-lista-visitantes>
+      }
+
+      @if (vistaActiva === 'lista-paquetes') {
+        <app-lista-paquetes></app-lista-paquetes>
+      }
+
+      @if (vistaActiva === 'lista-novedades') {
+        <app-lista-novedades
+          (iniciarSeguimiento)="abrirSegumiento($event)"
+          (finalizarSeguimiento)="abrirFinalizacion($event)">
+        </app-lista-novedades>
+      }
+
+      @if (vistaActiva === 'notificaciones') {
+        <app-lista-notificaciones></app-lista-notificaciones>
+      }
+
+      @if (vistaActiva === 'zonas-comunes') {
+        <app-zonas-comunes></app-zonas-comunes>
+      }
+
+      @if (vistaActiva === 'mis-vehiculos') {
+        <app-mis-vehiculos></app-mis-vehiculos>
+      }
+
+      @if (vistaActiva === 'mis-mascotas') {
+        <app-mis-mascotas></app-mis-mascotas>
+      }
+
+      @if (vistaActiva === 'app-crear-invitacion-visitante') {
+        <app-crear-invitacion-visitante
+          (cerrar)="cerrarVistaActual()">
+        </app-crear-invitacion-visitante>
+      }
+
+      @if (
+        vistaActiva === 'zonas-comunes' &&
+        puedeVerReservas
+      ) {
+        <app-zonas-comunes>
+        </app-zonas-comunes>
+      }
+
+      @if (
+        vistaActiva === 'mis-reservas' &&
+        puedeVerReservas
+      ) {
+        <app-mis-reservas>
+        </app-mis-reservas>
+      }
+
+    </section>
+
+  </main>
+
+</div>
+
+@if (vistaActiva === 'crear-novedad') {
+  <app-form-novedad (onClose)="cerrarVistaActual()"></app-form-novedad>
+}
+
+@if (vistaActiva === 'registrar-visitante') {
+  <app-form-visitante
+    (cerrarModal)="cerrarVistaActual()"
+    (visitanteRegistrado)="cerrarVistaActual()">
+  </app-form-visitante>
+}
+
+@if (vistaActiva === 'registrar-paquete') {
+  <app-form-paquete
+    (cerrar)="cerrarVistaActual()"
+    (paqueteRegistrado)="cerrarVistaActual()">
+  </app-form-paquete>
+}
+
+@if (vistaActiva === 'seguimiento-novedad') {
+  <app-form-seguimiento
+    [novedadId]="novedadSeleccionadaId"
+    [esFinalizacion]="esFinalizacion"
+    (onClose)="cerrarVistaActual()">
+  </app-form-seguimiento>
+}

@@ -1,0 +1,1087 @@
+<section
+  class="financial-balance"
+  aria-labelledby="financial-balance-title">
+
+    <!-- =====================================================
+       NAVEGACIÓN DEL ANÁLISIS FINANCIERO
+  ====================================================== -->
+
+  <nav
+    class="financial-analysis-navigation"
+    aria-label="Navegación del análisis financiero">
+
+    <button
+      type="button"
+      class="financial-analysis-navigation__button"
+      [class.financial-analysis-navigation__button--active]="
+        esVistaActiva('balance')
+      "
+      [attr.aria-current]="
+        esVistaActiva('balance') ? 'page' : null
+      "
+      (click)="cambiarVista('balance')">
+
+      <span
+        class="
+          financial-analysis-navigation__icon
+          financial-analysis-navigation__icon--balance
+        "
+        aria-hidden="true">
+        =
+      </span>
+
+      <span class="financial-analysis-navigation__content">
+        <strong class="financial-analysis-navigation__title">
+          Balance general
+        </strong>
+
+        <small class="financial-analysis-navigation__description">
+          Consulta ingresos, egresos, saldo y ejecución financiera
+        </small>
+      </span>
+    </button>
+
+    <button
+      type="button"
+      class="financial-analysis-navigation__button"
+      [class.financial-analysis-navigation__button--active]="
+        esVistaActiva('reporte')
+      "
+      [attr.aria-current]="
+        esVistaActiva('reporte') ? 'page' : null
+      "
+      (click)="cambiarVista('reporte')">
+
+      <span
+        class="
+          financial-analysis-navigation__icon
+          financial-analysis-navigation__icon--report
+        "
+        aria-hidden="true">
+        ▤
+      </span>
+
+      <span class="financial-analysis-navigation__content">
+        <strong class="financial-analysis-navigation__title">
+          Reporte detallado
+        </strong>
+
+        <small class="financial-analysis-navigation__description">
+          Consulta categorías y movimientos financieros individuales
+        </small>
+      </span>
+    </button>
+
+  </nav>
+
+  @if (vistaActiva === 'balance') {
+  <div class="financial-analysis-view financial-analysis-view--balance">
+  <!-- =====================================================
+       ENCABEZADO PRINCIPAL
+  ====================================================== -->
+
+  <header class="financial-balance__header">
+    <div class="financial-balance__heading">
+      <div
+        class="financial-balance__heading-icon"
+        aria-hidden="true">
+        <span>$</span>
+      </div>
+
+      <div class="financial-balance__heading-content">
+        <span class="financial-balance__eyebrow">
+          Análisis financiero
+        </span>
+
+        <h2
+          id="financial-balance-title"
+          class="financial-balance__title">
+          Balance financiero
+        </h2>
+
+        <p class="financial-balance__description">
+          Consulta los ingresos, egresos y el saldo disponible
+          del conjunto residencial para el periodo seleccionado.
+        </p>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="financial-balance__refresh-button"
+      [disabled]="isLoading"
+      (click)="actualizar()"
+      aria-label="Actualizar balance financiero">
+
+      @if (isLoading) {
+        <span
+          class="financial-balance__button-loader"
+          aria-hidden="true">
+        </span>
+
+        <span>Actualizando...</span>
+      } @else {
+        <span
+          class="financial-balance__refresh-icon"
+          aria-hidden="true">
+          ↻
+        </span>
+
+        <span>Actualizar</span>
+      }
+    </button>
+  </header>
+
+
+  <!-- =====================================================
+       ALERTA DE ERROR
+  ====================================================== -->
+
+  @if (errorMessage) {
+    <section
+      class="financial-alert financial-alert--error"
+      role="alert"
+      aria-live="assertive">
+
+      <div
+        class="financial-alert__icon"
+        aria-hidden="true">
+        !
+      </div>
+
+      <div class="financial-alert__content">
+        <strong class="financial-alert__title">
+          No fue posible consultar el balance
+        </strong>
+
+        <p class="financial-alert__message">
+          {{ errorMessage }}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="financial-alert__close"
+        (click)="cerrarError()"
+        aria-label="Cerrar mensaje de error">
+        ×
+      </button>
+    </section>
+  }
+
+
+  <!-- =====================================================
+       ALERTA DE ÉXITO
+  ====================================================== -->
+
+  @if (successMessage) {
+    <section
+      class="financial-alert financial-alert--success"
+      role="status"
+      aria-live="polite">
+
+      <div
+        class="financial-alert__icon"
+        aria-hidden="true">
+        ✓
+      </div>
+
+      <div class="financial-alert__content">
+        <strong class="financial-alert__title">
+          Balance actualizado
+        </strong>
+
+        <p class="financial-alert__message">
+          {{ successMessage }}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="financial-alert__close"
+        (click)="cerrarExito()"
+        aria-label="Cerrar mensaje de confirmación">
+        ×
+      </button>
+    </section>
+  }
+
+
+  <!-- =====================================================
+       PANEL DE CONSULTA
+  ====================================================== -->
+
+  <section
+    class="balance-query"
+    aria-labelledby="balance-query-title">
+
+    <header class="balance-query__header">
+      <div>
+        <span class="balance-query__eyebrow">
+          Periodo de análisis
+        </span>
+
+        <h3
+          id="balance-query-title"
+          class="balance-query__title">
+          Configura la consulta
+        </h3>
+
+        <p class="balance-query__description">
+          Selecciona el rango de tiempo que deseas analizar.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="balance-query__reset-button"
+        [disabled]="isLoading"
+        (click)="restablecerFiltros()">
+        Restablecer
+      </button>
+    </header>
+
+
+    <!-- ===================================================
+         TIPOS DE PERIODO
+    ==================================================== -->
+
+    <div
+      class="balance-period-tabs"
+      role="tablist"
+      aria-label="Tipo de periodo financiero">
+
+      @for (
+        periodo of periodosDisponibles;
+        track periodo.valor
+      ) {
+        <button
+          type="button"
+          class="balance-period-tabs__button"
+          [class.balance-period-tabs__button--active]="
+            tipoPeriodoSeleccionado === periodo.valor
+          "
+          [disabled]="isLoading"
+          [attr.aria-selected]="
+            tipoPeriodoSeleccionado === periodo.valor
+          "
+          [attr.aria-controls]="
+            'balance-period-panel-' + periodo.valor
+          "
+          role="tab"
+          (click)="cambiarTipoPeriodo(periodo.valor)">
+
+          <span class="balance-period-tabs__label">
+            {{ periodo.etiqueta }}
+          </span>
+
+          <span class="balance-period-tabs__description">
+            {{ periodo.descripcion }}
+          </span>
+        </button>
+      }
+    </div>
+
+
+    <!-- ===================================================
+         FILTROS
+    ==================================================== -->
+
+    <form
+      class="balance-query__form"
+      (ngSubmit)="aplicarFiltros()">
+
+      <div
+        class="balance-query__fields"
+        [attr.id]="
+          'balance-period-panel-' +
+          tipoPeriodoSeleccionado
+        "
+        role="tabpanel">
+
+        <!-- Año -->
+
+        <div class="balance-query__field">
+          <label
+            for="balance-anio"
+            class="balance-query__label">
+            Año
+            <span
+              class="balance-query__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <div class="balance-query__select-wrapper">
+            <select
+              id="balance-anio"
+              name="anioSeleccionado"
+              class="balance-query__control"
+              [(ngModel)]="anioSeleccionado"
+              [disabled]="isLoading"
+              required>
+
+              @for (
+                anio of aniosDisponibles;
+                track anio
+              ) {
+                <option [ngValue]="anio">
+                  {{ anio }}
+                </option>
+              }
+            </select>
+
+            <span
+              class="balance-query__select-icon"
+              aria-hidden="true">
+            </span>
+          </div>
+        </div>
+
+
+        <!-- Mes -->
+
+        @if (tipoPeriodoSeleccionado === 'mensual') {
+          <div class="balance-query__field">
+            <label
+              for="balance-mes"
+              class="balance-query__label">
+              Mes
+              <span
+                class="balance-query__required"
+                aria-hidden="true">
+                *
+              </span>
+            </label>
+
+            <div class="balance-query__select-wrapper">
+              <select
+                id="balance-mes"
+                name="mesSeleccionado"
+                class="balance-query__control"
+                [(ngModel)]="mesSeleccionado"
+                [disabled]="isLoading"
+                required>
+
+                @for (mes of meses; track mes.valor) {
+                  <option [ngValue]="mes.valor">
+                    {{ mes.etiqueta }}
+                  </option>
+                }
+              </select>
+
+              <span
+                class="balance-query__select-icon"
+                aria-hidden="true">
+              </span>
+            </div>
+          </div>
+        }
+
+
+        <!-- Trimestre -->
+
+        @if (tipoPeriodoSeleccionado === 'trimestral') {
+          <div class="balance-query__field">
+            <label
+              for="balance-trimestre"
+              class="balance-query__label">
+              Trimestre
+              <span
+                class="balance-query__required"
+                aria-hidden="true">
+                *
+              </span>
+            </label>
+
+            <div class="balance-query__select-wrapper">
+              <select
+                id="balance-trimestre"
+                name="trimestreSeleccionado"
+                class="balance-query__control"
+                [(ngModel)]="trimestreSeleccionado"
+                [disabled]="isLoading"
+                required>
+
+                @for (
+                  trimestre of trimestres;
+                  track trimestre.valor
+                ) {
+                  <option [ngValue]="trimestre.valor">
+                    {{ trimestre.etiqueta }}
+                  </option>
+                }
+              </select>
+
+              <span
+                class="balance-query__select-icon"
+                aria-hidden="true">
+              </span>
+            </div>
+          </div>
+        }
+
+
+        <!-- Semestre -->
+
+        @if (tipoPeriodoSeleccionado === 'semestral') {
+          <div class="balance-query__field">
+            <label
+              for="balance-semestre"
+              class="balance-query__label">
+              Semestre
+              <span
+                class="balance-query__required"
+                aria-hidden="true">
+                *
+              </span>
+            </label>
+
+            <div class="balance-query__select-wrapper">
+              <select
+                id="balance-semestre"
+                name="semestreSeleccionado"
+                class="balance-query__control"
+                [(ngModel)]="semestreSeleccionado"
+                [disabled]="isLoading"
+                required>
+
+                @for (
+                  semestre of semestres;
+                  track semestre.valor
+                ) {
+                  <option [ngValue]="semestre.valor">
+                    {{ semestre.etiqueta }}
+                  </option>
+                }
+              </select>
+
+              <span
+                class="balance-query__select-icon"
+                aria-hidden="true">
+              </span>
+            </div>
+          </div>
+        }
+
+
+        <!-- Periodo anual -->
+
+        @if (tipoPeriodoSeleccionado === 'anual') {
+          <div class="balance-query__annual-info">
+            <div
+              class="balance-query__annual-icon"
+              aria-hidden="true">
+              12
+            </div>
+
+            <div>
+              <strong>
+                Consolidado anual
+              </strong>
+
+              <p>
+                Se incluirán todos los movimientos registrados
+                entre enero y diciembre de
+                {{ anioSeleccionado }}.
+              </p>
+            </div>
+          </div>
+        }
+      </div>
+
+
+      <!-- Acción de consulta -->
+
+      <div class="balance-query__actions">
+        <div class="balance-query__help">
+          <span aria-hidden="true">i</span>
+
+          <p>
+            Los resultados consideran únicamente movimientos
+            válidos dentro del periodo seleccionado.
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          class="balance-query__submit-button"
+          [disabled]="isLoading">
+
+          @if (isLoading) {
+            <span
+              class="balance-query__button-loader"
+              aria-hidden="true">
+            </span>
+
+            <span>Consultando...</span>
+          } @else {
+            <span
+              class="balance-query__button-icon"
+              aria-hidden="true">
+              ↗
+            </span>
+
+            <span>Consultar balance</span>
+          }
+        </button>
+      </div>
+    </form>
+  </section>
+
+
+  <!-- =====================================================
+       ESTADO DE CARGA
+  ====================================================== -->
+
+  @if (isLoading) {
+    <section
+      class="financial-balance-loading"
+      role="status"
+      aria-live="polite">
+
+      <div
+        class="financial-balance-loading__spinner"
+        aria-hidden="true">
+      </div>
+
+      <div class="financial-balance-loading__content">
+        <h3>Calculando balance financiero</h3>
+
+        <p>
+          Estamos consolidando los ingresos y egresos del
+          periodo seleccionado.
+        </p>
+      </div>
+
+      <div
+        class="financial-balance-loading__skeleton"
+        aria-hidden="true">
+
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </section>
+  }
+
+
+  <!-- =====================================================
+       RESULTADOS
+  ====================================================== -->
+
+  @if (!isLoading && balance) {
+    <section
+      class="balance-results"
+      aria-labelledby="balance-results-title">
+
+      <!-- Encabezado del resultado -->
+
+      <header class="balance-results__header">
+        <div>
+          <span class="balance-results__eyebrow">
+            Resultado consolidado
+          </span>
+
+          <h3
+            id="balance-results-title"
+            class="balance-results__title">
+            {{ balance.periodoTexto }}
+          </h3>
+
+          <p class="balance-results__description">
+            Información comprendida entre el
+            <strong>
+              {{ balance.fechaInicio | date:'dd/MM/yyyy' }}
+            </strong>
+            y el
+            <strong>
+              {{ balance.fechaFin | date:'dd/MM/yyyy' }}
+            </strong>.
+          </p>
+        </div>
+
+        <div
+          class="balance-results__status"
+          [class.balance-results__status--positive]="
+            balance.saldoDisponible > 0
+          "
+          [class.balance-results__status--negative]="
+            balance.saldoDisponible < 0
+          "
+          [class.balance-results__status--neutral]="
+            balance.saldoDisponible === 0
+          ">
+
+          <span
+            class="balance-results__status-indicator"
+            aria-hidden="true">
+          </span>
+
+          <span>
+            {{ obtenerEstadoFinanciero() }}
+          </span>
+        </div>
+      </header>
+
+
+      <!-- =================================================
+           TARJETAS PRINCIPALES
+      ================================================== -->
+
+      <div class="balance-summary-grid">
+
+        <!-- Ingresos -->
+
+        <article
+          class="
+            balance-summary-card
+            balance-summary-card--income
+          ">
+
+          <header class="balance-summary-card__header">
+            <div
+              class="balance-summary-card__icon"
+              aria-hidden="true">
+              ↑
+            </div>
+
+            <div>
+              <span class="balance-summary-card__eyebrow">
+                Entradas del periodo
+              </span>
+
+              <h4 class="balance-summary-card__title">
+                Total ingresos
+              </h4>
+            </div>
+          </header>
+
+          <strong class="balance-summary-card__value">
+            {{
+              balance.totalIngresos
+                | currency:'COP':'symbol-narrow':'1.0-0'
+            }}
+          </strong>
+
+          <footer class="balance-summary-card__footer">
+            <span
+              class="balance-summary-card__badge
+                     balance-summary-card__badge--income">
+              Ingresos
+            </span>
+
+            <span>
+              Valor acumulado
+            </span>
+          </footer>
+        </article>
+
+
+        <!-- Egresos -->
+
+        <article
+          class="
+            balance-summary-card
+            balance-summary-card--expense
+          ">
+
+          <header class="balance-summary-card__header">
+            <div
+              class="balance-summary-card__icon"
+              aria-hidden="true">
+              ↓
+            </div>
+
+            <div>
+              <span class="balance-summary-card__eyebrow">
+                Salidas del periodo
+              </span>
+
+              <h4 class="balance-summary-card__title">
+                Total egresos
+              </h4>
+            </div>
+          </header>
+
+          <strong class="balance-summary-card__value">
+            {{
+              balance.totalEgresos
+                | currency:'COP':'symbol-narrow':'1.0-0'
+            }}
+          </strong>
+
+          <footer class="balance-summary-card__footer">
+            <span
+              class="balance-summary-card__badge
+                     balance-summary-card__badge--expense">
+              Egresos
+            </span>
+
+            <span>
+              Valor acumulado
+            </span>
+          </footer>
+        </article>
+
+
+        <!-- Saldo -->
+
+        <article
+          class="balance-summary-card balance-summary-card--total"
+          [ngClass]="obtenerClaseSaldo()">
+
+          <header class="balance-summary-card__header">
+            <div
+              class="balance-summary-card__icon"
+              aria-hidden="true">
+              =
+            </div>
+
+            <div>
+              <span class="balance-summary-card__eyebrow">
+                Resultado del periodo
+              </span>
+
+              <h4 class="balance-summary-card__title">
+                Saldo disponible
+              </h4>
+            </div>
+          </header>
+
+          <strong class="balance-summary-card__value">
+            {{
+              balance.saldoDisponible
+                | currency:'COP':'symbol-narrow':'1.0-0'
+            }}
+          </strong>
+
+          <footer class="balance-summary-card__footer">
+            <span
+              class="balance-summary-card__badge"
+              [class.balance-summary-card__badge--positive]="
+                balance.saldoDisponible > 0
+              "
+              [class.balance-summary-card__badge--negative]="
+                balance.saldoDisponible < 0
+              "
+              [class.balance-summary-card__badge--neutral]="
+                balance.saldoDisponible === 0
+              ">
+              {{ obtenerEstadoFinanciero() }}
+            </span>
+
+            <span>
+              Ingresos menos egresos
+            </span>
+          </footer>
+        </article>
+      </div>
+
+
+      <!-- =================================================
+           ANÁLISIS COMPLEMENTARIO
+      ================================================== -->
+
+      <div class="balance-analysis-grid">
+
+        <!-- Estado financiero -->
+
+        <article class="balance-health">
+          <header class="balance-health__header">
+            <div>
+              <span class="balance-health__eyebrow">
+                Diagnóstico
+              </span>
+
+              <h4 class="balance-health__title">
+                Estado financiero
+              </h4>
+            </div>
+
+            <div
+              class="balance-health__icon"
+              [class.balance-health__icon--positive]="
+                balance.saldoDisponible > 0
+              "
+              [class.balance-health__icon--negative]="
+                balance.saldoDisponible < 0
+              "
+              [class.balance-health__icon--neutral]="
+                balance.saldoDisponible === 0
+              "
+              aria-hidden="true">
+
+              @if (balance.saldoDisponible > 0) {
+                ✓
+              } @else if (balance.saldoDisponible < 0) {
+                !
+              } @else {
+                =
+              }
+            </div>
+          </header>
+
+          <div class="balance-health__body">
+            <strong class="balance-health__status">
+              {{ obtenerEstadoFinanciero() }}
+            </strong>
+
+            <p class="balance-health__description">
+              {{ obtenerDescripcionEstado() }}
+            </p>
+          </div>
+
+          <footer class="balance-health__footer">
+            <span>
+              Margen disponible
+            </span>
+
+            <strong
+              [class.balance-health__percentage--positive]="
+                obtenerPorcentajeSaldo() > 0
+              "
+              [class.balance-health__percentage--negative]="
+                obtenerPorcentajeSaldo() < 0
+              ">
+              {{ obtenerPorcentajeSaldo() | number:'1.0-2' }}%
+            </strong>
+          </footer>
+        </article>
+
+
+        <!-- Ejecución financiera -->
+
+        <article class="balance-execution">
+          <header class="balance-execution__header">
+            <div>
+              <span class="balance-execution__eyebrow">
+                Comparación
+              </span>
+
+              <h4 class="balance-execution__title">
+                Ejecución de los ingresos
+              </h4>
+            </div>
+
+            <strong class="balance-execution__percentage">
+              {{
+                obtenerPorcentajeEjecucion()
+                  | number:'1.0-2'
+              }}%
+            </strong>
+          </header>
+
+          <p class="balance-execution__description">
+            Este indicador representa qué porcentaje de los
+            ingresos fue utilizado para cubrir egresos.
+          </p>
+
+          <div
+            class="balance-execution__progress"
+            role="progressbar"
+            aria-label="Porcentaje de ingresos utilizados"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [attr.aria-valuenow]="
+              obtenerPorcentajeEjecucion()
+            ">
+
+            <span
+              class="balance-execution__progress-bar"
+              [style.width.%]="
+                obtenerPorcentajeEjecucion()
+              ">
+            </span>
+          </div>
+
+          <div class="balance-execution__legend">
+            <div>
+              <span
+                class="
+                  balance-execution__legend-indicator
+                  balance-execution__legend-indicator--income
+                "
+                aria-hidden="true">
+              </span>
+
+              <span>Ingresos</span>
+
+              <strong>
+                {{
+                  balance.totalIngresos
+                    | currency:'COP':'symbol-narrow':'1.0-0'
+                }}
+              </strong>
+            </div>
+
+            <div>
+              <span
+                class="
+                  balance-execution__legend-indicator
+                  balance-execution__legend-indicator--expense
+                "
+                aria-hidden="true">
+              </span>
+
+              <span>Egresos</span>
+
+              <strong>
+                {{
+                  balance.totalEgresos
+                    | currency:'COP':'symbol-narrow':'1.0-0'
+                }}
+              </strong>
+            </div>
+          </div>
+        </article>
+      </div>
+
+
+      <!-- =================================================
+           INFORMACIÓN DEL PERIODO
+      ================================================== -->
+
+      <article class="balance-period-detail">
+        <header class="balance-period-detail__header">
+          <div
+            class="balance-period-detail__icon"
+            aria-hidden="true">
+            i
+          </div>
+
+          <div>
+            <span class="balance-period-detail__eyebrow">
+              Detalle de la consulta
+            </span>
+
+            <h4 class="balance-period-detail__title">
+              Información del periodo analizado
+            </h4>
+          </div>
+        </header>
+
+        <dl class="balance-period-detail__list">
+          <div class="balance-period-detail__item">
+            <dt>Tipo de periodo</dt>
+
+            <dd>
+              {{
+                obtenerPeriodoSeleccionado(
+                  balance.tipoPeriodo
+                )?.etiqueta ?? balance.tipoPeriodo
+              }}
+            </dd>
+          </div>
+
+          <div class="balance-period-detail__item">
+            <dt>Año</dt>
+
+            <dd>{{ balance.anio }}</dd>
+          </div>
+
+          @if (balance.mes != null) {
+            <div class="balance-period-detail__item">
+              <dt>Mes</dt>
+
+              <dd>{{ obtenerNombreMes(balance.mes) }}</dd>
+            </div>
+          }
+
+          @if (balance.trimestre != null) {
+            <div class="balance-period-detail__item">
+              <dt>Trimestre</dt>
+
+              <dd>
+                {{ balance.trimestre }}
+              </dd>
+            </div>
+          }
+
+          @if (balance.semestre != null) {
+            <div class="balance-period-detail__item">
+              <dt>Semestre</dt>
+
+              <dd>
+                {{ balance.semestre }}
+              </dd>
+            </div>
+          }
+
+          <div class="balance-period-detail__item">
+            <dt>Fecha inicial</dt>
+
+            <dd>
+              {{ balance.fechaInicio | date:'dd/MM/yyyy' }}
+            </dd>
+          </div>
+
+          <div class="balance-period-detail__item">
+            <dt>Fecha final</dt>
+
+            <dd>
+              {{ balance.fechaFin | date:'dd/MM/yyyy' }}
+            </dd>
+          </div>
+        </dl>
+      </article>
+    </section>
+  }
+
+
+  <!-- =====================================================
+       ESTADO SIN RESULTADO
+  ====================================================== -->
+
+  @if (
+    !isLoading &&
+    !balance &&
+    hasLoaded &&
+    !errorMessage
+  ) {
+    <section class="financial-balance-empty">
+      <div
+        class="financial-balance-empty__illustration"
+        aria-hidden="true">
+
+        <span class="financial-balance-empty__circle">
+          $
+        </span>
+
+        <span class="financial-balance-empty__line"></span>
+        <span class="financial-balance-empty__line"></span>
+        <span class="financial-balance-empty__line"></span>
+      </div>
+
+      <h3 class="financial-balance-empty__title">
+        No hay información disponible
+      </h3>
+
+      <p class="financial-balance-empty__description">
+        No fue posible encontrar datos financieros para el
+        periodo seleccionado. Prueba con otro rango de tiempo.
+      </p>
+
+      <button
+        type="button"
+        class="financial-balance-empty__button"
+        (click)="restablecerFiltros()">
+        Consultar periodo actual
+      </button>
+    </section>
+  }
+    </div>
+    }
+
+    @if (vistaActiva === 'reporte') {
+    <div class="financial-analysis-view financial-analysis-view--report">
+
+        <app-reporte-financiero>
+        </app-reporte-financiero>
+
+    </div>
+    }
+
+</section>
+

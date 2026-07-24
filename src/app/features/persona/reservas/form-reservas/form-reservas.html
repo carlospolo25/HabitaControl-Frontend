@@ -1,0 +1,701 @@
+<section
+  class="reservation-form"
+  aria-labelledby="reservation-form-title">
+
+  <header class="reservation-form__header">
+    <div class="reservation-form__heading">
+      <span class="reservation-form__eyebrow">
+        Reserva de espacio compartido
+      </span>
+
+      <h3
+        id="reservation-form-title"
+        class="reservation-form__title">
+        Crear nueva reserva
+      </h3>
+
+      <p class="reservation-form__description">
+        Selecciona una zona común, consulta su disponibilidad y registra
+        un horario válido dentro del mes actual.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="reservation-form__close"
+      aria-label="Cerrar formulario de reserva"
+      [disabled]="isSubmitting"
+      (click)="cancelar()">
+      ×
+    </button>
+  </header>
+
+  <form
+    class="reservation-form__content"
+    autocomplete="off"
+    (ngSubmit)="guardar()">
+
+    <div class="reservation-form__scroll-area">
+
+      @if (errorMessage) {
+        <div
+          class="reservation-form__alert reservation-form__alert--error"
+          role="alert">
+
+          <span
+            class="reservation-form__alert-icon"
+            aria-hidden="true">
+            !
+          </span>
+
+          <div class="reservation-form__alert-content">
+            <strong>No fue posible registrar la reserva</strong>
+            <p>{{ errorMessage }}</p>
+          </div>
+
+          <button
+            type="button"
+            class="reservation-form__alert-close"
+            aria-label="Cerrar mensaje de error"
+            (click)="errorMessage = ''">
+            ×
+          </button>
+        </div>
+      }
+
+      <!-- Zona común -->
+      <section class="reservation-form__section">
+        <div class="reservation-form__section-heading">
+          <span class="reservation-form__section-number">
+            01
+          </span>
+
+          <div>
+            <h4 class="reservation-form__section-title">
+              Selecciona la zona común
+            </h4>
+
+            <p class="reservation-form__section-description">
+              Elige uno de los espacios activos disponibles para reservar.
+            </p>
+          </div>
+        </div>
+
+        @if (isLoadingZones) {
+          <div
+            class="reservation-form__inline-loading"
+            aria-live="polite">
+
+            <span class="reservation-form__spinner"></span>
+
+            <div>
+              <strong>Cargando zonas comunes</strong>
+              <p>Estamos consultando los espacios disponibles.</p>
+            </div>
+          </div>
+        } @else if (zonesErrorMessage) {
+          <div
+            class="reservation-form__alert reservation-form__alert--error"
+            role="alert">
+
+            <span
+              class="reservation-form__alert-icon"
+              aria-hidden="true">
+              !
+            </span>
+
+            <div class="reservation-form__alert-content">
+              <strong>No fue posible cargar las zonas</strong>
+              <p>{{ zonesErrorMessage }}</p>
+            </div>
+
+            <button
+              type="button"
+              class="reservation-form__retry-button"
+              (click)="cargarZonas()">
+              Reintentar
+            </button>
+          </div>
+        } @else if (zonas.length === 0) {
+          <div class="reservation-form__empty">
+            <span
+              class="reservation-form__empty-icon"
+              aria-hidden="true">
+              🏢
+            </span>
+
+            <div>
+              <strong>No hay zonas disponibles</strong>
+              <p>
+                En este momento no existen zonas comunes activas para reservar.
+              </p>
+            </div>
+          </div>
+        } @else {
+          <div class="reservation-form__field">
+            <label
+              class="reservation-form__label"
+              for="reservation-zone">
+              Zona común
+              <span class="reservation-form__required">*</span>
+            </label>
+
+            <select
+              id="reservation-zone"
+              class="reservation-form__select"
+              name="zonaComunId"
+              [(ngModel)]="zonaComunId"
+              [disabled]="
+                isSubmitting ||
+                isLoadingAvailability
+              "
+              (ngModelChange)="seleccionarZona()"
+              required>
+
+              <option value="">
+                Selecciona una zona común
+              </option>
+
+              @for (zone of zonas; track zone.id) {
+                <option [value]="zone.id">
+                  {{ zone.nombre }}
+                </option>
+              }
+            </select>
+
+            <span class="reservation-form__hint">
+              Solo se muestran zonas activas.
+            </span>
+          </div>
+
+          @if (zonaSeleccionada) {
+            <article class="reservation-form__zone-summary">
+              <div
+                class="reservation-form__zone-avatar"
+                aria-hidden="true">
+                {{
+                  zonaSeleccionada.nombre
+                    .charAt(0)
+                    .toUpperCase()
+                }}
+              </div>
+
+              <div class="reservation-form__zone-content">
+                <div class="reservation-form__zone-heading">
+                  <h5 class="reservation-form__zone-name">
+                    {{ zonaSeleccionada.nombre }}
+                  </h5>
+
+                  <span
+                    class="reservation-form__zone-approval"
+                    [class.reservation-form__zone-approval--automatic]="
+                      !zonaSeleccionada.requiereAprobacion
+                    ">
+                    {{
+                      zonaSeleccionada.requiereAprobacion
+                        ? 'Requiere aprobación'
+                        : 'Confirmación automática'
+                    }}
+                  </span>
+                </div>
+
+                <p class="reservation-form__zone-description">
+                  {{
+                    zonaSeleccionada.descripcion ||
+                    'Esta zona común no tiene una descripción registrada.'
+                  }}
+                </p>
+
+                <dl class="reservation-form__zone-details">
+                  <div class="reservation-form__zone-detail">
+                    <dt>Capacidad</dt>
+                    <dd>
+                      {{ zonaSeleccionada.capacidadMaxima }}
+                      {{
+                        zonaSeleccionada.capacidadMaxima === 1
+                          ? 'persona'
+                          : 'personas'
+                      }}
+                    </dd>
+                  </div>
+
+                  <div class="reservation-form__zone-detail">
+                    <dt>Horario</dt>
+                    <dd>
+                      {{ zonaSeleccionada.horaApertura.slice(0, 5) }}
+                      –
+                      {{ zonaSeleccionada.horaCierre.slice(0, 5) }}
+                    </dd>
+                  </div>
+
+                  <div class="reservation-form__zone-detail">
+                    <dt>Duración máxima</dt>
+                    <dd>
+                      {{ zonaSeleccionada.duracionMaximaMinutos }}
+                      minutos
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+          }
+        }
+      </section>
+
+      <!-- Fecha -->
+      <section class="reservation-form__section">
+        <div class="reservation-form__section-heading">
+          <span class="reservation-form__section-number">
+            02
+          </span>
+
+          <div>
+            <h4 class="reservation-form__section-title">
+              Selecciona la fecha
+            </h4>
+
+            <p class="reservation-form__section-description">
+              Solo puedes reservar desde hoy hasta el último día del mes actual.
+            </p>
+          </div>
+        </div>
+
+        <div class="reservation-form__field">
+          <label
+            class="reservation-form__label"
+            for="reservation-date">
+            Fecha de la reserva
+            <span class="reservation-form__required">*</span>
+          </label>
+
+          <input
+            id="reservation-date"
+            class="reservation-form__input"
+            type="date"
+            name="fechaReserva"
+            [(ngModel)]="fechaReserva"
+            [min]="fechaMinima"
+            [max]="fechaMaxima"
+            [disabled]="
+              !zonaSeleccionada ||
+              isSubmitting ||
+              isLoadingAvailability
+            "
+            (ngModelChange)="seleccionarFecha()"
+            required>
+
+          <span class="reservation-form__hint">
+            Rango permitido:
+            {{ fechaMinima | date: 'dd/MM/yyyy' }}
+            –
+            {{ fechaMaxima | date: 'dd/MM/yyyy' }}
+          </span>
+        </div>
+      </section>
+
+      <!-- Disponibilidad -->
+      <section class="reservation-form__section">
+        <div class="reservation-form__section-heading">
+          <span class="reservation-form__section-number">
+            03
+          </span>
+
+          <div>
+            <h4 class="reservation-form__section-title">
+              Disponibilidad del día
+            </h4>
+
+            <p class="reservation-form__section-description">
+              Consulta los horarios ocupados antes de elegir tu rango.
+            </p>
+          </div>
+        </div>
+
+        @if (!zonaSeleccionada || !fechaReserva) {
+          <div class="reservation-form__empty reservation-form__empty--compact">
+            <span
+              class="reservation-form__empty-icon"
+              aria-hidden="true">
+              ◷
+            </span>
+
+            <div>
+              <strong>Selecciona una zona y una fecha</strong>
+              <p>
+                La disponibilidad aparecerá cuando completes los pasos
+                anteriores.
+              </p>
+            </div>
+          </div>
+        } @else if (isLoadingAvailability) {
+          <div
+            class="reservation-form__inline-loading"
+            aria-live="polite">
+
+            <span class="reservation-form__spinner"></span>
+
+            <div>
+              <strong>Consultando disponibilidad</strong>
+              <p>Estamos revisando los horarios ocupados para esta fecha.</p>
+            </div>
+          </div>
+        } @else if (availabilityErrorMessage) {
+          <div
+            class="reservation-form__alert reservation-form__alert--error"
+            role="alert">
+
+            <span
+              class="reservation-form__alert-icon"
+              aria-hidden="true">
+              !
+            </span>
+
+            <div class="reservation-form__alert-content">
+              <strong>No fue posible consultar la disponibilidad</strong>
+              <p>{{ availabilityErrorMessage }}</p>
+            </div>
+
+            <button
+              type="button"
+              class="reservation-form__retry-button"
+              (click)="consultarDisponibilidad()">
+              Reintentar
+            </button>
+          </div>
+        } @else {
+          <div class="reservation-form__availability">
+            <header class="reservation-form__availability-header">
+              <div>
+                <span class="reservation-form__availability-label">
+                  Horarios ocupados
+                </span>
+
+                <strong class="reservation-form__availability-date">
+                  {{ fechaReserva | date: 'dd/MM/yyyy' }}
+                </strong>
+              </div>
+
+              <button
+                type="button"
+                class="reservation-form__availability-refresh"
+                [disabled]="isLoadingAvailability || isSubmitting"
+                (click)="consultarDisponibilidad()">
+                ↻ Actualizar
+              </button>
+            </header>
+
+            @if (horariosOcupadosOrdenados.length === 0) {
+              <div class="reservation-form__availability-free">
+                <span
+                  class="reservation-form__availability-free-icon"
+                  aria-hidden="true">
+                  ✓
+                </span>
+
+                <div>
+                  <strong>El día está completamente disponible</strong>
+                  <p>
+                    No existen reservas ocupando horarios para esta fecha.
+                  </p>
+                </div>
+              </div>
+            } @else {
+              <div
+                class="reservation-form__occupied-list"
+                aria-label="Horarios ocupados">
+
+                @for (
+                  occupied of horariosOcupadosOrdenados;
+                  track occupied.horaInicio + occupied.horaFin
+                ) {
+                  <article
+                    class="reservation-form__occupied-item"
+                    [class.reservation-form__occupied-item--conflict]="
+                      horarioEstaOcupado(occupied)
+                    ">
+
+                    <span
+                      class="reservation-form__occupied-icon"
+                      aria-hidden="true">
+                      ×
+                    </span>
+
+                    <div class="reservation-form__occupied-content">
+                      <span class="reservation-form__occupied-label">
+                        Horario ocupado
+                      </span>
+
+                      <strong class="reservation-form__occupied-time">
+                        {{ formatearHoraVisual(occupied.horaInicio) }}
+                        –
+                        {{ formatearHoraVisual(occupied.horaFin) }}
+                      </strong>
+                    </div>
+
+                    @if (horarioEstaOcupado(occupied)) {
+                      <span class="reservation-form__occupied-conflict">
+                        Se cruza con tu selección
+                      </span>
+                    }
+                  </article>
+                }
+              </div>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- Horario -->
+      <section class="reservation-form__section">
+        <div class="reservation-form__section-heading">
+          <span class="reservation-form__section-number">
+            04
+          </span>
+
+          <div>
+            <h4 class="reservation-form__section-title">
+              Selecciona el horario
+            </h4>
+
+            <p class="reservation-form__section-description">
+              Define un rango libre dentro del horario de funcionamiento.
+            </p>
+          </div>
+        </div>
+
+        <div class="reservation-form__grid">
+          <div class="reservation-form__field">
+            <label
+              class="reservation-form__label"
+              for="reservation-start-time">
+              Hora de inicio
+              <span class="reservation-form__required">*</span>
+            </label>
+
+            <input
+              id="reservation-start-time"
+              class="reservation-form__input"
+              type="time"
+              name="horaInicio"
+              [(ngModel)]="horaInicio"
+              [min]="zonaSeleccionada?.horaApertura?.slice(0, 5) || null"
+              [max]="zonaSeleccionada?.horaCierre?.slice(0, 5) || null"
+              [disabled]="
+                !zonaSeleccionada ||
+                !fechaReserva ||
+                isLoadingAvailability ||
+                isSubmitting
+              "
+              (ngModelChange)="cambiarHoraInicio()"
+              required>
+
+            @if (zonaSeleccionada) {
+              <span class="reservation-form__hint">
+                Desde las
+                {{ zonaSeleccionada.horaApertura.slice(0, 5) }}.
+              </span>
+            }
+          </div>
+
+          <div class="reservation-form__field">
+            <label
+              class="reservation-form__label"
+              for="reservation-end-time">
+              Hora de finalización
+              <span class="reservation-form__required">*</span>
+            </label>
+
+            <input
+              id="reservation-end-time"
+              class="reservation-form__input"
+              type="time"
+              name="horaFin"
+              [(ngModel)]="horaFin"
+              [min]="horaInicio || zonaSeleccionada?.horaApertura?.slice(0, 5) || null"
+              [max]="zonaSeleccionada?.horaCierre?.slice(0, 5) || null"
+              [disabled]="
+                !horaInicio ||
+                isLoadingAvailability ||
+                isSubmitting
+              "
+              (ngModelChange)="cambiarHoraFin()"
+              required>
+
+            @if (zonaSeleccionada) {
+              <span class="reservation-form__hint">
+                Hasta las
+                {{ zonaSeleccionada.horaCierre.slice(0, 5) }}.
+              </span>
+            }
+          </div>
+        </div>
+
+        @if (horaInicio && horaFin) {
+          <div
+            class="reservation-form__selected-slot"
+            [class.reservation-form__selected-slot--conflict]="
+              horariosOcupadosOrdenados.some(
+                occupied => horarioEstaOcupado(occupied)
+              )
+            ">
+
+            <span
+              class="reservation-form__selected-slot-icon"
+              aria-hidden="true">
+              ◷
+            </span>
+
+            <div>
+              <span class="reservation-form__selected-slot-label">
+                Horario seleccionado
+              </span>
+
+              <strong class="reservation-form__selected-slot-time">
+                {{ horaInicio }} – {{ horaFin }}
+              </strong>
+            </div>
+          </div>
+        }
+      </section>
+
+      <!-- Personas y observación -->
+      <section class="reservation-form__section">
+        <div class="reservation-form__section-heading">
+          <span class="reservation-form__section-number">
+            05
+          </span>
+
+          <div>
+            <h4 class="reservation-form__section-title">
+              Información adicional
+            </h4>
+
+            <p class="reservation-form__section-description">
+              Indica la cantidad de asistentes y agrega una observación
+              cuando sea necesario.
+            </p>
+          </div>
+        </div>
+
+        <div class="reservation-form__grid">
+          <div class="reservation-form__field">
+            <label
+              class="reservation-form__label"
+              for="reservation-people">
+              Cantidad de personas
+              <span class="reservation-form__required">*</span>
+            </label>
+
+            <div class="reservation-form__input-group">
+              <input
+                id="reservation-people"
+                class="reservation-form__input"
+                type="number"
+                name="cantidadPersonas"
+                [(ngModel)]="cantidadPersonas"
+                min="1"
+                [max]="zonaSeleccionada?.capacidadMaxima || null"
+                step="1"
+                placeholder="0"
+                [disabled]="
+                  !zonaSeleccionada ||
+                  isSubmitting
+                "
+                required>
+
+              <span class="reservation-form__input-suffix">
+                personas
+              </span>
+            </div>
+
+            @if (zonaSeleccionada) {
+              <span class="reservation-form__hint">
+                Máximo permitido:
+                {{ zonaSeleccionada.capacidadMaxima }}.
+              </span>
+            }
+          </div>
+
+          <div class="reservation-form__field reservation-form__field--full">
+            <label
+              class="reservation-form__label"
+              for="reservation-observation">
+              Observación
+            </label>
+
+            <textarea
+              id="reservation-observation"
+              class="reservation-form__textarea"
+              name="observacion"
+              [(ngModel)]="observacion"
+              maxlength="500"
+              rows="5"
+              placeholder="Describe el motivo de la reserva o alguna información relevante..."
+              [disabled]="isSubmitting">
+            </textarea>
+
+            <div class="reservation-form__field-footer">
+              <span class="reservation-form__hint">
+                Campo opcional.
+              </span>
+
+              <span class="reservation-form__counter">
+                {{ observacion.length }}/500
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="reservation-form__footer">
+      <div class="reservation-form__footer-message">
+        <span
+          class="reservation-form__footer-icon"
+          aria-hidden="true">
+          ✓
+        </span>
+
+        <p>
+          La reserva se confirmará automáticamente o quedará pendiente
+          de aprobación según la configuración de la zona.
+        </p>
+      </div>
+
+      <div class="reservation-form__actions">
+        <button
+          type="button"
+          class="reservation-form__button reservation-form__button--secondary"
+          [disabled]="isSubmitting"
+          (click)="cancelar()">
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="reservation-form__button reservation-form__button--primary"
+          [disabled]="!puedeGuardar">
+
+          @if (isSubmitting) {
+            <span
+              class="reservation-form__button-spinner"
+              aria-hidden="true">
+            </span>
+
+            <span>Registrando reserva...</span>
+          } @else {
+            <span
+              class="reservation-form__button-icon"
+              aria-hidden="true">
+              +
+            </span>
+
+            <span>Registrar reserva</span>
+          }
+        </button>
+      </div>
+    </footer>
+
+  </form>
+</section>

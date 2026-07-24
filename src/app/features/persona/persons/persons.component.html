@@ -1,0 +1,888 @@
+<section class="people-management">
+
+  <!-- ======================================================
+       ENCABEZADO PRINCIPAL
+  ======================================================= -->
+
+  <header class="people-management__header">
+
+    <div class="people-heading">
+      <span class="people-heading__eyebrow">
+        Gestión de personas
+      </span>
+
+      <h2 class="people-heading__title">
+        Personas
+      </h2>
+
+      <p class="people-heading__description">
+        Administra residentes, seguridad y personal de mantenimiento
+        del conjunto.
+      </p>
+    </div>
+
+    <div class="people-management__actions">
+
+      <button
+        type="button"
+        class="people-button people-button--secondary"
+        (click)="loadPeople()"
+        [disabled]="isLoading">
+
+        <span class="people-button__icon" aria-hidden="true">
+          ↻
+        </span>
+
+        <span class="people-button__label">
+          Actualizar
+        </span>
+      </button>
+
+      @if (isAdmin) {
+        <button
+          type="button"
+          class="people-button people-button--primary"
+          (click)="showInvitationForm = true">
+
+          <span class="people-button__icon" aria-hidden="true">
+            +
+          </span>
+
+          <span class="people-button__label">
+            Invitar persona
+          </span>
+        </button>
+      }
+
+    </div>
+
+  </header>
+
+
+  <!-- ======================================================
+       ALERTA GENERAL
+  ======================================================= -->
+
+  @if (hasErrors) {
+    <section
+      class="people-alert"
+      role="alert">
+
+      <div class="people-alert__content">
+
+        <div
+          class="people-alert__icon"
+          aria-hidden="true">
+          !
+        </div>
+
+        <div class="people-alert__message">
+          <strong class="people-alert__title">
+            No se pudo completar la acción
+          </strong>
+
+          <p class="people-alert__description">
+            {{ errorMessage }}
+          </p>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="people-alert__action"
+        (click)="loadPeople()">
+        Reintentar
+      </button>
+
+    </section>
+  }
+
+
+  <!-- ======================================================
+       RESUMEN GENERAL
+  ======================================================= -->
+
+  <section
+    class="people-summary"
+    aria-label="Resumen de personas">
+
+    <article class="people-summary-card people-summary-card--total">
+
+      <div
+        class="people-summary-card__icon"
+        aria-hidden="true">
+        👥
+      </div>
+
+      <div class="people-summary-card__content">
+        <span class="people-summary-card__label">
+          Total
+        </span>
+
+        <strong class="people-summary-card__value">
+          {{ people.length }}
+        </strong>
+
+        <span class="people-summary-card__description">
+          Personas registradas
+        </span>
+      </div>
+
+    </article>
+
+
+    <article class="people-summary-card people-summary-card--active">
+
+      <div
+        class="people-summary-card__icon"
+        aria-hidden="true">
+        ✓
+      </div>
+
+      <div class="people-summary-card__content">
+        <span class="people-summary-card__label">
+          Activas
+        </span>
+
+        <strong class="people-summary-card__value">
+          {{ activePeopleCount }}
+        </strong>
+
+        <span class="people-summary-card__description">
+          Con acceso habilitado
+        </span>
+      </div>
+
+    </article>
+
+
+    <article class="people-summary-card people-summary-card--inactive">
+
+      <div
+        class="people-summary-card__icon"
+        aria-hidden="true">
+        —
+      </div>
+
+      <div class="people-summary-card__content">
+        <span class="people-summary-card__label">
+          Suspendidas
+        </span>
+
+        <strong class="people-summary-card__value">
+          {{ inactivePeopleCount }}
+        </strong>
+
+        <span class="people-summary-card__description">
+          Temporalmente inactivas
+        </span>
+      </div>
+
+    </article>
+
+
+    <article class="people-summary-card people-summary-card--attention">
+
+      <div
+        class="people-summary-card__icon"
+        aria-hidden="true">
+        !
+      </div>
+
+      <div class="people-summary-card__content">
+        <span class="people-summary-card__label">
+          Atención
+        </span>
+
+        <strong class="people-summary-card__value">
+          {{ attentionPeopleCount }}
+        </strong>
+
+        <span class="people-summary-card__description">
+          Requieren revisión
+        </span>
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <!-- ======================================================
+       ESTADO DE CARGA
+  ======================================================= -->
+
+  @if (isLoading) {
+    <section
+      class="people-loading-state"
+      aria-live="polite">
+
+      <div class="people-loading-state__indicator">
+        <span class="people-loading-state__dot"></span>
+        <span class="people-loading-state__dot"></span>
+        <span class="people-loading-state__dot"></span>
+      </div>
+
+      <div class="people-loading-state__content">
+        <h3 class="people-loading-state__title">
+          Cargando personas
+        </h3>
+
+        <p class="people-loading-state__description">
+          Estamos consultando la información del conjunto.
+        </p>
+      </div>
+
+    </section>
+  }
+
+
+  <!-- ======================================================
+       ESTADO VACÍO
+  ======================================================= -->
+
+   @else if (!hasErrors && people.length === 0) {
+    <section class="people-empty-state">
+
+      <div
+        class="people-empty-state__icon"
+        aria-hidden="true">
+        👤
+      </div>
+
+      <div class="people-empty-state__content">
+
+        <span class="people-empty-state__eyebrow">
+          Sin registros
+        </span>
+
+        <h3 class="people-empty-state__title">
+          Aún no hay personas registradas
+        </h3>
+
+        <p class="people-empty-state__description">
+          Invita residentes o personal del conjunto para comenzar.
+        </p>
+
+      </div>
+
+      @if (isAdmin) {
+        <button
+          type="button"
+          class="people-button people-button--primary"
+          (click)="showInvitationForm = true">
+
+          <span class="people-button__icon" aria-hidden="true">
+            +
+          </span>
+
+          <span class="people-button__label">
+            Invitar primera persona
+          </span>
+        </button>
+      }
+
+    </section>
+  }
+
+
+  <!-- ======================================================
+       CONTENIDO PRINCIPAL
+  ======================================================= -->
+
+   @else {
+    <section class="people-directory">
+
+
+      <!-- ==================================================
+           FILTROS Y BÚSQUEDA
+      =================================================== -->
+
+      <section class="people-directory__toolbar">
+
+        <div class="people-search">
+
+          <label
+            class="people-field-label"
+            for="personSearch">
+            Buscar persona
+          </label>
+
+          <div class="people-search__control">
+
+            <div class="people-search__input-container">
+
+              <span
+                class="people-search__icon"
+                aria-hidden="true">
+                ⌕
+              </span>
+
+              <input
+                id="personSearch"
+                class="people-search__input"
+                type="text"
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="resetPagination()"
+                placeholder="Buscar por nombre, documento, torre o apartamento..." />
+
+              @if (searchTerm) {
+                <button
+                  type="button"
+                  class="people-search__clear"
+                  aria-label="Limpiar búsqueda"
+                  (click)="clearSearch()">
+
+                  <span aria-hidden="true">
+                    ×
+                  </span>
+
+                  <span class="people-search__clear-label">
+                    Limpiar
+                  </span>
+                </button>
+              }
+
+            </div>
+
+
+            <!-- Autocompletado -->
+
+            @if (autocompleteOptions.length > 0) {
+              <div class="people-autocomplete">
+
+                <div class="people-autocomplete__header">
+                  <span>Coincidencias sugeridas</span>
+                </div>
+
+                <div class="people-autocomplete__list">
+
+                  @for (person of autocompleteOptions; track person.id) {
+                    <button
+                      type="button"
+                      class="people-autocomplete__option"
+                      (click)="selectAutocomplete(person)">
+
+                      <span class="people-autocomplete__avatar">
+                        {{ person.name.charAt(0) }}
+                      </span>
+
+                      <span class="people-autocomplete__content">
+
+                        <strong class="people-autocomplete__name">
+                          {{ person.name }}
+                        </strong>
+
+                        <span class="people-autocomplete__metadata">
+                          {{ person.document }} ·
+                          {{ person.tower || 'Sin torre' }}
+                          {{ person.apartment || '' }}
+                        </span>
+
+                      </span>
+
+                      <span
+                        class="people-autocomplete__arrow"
+                        aria-hidden="true">
+                        ›
+                      </span>
+
+                    </button>
+                  }
+
+                </div>
+
+              </div>
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- Filtro por tipo -->
+
+        <div class="people-filter">
+
+          <label
+            class="people-field-label"
+            for="personTypeFilter">
+            Tipo
+          </label>
+
+          <div class="people-filter__control">
+
+            <select
+              id="personTypeFilter"
+              class="people-filter__select"
+              [(ngModel)]="selectedPersonType"
+              (ngModelChange)="resetPagination()">
+
+              <option value="all">
+                Todos
+              </option>
+
+              <option value="1">
+                Residente
+              </option>
+
+              <option value="2">
+                Seguridad
+              </option>
+
+              <option value="3">
+                Mantenimiento
+              </option>
+
+            </select>
+
+            <span
+              class="people-filter__arrow"
+              aria-hidden="true">
+              ▾
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Filtro por estado -->
+
+        <div class="people-filter">
+
+          <label
+            class="people-field-label"
+            for="personStatusFilter">
+            Estado
+          </label>
+
+          <div class="people-filter__control">
+
+            <select
+              id="personStatusFilter"
+              class="people-filter__select"
+              [(ngModel)]="selectedStatus"
+              (ngModelChange)="resetPagination()">
+
+              <option value="all">
+                Todos
+              </option>
+
+              <option value="active">
+                Activas
+              </option>
+
+              <option value="inactive">
+                Suspendidas
+              </option>
+
+              <option value="blocked">
+                Desactivadas permanentemente
+              </option>
+
+            </select>
+
+            <span
+              class="people-filter__arrow"
+              aria-hidden="true">
+              ▾
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           ENCABEZADO DEL LISTADO
+      =================================================== -->
+
+      <header class="people-directory__header">
+
+        <div class="people-directory__heading">
+
+          <span class="people-directory__eyebrow">
+            Directorio
+          </span>
+
+          <h3 class="people-directory__title">
+            Listado de personas
+          </h3>
+
+          <p class="people-directory__description">
+            {{ totalFilteredPeople }}
+            registros encontrados
+          </p>
+
+        </div>
+
+        <div class="people-directory__result">
+
+          <span class="people-directory__result-label">
+            Resultados
+          </span>
+
+          <strong class="people-directory__result-value">
+            {{ totalFilteredPeople }}
+          </strong>
+
+        </div>
+
+      </header>
+
+
+      <!-- ==================================================
+           TABLA
+      =================================================== -->
+
+      <div class="people-table-container">
+
+        <div class="people-table-scroll">
+
+          <table class="people-table">
+
+            <thead class="people-table__head">
+              <tr class="people-table__row people-table__row--header">
+
+                <th
+                  class="people-table__heading"
+                  scope="col">
+                  Persona
+                </th>
+
+                <th
+                  class="people-table__heading"
+                  scope="col">
+                  Tipo
+                </th>
+
+                <th
+                  class="people-table__heading"
+                  scope="col">
+                  Documento
+                </th>
+
+                <th
+                  class="people-table__heading"
+                  scope="col">
+                  Teléfono
+                </th>
+
+                <th
+                  class="people-table__heading"
+                  scope="col">
+                  Ubicación
+                </th>
+
+                <th
+                  class="people-table__heading"
+                  scope="col">
+                  Estado
+                </th>
+
+                <th
+                  class="people-table__heading people-table__heading--actions"
+                  scope="col">
+                  Acción
+                </th>
+
+              </tr>
+            </thead>
+
+
+            <tbody class="people-table__body">
+
+              @for (person of paginatedPeople; track person.id) {
+                <tr
+                  class="people-table__row people-table__row--data"
+                  [class.people-table__row--inactive]="!person.active">
+
+
+                  <!-- Persona -->
+
+                  <td class="people-table__cell">
+
+                    <div class="person-identity">
+
+                      <div
+                        class="person-identity__avatar"
+                        aria-hidden="true">
+                        {{ person.name.charAt(0) }}
+                      </div>
+
+                      <div class="person-identity__content">
+
+                        <strong class="person-identity__name">
+                          {{ person.name }}
+                        </strong>
+
+                        <span class="person-identity__email">
+                          {{ person.email }}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+                  </td>
+
+
+                  <!-- Tipo -->
+
+                  <td class="people-table__cell">
+
+                    <span class="person-type-badge">
+                      {{ person.personType }}
+                    </span>
+
+                  </td>
+
+
+                  <!-- Documento -->
+
+                  <td class="people-table__cell">
+
+                    <span class="person-data">
+                      {{ person.document || '—' }}
+                    </span>
+
+                  </td>
+
+
+                  <!-- Teléfono -->
+
+                  <td class="people-table__cell">
+
+                    <span class="person-data">
+                      {{ person.phone || '—' }}
+                    </span>
+
+                  </td>
+
+
+                  <!-- Ubicación -->
+
+                  <td class="people-table__cell">
+
+                    @if (person.tower && person.apartment) {
+                      <div class="person-location">
+
+                        <span
+                          class="person-location__icon"
+                          aria-hidden="true">
+                          ⌂
+                        </span>
+
+                        <span class="person-location__text">
+                          {{ person.tower }} -
+                          {{ person.apartment }}
+                        </span>
+
+                      </div>
+                    } @else {
+                      <span class="person-location person-location--empty">
+                        No aplica
+                      </span>
+                    }
+
+                  </td>
+
+
+                  <!-- Estado -->
+
+                  <td class="people-table__cell">
+
+                    <span
+                      class="person-status-badge"
+                      [class.person-status-badge--active]="person.active && !person.permanentlyDeactivated"
+                      [class.person-status-badge--inactive]="!person.active && !person.permanentlyDeactivated"
+                      [class.person-status-badge--blocked]="person.permanentlyDeactivated">
+
+                      <span
+                        class="person-status-badge__indicator"
+                        aria-hidden="true">
+                      </span>
+
+                      <span class="person-status-badge__label">
+                        {{ person.status }}
+                      </span>
+
+                    </span>
+
+                  </td>
+
+
+                  <!-- Acciones -->
+
+                  <td class="people-table__cell people-table__cell--actions">
+
+                    <div class="person-actions">
+
+                      <button
+                        type="button"
+                        class="person-actions__button person-actions__button--detail"
+                        (click)="openPersonDetail(person)">
+
+                        <span
+                          class="person-actions__icon"
+                          aria-hidden="true">
+                          👁
+                        </span>
+
+                        <span class="person-actions__label">
+                          Ver detalle
+                        </span>
+
+                      </button>
+
+                      @if (isAdmin) {
+                        <button
+                          type="button"
+                          class="person-actions__button person-actions__button--status"
+                          [class.person-actions__button--activate]="!person.active"
+                          [disabled]="person.permanentlyDeactivated"
+                          (click)="togglePersonStatus(person.id)">
+
+                          <span class="person-actions__label">
+                            {{ person.active ? 'Suspender' : 'Activar' }}
+                          </span>
+
+                        </button>
+                      }
+
+                    </div>
+
+                  </td>
+
+                </tr>
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================================================
+           PAGINACIÓN
+      =================================================== -->
+
+      <footer class="people-pagination">
+
+        <div class="people-pagination__summary">
+
+          <span class="people-pagination__summary-label">
+            Mostrando
+          </span>
+
+          <strong class="people-pagination__summary-value">
+            {{ pageStart }} - {{ pageEnd }}
+          </strong>
+
+          <span class="people-pagination__summary-label">
+            de
+          </span>
+
+          <strong class="people-pagination__summary-value">
+            {{ totalFilteredPeople }}
+          </strong>
+
+        </div>
+
+
+        <nav
+          class="people-pagination__navigation"
+          aria-label="Paginación de personas">
+
+          <button
+            type="button"
+            class="people-pagination__button"
+            (click)="goToPreviousPage()"
+            [disabled]="currentPage === 1">
+
+            <span aria-hidden="true">
+              ‹
+            </span>
+
+            <span>
+              Anterior
+            </span>
+
+          </button>
+
+
+          <div class="people-pagination__current">
+
+            <span class="people-pagination__current-label">
+              Página
+            </span>
+
+            <strong class="people-pagination__current-value">
+              {{ currentPage }}
+            </strong>
+
+            <span class="people-pagination__current-label">
+              de
+            </span>
+
+            <strong class="people-pagination__current-value">
+              {{ totalPages }}
+            </strong>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="people-pagination__button"
+            (click)="goToNextPage()"
+            [disabled]="currentPage === totalPages">
+
+            <span>
+              Siguiente
+            </span>
+
+            <span aria-hidden="true">
+              ›
+            </span>
+
+          </button>
+
+        </nav>
+
+      </footer>
+
+    </section>
+  }
+
+</section>
+
+  <!-- ======================================================
+       MODAL DE INVITACIÓN
+  ======================================================= -->
+
+  @if (showInvitationForm) {
+    <app-person-invitation
+      (close)="showInvitationForm = false"
+      (created)="loadPeople()">
+    </app-person-invitation>
+  }
+
+
+  <!-- ======================================================
+       MODAL DE DETALLE
+  ======================================================= -->
+
+  @if (showPersonDetail && selectedPerson) {
+    <app-detalle-persona
+      [persona]="selectedPerson"
+      (cerrar)="closePersonDetail()">
+    </app-detalle-persona>
+  }

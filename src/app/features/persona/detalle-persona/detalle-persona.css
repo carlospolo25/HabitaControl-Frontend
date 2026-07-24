@@ -1,0 +1,4816 @@
+/* ==========================================================
+   HABITACONTROL — EXPEDIENTE DE PERSONA
+   PARTE 1: VARIABLES, MODAL, ENCABEZADO Y NAVEGACIÓN
+========================================================== */
+
+
+/* ==========================================================
+   1. VARIABLES INTERNAS DEL COMPONENTE
+========================================================== */
+
+:host {
+  /* Identidad principal */
+
+  --person-file-navy-950: #020617;
+  --person-file-navy-900: #0f172a;
+  --person-file-navy-800: #1e293b;
+  --person-file-navy-700: #334155;
+
+  --person-file-primary-800: #1e40af;
+  --person-file-primary-700: #1d4ed8;
+  --person-file-primary-600: #2563eb;
+  --person-file-primary-500: #3b82f6;
+  --person-file-primary-400: #60a5fa;
+  --person-file-primary-300: #93c5fd;
+  --person-file-primary-200: #bfdbfe;
+  --person-file-primary-100: #dbeafe;
+  --person-file-primary-50: #eff6ff;
+
+  /* Estados */
+
+  --person-file-success-800: #166534;
+  --person-file-success-700: #15803d;
+  --person-file-success-600: #16a34a;
+  --person-file-success-200: #bbf7d0;
+  --person-file-success-100: #dcfce7;
+  --person-file-success-50: #f0fdf4;
+
+  --person-file-warning-800: #92400e;
+  --person-file-warning-700: #b45309;
+  --person-file-warning-600: #d97706;
+  --person-file-warning-500: #f59e0b;
+  --person-file-warning-200: #fde68a;
+  --person-file-warning-100: #fef3c7;
+  --person-file-warning-50: #fffbeb;
+
+  --person-file-danger-800: #991b1b;
+  --person-file-danger-700: #b91c1c;
+  --person-file-danger-600: #dc2626;
+  --person-file-danger-200: #fecaca;
+  --person-file-danger-100: #fee2e2;
+  --person-file-danger-50: #fef2f2;
+
+  --person-file-info-700: #0369a1;
+  --person-file-info-600: #0284c7;
+  --person-file-info-200: #bae6fd;
+  --person-file-info-100: #e0f2fe;
+  --person-file-info-50: #f0f9ff;
+
+  /* Superficies */
+
+  --person-file-surface: #ffffff;
+  --person-file-surface-soft: #f8fafc;
+  --person-file-surface-muted: #f1f5f9;
+  --person-file-surface-strong: #e2e8f0;
+
+  /* Bordes */
+
+  --person-file-border-light: #e2e8f0;
+  --person-file-border: #cbd5e1;
+  --person-file-border-dark: #94a3b8;
+
+  /* Textos */
+
+  --person-file-text-primary: #111827;
+  --person-file-text-secondary: #475569;
+  --person-file-text-muted: #64748b;
+  --person-file-text-soft: #94a3b8;
+  --person-file-text-white: #ffffff;
+
+  /* Overlay */
+
+  --person-file-overlay:
+    rgba(2, 6, 23, 0.72);
+
+  /* Radios */
+
+  --person-file-radius-xs: 0.375rem;
+  --person-file-radius-sm: 0.5rem;
+  --person-file-radius-md: 0.75rem;
+  --person-file-radius-lg: 1rem;
+  --person-file-radius-xl: 1.25rem;
+  --person-file-radius-2xl: 1.5rem;
+  --person-file-radius-pill: 999px;
+
+  /* Espaciados */
+
+  --person-file-space-2: 0.125rem;
+  --person-file-space-4: 0.25rem;
+  --person-file-space-6: 0.375rem;
+  --person-file-space-8: 0.5rem;
+  --person-file-space-10: 0.625rem;
+  --person-file-space-12: 0.75rem;
+  --person-file-space-14: 0.875rem;
+  --person-file-space-16: 1rem;
+  --person-file-space-20: 1.25rem;
+  --person-file-space-24: 1.5rem;
+  --person-file-space-28: 1.75rem;
+  --person-file-space-32: 2rem;
+  --person-file-space-40: 2.5rem;
+  --person-file-space-48: 3rem;
+
+  /* Sombras */
+
+  --person-file-shadow-xs:
+    0 0.125rem 0.375rem rgba(15, 23, 42, 0.04);
+
+  --person-file-shadow-sm:
+    0 0.375rem 0.875rem rgba(15, 23, 42, 0.06);
+
+  --person-file-shadow-md:
+    0 0.875rem 2rem rgba(15, 23, 42, 0.1);
+
+  --person-file-shadow-lg:
+    0 1.5rem 3.5rem rgba(15, 23, 42, 0.16);
+
+  --person-file-shadow-dialog:
+    0 2rem 5rem rgba(2, 6, 23, 0.34);
+
+  --person-file-shadow-primary:
+    0 0.75rem 1.75rem rgba(37, 99, 235, 0.2);
+
+  /* Transiciones */
+
+  --person-file-transition-fast: 150ms ease;
+  --person-file-transition-normal: 240ms ease;
+  --person-file-transition-slow: 360ms ease;
+
+  display: block;
+}
+
+
+/* ==========================================================
+   2. RESET INTERNO
+========================================================== */
+
+:host *,
+:host *::before,
+:host *::after {
+  box-sizing: border-box;
+}
+
+:host h2,
+:host h3,
+:host h4,
+:host p,
+:host dl,
+:host dt,
+:host dd {
+  margin: 0;
+}
+
+:host button,
+:host input,
+:host select,
+:host textarea {
+  font: inherit;
+}
+
+:host button {
+  border: 0;
+}
+
+:host img {
+  display: block;
+
+  max-width: 100%;
+}
+
+:host button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ==========================================================
+   3. OVERLAY PRINCIPAL
+========================================================== */
+
+.person-file {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+
+  display: grid;
+  place-items: center;
+
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+
+  padding:
+    var(--person-file-space-24);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(2, 6, 23, 0.82),
+      var(--person-file-overlay)
+    );
+
+  backdrop-filter:
+    blur(0.5rem)
+    saturate(115%);
+
+  -webkit-backdrop-filter:
+    blur(0.5rem)
+    saturate(115%);
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  animation:
+    person-file-overlay-enter
+    220ms
+    ease-out;
+}
+
+
+/* Luz ambiental del overlay */
+
+.person-file::before {
+  position: fixed;
+  top: -12rem;
+  right: -8rem;
+
+  width: 32rem;
+  height: 32rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(59, 130, 246, 0.18),
+      transparent 68%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* Segunda luz ambiental */
+
+.person-file::after {
+  position: fixed;
+  bottom: -15rem;
+  left: -10rem;
+
+  width: 34rem;
+  height: 34rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(14, 165, 233, 0.11),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   4. CONTENEDOR DEL DIÁLOGO
+========================================================== */
+
+.person-file__dialog {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-rows:
+    auto
+    auto
+    minmax(0, 1fr)
+    auto;
+
+  width: min(76rem, 100%);
+  max-height: calc(100vh - 3rem);
+
+  color: var(--person-file-text-primary);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--person-file-surface),
+      rgba(248, 250, 252, 0.98)
+    );
+
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--person-file-radius-2xl);
+
+  box-shadow:
+    var(--person-file-shadow-dialog);
+
+  overflow: hidden;
+
+  transform-origin: center;
+
+  animation:
+    person-file-dialog-enter
+    280ms
+    cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+
+/* Línea superior de identidad */
+
+.person-file__dialog::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+
+  height: 0.25rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--person-file-primary-600),
+      var(--person-file-info-600),
+      var(--person-file-success-600)
+    );
+}
+
+
+/* Protección de hijos */
+
+.person-file__dialog > * {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   5. ENCABEZADO DEL EXPEDIENTE
+========================================================== */
+
+.person-file__header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--person-file-space-24);
+
+  min-width: 0;
+  min-height: 10.5rem;
+
+  padding:
+    var(--person-file-space-28)
+    var(--person-file-space-32);
+
+  color: var(--person-file-text-white);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--person-file-navy-950) 0%,
+      var(--person-file-navy-900) 48%,
+      #172554 100%
+    );
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+
+  overflow: hidden;
+}
+
+
+/* Decoración circular del encabezado */
+
+.person-file__header::before {
+  position: absolute;
+  top: 50%;
+  right: 3rem;
+
+  width: 14rem;
+  height: 14rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(59, 130, 246, 0.18),
+      rgba(59, 130, 246, 0.035) 50%,
+      transparent 70%
+    );
+
+  border: 1px solid rgba(147, 197, 253, 0.06);
+  border-radius: 50%;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+}
+
+
+/* Líneas geométricas */
+
+.person-file__header::after {
+  position: absolute;
+  top: 1.75rem;
+  right: 10rem;
+
+  width: 8rem;
+  height: 8rem;
+
+  content: "";
+
+  border-top: 1px solid rgba(147, 197, 253, 0.09);
+  border-right: 1px solid rgba(147, 197, 253, 0.09);
+  border-radius: 0 var(--person-file-radius-xl) 0 0;
+
+  transform: rotate(8deg);
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   6. BLOQUE DE TÍTULO
+========================================================== */
+
+.person-file-heading {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  max-width: 48rem;
+}
+
+.person-file-heading__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--person-file-space-8);
+
+  width: fit-content;
+
+  color: var(--person-file-primary-300);
+
+  font-size: 0.6875rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.person-file-heading__eyebrow::before {
+  width: 1.75rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--person-file-primary-500),
+      #7dd3fc
+    );
+
+  border-radius: var(--person-file-radius-pill);
+}
+
+.person-file-heading__title {
+  margin-top: var(--person-file-space-10);
+
+  color: var(--person-file-text-white);
+
+  font-size: clamp(1.875rem, 4vw, 2.75rem);
+  font-weight: 820;
+  line-height: 1.06;
+  letter-spacing: -0.045em;
+
+  overflow-wrap: anywhere;
+}
+
+.person-file-heading__description {
+  max-width: 43rem;
+
+  margin-top: var(--person-file-space-12);
+
+  color: #cbd5e1;
+
+  font-size: 0.875rem;
+  font-weight: 450;
+  line-height: 1.65;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   7. BOTÓN CERRAR DEL ENCABEZADO
+========================================================== */
+
+.person-file__close {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 3rem;
+  height: 3rem;
+
+  color: #e2e8f0;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(226, 232, 240, 0.18);
+  border-radius: var(--person-file-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  cursor: pointer;
+
+  transition:
+    color var(--person-file-transition-fast),
+    background-color var(--person-file-transition-fast),
+    border-color var(--person-file-transition-fast),
+    box-shadow var(--person-file-transition-fast),
+    transform var(--person-file-transition-fast);
+}
+
+.person-file__close:hover {
+  color: var(--person-file-text-white);
+
+  background:
+    rgba(220, 38, 38, 0.88);
+
+  border-color:
+    rgba(254, 202, 202, 0.38);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(220, 38, 38, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+
+  transform:
+    translateY(-0.0625rem)
+    rotate(2deg);
+}
+
+.person-file__close:active {
+  transform: scale(0.94);
+}
+
+.person-file__close:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(147, 197, 253, 0.3);
+
+  outline-offset: 0.1875rem;
+}
+
+.person-file__close-icon {
+  display: grid;
+  place-items: center;
+
+  width: 1.25rem;
+  height: 1.25rem;
+
+  font-size: 1.75rem;
+  font-weight: 300;
+  line-height: 1;
+}
+
+
+/* ==========================================================
+   8. NAVEGACIÓN DEL EXPEDIENTE
+========================================================== */
+
+.person-file__navigation {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+
+  padding:
+    0
+    var(--person-file-space-32);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--person-file-surface),
+      rgba(248, 250, 252, 0.94)
+    );
+
+  border-bottom:
+    1px solid
+    var(--person-file-border-light);
+
+  box-shadow:
+    0 0.375rem 0.875rem rgba(15, 23, 42, 0.035);
+}
+
+
+/* ==========================================================
+   9. CONTENEDOR DE PESTAÑAS
+========================================================== */
+
+.person-file-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: var(--person-file-space-4);
+
+  width: 100%;
+  min-width: 0;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scrollbar-width: none;
+}
+
+.person-file-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* ==========================================================
+   10. BOTÓN BASE DE PESTAÑA
+========================================================== */
+
+.person-file-tabs__button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--person-file-space-8);
+  flex: 0 0 auto;
+
+  min-height: 4rem;
+
+  padding:
+    var(--person-file-space-12)
+    var(--person-file-space-18, 1.125rem);
+
+  color: var(--person-file-text-muted);
+
+  font-size: 0.78125rem;
+  font-weight: 680;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  background: transparent;
+
+  border: 0;
+
+  cursor: pointer;
+
+  transition:
+    color var(--person-file-transition-fast),
+    background-color var(--person-file-transition-fast),
+    transform var(--person-file-transition-fast);
+}
+
+
+/* Indicador inferior */
+
+.person-file-tabs__button::after {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+
+  width: calc(100% - 1.5rem);
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--person-file-primary-500),
+      var(--person-file-info-600)
+    );
+
+  border-radius:
+    var(--person-file-radius-pill)
+    var(--person-file-radius-pill)
+    0
+    0;
+
+  opacity: 0;
+
+  transform:
+    translateX(-50%)
+    scaleX(0.35);
+
+  transform-origin: center;
+
+  transition:
+    opacity var(--person-file-transition-fast),
+    transform var(--person-file-transition-fast);
+}
+
+
+/* Hover */
+
+.person-file-tabs__button:hover {
+  color: var(--person-file-primary-700);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(239, 246, 255, 0.48),
+      rgba(255, 255, 255, 0)
+    );
+}
+
+
+/* Focus */
+
+.person-file-tabs__button:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(59, 130, 246, 0.18);
+
+  outline-offset: -0.1875rem;
+
+  border-radius:
+    var(--person-file-radius-sm)
+    var(--person-file-radius-sm)
+    0
+    0;
+}
+
+
+/* ==========================================================
+   11. PESTAÑA ACTIVA
+========================================================== */
+
+.person-file-tabs__button--active {
+  color: var(--person-file-primary-700);
+
+  font-weight: 780;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--person-file-primary-50),
+      rgba(255, 255, 255, 0)
+    );
+}
+
+.person-file-tabs__button--active::after {
+  opacity: 1;
+
+  transform:
+    translateX(-50%)
+    scaleX(1);
+}
+
+
+/* ==========================================================
+   12. ICONOS DE PESTAÑAS
+========================================================== */
+
+.person-file-tabs__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 1.75rem;
+  height: 1.75rem;
+
+  color: inherit;
+
+  font-size: 0.9375rem;
+  line-height: 1;
+
+  background:
+    var(--person-file-surface-muted);
+
+  border:
+    1px solid
+    var(--person-file-border-light);
+
+  border-radius: var(--person-file-radius-sm);
+
+  transition:
+    background-color var(--person-file-transition-fast),
+    border-color var(--person-file-transition-fast),
+    box-shadow var(--person-file-transition-fast),
+    transform var(--person-file-transition-fast);
+}
+
+.person-file-tabs__button:hover
+.person-file-tabs__icon {
+  background:
+    var(--person-file-primary-50);
+
+  border-color:
+    var(--person-file-primary-200);
+
+  transform: translateY(-0.0625rem);
+}
+
+.person-file-tabs__button--active
+.person-file-tabs__icon {
+  color: var(--person-file-primary-700);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-primary-100),
+      var(--person-file-primary-50)
+    );
+
+  border-color:
+    var(--person-file-primary-200);
+
+  box-shadow:
+    0 0.375rem 0.75rem rgba(37, 99, 235, 0.1);
+}
+
+.person-file-tabs__label {
+  line-height: 1.2;
+}
+
+
+/* ==========================================================
+   13. CONTENEDOR PRINCIPAL DEL CONTENIDO
+========================================================== */
+
+.person-file__body {
+  min-width: 0;
+  min-height: 0;
+
+  padding:
+    var(--person-file-space-28)
+    var(--person-file-space-32);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--person-file-surface-soft),
+      #ffffff
+    );
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--person-file-border)
+    transparent;
+}
+
+.person-file__body::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.person-file__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.person-file__body::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      var(--person-file-border),
+      var(--person-file-border-dark)
+    );
+
+  border:
+    0.125rem solid
+    transparent;
+
+  background-clip: padding-box;
+
+  border-radius:
+    var(--person-file-radius-pill);
+}
+
+
+/* ==========================================================
+   14. ANIMACIONES DE ENTRADA
+========================================================== */
+
+@keyframes person-file-overlay-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes person-file-dialog-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(1.25rem)
+      scale(0.975);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* ==========================================================
+   15. PANTALLAS INTERMEDIAS
+========================================================== */
+
+@media (max-width: 1000px) {
+  .person-file {
+    padding:
+      var(--person-file-space-20);
+  }
+
+  .person-file__dialog {
+    width: min(68rem, 100%);
+
+    max-height:
+      calc(100vh - 2.5rem);
+  }
+
+  .person-file__header {
+    min-height: 9.5rem;
+
+    padding:
+      var(--person-file-space-24);
+  }
+
+  .person-file__navigation {
+    padding:
+      0
+      var(--person-file-space-24);
+  }
+
+  .person-file__body {
+    padding:
+      var(--person-file-space-24);
+  }
+}
+
+
+/* ==========================================================
+   16. TABLET
+========================================================== */
+
+@media (max-width: 760px) {
+  .person-file {
+    place-items: start center;
+
+    padding:
+      var(--person-file-space-16);
+  }
+
+  .person-file__dialog {
+    max-height:
+      calc(100dvh - 2rem);
+
+    border-radius:
+      var(--person-file-radius-xl);
+  }
+
+  .person-file__header {
+    align-items: flex-start;
+
+    min-height: auto;
+
+    padding:
+      var(--person-file-space-24)
+      var(--person-file-space-20);
+  }
+
+  .person-file__header::before {
+    top: -3rem;
+    right: -4rem;
+
+    transform: none;
+  }
+
+  .person-file__header::after {
+    display: none;
+  }
+
+  .person-file-heading {
+    max-width:
+      calc(100% - 4rem);
+  }
+
+  .person-file-heading__title {
+    font-size:
+      clamp(1.625rem, 6vw, 2.25rem);
+  }
+
+  .person-file__navigation {
+    padding:
+      0
+      var(--person-file-space-16);
+  }
+
+  .person-file__body {
+    padding:
+      var(--person-file-space-20);
+  }
+}
+
+
+/* ==========================================================
+   17. CELULAR
+========================================================== */
+
+@media (max-width: 560px) {
+  .person-file {
+    display: block;
+
+    padding: 0;
+
+    background:
+      var(--person-file-overlay);
+  }
+
+  .person-file::before,
+  .person-file::after {
+    display: none;
+  }
+
+  .person-file__dialog {
+    width: 100%;
+    min-height: 100dvh;
+    max-height: none;
+
+    border: 0;
+    border-radius: 0;
+
+    box-shadow: none;
+  }
+
+  .person-file__header {
+    gap: var(--person-file-space-16);
+
+    padding:
+      var(--person-file-space-24)
+      var(--person-file-space-16)
+      var(--person-file-space-20);
+  }
+
+  .person-file-heading {
+    max-width:
+      calc(100% - 3.5rem);
+  }
+
+  .person-file-heading__eyebrow {
+    font-size: 0.625rem;
+  }
+
+  .person-file-heading__eyebrow::before {
+    width: 1.25rem;
+  }
+
+  .person-file-heading__title {
+    margin-top:
+      var(--person-file-space-8);
+
+    font-size: 1.625rem;
+  }
+
+  .person-file-heading__description {
+    margin-top:
+      var(--person-file-space-10);
+
+    font-size: 0.78125rem;
+    line-height: 1.55;
+  }
+
+  .person-file__close {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .person-file__navigation {
+    padding:
+      0
+      var(--person-file-space-8);
+  }
+
+  .person-file-tabs {
+    gap: 0;
+  }
+
+  .person-file-tabs__button {
+    flex: 1 0 auto;
+
+    min-height: 3.75rem;
+
+    padding:
+      var(--person-file-space-10)
+      var(--person-file-space-12);
+  }
+
+  .person-file-tabs__icon {
+    width: 1.625rem;
+    height: 1.625rem;
+
+    font-size: 0.8125rem;
+  }
+
+  .person-file__body {
+    padding:
+      var(--person-file-space-16);
+  }
+}
+
+
+/* ==========================================================
+   18. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .person-file__header {
+    padding-right:
+      var(--person-file-space-12);
+
+    padding-left:
+      var(--person-file-space-12);
+  }
+
+  .person-file-heading__description {
+    display: none;
+  }
+
+  .person-file-tabs__button {
+    gap: var(--person-file-space-6);
+
+    padding-right:
+      var(--person-file-space-8);
+
+    padding-left:
+      var(--person-file-space-8);
+
+    font-size: 0.6875rem;
+  }
+
+  .person-file-tabs__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .person-file__body {
+    padding:
+      var(--person-file-space-12);
+  }
+}
+
+
+/* ==========================================================
+   19. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .person-file__close:hover,
+  .person-file-tabs__button:hover,
+  .person-file-tabs__button:hover
+  .person-file-tabs__icon {
+    transform: none;
+  }
+
+  .person-file__close,
+  .person-file-tabs__button {
+    min-height: 2.75rem;
+  }
+}
+
+
+/* ==========================================================
+   20. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .person-file__dialog {
+    border:
+      0.125rem solid
+      var(--person-file-border-dark);
+  }
+
+  .person-file__navigation {
+    border-bottom-color:
+      var(--person-file-border-dark);
+  }
+
+  .person-file__close,
+  .person-file-tabs__icon {
+    border-width: 0.125rem;
+  }
+
+  .person-file-tabs__button {
+    color:
+      var(--person-file-text-secondary);
+  }
+
+  .person-file-tabs__button--active {
+    color:
+      var(--person-file-primary-800);
+  }
+}
+
+
+/* ==========================================================
+   21. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .person-file,
+  .person-file__dialog {
+    animation: none;
+  }
+
+  .person-file__close,
+  .person-file-tabs__button,
+  .person-file-tabs__button::after,
+  .person-file-tabs__icon {
+    transition: none;
+  }
+
+  .person-file__close:hover,
+  .person-file__close:active,
+  .person-file-tabs__button:hover
+  .person-file-tabs__icon {
+    transform: none;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — EXPEDIENTE DE PERSONA
+   PARTE 2: DATOS PERSONALES, RESIDENCIA, EMPLEO Y NOTAS
+========================================================== */
+
+
+/* ==========================================================
+   1. PANEL PRINCIPAL
+========================================================== */
+
+.person-file__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--person-file-space-28);
+
+  width: 100%;
+  min-width: 0;
+}
+
+.person-file__panel--profile {
+  position: relative;
+}
+
+
+/* ==========================================================
+   2. SECCIÓN BASE DEL EXPEDIENTE
+========================================================== */
+
+.person-file-section {
+  --section-color: var(--person-file-primary-600);
+  --section-color-dark: var(--person-file-primary-800);
+  --section-color-soft: var(--person-file-primary-50);
+  --section-border: var(--person-file-primary-200);
+  --section-glow: rgba(37, 99, 235, 0.08);
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--person-file-space-20);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--person-file-space-24);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-surface) 0%,
+      rgba(248, 250, 252, 0.94) 100%
+    );
+
+  border:
+    1px solid
+    var(--person-file-border-light);
+
+  border-radius:
+    var(--person-file-radius-xl);
+
+  box-shadow:
+    var(--person-file-shadow-sm);
+
+  overflow: hidden;
+}
+
+
+/* Línea superior de identidad */
+
+.person-file-section::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--section-color),
+      var(--section-color-dark)
+    );
+}
+
+
+/* Iluminación decorativa */
+
+.person-file-section::after {
+  position: absolute;
+  top: -4rem;
+  right: -4rem;
+
+  width: 12rem;
+  height: 12rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      var(--section-glow),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* Protección de contenido */
+
+.person-file-section > * {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   3. VARIANTE RESIDENCIAL
+========================================================== */
+
+.person-file-section--residence {
+  --section-color: var(--person-file-info-600);
+  --section-color-dark: var(--person-file-info-700);
+  --section-color-soft: var(--person-file-info-50);
+  --section-border: var(--person-file-info-200);
+  --section-glow: rgba(2, 132, 199, 0.08);
+}
+
+
+/* ==========================================================
+   4. VARIANTE LABORAL
+========================================================== */
+
+.person-file-section--employment {
+  --section-color: var(--person-file-warning-600);
+  --section-color-dark: var(--person-file-warning-800);
+  --section-color-soft: var(--person-file-warning-50);
+  --section-border: var(--person-file-warning-200);
+  --section-glow: rgba(217, 119, 6, 0.08);
+}
+
+
+/* ==========================================================
+   5. VARIANTE OBSERVACIONES
+========================================================== */
+
+.person-file-section--notes {
+  --section-color: var(--person-file-navy-700);
+  --section-color-dark: var(--person-file-navy-900);
+  --section-color-soft: var(--person-file-surface-muted);
+  --section-border: var(--person-file-border);
+  --section-glow: rgba(51, 65, 85, 0.07);
+}
+
+
+/* ==========================================================
+   6. ENCABEZADO DE SECCIÓN
+========================================================== */
+
+.person-file-section__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--person-file-space-20);
+
+  width: 100%;
+  min-width: 0;
+}
+
+.person-file-section__heading {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  max-width: 44rem;
+}
+
+.person-file-section__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--person-file-space-8);
+
+  width: fit-content;
+
+  color: var(--section-color-dark);
+
+  font-size: 0.65625rem;
+  font-weight: 820;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.person-file-section__eyebrow::before {
+  width: 1.5rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--section-color),
+      var(--section-color-dark)
+    );
+
+  border-radius:
+    var(--person-file-radius-pill);
+}
+
+.person-file-section__title {
+  margin-top:
+    var(--person-file-space-8);
+
+  color:
+    var(--person-file-text-primary);
+
+  font-size:
+    clamp(1.125rem, 2vw, 1.375rem);
+
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+
+  text-wrap: balance;
+}
+
+.person-file-section__description {
+  max-width: 40rem;
+
+  margin-top:
+    var(--person-file-space-6);
+
+  color:
+    var(--person-file-text-muted);
+
+  font-size: 0.78125rem;
+  line-height: 1.55;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   7. CUADRÍCULA DE DATOS
+========================================================== */
+
+.person-data-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    var(--person-file-space-14);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   8. TARJETA BASE DE DATO
+========================================================== */
+
+.person-data-card {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: var(--person-file-space-12);
+
+  min-width: 0;
+  min-height: 6.5rem;
+
+  padding:
+    var(--person-file-space-16);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-surface),
+      var(--person-file-surface-soft)
+    );
+
+  border:
+    1px solid
+    var(--person-file-border-light);
+
+  border-radius:
+    var(--person-file-radius-lg);
+
+  box-shadow:
+    var(--person-file-shadow-xs);
+
+  overflow: hidden;
+
+  transition:
+    border-color var(--person-file-transition-fast),
+    box-shadow var(--person-file-transition-fast),
+    transform var(--person-file-transition-fast);
+}
+
+
+/* Línea lateral sutil */
+
+.person-data-card::before {
+  position: absolute;
+  top: var(--person-file-space-12);
+  left: 0;
+  bottom: var(--person-file-space-12);
+
+  width: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--section-color),
+      var(--section-color-dark)
+    );
+
+  border-radius:
+    0
+    var(--person-file-radius-pill)
+    var(--person-file-radius-pill)
+    0;
+
+  opacity: 0.7;
+}
+
+
+/* Luz interna */
+
+.person-data-card::after {
+  position: absolute;
+  top: -2.5rem;
+  right: -2.5rem;
+
+  width: 6rem;
+  height: 6rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      var(--section-glow),
+      transparent 72%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.person-data-card:hover {
+  border-color:
+    var(--section-border);
+
+  box-shadow:
+    0 0.75rem 1.5rem var(--section-glow),
+    var(--person-file-shadow-xs);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+
+/* ==========================================================
+   9. ICONO DE TARJETA
+========================================================== */
+
+.person-data-card__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 2.875rem;
+  height: 2.875rem;
+
+  color:
+    var(--section-color-dark);
+
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--section-color-soft),
+      rgba(255, 255, 255, 0.96)
+    );
+
+  border:
+    1px solid
+    var(--section-border);
+
+  border-radius:
+    var(--person-file-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 0.25rem 0.625rem var(--section-glow);
+
+  transition:
+    border-color var(--person-file-transition-fast),
+    box-shadow var(--person-file-transition-fast),
+    transform var(--person-file-transition-fast);
+}
+
+.person-data-card:hover
+.person-data-card__icon {
+  border-color:
+    var(--section-color);
+
+  box-shadow:
+    0 0.5rem 1rem var(--section-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84);
+
+  transform:
+    translateY(-0.0625rem)
+    scale(1.035);
+}
+
+
+/* ==========================================================
+   10. CONTENIDO DE TARJETA
+========================================================== */
+
+.person-data-card__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--person-file-space-6);
+
+  min-width: 0;
+}
+
+.person-data-card__label {
+  color:
+    var(--person-file-text-muted);
+
+  font-size: 0.65625rem;
+  font-weight: 760;
+  line-height: 1.3;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.person-data-card__value {
+  display: block;
+
+  max-width: 100%;
+
+  color:
+    var(--person-file-text-primary);
+
+  font-size: 0.84375rem;
+  font-weight: 720;
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
+.person-data-card__value--break {
+  word-break: break-word;
+}
+
+
+/* ==========================================================
+   11. ESTADO BASE
+========================================================== */
+
+.person-state {
+  --state-color:
+    var(--person-file-text-muted);
+
+  --state-color-dark:
+    var(--person-file-text-secondary);
+
+  --state-background:
+    var(--person-file-surface-muted);
+
+  --state-border:
+    var(--person-file-border);
+
+  --state-glow:
+    rgba(100, 116, 139, 0.12);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--person-file-space-8);
+
+  width: fit-content;
+  min-height: 2rem;
+
+  padding:
+    var(--person-file-space-4)
+    var(--person-file-space-10);
+
+  color:
+    var(--state-color-dark);
+
+  font-size: 0.71875rem;
+  font-weight: 740;
+  line-height: 1.2;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--state-background),
+      rgba(255, 255, 255, 0.94)
+    );
+
+  border:
+    1px solid
+    var(--state-border);
+
+  border-radius:
+    var(--person-file-radius-pill);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 0.25rem 0.625rem var(--state-glow);
+}
+
+.person-state__indicator {
+  flex: 0 0 auto;
+
+  width: 0.5rem;
+  height: 0.5rem;
+
+  background:
+    var(--state-color);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.1875rem
+    var(--state-glow);
+}
+
+.person-state__label {
+  line-height: 1.2;
+}
+
+
+/* ==========================================================
+   12. ESTADO ACTIVO
+========================================================== */
+
+.person-state--active {
+  --state-color:
+    var(--person-file-success-600);
+
+  --state-color-dark:
+    var(--person-file-success-800);
+
+  --state-background:
+    var(--person-file-success-50);
+
+  --state-border:
+    var(--person-file-success-200);
+
+  --state-glow:
+    rgba(22, 163, 74, 0.12);
+}
+
+
+/* ==========================================================
+   13. ESTADO INACTIVO
+========================================================== */
+
+.person-state--inactive {
+  --state-color:
+    var(--person-file-warning-500);
+
+  --state-color-dark:
+    var(--person-file-warning-800);
+
+  --state-background:
+    var(--person-file-warning-50);
+
+  --state-border:
+    var(--person-file-warning-200);
+
+  --state-glow:
+    rgba(245, 158, 11, 0.13);
+}
+
+
+/* ==========================================================
+   14. BLOQUE DE OBSERVACIONES
+========================================================== */
+
+.person-notes {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  gap:
+    var(--person-file-space-14);
+
+  min-width: 0;
+  min-height: 7rem;
+
+  padding:
+    var(--person-file-space-20);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-surface-muted),
+      rgba(255, 255, 255, 0.96)
+    );
+
+  border:
+    1px solid
+    var(--person-file-border);
+
+  border-radius:
+    var(--person-file-radius-lg);
+
+  overflow: hidden;
+}
+
+
+/* Línea izquierda */
+
+.person-notes::before {
+  position: absolute;
+  top: var(--person-file-space-16);
+  left: 0;
+  bottom: var(--person-file-space-16);
+
+  width: 0.25rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--person-file-navy-700),
+      var(--person-file-navy-900)
+    );
+
+  border-radius:
+    0
+    var(--person-file-radius-pill)
+    var(--person-file-radius-pill)
+    0;
+}
+
+
+/* Decoración */
+
+.person-notes::after {
+  position: absolute;
+  right: -3rem;
+  bottom: -3rem;
+
+  width: 8rem;
+  height: 8rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(51, 65, 85, 0.07),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   15. ICONO DE OBSERVACIONES
+========================================================== */
+
+.person-notes__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 3rem;
+  height: 3rem;
+
+  color:
+    var(--person-file-navy-800);
+
+  font-size: 1.125rem;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-surface),
+      var(--person-file-surface-muted)
+    );
+
+  border:
+    1px solid
+    var(--person-file-border);
+
+  border-radius:
+    var(--person-file-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    var(--person-file-shadow-xs);
+}
+
+
+/* ==========================================================
+   16. TEXTO DE OBSERVACIONES
+========================================================== */
+
+.person-notes__content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+
+  color:
+    var(--person-file-text-secondary);
+
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.7;
+
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   17. PANTALLAS INTERMEDIAS
+========================================================== */
+
+@media (max-width: 1050px) {
+  .person-data-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* ==========================================================
+   18. TABLET
+========================================================== */
+
+@media (max-width: 760px) {
+  .person-file__panel {
+    gap:
+      var(--person-file-space-20);
+  }
+
+  .person-file-section {
+    gap:
+      var(--person-file-space-16);
+
+    padding:
+      var(--person-file-space-20);
+  }
+
+  .person-file-section__title {
+    font-size: 1.125rem;
+  }
+
+  .person-data-card {
+    min-height: 6rem;
+
+    padding:
+      var(--person-file-space-14);
+  }
+}
+
+
+/* ==========================================================
+   19. CELULAR
+========================================================== */
+
+@media (max-width: 580px) {
+  .person-data-grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap:
+      var(--person-file-space-12);
+  }
+
+  .person-file-section {
+    padding:
+      var(--person-file-space-16);
+
+    border-radius:
+      var(--person-file-radius-lg);
+  }
+
+  .person-file-section__description {
+    font-size: 0.75rem;
+  }
+
+  .person-data-card {
+    min-height: 5.75rem;
+  }
+
+  .person-notes {
+    min-height: auto;
+
+    padding:
+      var(--person-file-space-16);
+  }
+}
+
+
+/* ==========================================================
+   20. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .person-file-section {
+    padding:
+      var(--person-file-space-14);
+  }
+
+  .person-data-card {
+    gap:
+      var(--person-file-space-10);
+
+    padding:
+      var(--person-file-space-12);
+  }
+
+  .person-data-card__icon {
+    width: 2.625rem;
+    height: 2.625rem;
+
+    font-size: 0.9375rem;
+  }
+
+  .person-data-card__label {
+    font-size: 0.625rem;
+  }
+
+  .person-data-card__value {
+    font-size: 0.78125rem;
+  }
+
+  .person-notes {
+    flex-direction: column;
+  }
+
+  .person-notes__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+
+/* ==========================================================
+   21. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .person-data-card:hover,
+  .person-data-card:hover
+  .person-data-card__icon {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   22. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .person-file-section,
+  .person-data-card,
+  .person-notes,
+  .person-state {
+    border-width: 0.125rem;
+  }
+
+  .person-data-card__label,
+  .person-file-section__description,
+  .person-notes__content {
+    color:
+      var(--person-file-text-secondary);
+  }
+}
+
+
+/* ==========================================================
+   23. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .person-data-card,
+  .person-data-card__icon {
+    transition: none;
+  }
+
+  .person-data-card:hover,
+  .person-data-card:hover
+  .person-data-card__icon {
+    transform: none;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — EXPEDIENTE DE PERSONA
+   PARTE 3: VEHÍCULOS, MASCOTAS, CARGA, ERRORES Y REGISTROS
+========================================================== */
+
+
+/* ==========================================================
+   1. PANELES DE REGISTROS ASOCIADOS
+========================================================== */
+
+.person-file__panel--vehicles,
+.person-file__panel--pets {
+  --records-color: var(--person-file-primary-600);
+  --records-color-dark: var(--person-file-primary-800);
+  --records-color-soft: var(--person-file-primary-50);
+  --records-border: var(--person-file-primary-200);
+  --records-glow: rgba(37, 99, 235, 0.1);
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--person-file-space-20);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* Variante visual para mascotas */
+
+.person-file__panel--pets {
+  --records-color: var(--person-file-info-600);
+  --records-color-dark: var(--person-file-info-700);
+  --records-color-soft: var(--person-file-info-50);
+  --records-border: var(--person-file-info-200);
+  --records-glow: rgba(2, 132, 199, 0.1);
+}
+
+
+/* ==========================================================
+   2. ENCABEZADO CON ACCIONES
+========================================================== */
+
+.person-file-section__header--actions {
+  position: relative;
+
+  align-items: center;
+
+  padding:
+    var(--person-file-space-20)
+    var(--person-file-space-24);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-surface),
+      var(--person-file-surface-soft)
+    );
+
+  border:
+    1px solid
+    var(--person-file-border-light);
+
+  border-radius:
+    var(--person-file-radius-xl);
+
+  box-shadow:
+    var(--person-file-shadow-sm);
+
+  overflow: hidden;
+}
+
+
+/* Línea superior */
+
+.person-file-section__header--actions::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--records-color),
+      var(--records-color-dark)
+    );
+}
+
+
+/* Luz decorativa */
+
+.person-file-section__header--actions::after {
+  position: absolute;
+  top: -4rem;
+  right: 4rem;
+
+  width: 10rem;
+  height: 10rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      var(--records-glow),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.person-file-section__header--actions > * {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+
+/* Adaptación cromática del encabezado */
+
+.person-file__panel--vehicles
+.person-file-section__eyebrow,
+.person-file__panel--pets
+.person-file-section__eyebrow {
+  color: var(--records-color-dark);
+}
+
+.person-file__panel--vehicles
+.person-file-section__eyebrow::before,
+.person-file__panel--pets
+.person-file-section__eyebrow::before {
+  background:
+    linear-gradient(
+      90deg,
+      var(--records-color),
+      var(--records-color-dark)
+    );
+}
+
+
+/* ==========================================================
+   3. BOTÓN ACTUALIZAR
+========================================================== */
+
+.person-file-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--person-file-space-8);
+  flex: 0 0 auto;
+
+  min-width: 7.5rem;
+  min-height: 2.75rem;
+
+  padding:
+    var(--person-file-space-8)
+    var(--person-file-space-14);
+
+  color: var(--records-color-dark);
+
+  font-size: 0.75rem;
+  font-weight: 740;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--records-color-soft),
+      rgba(255, 255, 255, 0.96)
+    );
+
+  border:
+    1px solid
+    var(--records-border);
+
+  border-radius:
+    var(--person-file-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 0.375rem 0.875rem var(--records-glow);
+
+  cursor: pointer;
+
+  transition:
+    color var(--person-file-transition-fast),
+    background-color var(--person-file-transition-fast),
+    border-color var(--person-file-transition-fast),
+    box-shadow var(--person-file-transition-fast),
+    opacity var(--person-file-transition-fast),
+    transform var(--person-file-transition-fast);
+}
+
+.person-file-action:hover:not(:disabled) {
+  color: var(--person-file-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--records-color),
+      var(--records-color-dark)
+    );
+
+  border-color: var(--records-color);
+
+  box-shadow:
+    0 0.75rem 1.5rem var(--records-glow);
+
+  transform: translateY(-0.0625rem);
+}
+
+.person-file-action:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.person-file-action:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(59, 130, 246, 0.2);
+
+  outline-offset:
+    0.1875rem;
+}
+
+.person-file-action:disabled {
+  color: var(--person-file-text-soft);
+
+  background: var(--person-file-surface-muted);
+
+  border-color: var(--person-file-border-light);
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+
+  opacity: 0.6;
+
+  transform: none;
+}
+
+
+/* ==========================================================
+   4. ICONO DEL BOTÓN ACTUALIZAR
+========================================================== */
+
+.person-file-action__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 1rem;
+  height: 1rem;
+
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+
+  transition:
+    transform var(--person-file-transition-normal);
+}
+
+.person-file-action:hover:not(:disabled)
+.person-file-action__icon {
+  transform: rotate(180deg);
+}
+
+.person-file-action__label {
+  line-height: 1.2;
+}
+
+
+/* ==========================================================
+   5. ALERTA BASE
+========================================================== */
+
+.person-file-alert {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--person-file-space-16);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--person-file-space-14)
+    var(--person-file-space-16);
+
+  border-radius:
+    var(--person-file-radius-lg);
+
+  overflow: hidden;
+}
+
+
+/* ==========================================================
+   6. ALERTA DE ERROR
+========================================================== */
+
+.person-file-alert--error {
+  background:
+    linear-gradient(
+      135deg,
+      var(--person-file-danger-50),
+      rgba(255, 255, 255, 0.96)
+    );
+
+  border:
+    1px solid
+    var(--person-file-danger-200);
+
+  border-left:
+    0.25rem solid
+    var(--person-file-danger-600);
+
+  box-shadow:
+    0 0.625rem 1.25rem
+    rgba(220, 38, 38, 0.1);
+}
+
+
+/* Decoración */
+
+.person-file-alert--error::before {
+  position: absolute;
+  top: -3rem;
+  right: 5rem;
+
+  width: 8rem;
+  height: 8rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(220, 38, 38, 0.08),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   7. CONTENIDO DE ALERTA
+========================================================== */
+
+.person-file-alert__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  gap: var(--person-file-space-10);
+
+  min-width: 0;
+}
+
+.person-file-alert__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 2rem;
+  height: 2rem;
+
+  color: var(--person-file-danger-800);
+
+  font-size: 0.875rem;
+  font-weight: 850;
+  line-height: 1;
+
+  background:
+    rgba(255, 255, 255, 0.78);
+
+  border:
+    1px solid
+    var(--person-file-danger-200);
+
+  border-radius:
+    var(--person-file-radius-sm);
+}
+
+.person-file-alert__message {
+  min-width: 0;
+
+  color: var(--person-file-danger-800);
+
+  font-size: 0.78125rem;
+  font-weight: 600;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   8. CERRAR ALERTA
+========================================================== */
+
+.person-file-alert__close {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 2rem;
+  height: 2rem;
+
+  color: var(--person-file-danger-700);
+
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1;
+
+  background:
+    rgba(255, 255, 255, 0.68);
+
+  border:
+    1px solid
+    var(--person-file-danger-200);
+
+  border-radius:
+    var(--person-file-radius-sm);
+
+  cursor: pointer;
+
+  transition:
+    color var(--person-file-transition-fast),
+    background-color var(--person-file-transition-fast),
+    border-color var(--person-file-transition-fast),
+    transform var(--person-file-transition-fast);
+}
+
+.person-file-alert__close:hover {
+  color: var(--person-file-text-white);
+
+  background: var(--person-file-danger-600);
+
+  border-color: var(--person-file-danger-600);
+
+  transform: rotate(3deg);
+}
+
+.person-file-alert__close:active {
+  transform: scale(0.94);
+}
+
+.person-file-alert__close:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(220, 38, 38, 0.2);
+
+  outline-offset:
+    0.125rem;
+}
+
+
+/* ==========================================================
+   9. ESTADO DE CARGA
+========================================================== */
+
+.person-record-loading {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--person-file-space-16);
+
+  width: 100%;
+  min-width: 0;
+  min-height: 18rem;
+
+  padding:
+    var(--person-file-space-32)
+    var(--person-file-space-24);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-surface),
+      var(--person-file-surface-soft)
+    );
+
+  border:
+    1px solid
+    var(--person-file-border-light);
+
+  border-radius:
+    var(--person-file-radius-xl);
+
+  box-shadow:
+    var(--person-file-shadow-sm);
+
+  overflow: hidden;
+}
+
+
+/* Línea animada */
+
+.person-record-loading::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--records-color),
+      var(--records-color-dark),
+      var(--records-color)
+    );
+
+  background-size:
+    200% 100%;
+
+  animation:
+    person-record-loading-line
+    1.4s
+    linear
+    infinite;
+}
+
+
+/* Decoración */
+
+.person-record-loading::after {
+  position: absolute;
+  top: -5rem;
+  right: -4rem;
+
+  width: 13rem;
+  height: 13rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      var(--records-glow),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   10. SPINNER
+========================================================== */
+
+.person-record-loading__spinner {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+  flex: 0 0 auto;
+
+  width: 3.25rem;
+  height: 3.25rem;
+
+  border:
+    0.25rem solid
+    var(--records-border);
+
+  border-top-color:
+    var(--records-color);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0.625rem 1.25rem var(--records-glow);
+
+  animation:
+    person-record-spinner
+    750ms
+    linear
+    infinite;
+}
+
+
+/* ==========================================================
+   11. CONTENIDO DE CARGA
+========================================================== */
+
+.person-record-loading__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--person-file-space-4);
+
+  min-width: 0;
+  max-width: 25rem;
+}
+
+.person-record-loading__title {
+  color:
+    var(--person-file-text-primary);
+
+  font-size: 1rem;
+  font-weight: 780;
+  line-height: 1.35;
+}
+
+.person-record-loading__description {
+  color:
+    var(--person-file-text-muted);
+
+  font-size: 0.78125rem;
+  line-height: 1.55;
+}
+
+
+/* ==========================================================
+   12. ANIMACIONES DE CARGA
+========================================================== */
+
+@keyframes person-record-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes person-record-loading-line {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+
+/* ==========================================================
+   13. ESTADO VACÍO
+========================================================== */
+
+.person-record-empty {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--person-file-space-16);
+
+  width: 100%;
+  min-width: 0;
+  min-height: 21rem;
+
+  padding:
+    var(--person-file-space-40)
+    var(--person-file-space-24);
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-surface),
+      var(--person-file-surface-soft)
+    );
+
+  border:
+    1px solid
+    var(--person-file-border-light);
+
+  border-radius:
+    var(--person-file-radius-xl);
+
+  box-shadow:
+    var(--person-file-shadow-sm);
+
+  overflow: hidden;
+}
+
+
+/* Línea superior */
+
+.person-record-empty::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--records-color),
+      var(--records-color-dark)
+    );
+}
+
+
+/* Decoración */
+
+.person-record-empty::after {
+  position: absolute;
+  top: -6rem;
+  left: 50%;
+
+  width: 18rem;
+  height: 18rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      var(--records-glow),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  transform:
+    translateX(-50%);
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   14. ICONO DEL ESTADO VACÍO
+========================================================== */
+
+.person-record-empty__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  width: 5rem;
+  height: 5rem;
+
+  color: var(--records-color-dark);
+
+  font-size: 1.875rem;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--records-color-soft),
+      var(--person-file-surface)
+    );
+
+  border:
+    1px solid
+    var(--records-border);
+
+  border-radius:
+    var(--person-file-radius-xl);
+
+  box-shadow:
+    0 1rem 2rem var(--records-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+
+  transition:
+    box-shadow var(--person-file-transition-normal),
+    transform var(--person-file-transition-normal);
+}
+
+.person-record-empty:hover
+.person-record-empty__icon {
+  box-shadow:
+    0 1.25rem 2.5rem var(--records-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  transform:
+    translateY(-0.125rem)
+    rotate(-1deg);
+}
+
+
+/* ==========================================================
+   15. TEXTO DEL ESTADO VACÍO
+========================================================== */
+
+.person-record-empty__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  max-width: 29rem;
+  min-width: 0;
+}
+
+.person-record-empty__title {
+  color:
+    var(--person-file-text-primary);
+
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+
+  text-wrap: balance;
+}
+
+.person-record-empty__description {
+  max-width: 25rem;
+
+  margin-top:
+    var(--person-file-space-8);
+
+  color:
+    var(--person-file-text-muted);
+
+  font-size: 0.8125rem;
+  line-height: 1.6;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   16. CUADRÍCULA DE REGISTROS
+========================================================== */
+
+.person-records {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    var(--person-file-space-16);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   17. TARJETA BASE DE REGISTRO
+========================================================== */
+
+.person-record-card {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    9rem
+    minmax(0, 1fr);
+
+  min-width: 0;
+  min-height: 13rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-surface),
+      var(--person-file-surface-soft)
+    );
+
+  border:
+    1px solid
+    var(--person-file-border-light);
+
+  border-radius:
+    var(--person-file-radius-xl);
+
+  box-shadow:
+    var(--person-file-shadow-sm);
+
+  overflow: hidden;
+
+  transition:
+    border-color var(--person-file-transition-fast),
+    box-shadow var(--person-file-transition-fast),
+    transform var(--person-file-transition-fast);
+}
+
+
+/* Línea superior */
+
+.person-record-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--records-color),
+      var(--records-color-dark)
+    );
+}
+
+.person-record-card:hover {
+  border-color:
+    var(--records-border);
+
+  box-shadow:
+    0 1rem 2rem var(--records-glow),
+    var(--person-file-shadow-sm);
+
+  transform:
+    translateY(-0.1875rem);
+}
+
+
+/* ==========================================================
+   18. ÁREA DE IMAGEN
+========================================================== */
+
+.person-record-card__media {
+  position: relative;
+
+  min-width: 0;
+  min-height: 100%;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-surface-muted),
+      var(--person-file-surface-strong)
+    );
+
+  border-right:
+    1px solid
+    var(--person-file-border-light);
+
+  overflow: hidden;
+}
+
+
+/* ==========================================================
+   19. IMAGEN REAL
+========================================================== */
+
+.person-record-card__image {
+  width: 100%;
+  height: 100%;
+  min-height: 13rem;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition:
+    filter var(--person-file-transition-normal),
+    transform var(--person-file-transition-slow);
+}
+
+.person-record-card:hover
+.person-record-card__image {
+  filter:
+    saturate(108%)
+    contrast(103%);
+
+  transform:
+    scale(1.04);
+}
+
+
+/* ==========================================================
+   20. PLACEHOLDER DE IMAGEN
+========================================================== */
+
+.person-record-card__placeholder {
+  display: grid;
+  place-items: center;
+
+  width: 100%;
+  height: 100%;
+  min-height: 13rem;
+
+  color:
+    var(--records-color-dark);
+
+  font-size: 2.25rem;
+  line-height: 1;
+
+  background:
+    radial-gradient(
+      circle at center,
+      var(--records-color-soft),
+      var(--person-file-surface-muted)
+    );
+}
+
+.person-record-card__placeholder span {
+  display: grid;
+  place-items: center;
+
+  width: 4.5rem;
+  height: 4.5rem;
+
+  background:
+    rgba(255, 255, 255, 0.7);
+
+  border:
+    1px solid
+    var(--records-border);
+
+  border-radius:
+    var(--person-file-radius-xl);
+
+  box-shadow:
+    0 0.75rem 1.5rem var(--records-glow);
+
+  transition:
+    box-shadow var(--person-file-transition-normal),
+    transform var(--person-file-transition-normal);
+}
+
+.person-record-card:hover
+.person-record-card__placeholder span {
+  box-shadow:
+    0 1rem 2rem var(--records-glow);
+
+  transform:
+    scale(1.04)
+    rotate(-2deg);
+}
+
+
+/* ==========================================================
+   21. CUERPO DE LA TARJETA
+========================================================== */
+
+.person-record-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--person-file-space-16);
+
+  min-width: 0;
+
+  padding:
+    var(--person-file-space-20);
+}
+
+
+/* ==========================================================
+   22. ENCABEZADO DEL REGISTRO
+========================================================== */
+
+.person-record-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--person-file-space-12);
+
+  min-width: 0;
+}
+
+.person-record-card__heading {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.person-record-card__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--person-file-space-6);
+
+  width: fit-content;
+
+  color:
+    var(--records-color-dark);
+
+  font-size: 0.625rem;
+  font-weight: 820;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.person-record-card__eyebrow::before {
+  width: 1rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    var(--records-color);
+
+  border-radius:
+    var(--person-file-radius-pill);
+}
+
+.person-record-card__title {
+  margin-top:
+    var(--person-file-space-6);
+
+  color:
+    var(--person-file-text-primary);
+
+  font-size: 1.25rem;
+  font-weight: 820;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   23. DETALLES DEL REGISTRO
+========================================================== */
+
+.person-record-details {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    var(--person-file-space-10);
+
+  width: 100%;
+  min-width: 0;
+}
+
+.person-record-details__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--person-file-space-4);
+
+  min-width: 0;
+
+  padding:
+    var(--person-file-space-10)
+    var(--person-file-space-12);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-surface-soft),
+      var(--person-file-surface)
+    );
+
+  border:
+    1px solid
+    var(--person-file-border-light);
+
+  border-radius:
+    var(--person-file-radius-md);
+}
+
+.person-record-details__label {
+  color:
+    var(--person-file-text-muted);
+
+  font-size: 0.625rem;
+  font-weight: 760;
+  line-height: 1.3;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.person-record-details__value {
+  min-width: 0;
+
+  color:
+    var(--person-file-text-primary);
+
+  font-size: 0.78125rem;
+  font-weight: 700;
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   24. OBSERVACIONES DEL REGISTRO
+========================================================== */
+
+.person-record-card__notes {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--person-file-space-10);
+
+  min-width: 0;
+
+  padding:
+    var(--person-file-space-12);
+
+  color:
+    var(--person-file-text-secondary);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-warning-50),
+      rgba(255, 255, 255, 0.94)
+    );
+
+  border:
+    1px solid
+    var(--person-file-warning-200);
+
+  border-radius:
+    var(--person-file-radius-md);
+}
+
+.person-record-card__notes-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 1.75rem;
+  height: 1.75rem;
+
+  color:
+    var(--person-file-warning-800);
+
+  font-size: 0.8125rem;
+  line-height: 1;
+
+  background:
+    rgba(255, 255, 255, 0.72);
+
+  border:
+    1px solid
+    var(--person-file-warning-200);
+
+  border-radius:
+    var(--person-file-radius-sm);
+}
+
+.person-record-card__notes-content {
+  min-width: 0;
+
+  color:
+    var(--person-file-text-secondary);
+
+  font-size: 0.75rem;
+  line-height: 1.55;
+
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   25. PANTALLAS INTERMEDIAS
+========================================================== */
+
+@media (max-width: 1080px) {
+  .person-records {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .person-record-card {
+    grid-template-columns:
+      11rem
+      minmax(0, 1fr);
+  }
+}
+
+
+/* ==========================================================
+   26. TABLET
+========================================================== */
+
+@media (max-width: 760px) {
+  .person-file-section__header--actions {
+    align-items: flex-start;
+    flex-direction: column;
+
+    padding:
+      var(--person-file-space-20);
+  }
+
+  .person-file-action {
+    align-self: flex-end;
+  }
+
+  .person-record-card {
+    grid-template-columns:
+      9rem
+      minmax(0, 1fr);
+  }
+
+  .person-record-loading {
+    min-height: 16rem;
+  }
+
+  .person-record-empty {
+    min-height: 18rem;
+  }
+}
+
+
+/* ==========================================================
+   27. CELULAR
+========================================================== */
+
+@media (max-width: 580px) {
+  .person-file-section__header--actions {
+    padding:
+      var(--person-file-space-16);
+
+    border-radius:
+      var(--person-file-radius-lg);
+  }
+
+  .person-file-action {
+    align-self: stretch;
+
+    width: 100%;
+  }
+
+  .person-file-alert {
+    align-items: flex-start;
+  }
+
+  .person-record-loading {
+    flex-direction: column;
+
+    min-height: 17rem;
+
+    text-align: center;
+  }
+
+  .person-record-loading__content {
+    align-items: center;
+  }
+
+  .person-record-empty {
+    min-height: 17rem;
+
+    padding:
+      var(--person-file-space-32)
+      var(--person-file-space-16);
+  }
+
+  .person-record-empty__icon {
+    width: 4.5rem;
+    height: 4.5rem;
+
+    font-size: 1.625rem;
+  }
+
+  .person-record-card {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .person-record-card__media {
+    min-height: 12rem;
+
+    border-right: 0;
+    border-bottom:
+      1px solid
+      var(--person-file-border-light);
+  }
+
+  .person-record-card__image,
+  .person-record-card__placeholder {
+    min-height: 12rem;
+    max-height: 16rem;
+  }
+
+  .person-record-card__body {
+    padding:
+      var(--person-file-space-16);
+  }
+}
+
+
+/* ==========================================================
+   28. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .person-file-alert {
+    gap:
+      var(--person-file-space-10);
+
+    padding:
+      var(--person-file-space-12);
+  }
+
+  .person-file-alert__content {
+    align-items: flex-start;
+  }
+
+  .person-file-alert__message {
+    font-size: 0.75rem;
+  }
+
+  .person-record-details {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .person-record-card__body {
+    gap:
+      var(--person-file-space-12);
+
+    padding:
+      var(--person-file-space-14);
+  }
+
+  .person-record-card__title {
+    font-size: 1.125rem;
+  }
+}
+
+
+/* ==========================================================
+   29. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .person-file-action:hover:not(:disabled),
+  .person-file-action:hover:not(:disabled)
+  .person-file-action__icon,
+  .person-file-alert__close:hover,
+  .person-record-empty:hover
+  .person-record-empty__icon,
+  .person-record-card:hover,
+  .person-record-card:hover
+  .person-record-card__image,
+  .person-record-card:hover
+  .person-record-card__placeholder span {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   30. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .person-file-section__header--actions,
+  .person-file-action,
+  .person-file-alert,
+  .person-record-loading,
+  .person-record-empty,
+  .person-record-card,
+  .person-record-details__item,
+  .person-record-card__notes {
+    border-width: 0.125rem;
+  }
+
+  .person-record-loading__description,
+  .person-record-empty__description,
+  .person-record-card__notes-content {
+    color:
+      var(--person-file-text-secondary);
+  }
+}
+
+
+/* ==========================================================
+   31. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .person-file-action,
+  .person-file-action__icon,
+  .person-file-alert__close,
+  .person-record-empty__icon,
+  .person-record-card,
+  .person-record-card__image,
+  .person-record-card__placeholder span {
+    transition: none;
+  }
+
+  .person-record-loading::before,
+  .person-record-loading__spinner {
+    animation: none;
+  }
+
+  .person-file-action:hover,
+  .person-file-action:active,
+  .person-file-action:hover
+  .person-file-action__icon,
+  .person-file-alert__close:hover,
+  .person-record-empty:hover
+  .person-record-empty__icon,
+  .person-record-card:hover,
+  .person-record-card:hover
+  .person-record-card__image,
+  .person-record-card:hover
+  .person-record-card__placeholder span {
+    transform: none;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — EXPEDIENTE DE PERSONA
+   PARTE 4: FOOTER, DESBORDAMIENTOS Y REFINAMIENTOS FINALES
+========================================================== */
+
+
+/* ==========================================================
+   1. PIE DEL EXPEDIENTE
+========================================================== */
+
+.person-file__footer {
+  position: relative;
+  z-index: 4;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--person-file-space-12);
+
+  min-width: 0;
+  min-height: 5rem;
+
+  padding:
+    var(--person-file-space-16)
+    var(--person-file-space-32);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.98),
+      var(--person-file-surface)
+    );
+
+  border-top:
+    1px solid
+    var(--person-file-border-light);
+
+  box-shadow:
+    0 -0.5rem 1.25rem rgba(15, 23, 42, 0.035);
+}
+
+
+/* Línea decorativa superior */
+
+.person-file__footer::before {
+  position: absolute;
+  top: -1px;
+  left: var(--person-file-space-32);
+  right: var(--person-file-space-32);
+
+  height: 1px;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(37, 99, 235, 0.18),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   2. BOTÓN CERRAR DETALLE
+========================================================== */
+
+.person-file__footer-button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--person-file-space-8);
+
+  min-width: 9.5rem;
+  min-height: 2.875rem;
+
+  padding:
+    var(--person-file-space-8)
+    var(--person-file-space-16);
+
+  color:
+    var(--person-file-text-white);
+
+  font-size: 0.78125rem;
+  font-weight: 760;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-navy-800),
+      var(--person-file-navy-950)
+    );
+
+  border:
+    1px solid
+    rgba(15, 23, 42, 0.88);
+
+  border-radius:
+    var(--person-file-radius-md);
+
+  box-shadow:
+    0 0.625rem 1.25rem rgba(15, 23, 42, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    color var(--person-file-transition-fast),
+    background-color var(--person-file-transition-fast),
+    border-color var(--person-file-transition-fast),
+    box-shadow var(--person-file-transition-fast),
+    transform var(--person-file-transition-fast);
+}
+
+
+/* Brillo interno */
+
+.person-file__footer-button::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+
+  width: 45%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.14),
+      transparent
+    );
+
+  transform: skewX(-20deg);
+
+  transition:
+    left var(--person-file-transition-slow);
+
+  pointer-events: none;
+}
+
+.person-file__footer-button:hover {
+  background:
+    linear-gradient(
+      145deg,
+      var(--person-file-primary-600),
+      var(--person-file-primary-800)
+    );
+
+  border-color:
+    var(--person-file-primary-600);
+
+  box-shadow:
+    var(--person-file-shadow-primary);
+
+  transform:
+    translateY(-0.0625rem);
+}
+
+.person-file__footer-button:hover::before {
+  left: 125%;
+}
+
+.person-file__footer-button:active {
+  box-shadow:
+    0 0.25rem 0.625rem rgba(15, 23, 42, 0.18);
+
+  transform:
+    translateY(0)
+    scale(0.97);
+}
+
+.person-file__footer-button:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(59, 130, 246, 0.22);
+
+  outline-offset:
+    0.1875rem;
+}
+
+
+/* ==========================================================
+   3. ICONO DEL BOTÓN DEL FOOTER
+========================================================== */
+
+.person-file__footer-button-icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 1.125rem;
+  height: 1.125rem;
+
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1;
+
+  transition:
+    transform var(--person-file-transition-fast);
+}
+
+.person-file__footer-button:hover
+.person-file__footer-button-icon {
+  transform:
+    rotate(4deg)
+    scale(1.05);
+}
+
+.person-file__footer-button-label {
+  position: relative;
+  z-index: 1;
+
+  line-height: 1.2;
+}
+
+
+/* ==========================================================
+   4. PROTECCIÓN GENERAL CONTRA DESBORDAMIENTOS
+========================================================== */
+
+.person-file,
+.person-file__dialog,
+.person-file__header,
+.person-file__navigation,
+.person-file__body,
+.person-file__footer,
+.person-file__panel,
+.person-file-section,
+.person-data-grid,
+.person-data-card,
+.person-records,
+.person-record-card {
+  min-width: 0;
+}
+
+.person-file-heading,
+.person-file-section__heading,
+.person-data-card__content,
+.person-record-card__body,
+.person-record-card__heading,
+.person-record-loading__content,
+.person-record-empty__content,
+.person-file-alert__content {
+  min-width: 0;
+}
+
+.person-file-heading__title,
+.person-file-heading__description,
+.person-file-section__title,
+.person-file-section__description,
+.person-data-card__value,
+.person-record-card__title,
+.person-record-details__value,
+.person-record-card__notes-content,
+.person-file-alert__message {
+  max-width: 100%;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   5. PROTECCIÓN PARA CORREOS, DOCUMENTOS Y TEXTOS LARGOS
+========================================================== */
+
+.person-data-card__value--break,
+.person-notes__content,
+.person-record-card__notes-content {
+  word-break: break-word;
+}
+
+.person-data-card__value,
+.person-record-details__value {
+  hyphens: auto;
+}
+
+
+/* ==========================================================
+   6. COMPORTAMIENTO VERTICAL DEL MODAL
+========================================================== */
+
+.person-file__dialog {
+  min-height: 0;
+}
+
+.person-file__body {
+  flex: 1 1 auto;
+
+  min-height: 0;
+}
+
+.person-file__header,
+.person-file__navigation,
+.person-file__footer {
+  flex: 0 0 auto;
+}
+
+
+/* Mantener footer y navegación visibles */
+
+.person-file__navigation,
+.person-file__footer {
+  isolation: isolate;
+}
+
+
+/* ==========================================================
+   7. CONTENIDO VACÍO O CORTO
+========================================================== */
+
+.person-file__body:has(
+  .person-record-empty
+) {
+  display: flex;
+  flex-direction: column;
+}
+
+.person-file__body:has(
+  .person-record-empty
+)
+.person-file__panel {
+  flex: 1 1 auto;
+}
+
+.person-file__body:has(
+  .person-record-empty
+)
+.person-record-empty {
+  flex: 1 1 auto;
+}
+
+
+/* ==========================================================
+   8. CONTENIDO LARGO
+========================================================== */
+
+.person-file__panel > :last-child {
+  margin-bottom: 0;
+}
+
+.person-file-section:last-child,
+.person-record-card:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ==========================================================
+   9. SELECCIÓN DE TEXTO
+========================================================== */
+
+.person-file ::selection {
+  color:
+    var(--person-file-text-white);
+
+  background:
+    var(--person-file-primary-600);
+}
+
+
+/* ==========================================================
+   10. CURSORES Y ELEMENTOS INTERACTIVOS
+========================================================== */
+
+.person-file button:not(:disabled) {
+  cursor: pointer;
+}
+
+.person-file button:disabled {
+  cursor: not-allowed;
+}
+
+.person-file img {
+  user-select: none;
+
+  -webkit-user-drag: none;
+}
+
+
+/* ==========================================================
+   11. AJUSTE DE FOCUS GLOBAL
+========================================================== */
+
+.person-file button:focus {
+  outline: none;
+}
+
+.person-file button:focus-visible {
+  position: relative;
+  z-index: 10;
+}
+
+
+/* ==========================================================
+   12. REFINAMIENTO DE SUPERFICIES
+========================================================== */
+
+.person-file__body > .person-file__panel {
+  animation:
+    person-file-panel-enter
+    220ms
+    ease-out;
+}
+
+@keyframes person-file-panel-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(0.375rem);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* ==========================================================
+   13. APARIENCIA DEL SCROLL EN FIREFOX
+========================================================== */
+
+.person-file,
+.person-file__body,
+.person-file-tabs {
+  scrollbar-width: thin;
+}
+
+.person-file {
+  scrollbar-color:
+    rgba(148, 163, 184, 0.62)
+    transparent;
+}
+
+
+/* ==========================================================
+   14. SCROLL DEL OVERLAY EN WEBKIT
+========================================================== */
+
+.person-file::-webkit-scrollbar {
+  width: 0.625rem;
+}
+
+.person-file::-webkit-scrollbar-track {
+  background:
+    rgba(2, 6, 23, 0.25);
+}
+
+.person-file::-webkit-scrollbar-thumb {
+  background:
+    rgba(148, 163, 184, 0.52);
+
+  border:
+    0.125rem solid
+    transparent;
+
+  background-clip:
+    padding-box;
+
+  border-radius:
+    var(--person-file-radius-pill);
+}
+
+.person-file::-webkit-scrollbar-thumb:hover {
+  background:
+    rgba(203, 213, 225, 0.65);
+
+  background-clip:
+    padding-box;
+}
+
+
+/* ==========================================================
+   15. AJUSTES PARA PANTALLAS GRANDES
+========================================================== */
+
+@media (min-width: 1440px) {
+  .person-file__dialog {
+    width:
+      min(80rem, 100%);
+  }
+
+  .person-file__body {
+    padding:
+      var(--person-file-space-32)
+      var(--person-file-space-40);
+  }
+
+  .person-file__footer {
+    padding-right:
+      var(--person-file-space-40);
+
+    padding-left:
+      var(--person-file-space-40);
+  }
+
+  .person-file__footer::before {
+    left:
+      var(--person-file-space-40);
+
+    right:
+      var(--person-file-space-40);
+  }
+}
+
+
+/* ==========================================================
+   16. PANTALLAS DE POCA ALTURA
+========================================================== */
+
+@media (max-height: 760px) and (min-width: 561px) {
+  .person-file {
+    padding:
+      var(--person-file-space-16);
+  }
+
+  .person-file__dialog {
+    max-height:
+      calc(100vh - 2rem);
+  }
+
+  .person-file__header {
+    min-height: auto;
+
+    padding-top:
+      var(--person-file-space-20);
+
+    padding-bottom:
+      var(--person-file-space-20);
+  }
+
+  .person-file-heading__description {
+    margin-top:
+      var(--person-file-space-8);
+
+    line-height: 1.5;
+  }
+
+  .person-file-tabs__button {
+    min-height: 3.5rem;
+  }
+
+  .person-file__body {
+    padding-top:
+      var(--person-file-space-20);
+
+    padding-bottom:
+      var(--person-file-space-20);
+  }
+
+  .person-file__footer {
+    min-height: 4.5rem;
+
+    padding-top:
+      var(--person-file-space-12);
+
+    padding-bottom:
+      var(--person-file-space-12);
+  }
+}
+
+
+/* ==========================================================
+   17. ORIENTACIÓN HORIZONTAL EN TABLETS Y CELULARES
+========================================================== */
+
+@media (
+  max-height: 520px
+) and (
+  orientation: landscape
+) {
+  .person-file {
+    display: block;
+
+    padding:
+      var(--person-file-space-8);
+  }
+
+  .person-file__dialog {
+    width: 100%;
+    max-height:
+      calc(100dvh - 1rem);
+
+    border-radius:
+      var(--person-file-radius-lg);
+  }
+
+  .person-file__header {
+    min-height: auto;
+
+    padding:
+      var(--person-file-space-14)
+      var(--person-file-space-20);
+  }
+
+  .person-file-heading__eyebrow {
+    display: none;
+  }
+
+  .person-file-heading__title {
+    margin-top: 0;
+
+    font-size: 1.375rem;
+  }
+
+  .person-file-heading__description {
+    display: none;
+  }
+
+  .person-file__close {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .person-file-tabs__button {
+    min-height: 3rem;
+
+    padding-top:
+      var(--person-file-space-6);
+
+    padding-bottom:
+      var(--person-file-space-6);
+  }
+
+  .person-file__body {
+    padding:
+      var(--person-file-space-14)
+      var(--person-file-space-20);
+  }
+
+  .person-file__footer {
+    min-height: 3.75rem;
+
+    padding:
+      var(--person-file-space-8)
+      var(--person-file-space-20);
+  }
+
+  .person-file__footer-button {
+    min-height: 2.5rem;
+  }
+}
+
+
+/* ==========================================================
+   18. TABLET
+========================================================== */
+
+@media (max-width: 760px) {
+  .person-file__footer {
+    min-height: 4.75rem;
+
+    padding:
+      var(--person-file-space-14)
+      var(--person-file-space-20);
+  }
+
+  .person-file__footer::before {
+    left:
+      var(--person-file-space-20);
+
+    right:
+      var(--person-file-space-20);
+  }
+}
+
+
+/* ==========================================================
+   19. CELULAR
+========================================================== */
+
+@media (max-width: 560px) {
+  .person-file__footer {
+    position: sticky;
+    bottom: 0;
+
+    min-height: auto;
+
+    padding:
+      var(--person-file-space-12)
+      var(--person-file-space-16);
+
+    background:
+      rgba(255, 255, 255, 0.94);
+
+    backdrop-filter:
+      blur(0.75rem);
+
+    -webkit-backdrop-filter:
+      blur(0.75rem);
+
+    box-shadow:
+      0 -0.75rem 1.5rem rgba(15, 23, 42, 0.07);
+  }
+
+  .person-file__footer::before {
+    left:
+      var(--person-file-space-16);
+
+    right:
+      var(--person-file-space-16);
+  }
+
+  .person-file__footer-button {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+
+/* ==========================================================
+   20. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 400px) {
+  .person-file__footer {
+    padding:
+      var(--person-file-space-10)
+      var(--person-file-space-12);
+  }
+
+  .person-file__footer::before {
+    left:
+      var(--person-file-space-12);
+
+    right:
+      var(--person-file-space-12);
+  }
+
+  .person-file__footer-button {
+    min-height: 2.75rem;
+
+    font-size: 0.75rem;
+  }
+}
+
+
+/* ==========================================================
+   21. COMPATIBILIDAD SIN BACKDROP-FILTER
+========================================================== */
+
+@supports not (
+  backdrop-filter: blur(0.5rem)
+) {
+  .person-file {
+    background:
+      rgba(2, 6, 23, 0.88);
+  }
+
+  .person-file__footer {
+    background:
+      var(--person-file-surface);
+  }
+}
+
+
+/* ==========================================================
+   22. COMPATIBILIDAD SIN :has()
+========================================================== */
+
+@supports not selector(
+  .person-file__body:has(.person-record-empty)
+) {
+  .person-file__body {
+    display: block;
+  }
+}
+
+
+/* ==========================================================
+   23. MODO DE COLOR FORZADO
+========================================================== */
+
+@media (forced-colors: active) {
+  .person-file__dialog,
+  .person-file__header,
+  .person-file__navigation,
+  .person-file__body,
+  .person-file__footer,
+  .person-file-section,
+  .person-data-card,
+  .person-record-card,
+  .person-record-empty,
+  .person-record-loading {
+    forced-color-adjust: auto;
+  }
+
+  .person-file__dialog,
+  .person-file-section,
+  .person-data-card,
+  .person-record-card {
+    border:
+      1px solid
+      CanvasText;
+  }
+
+  .person-file__close,
+  .person-file-action,
+  .person-file-alert__close,
+  .person-file__footer-button {
+    border:
+      1px solid
+      ButtonText;
+  }
+
+  .person-state__indicator {
+    border:
+      1px solid
+      CanvasText;
+  }
+}
+
+
+/* ==========================================================
+   24. IMPRESIÓN
+========================================================== */
+
+@media print {
+  :host {
+    display: block;
+  }
+
+  .person-file {
+    position: static;
+
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    padding: 0;
+
+    background: #ffffff;
+
+    backdrop-filter: none;
+
+    overflow: visible;
+  }
+
+  .person-file::before,
+  .person-file::after {
+    display: none;
+  }
+
+  .person-file__dialog {
+    display: block;
+
+    width: 100%;
+    max-height: none;
+
+    background: #ffffff;
+
+    border:
+      1px solid
+      #cbd5e1;
+
+    border-radius: 0;
+
+    box-shadow: none;
+
+    overflow: visible;
+
+    animation: none;
+  }
+
+  .person-file__dialog::before {
+    background:
+      #2563eb;
+  }
+
+  .person-file__header {
+    min-height: auto;
+
+    padding:
+      1.5rem;
+
+    color:
+      #111827;
+
+    background:
+      #ffffff;
+
+    border-bottom:
+      1px solid
+      #cbd5e1;
+  }
+
+  .person-file__header::before,
+  .person-file__header::after {
+    display: none;
+  }
+
+  .person-file-heading__eyebrow {
+    color:
+      #1d4ed8;
+  }
+
+  .person-file-heading__title {
+    color:
+      #111827;
+  }
+
+  .person-file-heading__description {
+    color:
+      #475569;
+  }
+
+  .person-file__close,
+  .person-file__navigation,
+  .person-file__footer,
+  .person-file-action,
+  .person-file-alert__close {
+    display: none !important;
+  }
+
+  .person-file__body {
+    padding:
+      1.5rem;
+
+    background:
+      #ffffff;
+
+    overflow: visible;
+  }
+
+  .person-file__panel,
+  .person-file-section,
+  .person-records {
+    display: block;
+  }
+
+  .person-file-section,
+  .person-data-card,
+  .person-record-card,
+  .person-record-empty,
+  .person-record-loading,
+  .person-notes {
+    break-inside: avoid;
+
+    box-shadow: none;
+  }
+
+  .person-file-section,
+  .person-record-card {
+    margin-bottom:
+      1rem;
+  }
+
+  .person-data-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .person-record-card {
+    display: grid;
+
+    grid-template-columns:
+      8rem
+      minmax(0, 1fr);
+
+    margin-bottom:
+      1rem;
+  }
+
+  .person-record-card__image {
+    print-color-adjust: exact;
+
+    -webkit-print-color-adjust: exact;
+  }
+
+  .person-record-card__placeholder,
+  .person-data-card__icon,
+  .person-state {
+    print-color-adjust: exact;
+
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+
+/* ==========================================================
+   25. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .person-file__footer-button:hover,
+  .person-file__footer-button:hover
+  .person-file__footer-button-icon {
+    transform: none;
+  }
+
+  .person-file__footer-button {
+    min-height: 3rem;
+  }
+}
+
+
+/* ==========================================================
+   26. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .person-file__body > .person-file__panel {
+    animation: none;
+  }
+
+  .person-file__footer-button,
+  .person-file__footer-button::before,
+  .person-file__footer-button-icon {
+    transition: none;
+  }
+
+  .person-file__footer-button:hover,
+  .person-file__footer-button:active,
+  .person-file__footer-button:hover
+  .person-file__footer-button-icon {
+    transform: none;
+  }
+
+  .person-file__footer-button:hover::before {
+    left: -60%;
+  }
+}
+
+
+/* ==========================================================
+   27. AJUSTES FINALES DE CONSISTENCIA
+========================================================== */
+
+.person-file__header,
+.person-file__navigation,
+.person-file__body,
+.person-file__footer {
+  width: 100%;
+}
+
+.person-file-section,
+.person-data-card,
+.person-record-card,
+.person-record-empty,
+.person-record-loading {
+  max-width: 100%;
+}
+
+.person-file__close,
+.person-file-tabs__button,
+.person-file-action,
+.person-file-alert__close,
+.person-file__footer-button {
+  appearance: none;
+
+  -webkit-appearance: none;
+}
+
+.person-file__close,
+.person-file-action,
+.person-file-alert__close,
+.person-file__footer-button {
+  touch-action: manipulation;
+}
+
+.person-file-tabs__button {
+  touch-action: pan-x;
+}

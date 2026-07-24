@@ -1,0 +1,3300 @@
+/* =========================================================
+   1. VARIABLES Y CONFIGURACIÓN GENERAL
+========================================================= */
+
+:host {
+  --report-dark: #0f172a;
+
+  --report-primary: #2563eb;
+  --report-primary-dark: #1d4ed8;
+  --report-primary-soft: #eff6ff;
+
+  --report-success: #16a34a;
+  --report-success-dark: #15803d;
+  --report-success-soft: #f0fdf4;
+
+  --report-danger: #dc2626;
+  --report-danger-dark: #b91c1c;
+  --report-danger-soft: #fef2f2;
+
+  --report-background: #f8fafc;
+  --report-surface: #ffffff;
+
+  --report-text: #111827;
+  --report-text-secondary: #475569;
+  --report-text-muted: #64748b;
+
+  --report-border: #e2e8f0;
+  --report-border-strong: #cbd5e1;
+
+  --report-shadow-sm:
+    0 1px 2px rgba(15, 23, 42, 0.05);
+
+  --report-shadow-md:
+    0 10px 30px rgba(15, 23, 42, 0.08);
+
+  --report-shadow-lg:
+    0 22px 55px rgba(15, 23, 42, 0.12);
+
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* =========================================================
+   2. CONTENEDOR PRINCIPAL
+========================================================= */
+
+.financial-report {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: clamp(1rem, 2vw, 2rem);
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37, 99, 235, 0.08),
+      transparent 30%
+    ),
+    var(--report-background);
+  color: var(--report-text);
+}
+
+.financial-report,
+.financial-report *,
+.financial-report *::before,
+.financial-report *::after {
+  box-sizing: border-box;
+}
+
+.financial-report button,
+.financial-report input,
+.financial-report select {
+  font: inherit;
+}
+
+.financial-report button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.financial-report button:focus-visible,
+.financial-report input:focus-visible,
+.financial-report select:focus-visible,
+.report-table-wrapper:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.2);
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   3. ENCABEZADO PRINCIPAL
+========================================================= */
+
+.financial-report__header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: clamp(1.25rem, 2vw, 2rem);
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(248, 250, 252, 0.96)
+    );
+  box-shadow: var(--report-shadow-md);
+}
+
+.financial-report__header::before {
+  content: "";
+  position: absolute;
+  top: -95px;
+  right: -80px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.08);
+  pointer-events: none;
+}
+
+.financial-report__header::after {
+  content: "";
+  position: absolute;
+  right: 1.5rem;
+  bottom: 0;
+  left: 1.5rem;
+  height: 3px;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--report-primary),
+      rgba(37, 99, 235, 0.25),
+      transparent
+    );
+}
+
+.financial-report__heading {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.financial-report__heading-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  border-radius: 17px;
+  background:
+    linear-gradient(
+      145deg,
+      var(--report-primary),
+      var(--report-primary-dark)
+    );
+  color: #ffffff;
+  box-shadow:
+    0 12px 25px rgba(37, 99, 235, 0.23);
+}
+
+.financial-report__heading-icon span {
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.financial-report__heading-content {
+  min-width: 0;
+}
+
+.financial-report__eyebrow {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--report-primary);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.financial-report__title {
+  margin: 0;
+  color: var(--report-dark);
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  font-weight: 850;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+.financial-report__description {
+  max-width: 720px;
+  margin: 0.65rem 0 0;
+  color: var(--report-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   4. ACCIONES DEL ENCABEZADO
+========================================================= */
+
+.financial-report__header-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.financial-report__secondary-button,
+.financial-report__export-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0.72rem 1rem;
+  border-radius: 12px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+
+/* =========================================================
+   5. BOTÓN ACTUALIZAR
+========================================================= */
+
+.financial-report__secondary-button {
+  border: 1px solid var(--report-border);
+  background: var(--report-surface);
+  color: var(--report-dark);
+  box-shadow: var(--report-shadow-sm);
+}
+
+.financial-report__secondary-button:hover:not(:disabled) {
+  border-color: rgba(37, 99, 235, 0.38);
+  background: var(--report-primary-soft);
+  color: var(--report-primary-dark);
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.12);
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   6. BOTÓN EXPORTAR
+========================================================= */
+
+.financial-report__export-button {
+  border: 1px solid var(--report-primary);
+  background:
+    linear-gradient(
+      135deg,
+      var(--report-primary),
+      var(--report-primary-dark)
+    );
+  color: #ffffff;
+  box-shadow:
+    0 10px 24px rgba(37, 99, 235, 0.23);
+}
+
+.financial-report__export-button:hover:not(:disabled) {
+  box-shadow:
+    0 14px 30px rgba(37, 99, 235, 0.3);
+  filter: brightness(1.04);
+  transform: translateY(-2px);
+}
+
+.financial-report__secondary-button:active:not(:disabled),
+.financial-report__export-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.financial-report__secondary-button:disabled,
+.financial-report__export-button:disabled {
+  cursor: not-allowed;
+  filter: saturate(0.65);
+  opacity: 0.6;
+  transform: none;
+}
+
+.financial-report__button-icon {
+  display: inline-grid;
+  place-items: center;
+  font-size: 1.05rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   7. INDICADOR DE CARGA EN BOTONES
+========================================================= */
+
+.financial-report__button-loader,
+.report-query__button-loader {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: report-spin 700ms linear infinite;
+}
+
+.financial-report__secondary-button
+.financial-report__button-loader {
+  border-color: rgba(37, 99, 235, 0.2);
+  border-top-color: var(--report-primary);
+}
+
+@keyframes report-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   8. ALERTAS
+========================================================= */
+
+.report-alert {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.1rem;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  box-shadow: var(--report-shadow-sm);
+  animation: report-alert-in 220ms ease-out;
+}
+
+.report-alert::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+}
+
+.report-alert--error {
+  border-color: rgba(220, 38, 38, 0.2);
+  background:
+    linear-gradient(
+      90deg,
+      var(--report-danger-soft),
+      #ffffff
+    );
+  color: var(--report-danger-dark);
+}
+
+.report-alert--error::before {
+  background: var(--report-danger);
+}
+
+.report-alert--success {
+  border-color: rgba(22, 163, 74, 0.2);
+  background:
+    linear-gradient(
+      90deg,
+      var(--report-success-soft),
+      #ffffff
+    );
+  color: var(--report-success-dark);
+}
+
+.report-alert--success::before {
+  background: var(--report-success);
+}
+
+.report-alert__icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.report-alert--error .report-alert__icon {
+  background: rgba(220, 38, 38, 0.11);
+  color: var(--report-danger);
+}
+
+.report-alert--success .report-alert__icon {
+  background: rgba(22, 163, 74, 0.11);
+  color: var(--report-success);
+}
+
+.report-alert__content {
+  min-width: 0;
+}
+
+.report-alert__title {
+  display: block;
+  margin-bottom: 0.18rem;
+  color: currentColor;
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.report-alert__message {
+  margin: 0;
+  color: var(--report-text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.report-alert__close {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: currentColor;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.72;
+  transition:
+    opacity 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.report-alert__close:hover {
+  background: rgba(15, 23, 42, 0.06);
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+@keyframes report-alert-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   9. RESPONSIVE INICIAL
+========================================================= */
+
+@media (max-width: 900px) {
+  .financial-report__header {
+    flex-direction: column;
+  }
+
+  .financial-report__header-actions {
+    width: 100%;
+  }
+
+  .financial-report__secondary-button,
+  .financial-report__export-button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .financial-report {
+    padding: 0.85rem;
+    border-radius: 18px;
+  }
+
+  .financial-report__header {
+    padding: 1.15rem;
+    border-radius: 18px;
+  }
+
+  .financial-report__heading {
+    gap: 0.75rem;
+  }
+
+  .financial-report__heading-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+  }
+
+  .financial-report__header-actions {
+    flex-direction: column;
+  }
+
+  .financial-report__secondary-button,
+  .financial-report__export-button {
+    width: 100%;
+  }
+
+  .report-alert {
+    align-items: flex-start;
+    padding: 0.9rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .financial-report__heading-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 13px;
+  }
+
+  .financial-report__title {
+    font-size: 1.45rem;
+  }
+
+  .financial-report__description {
+    font-size: 0.87rem;
+  }
+
+  .report-alert__icon {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* =========================================================
+   10. PANEL DE CONSULTA
+========================================================= */
+
+.report-query {
+  position: relative;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  border: 1px solid var(--report-border);
+  border-radius: 22px;
+  background: var(--report-surface);
+  box-shadow: var(--report-shadow-md);
+}
+
+.report-query::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--report-primary),
+      rgba(37, 99, 235, 0.55),
+      rgba(37, 99, 235, 0.08)
+    );
+}
+
+
+/* =========================================================
+   11. ENCABEZADO DEL PANEL
+========================================================= */
+
+.report-query__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+  border-bottom: 1px solid var(--report-border);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(248, 250, 252, 0.95),
+      rgba(255, 255, 255, 1)
+    );
+}
+
+.report-query__header > div {
+  min-width: 0;
+}
+
+.report-query__eyebrow {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--report-primary);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.report-query__title {
+  margin: 0;
+  color: var(--report-dark);
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 850;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.report-query__description {
+  max-width: 680px;
+  margin: 0.45rem 0 0;
+  color: var(--report-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   12. BOTÓN RESTABLECER
+========================================================= */
+
+.report-query__reset-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--report-border);
+  border-radius: 11px;
+  background: var(--report-surface);
+  color: var(--report-text-secondary);
+  font-size: 0.82rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.report-query__reset-button:hover:not(:disabled) {
+  border-color: rgba(37, 99, 235, 0.35);
+  background: var(--report-primary-soft);
+  color: var(--report-primary-dark);
+  box-shadow:
+    0 7px 18px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+.report-query__reset-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.report-query__reset-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   13. PESTAÑAS DE PERIODO
+========================================================= */
+
+.report-periods {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 1.25rem clamp(1.25rem, 2vw, 1.75rem);
+  border-bottom: 1px solid var(--report-border);
+  background: var(--report-background);
+}
+
+.report-periods__button {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 88px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.95rem 1rem;
+  overflow: hidden;
+  border: 1px solid var(--report-border);
+  border-radius: 15px;
+  background: var(--report-surface);
+  color: var(--report-text);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--report-shadow-sm);
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.report-periods__button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  border-radius: 15px 0 0 15px;
+  background: transparent;
+  transition: background-color 180ms ease;
+}
+
+.report-periods__button:hover:not(:disabled) {
+  border-color: rgba(37, 99, 235, 0.35);
+  background: rgba(239, 246, 255, 0.7);
+  box-shadow:
+    0 10px 24px rgba(37, 99, 235, 0.1);
+  transform: translateY(-2px);
+}
+
+.report-periods__button--active {
+  border-color: rgba(37, 99, 235, 0.5);
+  background:
+    linear-gradient(
+      145deg,
+      var(--report-primary-soft),
+      #ffffff
+    );
+  color: var(--report-primary-dark);
+  box-shadow:
+    0 12px 28px rgba(37, 99, 235, 0.14);
+}
+
+.report-periods__button--active::before {
+  background: var(--report-primary);
+}
+
+.report-periods__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
+}
+
+.report-periods__label {
+  position: relative;
+  z-index: 1;
+  color: var(--report-dark);
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.report-periods__button--active
+.report-periods__label {
+  color: var(--report-primary-dark);
+}
+
+.report-periods__description {
+  position: relative;
+  z-index: 1;
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--report-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+
+/* =========================================================
+   14. FORMULARIO Y CAMPOS
+========================================================= */
+
+.report-query__form {
+  background: var(--report-surface);
+}
+
+.report-query__fields {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(220px, 1fr));
+  gap: 1.15rem;
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+}
+
+.report-query__field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.report-query__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--report-dark);
+  font-size: 0.82rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.report-query__required {
+  color: var(--report-danger);
+  font-size: 0.88rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   15. SELECTS
+========================================================= */
+
+.report-query__select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.report-query__control {
+  width: 100%;
+  min-height: 46px;
+  padding:
+    0.72rem
+    2.8rem
+    0.72rem
+    0.9rem;
+  border: 1px solid var(--report-border-strong);
+  border-radius: 12px;
+  background: var(--report-surface);
+  color: var(--report-text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.3;
+  cursor: pointer;
+  appearance: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.report-query__control:hover:not(:disabled) {
+  border-color: rgba(37, 99, 235, 0.55);
+}
+
+.report-query__control:focus {
+  border-color: var(--report-primary);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.11);
+  outline: none;
+}
+
+.report-query__control:disabled {
+  cursor: not-allowed;
+  background: #f1f5f9;
+  color: #94a3b8;
+  opacity: 0.8;
+}
+
+.report-query__select-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--report-text-muted);
+  border-bottom: 2px solid var(--report-text-muted);
+  pointer-events: none;
+  transform: translateY(-70%) rotate(45deg);
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.report-query__select-wrapper:focus-within
+.report-query__select-icon {
+  border-color: var(--report-primary);
+  transform: translateY(-35%) rotate(225deg);
+}
+
+
+/* =========================================================
+   16. INFORMACIÓN ANUAL
+========================================================= */
+
+.report-query__annual {
+  display: flex;
+  grid-column: span 1;
+  align-items: center;
+  gap: 0.9rem;
+  min-height: 76px;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      var(--report-primary-soft),
+      rgba(255, 255, 255, 0.95)
+    );
+}
+
+.report-query__annual-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--report-primary);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 900;
+  box-shadow:
+    0 8px 18px rgba(37, 99, 235, 0.2);
+}
+
+.report-query__annual strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--report-dark);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.report-query__annual p {
+  margin: 0;
+  color: var(--report-text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   17. PIE DEL FORMULARIO
+========================================================= */
+
+.report-query__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding:
+    1.1rem
+    clamp(1.25rem, 2vw, 1.75rem);
+  border-top: 1px solid var(--report-border);
+  background: var(--report-background);
+}
+
+.report-query__help {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.report-query__help > span {
+  display: grid;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 50%;
+  background: var(--report-primary-soft);
+  color: var(--report-primary);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.report-query__help p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--report-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   18. BOTÓN CONSULTAR REPORTE
+========================================================= */
+
+.report-query__submit-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-width: 185px;
+  min-height: 46px;
+  padding: 0.75rem 1.15rem;
+  border: 1px solid var(--report-primary);
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      135deg,
+      var(--report-primary),
+      var(--report-primary-dark)
+    );
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow:
+    0 10px 24px rgba(37, 99, 235, 0.23);
+  transition:
+    box-shadow 180ms ease,
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.report-query__submit-button:hover:not(:disabled) {
+  box-shadow:
+    0 14px 30px rgba(37, 99, 235, 0.3);
+  filter: brightness(1.04);
+  transform: translateY(-2px);
+}
+
+.report-query__submit-button:active:not(:disabled) {
+  box-shadow:
+    0 7px 16px rgba(37, 99, 235, 0.2);
+  transform: translateY(0);
+}
+
+.report-query__submit-button:disabled {
+  cursor: not-allowed;
+  filter: saturate(0.65);
+  opacity: 0.65;
+  transform: none;
+}
+
+.report-query__button-icon {
+  display: inline-grid;
+  place-items: center;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   19. RESPONSIVE DEL PANEL
+========================================================= */
+
+@media (max-width: 1050px) {
+  .report-periods {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .report-query {
+    border-radius: 18px;
+  }
+
+  .report-query__header {
+    flex-direction: column;
+    padding: 1.1rem;
+  }
+
+  .report-query__reset-button {
+    width: 100%;
+  }
+
+  .report-periods {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .report-periods__button {
+    min-height: 76px;
+  }
+
+  .report-query__fields {
+    grid-template-columns: 1fr;
+    padding: 1.1rem;
+  }
+
+  .report-query__annual {
+    grid-column: auto;
+  }
+
+  .report-query__footer {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem 1.1rem;
+  }
+
+  .report-query__submit-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-query__header {
+    padding: 1rem;
+  }
+
+  .report-query__title {
+    font-size: 1.1rem;
+  }
+
+  .report-query__description {
+    font-size: 0.84rem;
+  }
+
+  .report-periods {
+    padding: 0.85rem;
+  }
+
+  .report-periods__button {
+    min-height: 72px;
+    padding: 0.85rem;
+    border-radius: 13px;
+  }
+
+  .report-query__fields {
+    gap: 0.9rem;
+    padding: 1rem;
+  }
+
+  .report-query__control {
+    min-height: 44px;
+    font-size: 0.84rem;
+  }
+
+  .report-query__annual {
+    align-items: flex-start;
+  }
+
+  .report-query__help p {
+    font-size: 0.75rem;
+  }
+}
+
+/* =========================================================
+   20. ESTADO DE CARGA
+========================================================= */
+
+.financial-report-loading {
+  position: relative;
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(0, 1fr)
+    minmax(180px, 280px);
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+  overflow: hidden;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(239, 246, 255, 0.96),
+      rgba(255, 255, 255, 0.98)
+    );
+  box-shadow: var(--report-shadow-md);
+}
+
+.financial-report-loading::before {
+  content: "";
+  position: absolute;
+  top: -70px;
+  right: -55px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.07);
+}
+
+.financial-report-loading__spinner {
+  position: relative;
+  z-index: 1;
+  width: 46px;
+  height: 46px;
+  border: 4px solid rgba(37, 99, 235, 0.15);
+  border-top-color: var(--report-primary);
+  border-radius: 50%;
+  animation: report-spin 750ms linear infinite;
+}
+
+.financial-report-loading__content {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.financial-report-loading__content h3 {
+  margin: 0;
+  color: var(--report-dark);
+  font-size: 1rem;
+  font-weight: 850;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+}
+
+.financial-report-loading__content p {
+  margin: 0.35rem 0 0;
+  color: var(--report-text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.financial-report-loading__skeleton {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.financial-report-loading__skeleton span {
+  position: relative;
+  display: block;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.financial-report-loading__skeleton span:nth-child(1) {
+  width: 100%;
+}
+
+.financial-report-loading__skeleton span:nth-child(2) {
+  width: 82%;
+}
+
+.financial-report-loading__skeleton span:nth-child(3) {
+  width: 62%;
+}
+
+.financial-report-loading__skeleton span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.75),
+      transparent
+    );
+  transform: translateX(-100%);
+  animation: report-skeleton 1.4s ease-in-out infinite;
+}
+
+@keyframes report-skeleton {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+
+/* =========================================================
+   21. CONTENEDOR DE RESULTADOS
+========================================================= */
+
+.report-results {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: report-results-in 260ms ease-out;
+}
+
+@keyframes report-results-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   22. ENCABEZADO DE RESULTADOS
+========================================================= */
+
+.report-results__header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: clamp(1.2rem, 2vw, 1.6rem);
+  overflow: hidden;
+  border: 1px solid var(--report-border);
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 1),
+      rgba(248, 250, 252, 0.95)
+    );
+  box-shadow: var(--report-shadow-md);
+}
+
+.report-results__header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: var(--report-primary);
+}
+
+.report-results__header > div:first-child {
+  min-width: 0;
+}
+
+.report-results__eyebrow {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--report-primary);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.report-results__title {
+  margin: 0;
+  color: var(--report-dark);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+.report-results__description {
+  margin: 0.5rem 0 0;
+  color: var(--report-text-secondary);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.report-results__description strong {
+  color: var(--report-dark);
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   23. ESTADO DEL REPORTE
+========================================================= */
+
+.report-results__status {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 38px;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--report-border);
+  border-radius: 999px;
+  background: var(--report-background);
+  color: var(--report-text-secondary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.report-results__status-indicator {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--report-text-muted);
+  box-shadow:
+    0 0 0 4px rgba(100, 116, 139, 0.1);
+}
+
+.report-results__status--positive {
+  border-color: rgba(22, 163, 74, 0.22);
+  background: var(--report-success-soft);
+  color: var(--report-success-dark);
+}
+
+.report-results__status--positive
+.report-results__status-indicator {
+  background: var(--report-success);
+  box-shadow:
+    0 0 0 4px rgba(22, 163, 74, 0.12);
+}
+
+.report-results__status--negative {
+  border-color: rgba(220, 38, 38, 0.22);
+  background: var(--report-danger-soft);
+  color: var(--report-danger-dark);
+}
+
+.report-results__status--negative
+.report-results__status-indicator {
+  background: var(--report-danger);
+  box-shadow:
+    0 0 0 4px rgba(220, 38, 38, 0.12);
+}
+
+.report-results__status--neutral {
+  border-color: rgba(37, 99, 235, 0.22);
+  background: var(--report-primary-soft);
+  color: var(--report-primary-dark);
+}
+
+.report-results__status--neutral
+.report-results__status-indicator {
+  background: var(--report-primary);
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================================================
+   24. GRID DE TARJETAS PRINCIPALES
+========================================================= */
+
+.report-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.report-summary-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 215px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.15rem;
+  padding: 1.25rem;
+  overflow: hidden;
+  border: 1px solid var(--report-border);
+  border-radius: 19px;
+  background: var(--report-surface);
+  box-shadow: var(--report-shadow-md);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.report-summary-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: var(--report-primary);
+}
+
+.report-summary-card::after {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -45px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.05);
+  pointer-events: none;
+}
+
+.report-summary-card:hover {
+  box-shadow: var(--report-shadow-lg);
+  transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   25. VARIANTES DE TARJETA
+========================================================= */
+
+.report-summary-card--income::before {
+  background: var(--report-success);
+}
+
+.report-summary-card--income::after {
+  background: rgba(22, 163, 74, 0.06);
+}
+
+.report-summary-card--income:hover {
+  border-color: rgba(22, 163, 74, 0.28);
+}
+
+.report-summary-card--expense::before {
+  background: var(--report-danger);
+}
+
+.report-summary-card--expense::after {
+  background: rgba(220, 38, 38, 0.06);
+}
+
+.report-summary-card--expense:hover {
+  border-color: rgba(220, 38, 38, 0.28);
+}
+
+.report-summary-card--balance::before {
+  background: var(--report-primary);
+}
+
+.report-summary-card--balance:hover {
+  border-color: rgba(37, 99, 235, 0.28);
+}
+
+.report-summary-card--movements::before {
+  background: var(--report-dark);
+}
+
+.report-summary-card--movements::after {
+  background: rgba(15, 23, 42, 0.055);
+}
+
+.report-summary-card--movements:hover {
+  border-color: rgba(15, 23, 42, 0.24);
+}
+
+
+/* Clases devueltas por obtenerClaseSaldo() */
+
+.financial-report-summary--positive {
+  border-color: rgba(22, 163, 74, 0.24);
+  background:
+    linear-gradient(
+      145deg,
+      var(--report-success-soft),
+      #ffffff 58%
+    );
+}
+
+.financial-report-summary--positive::before {
+  background: var(--report-success);
+}
+
+.financial-report-summary--positive::after {
+  background: rgba(22, 163, 74, 0.07);
+}
+
+.financial-report-summary--negative {
+  border-color: rgba(220, 38, 38, 0.24);
+  background:
+    linear-gradient(
+      145deg,
+      var(--report-danger-soft),
+      #ffffff 58%
+    );
+}
+
+.financial-report-summary--negative::before {
+  background: var(--report-danger);
+}
+
+.financial-report-summary--negative::after {
+  background: rgba(220, 38, 38, 0.07);
+}
+
+.financial-report-summary--neutral {
+  border-color: rgba(37, 99, 235, 0.24);
+  background:
+    linear-gradient(
+      145deg,
+      var(--report-primary-soft),
+      #ffffff 58%
+    );
+}
+
+
+/* =========================================================
+   26. ENCABEZADO DE TARJETA
+========================================================= */
+
+.report-summary-card__header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.report-summary-card__icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--report-primary-soft);
+  color: var(--report-primary);
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.report-summary-card--income
+.report-summary-card__icon {
+  background: var(--report-success-soft);
+  color: var(--report-success);
+}
+
+.report-summary-card--expense
+.report-summary-card__icon {
+  background: var(--report-danger-soft);
+  color: var(--report-danger);
+}
+
+.report-summary-card--movements
+.report-summary-card__icon {
+  background: #f1f5f9;
+  color: var(--report-dark);
+}
+
+.financial-report-summary--positive
+.report-summary-card__icon {
+  background: rgba(22, 163, 74, 0.12);
+  color: var(--report-success);
+}
+
+.financial-report-summary--negative
+.report-summary-card__icon {
+  background: rgba(220, 38, 38, 0.12);
+  color: var(--report-danger);
+}
+
+.report-summary-card__eyebrow {
+  display: block;
+  margin-bottom: 0.22rem;
+  color: var(--report-text-muted);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.report-summary-card__title {
+  margin: 0;
+  color: var(--report-dark);
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+
+/* =========================================================
+   27. VALOR PRINCIPAL DE TARJETA
+========================================================= */
+
+.report-summary-card__value {
+  position: relative;
+  z-index: 1;
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--report-dark);
+  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.report-summary-card--income
+.report-summary-card__value {
+  color: var(--report-success-dark);
+}
+
+.report-summary-card--expense
+.report-summary-card__value {
+  color: var(--report-danger-dark);
+}
+
+.financial-report-summary--positive
+.report-summary-card__value {
+  color: var(--report-success-dark);
+}
+
+.financial-report-summary--negative
+.report-summary-card__value {
+  color: var(--report-danger-dark);
+}
+
+
+/* =========================================================
+   28. PIE DE TARJETA
+========================================================= */
+
+.report-summary-card__footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--report-border);
+  color: var(--report-text-muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.report-summary-card__footer > span {
+  min-width: 0;
+}
+
+.report-summary-card__footer > strong {
+  flex: 0 0 auto;
+  color: var(--report-dark);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   29. RESPONSIVE DE CARGA Y TARJETAS
+========================================================= */
+
+@media (max-width: 1180px) {
+  .report-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .financial-report-loading {
+    grid-template-columns: auto minmax(0, 1fr);
+    border-radius: 18px;
+  }
+
+  .financial-report-loading__skeleton {
+    display: none;
+  }
+
+  .report-results__header {
+    flex-direction: column;
+    border-radius: 18px;
+  }
+
+  .report-results__status {
+    align-self: flex-start;
+    white-space: normal;
+  }
+
+  .report-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-summary-card {
+    min-height: 195px;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .financial-report-loading {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .financial-report-loading__content p {
+    font-size: 0.8rem;
+  }
+
+  .report-results__header {
+    padding: 1rem;
+  }
+
+  .report-results__status {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .report-summary-card {
+    min-height: 185px;
+    padding: 1.05rem;
+  }
+
+  .report-summary-card__value {
+    font-size: 1.45rem;
+  }
+
+  .report-summary-card__footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* =========================================================
+   30. ENCABEZADOS DE SECCIÓN
+========================================================= */
+
+.report-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.report-section-header > div {
+  min-width: 0;
+}
+
+.report-section-header__eyebrow {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--report-primary);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.report-section-header__title {
+  margin: 0;
+  color: var(--report-dark);
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 850;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
+.report-section-header__description {
+  max-width: 700px;
+  margin: 0.45rem 0 0;
+  color: var(--report-text-secondary);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   31. SECCIÓN DE CATEGORÍAS
+========================================================= */
+
+.report-categories {
+  min-width: 0;
+}
+
+.report-categories__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 1.15rem;
+}
+
+
+/* =========================================================
+   32. PANEL DE CATEGORÍA
+========================================================= */
+
+.report-category-panel {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 330px;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--report-border);
+  border-radius: 20px;
+  background: var(--report-surface);
+  box-shadow: var(--report-shadow-md);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.report-category-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: var(--report-primary);
+}
+
+.report-category-panel::after {
+  content: "";
+  position: absolute;
+  top: -65px;
+  right: -55px;
+  width: 165px;
+  height: 165px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.045);
+  pointer-events: none;
+}
+
+.report-category-panel:hover {
+  box-shadow: var(--report-shadow-lg);
+  transform: translateY(-2px);
+}
+
+.report-category-panel--income::before {
+  background: var(--report-success);
+}
+
+.report-category-panel--income::after {
+  background: rgba(22, 163, 74, 0.055);
+}
+
+.report-category-panel--income:hover {
+  border-color: rgba(22, 163, 74, 0.25);
+}
+
+.report-category-panel--expense::before {
+  background: var(--report-danger);
+}
+
+.report-category-panel--expense::after {
+  background: rgba(220, 38, 38, 0.055);
+}
+
+.report-category-panel--expense:hover {
+  border-color: rgba(220, 38, 38, 0.25);
+}
+
+
+/* =========================================================
+   33. ENCABEZADO DEL PANEL
+========================================================= */
+
+.report-category-panel__header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.3rem;
+  border-bottom: 1px solid var(--report-border);
+}
+
+.report-category-panel__header > div {
+  min-width: 0;
+}
+
+.report-category-panel__eyebrow {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--report-text-muted);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.report-category-panel--income
+.report-category-panel__eyebrow {
+  color: var(--report-success-dark);
+}
+
+.report-category-panel--expense
+.report-category-panel__eyebrow {
+  color: var(--report-danger-dark);
+}
+
+.report-category-panel__title {
+  margin: 0;
+  color: var(--report-dark);
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.report-category-panel__count {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--report-border);
+  border-radius: 11px;
+  background: var(--report-background);
+  color: var(--report-dark);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.report-category-panel--income
+.report-category-panel__count {
+  border-color: rgba(22, 163, 74, 0.18);
+  background: var(--report-success-soft);
+  color: var(--report-success-dark);
+}
+
+.report-category-panel--expense
+.report-category-panel__count {
+  border-color: rgba(220, 38, 38, 0.18);
+  background: var(--report-danger-soft);
+  color: var(--report-danger-dark);
+}
+
+
+/* =========================================================
+   34. LISTA DE CATEGORÍAS
+========================================================= */
+
+.report-category-panel__list {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.2rem 1.3rem 1.3rem;
+}
+
+.report-category-item {
+  padding: 0.95rem;
+  border: 1px solid var(--report-border);
+  border-radius: 15px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(248, 250, 252, 0.92),
+      #ffffff
+    );
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.report-category-item:hover {
+  border-color: rgba(37, 99, 235, 0.2);
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.06);
+  transform: translateY(-1px);
+}
+
+.report-category-item__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.report-category-item__header > div:first-child {
+  min-width: 0;
+}
+
+.report-category-item__name {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--report-dark);
+  font-size: 0.84rem;
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+.report-category-item__movements {
+  display: block;
+  margin-top: 0.22rem;
+  color: var(--report-text-muted);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.report-category-item__values {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.18rem;
+  text-align: right;
+}
+
+.report-category-item__values strong {
+  overflow-wrap: anywhere;
+  color: var(--report-dark);
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.report-category-item__values span {
+  color: var(--report-primary);
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.report-category-panel--income
+.report-category-item__values span {
+  color: var(--report-success-dark);
+}
+
+.report-category-panel--expense
+.report-category-item__values span {
+  color: var(--report-danger-dark);
+}
+
+
+/* =========================================================
+   35. BARRAS DE PARTICIPACIÓN
+========================================================= */
+
+.report-category-item__progress {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e2e8f0;
+  box-shadow:
+    inset 0 1px 2px rgba(15, 23, 42, 0.07);
+}
+
+.report-category-item__bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: block;
+  width: 0;
+  max-width: 100%;
+  border-radius: inherit;
+  transition: width 500ms ease;
+}
+
+.report-category-item__bar--income {
+  background:
+    linear-gradient(
+      90deg,
+      var(--report-success),
+      #22c55e
+    );
+  box-shadow:
+    0 0 12px rgba(22, 163, 74, 0.22);
+}
+
+.report-category-item__bar--expense {
+  background:
+    linear-gradient(
+      90deg,
+      var(--report-danger),
+      #ef4444
+    );
+  box-shadow:
+    0 0 12px rgba(220, 38, 38, 0.22);
+}
+
+
+/* =========================================================
+   36. ESTADO VACÍO DE CATEGORÍAS
+========================================================= */
+
+.report-category-panel__empty {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 220px;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.report-category-panel__empty > span {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid var(--report-border);
+  border-radius: 14px;
+  background: var(--report-background);
+  color: var(--report-text-muted);
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.report-category-panel--income
+.report-category-panel__empty > span {
+  border-color: rgba(22, 163, 74, 0.18);
+  background: var(--report-success-soft);
+  color: var(--report-success);
+}
+
+.report-category-panel--expense
+.report-category-panel__empty > span {
+  border-color: rgba(220, 38, 38, 0.18);
+  background: var(--report-danger-soft);
+  color: var(--report-danger);
+}
+
+.report-category-panel__empty p {
+  max-width: 340px;
+  margin: 0;
+  color: var(--report-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   37. RESPONSIVE DE CATEGORÍAS
+========================================================= */
+
+@media (max-width: 950px) {
+  .report-categories__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-category-panel {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .report-category-panel {
+    min-height: auto;
+    border-radius: 18px;
+  }
+
+  .report-category-panel__header {
+    padding: 1.05rem;
+  }
+
+  .report-category-panel__list {
+    padding: 1rem;
+  }
+
+  .report-category-item {
+    padding: 0.85rem;
+  }
+
+  .report-category-item__header {
+    gap: 0.7rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .report-category-panel__header {
+    align-items: center;
+  }
+
+  .report-category-item__header {
+    flex-direction: column;
+  }
+
+  .report-category-item__values {
+    width: 100%;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .report-category-panel__empty {
+    min-height: 190px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .report-category-panel,
+  .report-category-item,
+  .report-category-item__bar {
+    transition: none;
+  }
+}
+
+/* =========================================================
+   38. SECCIÓN DE DETALLE
+========================================================= */
+
+.report-detail {
+  min-width: 0;
+  padding: clamp(1.15rem, 2vw, 1.5rem);
+  border: 1px solid var(--report-border);
+  border-radius: 20px;
+  background: var(--report-surface);
+  box-shadow: var(--report-shadow-md);
+}
+
+
+/* =========================================================
+   39. PESTAÑAS DE MOVIMIENTOS
+========================================================= */
+
+.report-detail-tabs {
+  display: inline-flex;
+  max-width: 100%;
+  gap: 0.5rem;
+  margin-bottom: 1.15rem;
+  padding: 0.4rem;
+  border: 1px solid var(--report-border);
+  border-radius: 14px;
+  background: var(--report-background);
+}
+
+.report-detail-tabs__button {
+  display: inline-flex;
+  min-width: 145px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 42px;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--report-text-secondary);
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.report-detail-tabs__button:hover {
+  background: #ffffff;
+  color: var(--report-dark);
+}
+
+.report-detail-tabs__button--active {
+  border-color: rgba(37, 99, 235, 0.2);
+  background: #ffffff;
+  color: var(--report-primary-dark);
+  box-shadow:
+    0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.report-detail-tabs__button:active {
+  transform: scale(0.98);
+}
+
+.report-detail-tabs__icon {
+  display: grid;
+  width: 25px;
+  height: 25px;
+  place-items: center;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.report-detail-tabs__icon--income {
+  background: var(--report-success-soft);
+  color: var(--report-success);
+}
+
+.report-detail-tabs__icon--expense {
+  background: var(--report-danger-soft);
+  color: var(--report-danger);
+}
+
+.report-detail-tabs__count {
+  display: inline-flex;
+  min-width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: var(--report-dark);
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.report-detail-tabs__button--active
+.report-detail-tabs__count {
+  background: var(--report-primary-soft);
+  color: var(--report-primary-dark);
+}
+
+
+/* =========================================================
+   40. FILTROS DEL DETALLE
+========================================================= */
+
+.report-detail-filters {
+  display: grid;
+  grid-template-columns:
+    minmax(260px, 1.5fr)
+    minmax(210px, 0.8fr)
+    auto;
+  align-items: end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--report-border);
+  border-radius: 16px;
+  background: var(--report-background);
+}
+
+.report-detail-filters__search,
+.report-detail-filters__category {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.report-detail-filters__label {
+  color: var(--report-dark);
+  font-size: 0.77rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.report-detail-filters__control-wrapper,
+.report-detail-filters__select-wrapper {
+  position: relative;
+  min-width: 0;
+}
+
+.report-detail-filters__control {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--report-border-strong);
+  border-radius: 11px;
+  background: var(--report-surface);
+  color: var(--report-text);
+  font-size: 0.82rem;
+  font-weight: 550;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+input.report-detail-filters__control {
+  padding: 0.68rem 0.85rem 0.68rem 2.55rem;
+}
+
+select.report-detail-filters__control {
+  padding: 0.68rem 2.65rem 0.68rem 0.85rem;
+  cursor: pointer;
+  appearance: none;
+}
+
+.report-detail-filters__control::placeholder {
+  color: #94a3b8;
+}
+
+.report-detail-filters__control:hover {
+  border-color: rgba(37, 99, 235, 0.45);
+}
+
+.report-detail-filters__control:focus {
+  border-color: var(--report-primary);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.1);
+  outline: none;
+}
+
+.report-detail-filters__search-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.85rem;
+  color: var(--report-text-muted);
+  font-size: 1rem;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.report-detail-filters__select-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--report-text-muted);
+  border-bottom: 2px solid var(--report-text-muted);
+  pointer-events: none;
+  transform: translateY(-70%) rotate(45deg);
+}
+
+.report-detail-filters__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.68rem 0.9rem;
+  border: 1px solid var(--report-border);
+  border-radius: 11px;
+  background: var(--report-surface);
+  color: var(--report-text-secondary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.report-detail-filters__clear:hover:not(:disabled) {
+  border-color: rgba(220, 38, 38, 0.28);
+  background: var(--report-danger-soft);
+  color: var(--report-danger-dark);
+  transform: translateY(-1px);
+}
+
+.report-detail-filters__clear:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+
+/* =========================================================
+   41. RESUMEN DEL DETALLE
+========================================================= */
+
+.report-detail-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--report-border);
+  border-radius: 15px;
+  background: var(--report-surface);
+}
+
+.report-detail-summary > div {
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  border-right: 1px solid var(--report-border);
+}
+
+.report-detail-summary > div:last-child {
+  border-right: 0;
+}
+
+.report-detail-summary__label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--report-text-muted);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.report-detail-summary__value {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--report-dark);
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   42. CONTENEDOR DE TABLA
+========================================================= */
+
+.report-table-wrapper {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid var(--report-border);
+  border-radius: 16px;
+  background: var(--report-surface);
+  box-shadow: var(--report-shadow-sm);
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--report-border-strong)
+    var(--report-background);
+}
+
+.report-table-wrapper::-webkit-scrollbar {
+  height: 9px;
+}
+
+.report-table-wrapper::-webkit-scrollbar-track {
+  background: var(--report-background);
+}
+
+.report-table-wrapper::-webkit-scrollbar-thumb {
+  border: 2px solid var(--report-background);
+  border-radius: 999px;
+  background: var(--report-border-strong);
+}
+
+
+/* =========================================================
+   43. TABLA PRINCIPAL
+========================================================= */
+
+.report-table {
+  width: 100%;
+  min-width: 1120px;
+  border-collapse: collapse;
+  color: var(--report-text);
+  font-size: 0.78rem;
+}
+
+.report-table th,
+.report-table td {
+  padding: 0.9rem 0.85rem;
+  border-bottom: 1px solid var(--report-border);
+  vertical-align: top;
+  text-align: left;
+}
+
+.report-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--report-dark);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.report-table tbody tr {
+  transition: background-color 160ms ease;
+}
+
+.report-table tbody tr:not(
+  .report-table__observation-row
+):hover {
+  background: #f8fafc;
+}
+
+.report-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.report-table tfoot td {
+  border-top: 2px solid var(--report-border-strong);
+  border-bottom: 0;
+  background: var(--report-background);
+  color: var(--report-dark);
+  font-weight: 850;
+}
+
+.report-table__amount-heading,
+.report-table__amount {
+  text-align: right !important;
+  white-space: nowrap;
+}
+
+.report-table__date {
+  color: var(--report-text-secondary);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   44. CONTENIDO DE LA TABLA
+========================================================= */
+
+.report-table__category {
+  display: inline-flex;
+  max-width: 180px;
+  align-items: center;
+  padding: 0.3rem 0.55rem;
+  overflow: hidden;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.report-table__category--income {
+  background: var(--report-success-soft);
+  color: var(--report-success-dark);
+}
+
+.report-table__category--expense {
+  background: var(--report-danger-soft);
+  color: var(--report-danger-dark);
+}
+
+.report-table__concept {
+  display: flex;
+  min-width: 150px;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.report-table__concept strong {
+  color: var(--report-dark);
+  font-size: 0.79rem;
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+.report-table__concept span {
+  color: var(--report-text-muted);
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+.report-table__description {
+  display: -webkit-box;
+  max-width: 240px;
+  overflow: hidden;
+  color: var(--report-text-secondary);
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.report-table__reference {
+  display: inline-flex;
+  padding: 0.27rem 0.5rem;
+  border: 1px solid var(--report-border);
+  border-radius: 8px;
+  background: var(--report-background);
+  color: var(--report-text-secondary);
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.report-table__empty-value {
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-style: italic;
+}
+
+
+/* =========================================================
+   45. ESTADOS Y VALORES
+========================================================= */
+
+.report-table__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  min-height: 27px;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--report-border);
+  border-radius: 999px;
+  background: var(--report-background);
+  color: var(--report-text-secondary);
+  font-size: 0.67rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.report-table__status > span {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--report-text-muted);
+}
+
+.report-table__status--active {
+  border-color: rgba(22, 163, 74, 0.2);
+  background: var(--report-success-soft);
+  color: var(--report-success-dark);
+}
+
+.report-table__status--active > span {
+  background: var(--report-success);
+}
+
+.report-table__status--cancelled {
+  border-color: rgba(220, 38, 38, 0.2);
+  background: var(--report-danger-soft);
+  color: var(--report-danger-dark);
+}
+
+.report-table__status--cancelled > span {
+  background: var(--report-danger);
+}
+
+.report-table__amount {
+  color: var(--report-dark);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.report-table__amount--income {
+  color: var(--report-success-dark);
+}
+
+.report-table__amount--expense {
+  color: var(--report-danger-dark);
+}
+
+
+/* =========================================================
+   46. FILA DE OBSERVACIÓN
+========================================================= */
+
+.report-table__observation-row td {
+  padding-top: 0;
+  background: #fbfdff;
+}
+
+.report-table__observation {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 0.7rem 0.8rem;
+  border-left: 3px solid var(--report-primary);
+  border-radius: 0 10px 10px 0;
+  background: var(--report-primary-soft);
+  color: var(--report-text-secondary);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.report-table__observation strong {
+  flex: 0 0 auto;
+  color: var(--report-primary-dark);
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   47. ESTADO VACÍO DEL DETALLE
+========================================================= */
+
+.report-detail-empty {
+  display: flex;
+  min-height: 280px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+  border: 1px dashed var(--report-border-strong);
+  border-radius: 16px;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(37, 99, 235, 0.055),
+      transparent 52%
+    ),
+    var(--report-surface);
+  text-align: center;
+}
+
+.report-detail-empty__icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 1rem;
+  place-items: center;
+  border-radius: 16px;
+  background: var(--report-primary-soft);
+  color: var(--report-primary);
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+.report-detail-empty__title {
+  margin: 0;
+  color: var(--report-dark);
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.report-detail-empty__description {
+  max-width: 480px;
+  margin: 0.55rem 0 1rem;
+  color: var(--report-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.report-detail-empty__button {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--report-primary);
+  border-radius: 10px;
+  background: var(--report-primary);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   48. INFORMACIÓN DEL PERIODO
+========================================================= */
+
+.report-period-detail {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--report-border);
+  border-radius: 20px;
+  background: var(--report-surface);
+  box-shadow: var(--report-shadow-md);
+}
+
+.report-period-detail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--report-primary),
+      rgba(37, 99, 235, 0.45),
+      rgba(37, 99, 235, 0.08)
+    );
+}
+
+.report-period-detail__header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.2rem 1.3rem;
+  border-bottom: 1px solid var(--report-border);
+}
+
+.report-period-detail__icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--report-primary-soft);
+  color: var(--report-primary);
+  font-size: 0.88rem;
+  font-weight: 900;
+}
+
+.report-period-detail__eyebrow {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--report-primary);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.report-period-detail__title {
+  margin: 0;
+  color: var(--report-dark);
+  font-size: 0.98rem;
+  font-weight: 850;
+}
+
+.report-period-detail__list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 1.2rem 1.3rem;
+}
+
+.report-period-detail__item {
+  min-width: 0;
+  padding: 0.65rem 1rem;
+  border-right: 1px solid var(--report-border);
+}
+
+.report-period-detail__item:nth-child(4n) {
+  border-right: 0;
+}
+
+.report-period-detail__item dt {
+  margin: 0 0 0.3rem;
+  color: var(--report-text-muted);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.report-period-detail__item dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--report-dark);
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   49. ESTADO VACÍO GENERAL
+========================================================= */
+
+.financial-report-empty {
+  display: flex;
+  min-height: 360px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.25rem;
+  border: 1px dashed var(--report-border-strong);
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(37, 99, 235, 0.06),
+      transparent 52%
+    ),
+    var(--report-surface);
+  text-align: center;
+}
+
+.financial-report-empty__illustration {
+  position: relative;
+  display: flex;
+  width: 105px;
+  height: 118px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  margin-bottom: 1.3rem;
+  padding: 1rem;
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      145deg,
+      var(--report-primary-soft),
+      #ffffff
+    );
+}
+
+.financial-report-empty__document {
+  position: absolute;
+  top: -17px;
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border: 5px solid #ffffff;
+  border-radius: 50%;
+  background: var(--report-primary);
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 900;
+  box-shadow:
+    0 10px 24px rgba(37, 99, 235, 0.24);
+}
+
+.financial-report-empty__line {
+  display: block;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.14);
+}
+
+.financial-report-empty__line:nth-child(2) {
+  width: 72px;
+}
+
+.financial-report-empty__line:nth-child(3) {
+  width: 58px;
+}
+
+.financial-report-empty__line:nth-child(4) {
+  width: 66px;
+}
+
+.financial-report-empty__title {
+  margin: 0;
+  color: var(--report-dark);
+  font-size: 1.25rem;
+  font-weight: 850;
+}
+
+.financial-report-empty__description {
+  max-width: 560px;
+  margin: 0.65rem 0 1.3rem;
+  color: var(--report-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+
+.financial-report-empty__button {
+  min-height: 43px;
+  padding: 0.68rem 1rem;
+  border: 1px solid var(--report-primary);
+  border-radius: 11px;
+  background: var(--report-primary);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   50. RESPONSIVE FINAL
+========================================================= */
+
+@media (max-width: 1050px) {
+  .report-detail-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .report-detail-filters__clear {
+    grid-column: 1 / -1;
+  }
+
+  .report-period-detail__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .report-period-detail__item:nth-child(4n) {
+    border-right: 1px solid var(--report-border);
+  }
+
+  .report-period-detail__item:nth-child(3n) {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .report-detail {
+    padding: 1rem;
+    border-radius: 18px;
+  }
+
+  .report-detail-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .report-detail-tabs__button {
+    min-width: 0;
+  }
+
+  .report-detail-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .report-detail-filters__clear {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .report-detail-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .report-detail-summary > div {
+    border-right: 0;
+    border-bottom: 1px solid var(--report-border);
+  }
+
+  .report-detail-summary > div:last-child {
+    border-bottom: 0;
+  }
+
+  .report-period-detail__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0;
+  }
+
+  .report-period-detail__item {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--report-border);
+  }
+
+  .report-period-detail__item:nth-child(3n) {
+    border-right: 1px solid var(--report-border);
+  }
+
+  .report-period-detail__item:nth-child(even) {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-detail-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .report-period-detail__list {
+    grid-template-columns: 1fr;
+  }
+
+  .report-period-detail__item,
+  .report-period-detail__item:nth-child(even),
+  .report-period-detail__item:nth-child(3n),
+  .report-period-detail__item:nth-child(4n) {
+    border-right: 0;
+  }
+
+  .financial-report-empty {
+    min-height: 320px;
+    padding: 2.2rem 1rem;
+  }
+
+  .financial-report-empty__button {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   51. IMPRESIÓN Y ACCESIBILIDAD
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .financial-report *,
+  .financial-report *::before,
+  .financial-report *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .financial-report {
+    padding: 0;
+    background: #ffffff;
+  }
+
+  .financial-report__header-actions,
+  .report-query,
+  .report-alert,
+  .report-detail-filters,
+  .report-detail-tabs,
+  .financial-report-loading,
+  .financial-report-empty {
+    display: none !important;
+  }
+
+  .financial-report__header,
+  .report-results__header,
+  .report-summary-card,
+  .report-category-panel,
+  .report-detail,
+  .report-period-detail {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .report-table-wrapper {
+    overflow: visible;
+  }
+
+  .report-table {
+    min-width: 0;
+    font-size: 0.62rem;
+  }
+
+  .report-table thead th {
+    position: static;
+    background: #e2e8f0;
+    color: #000000;
+  }
+}

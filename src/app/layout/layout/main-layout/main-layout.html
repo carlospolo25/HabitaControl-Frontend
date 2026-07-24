@@ -1,0 +1,48 @@
+<mat-sidenav-container class="layout-container">
+
+  <mat-sidenav mode="side" opened class="sidebar">
+
+    <div class="sidebar-header">
+      <h2>🏢 Control Residencial</h2>
+      <p>Panel administrativo</p>
+    </div>
+
+    <nav class="nav-menu">
+      <button mat-button routerLink="/dashboard" routerLinkActive="activo">
+        📊 Dashboard
+      </button>
+
+      <button mat-button routerLink="/novedades" routerLinkActive="activo">
+        🚨 Novedades
+      </button>
+
+      <button mat-button routerLink="/visitantes" routerLinkActive="activo">
+        🧍 Visitantes
+      </button>
+
+      <button mat-button routerLink="/usuarios" routerLinkActive="activo">
+        👥 Usuarios
+      </button>
+    </nav>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <mat-toolbar class="topbar">
+      <span class="titulo-toolbar">Panel Administrativo</span>
+
+      <span class="spacer"></span>
+
+      <button mat-raised-button color="accent">
+        Salir
+      </button>
+    </mat-toolbar>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

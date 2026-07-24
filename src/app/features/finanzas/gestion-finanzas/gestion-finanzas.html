@@ -1,0 +1,328 @@
+<section class="finance-manager">
+
+  <header class="finance-manager__toolbar">
+    <div class="finance-manager__heading">
+      <span class="finance-manager__eyebrow">
+        Operación financiera
+      </span>
+
+      <h2 class="finance-manager__title">
+        Gestión financiera
+      </h2>
+
+      <p class="finance-manager__description">
+        Administra ingresos, egresos, categorías y análisis financieros
+        desde un solo espacio.
+      </p>
+    </div>
+
+    <nav
+      class="finance-manager__navigation"
+      aria-label="Navegación de gestión financiera">
+
+      <!-- Ingresos -->
+
+      <button
+        type="button"
+        class="finance-manager__nav-button"
+        [class.finance-manager__nav-button--active]="
+          esVistaActiva('ingresos')
+        "
+        [attr.aria-current]="
+          esVistaActiva('ingresos') ? 'page' : null
+        "
+        (click)="cambiarVista('ingresos')">
+
+        <span
+          class="
+            finance-manager__nav-icon
+            finance-manager__nav-icon--income
+          "
+          aria-hidden="true">
+          +
+        </span>
+
+        <span class="finance-manager__nav-content">
+          <strong class="finance-manager__nav-title">
+            Ingresos
+          </strong>
+
+          <small class="finance-manager__nav-description">
+            Registrar y consultar entradas
+          </small>
+        </span>
+      </button>
+
+
+      <!-- Egresos -->
+
+      <button
+        type="button"
+        class="finance-manager__nav-button"
+        [class.finance-manager__nav-button--active]="
+          esVistaActiva('egresos')
+        "
+        [attr.aria-current]="
+          esVistaActiva('egresos') ? 'page' : null
+        "
+        (click)="cambiarVista('egresos')">
+
+        <span
+          class="
+            finance-manager__nav-icon
+            finance-manager__nav-icon--expense
+          "
+          aria-hidden="true">
+          −
+        </span>
+
+        <span class="finance-manager__nav-content">
+          <strong class="finance-manager__nav-title">
+            Egresos
+          </strong>
+
+          <small class="finance-manager__nav-description">
+            Registrar y consultar salidas
+          </small>
+        </span>
+      </button>
+
+
+      <!-- Categorías -->
+
+      <button
+        type="button"
+        class="finance-manager__nav-button"
+        [class.finance-manager__nav-button--active]="
+          esVistaActiva('categorias')
+        "
+        [attr.aria-current]="
+          esVistaActiva('categorias') ? 'page' : null
+        "
+        (click)="cambiarVista('categorias')">
+
+        <span
+          class="
+            finance-manager__nav-icon
+            finance-manager__nav-icon--category
+          "
+          aria-hidden="true">
+          ≡
+        </span>
+
+        <span class="finance-manager__nav-content">
+          <strong class="finance-manager__nav-title">
+            Categorías
+          </strong>
+
+          <small class="finance-manager__nav-description">
+            Organizar movimientos financieros
+          </small>
+        </span>
+      </button>
+
+
+      <!-- Análisis financiero -->
+
+      <button
+        type="button"
+        class="finance-manager__nav-button"
+        [class.finance-manager__nav-button--active]="
+          esVistaActiva('analisis')
+        "
+        [attr.aria-current]="
+          esVistaActiva('analisis') ? 'page' : null
+        "
+        (click)="cambiarVista('analisis')">
+
+        <span
+          class="
+            finance-manager__nav-icon
+            finance-manager__nav-icon--analysis
+          "
+          aria-hidden="true">
+          %
+        </span>
+
+        <span class="finance-manager__nav-content">
+          <strong class="finance-manager__nav-title">
+            Análisis financiero
+          </strong>
+
+          <small class="finance-manager__nav-description">
+            Consultar balance y resultados
+          </small>
+        </span>
+      </button>
+
+    </nav>
+  </header>
+
+
+  <main class="finance-manager__content">
+
+    <!-- ===================================================
+         INGRESOS
+    ==================================================== -->
+
+    @if (vistaActiva === 'ingresos') {
+      <section
+        class="
+          finance-manager__view
+          finance-manager__view--income
+        "
+        aria-label="Gestión de ingresos">
+
+        <div class="finance-manager__child-content">
+          <app-lista-movimientos-financieros
+            tipo="ingreso">
+          </app-lista-movimientos-financieros>
+        </div>
+
+      </section>
+    }
+
+
+    <!-- ===================================================
+         EGRESOS
+    ==================================================== -->
+
+    @if (vistaActiva === 'egresos') {
+      <section
+        class="
+          finance-manager__view
+          finance-manager__view--expense
+        "
+        aria-label="Gestión de egresos">
+
+        <div class="finance-manager__child-content">
+          <app-lista-movimientos-financieros
+            tipo="egreso">
+          </app-lista-movimientos-financieros>
+        </div>
+
+      </section>
+    }
+
+
+    <!-- ===================================================
+         CATEGORÍAS
+    ==================================================== -->
+
+    @if (vistaActiva === 'categorias') {
+      <section
+        class="
+          finance-manager__view
+          finance-manager__view--categories
+        "
+        aria-labelledby="finance-categories-title">
+
+        <header class="finance-manager__subtoolbar">
+          <div class="finance-manager__subtoolbar-heading">
+            <span class="finance-manager__subtoolbar-eyebrow">
+              Catálogo financiero
+            </span>
+
+            <h3
+              id="finance-categories-title"
+              class="finance-manager__subtoolbar-title">
+              Administración de categorías
+            </h3>
+
+            <p class="finance-manager__subtoolbar-description">
+              Selecciona el tipo de categoría que deseas consultar
+              o administrar.
+            </p>
+          </div>
+
+          <div
+            class="finance-manager__category-switch"
+            role="group"
+            aria-label="Seleccionar tipo de categoría financiera">
+
+            <button
+              type="button"
+              class="finance-manager__category-button"
+              [class.finance-manager__category-button--active]="
+                esTipoCategoriaActivo('ingreso')
+              "
+              [attr.aria-pressed]="
+                esTipoCategoriaActivo('ingreso')
+              "
+              (click)="cambiarTipoCategoria('ingreso')">
+
+              <span
+                class="
+                  finance-manager__category-icon
+                  finance-manager__category-icon--income
+                "
+                aria-hidden="true">
+                +
+              </span>
+
+              <span>
+                Categorías de ingreso
+              </span>
+            </button>
+
+            <button
+              type="button"
+              class="finance-manager__category-button"
+              [class.finance-manager__category-button--active]="
+                esTipoCategoriaActivo('egreso')
+              "
+              [attr.aria-pressed]="
+                esTipoCategoriaActivo('egreso')
+              "
+              (click)="cambiarTipoCategoria('egreso')">
+
+              <span
+                class="
+                  finance-manager__category-icon
+                  finance-manager__category-icon--expense
+                "
+                aria-hidden="true">
+                −
+              </span>
+
+              <span>
+                Categorías de egreso
+              </span>
+            </button>
+
+          </div>
+        </header>
+
+        <div class="finance-manager__child-content">
+          <app-gestion-categorias-financieras
+            [tipo]="tipoCategoriaActiva">
+          </app-gestion-categorias-financieras>
+        </div>
+
+      </section>
+    }
+
+
+    <!-- ===================================================
+         ANÁLISIS FINANCIERO
+    ==================================================== -->
+
+    @if (vistaActiva === 'analisis') {
+      <section
+        class="
+          finance-manager__view
+          finance-manager__view--analysis
+        "
+        aria-label="Análisis financiero">
+
+        <div class="finance-manager__child-content">
+          <app-balance-financiero>
+          </app-balance-financiero>
+        </div>
+
+      </section>
+    }
+
+  </main>
+
+</section>

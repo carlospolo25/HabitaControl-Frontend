@@ -1,0 +1,406 @@
+<section
+  class="zone-form"
+  [class.zone-form--create]="!esEdicion"
+  [class.zone-form--edit]="esEdicion"
+  aria-labelledby="zone-form-title">
+
+  <header class="zone-form__header">
+    <div class="zone-form__heading">
+      <span class="zone-form__eyebrow">
+        {{ esEdicion ? 'Actualización del espacio' : 'Nuevo espacio compartido' }}
+      </span>
+
+      <h3
+        id="zone-form-title"
+        class="zone-form__title">
+        {{ tituloFormulario }}
+      </h3>
+
+      <p class="zone-form__description">
+        @if (esEdicion) {
+          Modifica la configuración, capacidad, horarios y condiciones de uso
+          de la zona común seleccionada.
+        } @else {
+          Registra una nueva zona común y define su disponibilidad,
+          capacidad y modalidad de aprobación.
+        }
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="zone-form__close"
+      aria-label="Cerrar formulario"
+      [disabled]="isSubmitting"
+      (click)="cancelar()">
+      ×
+    </button>
+  </header>
+
+  <form
+    class="zone-form__content"
+    autocomplete="off"
+    (ngSubmit)="guardar()">
+
+    @if (errorMessage) {
+      <div
+        class="zone-form__alert zone-form__alert--error"
+        role="alert">
+
+        <span
+          class="zone-form__alert-icon"
+          aria-hidden="true">
+          !
+        </span>
+
+        <div class="zone-form__alert-content">
+          <strong>No fue posible continuar</strong>
+          <p>{{ errorMessage }}</p>
+        </div>
+
+        <button
+          type="button"
+          class="zone-form__alert-close"
+          aria-label="Cerrar mensaje de error"
+          (click)="errorMessage = ''">
+          ×
+        </button>
+      </div>
+    }
+
+    <div class="zone-form__section">
+      <div class="zone-form__section-heading">
+        <span class="zone-form__section-number">
+          01
+        </span>
+
+        <div>
+          <h4 class="zone-form__section-title">
+            Información general
+          </h4>
+
+          <p class="zone-form__section-description">
+            Define cómo se identificará la zona común dentro del sistema.
+          </p>
+        </div>
+      </div>
+
+      <div class="zone-form__grid">
+        <div class="zone-form__field zone-form__field--full">
+          <label
+            class="zone-form__label"
+            for="zone-name">
+            Nombre de la zona
+            <span class="zone-form__required">*</span>
+          </label>
+
+          <input
+            id="zone-name"
+            class="zone-form__input"
+            type="text"
+            name="nombre"
+            [(ngModel)]="nombre"
+            maxlength="150"
+            placeholder="Ej. Salón social"
+            [disabled]="isSubmitting"
+            required>
+
+          <div class="zone-form__field-footer">
+            <span class="zone-form__hint">
+              Usa un nombre claro y fácil de reconocer.
+            </span>
+
+            <span class="zone-form__counter">
+              {{ nombre.length }}/150
+            </span>
+          </div>
+        </div>
+
+        <div class="zone-form__field zone-form__field--full">
+          <label
+            class="zone-form__label"
+            for="zone-description">
+            Descripción
+          </label>
+
+          <textarea
+            id="zone-description"
+            class="zone-form__textarea"
+            name="descripcion"
+            [(ngModel)]="descripcion"
+            maxlength="500"
+            rows="5"
+            placeholder="Describe las características, condiciones o reglas generales del espacio..."
+            [disabled]="isSubmitting">
+          </textarea>
+
+          <div class="zone-form__field-footer">
+            <span class="zone-form__hint">
+              Campo opcional.
+            </span>
+
+            <span class="zone-form__counter">
+              {{ descripcion.length }}/500
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="zone-form__section">
+      <div class="zone-form__section-heading">
+        <span class="zone-form__section-number">
+          02
+        </span>
+
+        <div>
+          <h4 class="zone-form__section-title">
+            Capacidad y duración
+          </h4>
+
+          <p class="zone-form__section-description">
+            Establece los límites operativos para el uso del espacio.
+          </p>
+        </div>
+      </div>
+
+      <div class="zone-form__grid">
+        <div class="zone-form__field">
+          <label
+            class="zone-form__label"
+            for="zone-capacity">
+            Capacidad máxima
+            <span class="zone-form__required">*</span>
+          </label>
+
+          <div class="zone-form__input-group">
+            <input
+              id="zone-capacity"
+              class="zone-form__input"
+              type="number"
+              name="capacidadMaxima"
+              [(ngModel)]="capacidadMaxima"
+              min="1"
+              step="1"
+              placeholder="0"
+              [disabled]="isSubmitting"
+              required>
+
+            <span class="zone-form__input-suffix">
+              personas
+            </span>
+          </div>
+
+          <span class="zone-form__hint">
+            Número máximo permitido por reserva.
+          </span>
+        </div>
+
+        <div class="zone-form__field">
+          <label
+            class="zone-form__label"
+            for="zone-duration">
+            Duración máxima
+            <span class="zone-form__required">*</span>
+          </label>
+
+          <div class="zone-form__input-group">
+            <input
+              id="zone-duration"
+              class="zone-form__input"
+              type="number"
+              name="duracionMaximaMinutos"
+              [(ngModel)]="duracionMaximaMinutos"
+              min="1"
+              step="1"
+              placeholder="60"
+              [disabled]="isSubmitting"
+              required>
+
+            <span class="zone-form__input-suffix">
+              minutos
+            </span>
+          </div>
+
+          <span class="zone-form__hint">
+            Tiempo máximo permitido para cada reserva.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="zone-form__section">
+      <div class="zone-form__section-heading">
+        <span class="zone-form__section-number">
+          03
+        </span>
+
+        <div>
+          <h4 class="zone-form__section-title">
+            Horario de disponibilidad
+          </h4>
+
+          <p class="zone-form__section-description">
+            Indica desde qué hora y hasta qué hora puede utilizarse la zona.
+          </p>
+        </div>
+      </div>
+
+      <div class="zone-form__grid">
+        <div class="zone-form__field">
+          <label
+            class="zone-form__label"
+            for="zone-opening-time">
+            Hora de apertura
+            <span class="zone-form__required">*</span>
+          </label>
+
+          <input
+            id="zone-opening-time"
+            class="zone-form__input"
+            type="time"
+            name="horaApertura"
+            [(ngModel)]="horaApertura"
+            [disabled]="isSubmitting"
+            required>
+
+          <span class="zone-form__hint">
+            Inicio del horario permitido.
+          </span>
+        </div>
+
+        <div class="zone-form__field">
+          <label
+            class="zone-form__label"
+            for="zone-closing-time">
+            Hora de cierre
+            <span class="zone-form__required">*</span>
+          </label>
+
+          <input
+            id="zone-closing-time"
+            class="zone-form__input"
+            type="time"
+            name="horaCierre"
+            [(ngModel)]="horaCierre"
+            [disabled]="isSubmitting"
+            required>
+
+          <span class="zone-form__hint">
+            Fin del horario permitido.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="zone-form__section">
+      <div class="zone-form__section-heading">
+        <span class="zone-form__section-number">
+          04
+        </span>
+
+        <div>
+          <h4 class="zone-form__section-title">
+            Modalidad de aprobación
+          </h4>
+
+          <p class="zone-form__section-description">
+            Define si las reservas deben ser revisadas por un administrador.
+          </p>
+        </div>
+      </div>
+
+      <label
+        class="zone-form__approval"
+        [class.zone-form__approval--active]="requiereAprobacion">
+
+        <input
+          class="zone-form__approval-input"
+          type="checkbox"
+          name="requiereAprobacion"
+          [(ngModel)]="requiereAprobacion"
+          [disabled]="isSubmitting">
+
+        <span
+          class="zone-form__approval-switch"
+          aria-hidden="true">
+        </span>
+
+        <span class="zone-form__approval-content">
+          <strong class="zone-form__approval-title">
+            Requiere aprobación administrativa
+          </strong>
+
+          <span class="zone-form__approval-description">
+            @if (requiereAprobacion) {
+              Las solicitudes quedarán pendientes hasta que un administrador
+              las apruebe o rechace.
+            } @else {
+              Las reservas válidas podrán confirmarse automáticamente.
+            }
+          </span>
+        </span>
+
+        <span
+          class="zone-form__approval-status"
+          [class.zone-form__approval-status--enabled]="requiereAprobacion">
+
+          {{ requiereAprobacion ? 'Activada' : 'Desactivada' }}
+        </span>
+      </label>
+    </div>
+
+    <footer class="zone-form__footer">
+      <div class="zone-form__footer-message">
+        <span
+          class="zone-form__footer-icon"
+          aria-hidden="true">
+          {{ esEdicion ? '✎' : '+' }}
+        </span>
+
+        <p>
+          @if (esEdicion) {
+            Los cambios se aplicarán a la configuración actual de la zona.
+          } @else {
+            La nueva zona quedará disponible según la configuración definida.
+          }
+        </p>
+      </div>
+
+      <div class="zone-form__actions">
+        <button
+          type="button"
+          class="zone-form__button zone-form__button--secondary"
+          [disabled]="isSubmitting"
+          (click)="cancelar()">
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="zone-form__button zone-form__button--primary"
+          [class.zone-form__button--edit]="esEdicion"
+          [disabled]="isSubmitting">
+
+          @if (isSubmitting) {
+            <span
+              class="zone-form__button-spinner"
+              aria-hidden="true">
+            </span>
+
+            <span>{{ textoBoton }}</span>
+          } @else {
+            <span
+              class="zone-form__button-icon"
+              aria-hidden="true">
+              {{ esEdicion ? '✓' : '+' }}
+            </span>
+
+            <span>{{ textoBoton }}</span>
+          }
+        </button>
+      </div>
+    </footer>
+
+  </form>
+</section>

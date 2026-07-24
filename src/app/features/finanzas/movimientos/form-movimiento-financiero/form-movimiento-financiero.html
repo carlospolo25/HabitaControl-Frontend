@@ -1,0 +1,683 @@
+<div
+  class="movement-modal"
+  [class.movement-modal--income]="tipo === 'ingreso'"
+  [class.movement-modal--expense]="tipo === 'egreso'"
+  role="presentation">
+
+  <div
+    class="movement-modal__backdrop"
+    aria-hidden="true"
+    (click)="solicitarCierre()">
+  </div>
+
+  <section
+    class="movement-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'movement-form-title-' + tipo"
+    [attr.aria-describedby]="'movement-form-description-' + tipo">
+
+    <header class="movement-modal__header">
+      <div class="movement-modal__heading">
+        <span
+          class="movement-modal__icon"
+          aria-hidden="true">
+          {{ tipo === 'ingreso' ? '+' : '−' }}
+        </span>
+
+        <div class="movement-modal__heading-content">
+          <span class="movement-modal__eyebrow">
+            {{ esEdicion ? 'Edición de movimiento' : 'Nuevo movimiento' }}
+          </span>
+
+          <h2
+            class="movement-modal__title"
+            [id]="'movement-form-title-' + tipo">
+            {{ tituloFormulario }}
+          </h2>
+
+          <p
+            class="movement-modal__description"
+            [id]="'movement-form-description-' + tipo">
+            {{ descripcionFormulario }}
+          </p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="movement-modal__close-button"
+        (click)="solicitarCierre()"
+        [disabled]="isSubmitting"
+        aria-label="Cerrar formulario">
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+
+    @if (hasErrors && errorMessage) {
+      <div
+        class="movement-alert movement-alert--error"
+        role="alert">
+
+        <span
+          class="movement-alert__icon"
+          aria-hidden="true">
+          !
+        </span>
+
+        <div class="movement-alert__content">
+          <strong class="movement-alert__title">
+            No fue posible completar la operación
+          </strong>
+
+          <p class="movement-alert__message">
+            {{ errorMessage }}
+          </p>
+        </div>
+      </div>
+    }
+
+    @if (successMessage) {
+      <div
+        class="movement-alert movement-alert--success"
+        role="status">
+
+        <span
+          class="movement-alert__icon"
+          aria-hidden="true">
+          ✓
+        </span>
+
+        <div class="movement-alert__content">
+          <strong class="movement-alert__title">
+            Operación completada
+          </strong>
+
+          <p class="movement-alert__message">
+            {{ successMessage }}
+          </p>
+        </div>
+      </div>
+    }
+
+    @if (isLoading) {
+      <div
+        class="movement-loading"
+        role="status">
+
+        <span
+          class="movement-loading__spinner"
+          aria-hidden="true">
+        </span>
+
+        <h3 class="movement-loading__title">
+          Cargando información
+        </h3>
+
+        <p class="movement-loading__description">
+          Estamos preparando el formulario del
+          {{ tipo === 'ingreso' ? 'ingreso' : 'egreso' }}.
+        </p>
+      </div>
+    } @else {
+      <form
+        class="movement-form"
+        (ngSubmit)="guardar()"
+        #movimientoForm="ngForm"
+        novalidate>
+
+        <div class="movement-form__body">
+
+          <section class="movement-form__section">
+            <header class="movement-form__section-header">
+              <span
+                class="movement-form__section-icon"
+                aria-hidden="true">
+                1
+              </span>
+
+              <div>
+                <h3 class="movement-form__section-title">
+                  Información principal
+                </h3>
+
+                <p class="movement-form__section-description">
+                  Define la clasificación, el concepto y el valor del movimiento.
+                </p>
+              </div>
+            </header>
+
+            <div class="movement-form__grid">
+
+              <div class="movement-form__group movement-form__group--full">
+                <label
+                  class="movement-form__label"
+                  [for]="'movimiento-categoria-' + tipo">
+                  {{ configuracion.etiquetaCategoria }}
+
+                  <span
+                    class="movement-form__required"
+                    aria-hidden="true">
+                    *
+                  </span>
+                </label>
+
+                <select
+                  [id]="'movimiento-categoria-' + tipo"
+                  name="categoriaId"
+                  class="movement-form__control movement-form__control--select"
+                  [(ngModel)]="form.categoriaId"
+                  #categoriaInput="ngModel"
+                  required
+                  [disabled]="isSubmitting">
+
+                  <option value="" disabled>
+                    Selecciona una categoría
+                  </option>
+
+                  @for (categoria of categorias; track categoria.id) {
+                    <option [value]="categoria.id">
+                      {{ categoria.nombre }}
+                    </option>
+                  }
+                </select>
+
+                @if (
+                  categoriaInput.invalid &&
+                  (categoriaInput.dirty || categoriaInput.touched)
+                ) {
+                  <small
+                    class="movement-form__validation"
+                    role="alert">
+                    Debes seleccionar una categoría.
+                  </small>
+                }
+
+                @if (categorias.length === 0) {
+                  <small class="movement-form__help movement-form__help--warning">
+                    No existen categorías activas. Primero debes registrar o
+                    activar una categoría de {{ tipo }}.
+                  </small>
+                }
+              </div>
+
+              <div class="movement-form__group movement-form__group--full">
+                <label
+                  class="movement-form__label"
+                  [for]="'movimiento-concepto-' + tipo">
+                  Concepto
+
+                  <span
+                    class="movement-form__required"
+                    aria-hidden="true">
+                    *
+                  </span>
+                </label>
+
+                <input
+                  [id]="'movimiento-concepto-' + tipo"
+                  name="concepto"
+                  type="text"
+                  class="movement-form__control"
+                  [(ngModel)]="form.concepto"
+                  #conceptoInput="ngModel"
+                  required
+                  minlength="2"
+                  maxlength="150"
+                  autocomplete="off"
+                  [placeholder]="configuracion.placeholderConcepto"
+                  [disabled]="isSubmitting"
+                  [class.movement-form__control--invalid]="
+                    conceptoInput.invalid &&
+                    (conceptoInput.dirty || conceptoInput.touched)
+                  ">
+
+                @if (
+                  conceptoInput.invalid &&
+                  (conceptoInput.dirty || conceptoInput.touched)
+                ) {
+                  <small
+                    class="movement-form__validation"
+                    role="alert">
+
+                    @if (conceptoInput.errors?.['required']) {
+                      El concepto del movimiento es obligatorio.
+                    } @else if (conceptoInput.errors?.['minlength']) {
+                      El concepto debe tener al menos 2 caracteres.
+                    }
+                  </small>
+                }
+
+                <div class="movement-form__field-footer">
+                  <small class="movement-form__help">
+                    Usa una descripción corta y fácil de identificar.
+                  </small>
+
+                  <small
+                    class="movement-form__counter"
+                    [class.movement-form__counter--limit]="
+                      form.concepto.length >= 140
+                    ">
+                    {{ form.concepto.length }}/150
+                  </small>
+                </div>
+              </div>
+
+              <div class="movement-form__group">
+                <label
+                  class="movement-form__label"
+                  [for]="'movimiento-valor-' + tipo">
+                  Valor
+
+                  <span
+                    class="movement-form__required"
+                    aria-hidden="true">
+                    *
+                  </span>
+                </label>
+
+                <div class="movement-form__currency-control">
+                  <span
+                    class="movement-form__currency-symbol"
+                    aria-hidden="true">
+                    $
+                  </span>
+
+                  <input
+                    [id]="'movimiento-valor-' + tipo"
+                    name="valor"
+                    type="number"
+                    class="movement-form__control movement-form__control--currency"
+                    [(ngModel)]="form.valor"
+                    #valorInput="ngModel"
+                    required
+                    min="0.01"
+                    step="0.01"
+                    inputmode="decimal"
+                    placeholder="0"
+                    [disabled]="isSubmitting"
+                    [class.movement-form__control--invalid]="
+                      valorInput.invalid &&
+                      (valorInput.dirty || valorInput.touched)
+                    ">
+                </div>
+
+                @if (
+                  valorInput.invalid &&
+                  (valorInput.dirty || valorInput.touched)
+                ) {
+                  <small
+                    class="movement-form__validation"
+                    role="alert">
+
+                    @if (valorInput.errors?.['required']) {
+                      El valor es obligatorio.
+                    } @else if (valorInput.errors?.['min']) {
+                      El valor debe ser mayor que cero.
+                    }
+                  </small>
+                }
+              </div>
+
+              <div class="movement-form__group">
+                <label
+                  class="movement-form__label"
+                  [for]="'movimiento-fecha-' + tipo">
+                  {{ configuracion.etiquetaFecha }}
+
+                  <span
+                    class="movement-form__required"
+                    aria-hidden="true">
+                    *
+                  </span>
+                </label>
+
+                <input
+                  [id]="'movimiento-fecha-' + tipo"
+                  name="fecha"
+                  type="date"
+                  class="movement-form__control"
+                  [(ngModel)]="form.fecha"
+                  #fechaInput="ngModel"
+                  required
+                  [disabled]="isSubmitting"
+                  [class.movement-form__control--invalid]="
+                    fechaInput.invalid &&
+                    (fechaInput.dirty || fechaInput.touched)
+                  ">
+
+                @if (
+                  fechaInput.invalid &&
+                  (fechaInput.dirty || fechaInput.touched)
+                ) {
+                  <small
+                    class="movement-form__validation"
+                    role="alert">
+                    La fecha del movimiento es obligatoria.
+                  </small>
+                }
+              </div>
+
+              <div class="movement-form__group movement-form__group--full">
+                <label
+                  class="movement-form__label"
+                  [for]="'movimiento-estado-' + tipo">
+                  Estado
+
+                  <span
+                    class="movement-form__required"
+                    aria-hidden="true">
+                    *
+                  </span>
+                </label>
+
+                <select
+                  [id]="'movimiento-estado-' + tipo"
+                  name="estado"
+                  class="movement-form__control movement-form__control--select"
+                  [(ngModel)]="form.estado"
+                  #estadoInput="ngModel"
+                  required
+                  [disabled]="isSubmitting">
+
+                  @for (estado of estadosDisponibles; track estado.valor) {
+                    <option [ngValue]="estado.valor">
+                      {{ estado.etiqueta }}
+                    </option>
+                  }
+                </select>
+
+                <small class="movement-form__help">
+                  Los movimientos anulados se gestionan mediante la acción de
+                  anulación y no desde este formulario.
+                </small>
+              </div>
+
+              <div class="movement-form__group movement-form__group--full">
+                <div class="movement-form__label-row">
+                  <label
+                    class="movement-form__label"
+                    [for]="'movimiento-descripcion-' + tipo">
+                    Descripción
+                  </label>
+
+                  <span class="movement-form__optional">
+                    Opcional
+                  </span>
+                </div>
+
+                <textarea
+                  [id]="'movimiento-descripcion-' + tipo"
+                  name="descripcion"
+                  class="movement-form__control movement-form__control--textarea"
+                  [(ngModel)]="form.descripcion"
+                  maxlength="500"
+                  rows="4"
+                  [placeholder]="configuracion.placeholderDescripcion"
+                  [disabled]="isSubmitting">
+                </textarea>
+
+                <div class="movement-form__field-footer">
+                  <small class="movement-form__help">
+                    Agrega información que facilite la identificación del movimiento.
+                  </small>
+
+                  <small
+                    class="movement-form__counter"
+                    [class.movement-form__counter--limit]="
+                      form.descripcion.length >= 470
+                    ">
+                    {{ form.descripcion.length }}/500
+                  </small>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <section class="movement-form__section">
+            <header class="movement-form__section-header">
+              <span
+                class="movement-form__section-icon"
+                aria-hidden="true">
+                2
+              </span>
+
+              <div>
+                <h3 class="movement-form__section-title">
+                  Información complementaria
+                </h3>
+
+                <p class="movement-form__section-description">
+                  {{
+                    tipo === 'ingreso'
+                      ? 'Registra los datos relacionados con el pago recibido.'
+                      : 'Registra los datos del proveedor y del soporte del egreso.'
+                  }}
+                </p>
+              </div>
+            </header>
+
+            <div class="movement-form__grid">
+
+              @if (tipo === 'ingreso') {
+                <div class="movement-form__group">
+                  <div class="movement-form__label-row">
+                    <label
+                      class="movement-form__label"
+                      for="movimiento-metodo-pago">
+                      Método de pago
+                    </label>
+
+                    <span class="movement-form__optional">
+                      Opcional
+                    </span>
+                  </div>
+
+                  <input
+                    id="movimiento-metodo-pago"
+                    name="metodoPago"
+                    type="text"
+                    class="movement-form__control"
+                    [(ngModel)]="form.metodoPago"
+                    maxlength="100"
+                    autocomplete="off"
+                    placeholder="Ej. Transferencia bancaria"
+                    [disabled]="isSubmitting">
+                </div>
+
+                <div class="movement-form__group">
+                  <div class="movement-form__label-row">
+                    <label
+                      class="movement-form__label"
+                      for="movimiento-referencia">
+                      Referencia
+                    </label>
+
+                    <span class="movement-form__optional">
+                      Opcional
+                    </span>
+                  </div>
+
+                  <input
+                    id="movimiento-referencia"
+                    name="referencia"
+                    type="text"
+                    class="movement-form__control"
+                    [(ngModel)]="form.referencia"
+                    maxlength="150"
+                    autocomplete="off"
+                    placeholder="Ej. Número de transacción"
+                    [disabled]="isSubmitting">
+                </div>
+              }
+
+              @if (tipo === 'egreso') {
+                <div class="movement-form__group">
+                  <div class="movement-form__label-row">
+                    <label
+                      class="movement-form__label"
+                      for="movimiento-proveedor">
+                      Proveedor
+                    </label>
+
+                    <span class="movement-form__optional">
+                      Opcional
+                    </span>
+                  </div>
+
+                  <input
+                    id="movimiento-proveedor"
+                    name="proveedor"
+                    type="text"
+                    class="movement-form__control"
+                    [(ngModel)]="form.proveedor"
+                    maxlength="150"
+                    autocomplete="organization"
+                    placeholder="Ej. Servicios Integrales S.A.S."
+                    [disabled]="isSubmitting">
+                </div>
+
+                <div class="movement-form__group">
+                  <div class="movement-form__label-row">
+                    <label
+                      class="movement-form__label"
+                      for="movimiento-numero-factura">
+                      Número de factura
+                    </label>
+
+                    <span class="movement-form__optional">
+                      Opcional
+                    </span>
+                  </div>
+
+                  <input
+                    id="movimiento-numero-factura"
+                    name="numeroFactura"
+                    type="text"
+                    class="movement-form__control"
+                    [(ngModel)]="form.numeroFactura"
+                    maxlength="100"
+                    autocomplete="off"
+                    placeholder="Ej. FV-2026-00125"
+                    [disabled]="isSubmitting">
+                </div>
+              }
+
+              <div class="movement-form__group movement-form__group--full">
+                <div class="movement-form__label-row">
+                  <label
+                    class="movement-form__label"
+                    [for]="'movimiento-observacion-' + tipo">
+                    Observación interna
+                  </label>
+
+                  <span class="movement-form__optional">
+                    Opcional
+                  </span>
+                </div>
+
+                <textarea
+                  [id]="'movimiento-observacion-' + tipo"
+                  name="observacion"
+                  class="movement-form__control movement-form__control--textarea"
+                  [(ngModel)]="form.observacion"
+                  maxlength="500"
+                  rows="4"
+                  [placeholder]="configuracion.placeholderObservacion"
+                  [disabled]="isSubmitting">
+                </textarea>
+
+                <div class="movement-form__field-footer">
+                  <small class="movement-form__help">
+                    Esta información será utilizada únicamente para control interno.
+                  </small>
+
+                  <small
+                    class="movement-form__counter"
+                    [class.movement-form__counter--limit]="
+                      form.observacion.length >= 470
+                    ">
+                    {{ form.observacion.length }}/500
+                  </small>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+        </div>
+
+        <footer class="movement-form__footer">
+          <div class="movement-form__footer-info">
+            <span
+              class="movement-form__footer-icon"
+              aria-hidden="true">
+              i
+            </span>
+
+            <p>
+              Los campos marcados con
+              <strong>*</strong>
+              son obligatorios.
+            </p>
+          </div>
+
+          <div class="movement-form__actions">
+            @if (!esEdicion) {
+              <button
+                type="button"
+                class="movement-button movement-button--ghost"
+                (click)="limpiarFormulario()"
+                [disabled]="isSubmitting">
+                Limpiar
+              </button>
+            }
+
+            <button
+              type="button"
+              class="movement-button movement-button--secondary"
+              (click)="solicitarCierre()"
+              [disabled]="isSubmitting">
+              Cancelar
+            </button>
+
+            <button
+              type="submit"
+              class="movement-button movement-button--primary"
+              [disabled]="
+                movimientoForm.invalid ||
+                isSubmitting ||
+                categorias.length === 0
+              ">
+
+              @if (isSubmitting) {
+                <span
+                  class="movement-button__loader"
+                  aria-hidden="true">
+                </span>
+
+                <span>
+                  {{ esEdicion ? 'Actualizando...' : 'Registrando...' }}
+                </span>
+              } @else {
+                <span
+                  class="movement-button__icon"
+                  aria-hidden="true">
+                  {{ esEdicion ? '✓' : '+' }}
+                </span>
+
+                <span>
+                  {{ textoBotonGuardar }}
+                </span>
+              }
+            </button>
+          </div>
+        </footer>
+
+      </form>
+    }
+
+  </section>
+
+</div>

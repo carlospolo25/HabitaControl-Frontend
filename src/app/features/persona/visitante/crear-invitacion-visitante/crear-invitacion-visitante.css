@@ -1,0 +1,4561 @@
+/* ==========================================================
+   HABITACONTROL
+   VISITOR PASS
+   PARTE 1
+   CONTENEDOR + HEADER
+========================================================== */
+
+
+/* ==========================================================
+   VARIABLES
+========================================================== */
+
+:host{
+
+    --visitor-primary:#2563eb;
+    --visitor-primary-dark:#1d4ed8;
+    --visitor-cyan:#06b6d4;
+
+    --visitor-success:#16a34a;
+    --visitor-warning:#d97706;
+    --visitor-danger:#dc2626;
+
+    --visitor-text:#111827;
+    --visitor-text-soft:#4b5563;
+    --visitor-text-muted:#94a3b8;
+
+    --visitor-surface:#ffffff;
+    --visitor-surface-soft:#f8fafc;
+
+    --visitor-border:#dbe3ef;
+
+    --visitor-radius-xs:.5rem;
+    --visitor-radius-sm:.85rem;
+    --visitor-radius-md:1.15rem;
+    --visitor-radius-lg:1.5rem;
+    --visitor-radius-xl:2rem;
+    --visitor-radius-pill:999px;
+
+    --visitor-shadow-xs:
+        0 .4rem .8rem rgba(15,23,42,.05);
+
+    --visitor-shadow-sm:
+        0 .8rem 1.6rem rgba(15,23,42,.08);
+
+    --visitor-shadow-md:
+        0 1.5rem 3rem rgba(15,23,42,.10);
+
+    --visitor-transition:
+        .28s cubic-bezier(.22,1,.36,1);
+
+    display:block;
+
+}
+
+
+/* ==========================================================
+   RESET LOCAL
+========================================================== */
+
+*,
+*::before,
+*::after{
+
+    box-sizing:border-box;
+
+}
+
+
+/* ==========================================================
+   CONTENEDOR PRINCIPAL
+========================================================== */
+
+.visitor-pass{
+
+    position:relative;
+
+    width:100%;
+
+    padding:2rem;
+
+}
+
+
+/* ==========================================================
+   CARD PRINCIPAL
+========================================================== */
+
+.visitor-pass__shell{
+
+    position:relative;
+
+    display:flex;
+    flex-direction:column;
+    gap:2rem;
+
+    width:100%;
+    max-width:1200px;
+
+    margin:auto;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.98),
+            rgba(248,250,252,.98)
+        );
+
+    border:
+
+        1px solid
+        rgba(219,227,239,.9);
+
+    border-radius:
+
+        var(--visitor-radius-xl);
+
+    box-shadow:
+
+        var(--visitor-shadow-md);
+
+    overflow:hidden;
+
+    isolation:isolate;
+
+}
+
+
+/* ==========================================================
+   ORBES DECORATIVOS
+========================================================== */
+
+.visitor-pass__shell::before{
+
+    position:absolute;
+
+    top:-180px;
+    left:-180px;
+
+    width:420px;
+    height:420px;
+
+    content:"";
+
+    background:
+
+        radial-gradient(
+
+            circle,
+
+            rgba(37,99,235,.10),
+
+            transparent 70%
+
+        );
+
+    animation:
+
+        visitor-orb-left
+
+        14s
+
+        ease-in-out
+
+        infinite;
+
+    pointer-events:none;
+
+}
+
+.visitor-pass__shell::after{
+
+    position:absolute;
+
+    right:-170px;
+    bottom:-170px;
+
+    width:360px;
+    height:360px;
+
+    content:"";
+
+    background:
+
+        radial-gradient(
+
+            circle,
+
+            rgba(6,182,212,.10),
+
+            transparent 72%
+
+        );
+
+    animation:
+
+        visitor-orb-right
+
+        18s
+
+        ease-in-out
+
+        infinite;
+
+    pointer-events:none;
+
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.visitor-pass__header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:2rem;
+
+    padding:
+
+        2rem
+        2rem
+        0;
+
+}
+
+
+/* ==========================================================
+   CABECERA
+========================================================== */
+
+.visitor-pass__heading{
+
+    display:flex;
+    align-items:flex-start;
+    gap:1.25rem;
+
+    min-width:0;
+
+}
+
+
+/* ==========================================================
+   ICONO
+========================================================== */
+
+.visitor-pass__heading-icon{
+
+    display:grid;
+    place-items:center;
+
+    flex-shrink:0;
+
+    width:4rem;
+    height:4rem;
+
+    color:#ffffff;
+
+    font-size:1rem;
+    font-weight:800;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            var(--visitor-primary),
+
+            var(--visitor-cyan)
+
+        );
+
+    border-radius:
+
+        var(--visitor-radius-md);
+
+    box-shadow:
+
+        0 .9rem 1.8rem rgba(37,99,235,.20);
+
+}
+
+
+/* ==========================================================
+   TEXTOS
+========================================================== */
+
+.visitor-pass__heading-content{
+
+    display:flex;
+    flex-direction:column;
+    gap:.45rem;
+
+    min-width:0;
+
+}
+
+.visitor-pass__eyebrow{
+
+    color:
+
+        var(--visitor-primary);
+
+    font-size:.78rem;
+    font-weight:800;
+
+    letter-spacing:.12em;
+
+    text-transform:uppercase;
+
+}
+
+.visitor-pass__title{
+
+    margin:0;
+
+    color:
+
+        var(--visitor-text);
+
+    font-size:2rem;
+    font-weight:800;
+
+    line-height:1.2;
+
+}
+
+.visitor-pass__description{
+
+    max-width:760px;
+
+    margin:0;
+
+    color:
+
+        var(--visitor-text-soft);
+
+    font-size:.96rem;
+
+    line-height:1.75;
+
+}
+
+
+/* ==========================================================
+   BOTÓN CERRAR
+========================================================== */
+
+.visitor-pass__close{
+
+    display:grid;
+    place-items:center;
+
+    flex-shrink:0;
+
+    width:3rem;
+    height:3rem;
+
+    color:
+
+        var(--visitor-text-soft);
+
+    font-size:1.5rem;
+    font-weight:500;
+
+    background:#ffffff;
+
+    border:
+
+        1px solid
+        var(--visitor-border);
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    transition:
+
+        background var(--visitor-transition),
+
+        border-color var(--visitor-transition),
+
+        color var(--visitor-transition),
+
+        transform var(--visitor-transition),
+
+        box-shadow var(--visitor-transition);
+
+}
+
+.visitor-pass__close:hover{
+
+    color:#ffffff;
+
+    background:
+
+        var(--visitor-danger);
+
+    border-color:
+
+        var(--visitor-danger);
+
+    transform:
+
+        rotate(90deg);
+
+    box-shadow:
+
+        0 .8rem 1.6rem rgba(220,38,38,.18);
+
+}
+
+.visitor-pass__close:focus-visible{
+
+    outline:none;
+
+    box-shadow:
+
+        0 0 0 .2rem rgba(37,99,235,.18);
+
+}
+
+.visitor-pass__close:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+}
+
+
+/* ==========================================================
+   ANIMACIONES
+========================================================== */
+
+@keyframes visitor-orb-left{
+
+    50%{
+
+        transform:
+
+            translateY(20px)
+            scale(1.05);
+
+    }
+
+}
+
+@keyframes visitor-orb-right{
+
+    50%{
+
+        transform:
+
+            translateY(-18px)
+            scale(.96);
+
+    }
+
+}
+
+/* ==========================================================
+   HABITACONTROL
+   VISITOR PASS
+   PARTE 2
+   ALERTAS Y MENSAJES DE ESTADO
+========================================================== */
+
+
+/* ==========================================================
+   1. CONTENEDOR DE FEEDBACK
+========================================================== */
+
+.visitor-pass__feedback {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+
+  margin:
+    0
+    2rem;
+}
+
+
+/* El contenedor no ocupa espacio cuando no existen alertas */
+
+.visitor-pass__feedback:empty {
+  display: none;
+}
+
+
+/* ==========================================================
+   2. ALERTA BASE
+========================================================== */
+
+.visitor-pass-alert {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+
+  width: 100%;
+
+  padding:
+    1rem
+    1.125rem
+    1rem
+    1.25rem;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    var(--visitor-radius-md);
+
+  box-shadow:
+    var(--visitor-shadow-xs);
+
+  overflow: hidden;
+  isolation: isolate;
+
+  animation:
+    visitor-alert-enter
+    0.32s
+    cubic-bezier(0.22, 1, 0.36, 1);
+
+  transition:
+    transform var(--visitor-transition),
+    border-color var(--visitor-transition),
+    box-shadow var(--visitor-transition);
+}
+
+
+/* Línea lateral */
+
+.visitor-pass-alert::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 0.25rem;
+
+  content: "";
+
+  border-radius:
+    var(--visitor-radius-md)
+    0
+    0
+    var(--visitor-radius-md);
+}
+
+
+/* Iluminación decorativa */
+
+.visitor-pass-alert::after {
+  position: absolute;
+  top: -4rem;
+  right: -3rem;
+  z-index: -1;
+
+  width: 9rem;
+  height: 9rem;
+
+  content: "";
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* Hover sutil */
+
+.visitor-pass-alert:hover {
+  transform:
+    translateY(-0.0625rem);
+}
+
+
+/* ==========================================================
+   3. ICONO BASE
+========================================================== */
+
+.visitor-pass-alert__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+
+  width: 2.5rem;
+  height: 2.5rem;
+
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+
+  border:
+    0.1875rem solid
+    rgba(255, 255, 255, 0.8);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0.5rem 1rem rgba(15, 23, 42, 0.1);
+
+  animation:
+    visitor-alert-icon-enter
+    0.42s
+    cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+
+/* ==========================================================
+   4. CONTENIDO
+========================================================== */
+
+.visitor-pass-alert__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  min-width: 0;
+
+  padding-top: 0.0625rem;
+}
+
+
+/* ==========================================================
+   5. TÍTULO
+========================================================== */
+
+.visitor-pass-alert__title {
+  display: block;
+
+  margin: 0;
+
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1.35;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   6. MENSAJE
+========================================================== */
+
+.visitor-pass-alert__message {
+  margin: 0;
+
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+
+/* ==========================================================
+   7. ALERTA DE ERROR
+========================================================== */
+
+.visitor-pass-alert--error {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(254, 242, 242, 0.98),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border-color:
+    rgba(252, 165, 165, 0.72);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(220, 38, 38, 0.07);
+}
+
+
+/* Línea lateral roja */
+
+.visitor-pass-alert--error::before {
+  background:
+    linear-gradient(
+      180deg,
+      #ef4444,
+      var(--visitor-danger)
+    );
+}
+
+
+/* Luz de fondo roja */
+
+.visitor-pass-alert--error::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(220, 38, 38, 0.1),
+      transparent 70%
+    );
+}
+
+
+/* Icono de error */
+
+.visitor-pass-alert--error
+.visitor-pass-alert__icon {
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ef4444,
+      var(--visitor-danger)
+    );
+
+  box-shadow:
+    0 0.5rem 1rem rgba(220, 38, 38, 0.2),
+    0 0 0 0.25rem rgba(220, 38, 38, 0.07);
+}
+
+
+/* Textos de error */
+
+.visitor-pass-alert--error
+.visitor-pass-alert__title {
+  color:
+    #991b1b;
+}
+
+.visitor-pass-alert--error
+.visitor-pass-alert__message {
+  color:
+    #7f1d1d;
+}
+
+
+/* Hover de error */
+
+.visitor-pass-alert--error:hover {
+  border-color:
+    rgba(248, 113, 113, 0.88);
+
+  box-shadow:
+    0 1rem 2rem rgba(220, 38, 38, 0.1);
+}
+
+
+/* ==========================================================
+   8. ALERTA DE ÉXITO
+========================================================== */
+
+.visitor-pass-alert--success {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(240, 253, 244, 0.98),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border-color:
+    rgba(134, 239, 172, 0.78);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(22, 163, 74, 0.07);
+}
+
+
+/* Línea lateral verde */
+
+.visitor-pass-alert--success::before {
+  background:
+    linear-gradient(
+      180deg,
+      #22c55e,
+      var(--visitor-success)
+    );
+}
+
+
+/* Luz de fondo verde */
+
+.visitor-pass-alert--success::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(22, 163, 74, 0.1),
+      transparent 70%
+    );
+}
+
+
+/* Icono de éxito */
+
+.visitor-pass-alert--success
+.visitor-pass-alert__icon {
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #22c55e,
+      var(--visitor-success)
+    );
+
+  box-shadow:
+    0 0.5rem 1rem rgba(22, 163, 74, 0.2),
+    0 0 0 0.25rem rgba(22, 163, 74, 0.07);
+}
+
+
+/* Textos de éxito */
+
+.visitor-pass-alert--success
+.visitor-pass-alert__title {
+  color:
+    #166534;
+}
+
+.visitor-pass-alert--success
+.visitor-pass-alert__message {
+  color:
+    #14532d;
+}
+
+
+/* Hover de éxito */
+
+.visitor-pass-alert--success:hover {
+  border-color:
+    rgba(74, 222, 128, 0.9);
+
+  box-shadow:
+    0 1rem 2rem rgba(22, 163, 74, 0.1);
+}
+
+
+/* ==========================================================
+   9. DOS ALERTAS SIMULTÁNEAS
+========================================================== */
+
+.visitor-pass-alert + .visitor-pass-alert {
+  margin-top: 0;
+}
+
+
+/* ==========================================================
+   10. ANIMACIONES
+========================================================== */
+
+@keyframes visitor-alert-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-0.5rem)
+      scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+@keyframes visitor-alert-icon-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      scale(0.55)
+      rotate(-15deg);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      scale(1)
+      rotate(0);
+  }
+}
+
+
+/* ==========================================================
+   11. TABLET
+========================================================== */
+
+@media (max-width: 768px) {
+  .visitor-pass__feedback {
+    margin:
+      0
+      1.5rem;
+  }
+
+  .visitor-pass-alert {
+    padding:
+      0.9375rem
+      1rem
+      0.9375rem
+      1.125rem;
+  }
+}
+
+
+/* ==========================================================
+   12. CELULAR
+========================================================== */
+
+@media (max-width: 520px) {
+  .visitor-pass__feedback {
+    gap: 0.75rem;
+
+    margin:
+      0
+      1rem;
+  }
+
+  .visitor-pass-alert {
+    gap: 0.75rem;
+
+    padding:
+      0.875rem
+      0.875rem
+      0.875rem
+      1rem;
+
+    border-radius:
+      var(--visitor-radius-sm);
+  }
+
+  .visitor-pass-alert__icon {
+    width: 2.25rem;
+    height: 2.25rem;
+
+    font-size: 0.9rem;
+  }
+
+  .visitor-pass-alert__title {
+    font-size: 0.8125rem;
+  }
+
+  .visitor-pass-alert__message {
+    font-size: 0.75rem;
+  }
+}
+
+
+/* ==========================================================
+   13. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 360px) {
+  .visitor-pass-alert {
+    align-items: flex-start;
+  }
+
+  .visitor-pass-alert__icon {
+    width: 2rem;
+    height: 2rem;
+
+    font-size: 0.8125rem;
+  }
+}
+
+
+/* ==========================================================
+   14. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .visitor-pass-alert:hover {
+    transform: none;
+  }
+
+  .visitor-pass-alert--error:hover {
+    border-color:
+      rgba(252, 165, 165, 0.72);
+
+    box-shadow:
+      0 0.75rem 1.5rem rgba(220, 38, 38, 0.07);
+  }
+
+  .visitor-pass-alert--success:hover {
+    border-color:
+      rgba(134, 239, 172, 0.78);
+
+    box-shadow:
+      0 0.75rem 1.5rem rgba(22, 163, 74, 0.07);
+  }
+}
+
+
+/* ==========================================================
+   15. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .visitor-pass-alert {
+    border-width:
+      0.125rem;
+  }
+
+  .visitor-pass-alert::before {
+    width:
+      0.3125rem;
+  }
+
+  .visitor-pass-alert--error
+  .visitor-pass-alert__message {
+    color:
+      #450a0a;
+  }
+
+  .visitor-pass-alert--success
+  .visitor-pass-alert__message {
+    color:
+      #052e16;
+  }
+}
+
+
+/* ==========================================================
+   16. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .visitor-pass-alert,
+  .visitor-pass-alert__icon {
+    animation:
+      none;
+
+    transition:
+      none;
+  }
+
+  .visitor-pass-alert:hover {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   17. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .visitor-pass__feedback {
+    margin:
+      0;
+  }
+
+  .visitor-pass-alert {
+    color:
+      #111827;
+
+    background:
+      #ffffff;
+
+    border:
+      1px solid
+      #cbd5e1;
+
+    box-shadow:
+      none;
+
+    break-inside:
+      avoid;
+  }
+
+  .visitor-pass-alert::after {
+    display:
+      none;
+  }
+
+  .visitor-pass-alert__icon {
+    color:
+      #111827;
+
+    background:
+      transparent;
+
+    border:
+      1px solid
+      #64748b;
+
+    box-shadow:
+      none;
+  }
+
+  .visitor-pass-alert__title,
+  .visitor-pass-alert__message {
+    color:
+      #111827;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL
+   VISITOR PASS
+   PARTE 3
+   TARJETA DEL FORMULARIO + ENCABEZADO + GRID
+========================================================== */
+
+
+/* ==========================================================
+   1. CONTENEDOR DEL FORMULARIO
+========================================================== */
+
+.visitor-pass__form {
+  position: relative;
+  z-index: 2;
+
+  display: block;
+
+  width: auto;
+  min-width: 0;
+
+  margin:
+    0
+    2rem;
+}
+
+
+/* ==========================================================
+   2. TARJETA PRINCIPAL DEL FORMULARIO
+========================================================== */
+
+.visitor-pass-form-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(248, 250, 252, 0.97)
+    );
+
+  border:
+    1px solid
+    rgba(203, 213, 225, 0.8);
+
+  border-radius:
+    var(--visitor-radius-lg);
+
+  box-shadow:
+    var(--visitor-shadow-sm);
+
+  overflow: hidden;
+  isolation: isolate;
+
+  animation:
+    visitor-form-card-enter
+    0.42s
+    cubic-bezier(0.22, 1, 0.36, 1);
+
+  transition:
+    border-color var(--visitor-transition),
+    box-shadow var(--visitor-transition),
+    transform var(--visitor-transition);
+}
+
+
+/* Línea decorativa superior */
+
+.visitor-pass-form-card::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 3;
+
+  height: 0.25rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--visitor-primary) 22%,
+      var(--visitor-cyan) 50%,
+      var(--visitor-primary) 78%,
+      transparent 100%
+    );
+
+  opacity: 0.9;
+
+  pointer-events: none;
+}
+
+
+/* Iluminación interior */
+
+.visitor-pass-form-card::after {
+  position: absolute;
+  top: -8rem;
+  right: -7rem;
+  z-index: -1;
+
+  width: 18rem;
+  height: 18rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.07),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* Elevación sutil */
+
+.visitor-pass-form-card:hover {
+  border-color:
+    rgba(148, 163, 184, 0.72);
+
+  box-shadow:
+    0 1.5rem 3rem rgba(15, 23, 42, 0.09);
+
+  transform:
+    translateY(-0.0625rem);
+}
+
+
+/* ==========================================================
+   3. ENCABEZADO DE LA TARJETA
+========================================================== */
+
+.visitor-pass-form-card__header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+
+  padding:
+    1.75rem
+    1.75rem
+    1.5rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.88),
+      rgba(255, 255, 255, 0.58)
+    );
+
+  border-bottom:
+    1px solid
+    rgba(226, 232, 240, 0.92);
+}
+
+
+/* Línea inferior de profundidad */
+
+.visitor-pass-form-card__header::after {
+  position: absolute;
+  right: 1.75rem;
+  bottom: -0.0625rem;
+  left: 1.75rem;
+
+  height: 0.0625rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(37, 99, 235, 0),
+      rgba(37, 99, 235, 0.14),
+      rgba(6, 182, 212, 0.14),
+      rgba(6, 182, 212, 0)
+    );
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   4. MARCADOR NUMÉRICO
+========================================================== */
+
+.visitor-pass-form-card__marker {
+  position: relative;
+
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+
+  width: 3rem;
+  height: 3rem;
+
+  color:
+    #ffffff;
+
+  font-size: 0.8125rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.06em;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--visitor-primary),
+      var(--visitor-cyan)
+    );
+
+  border:
+    0.25rem solid
+    rgba(255, 255, 255, 0.86);
+
+  border-radius:
+    var(--visitor-radius-sm);
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(37, 99, 235, 0.2),
+    0 0 0 0.25rem rgba(37, 99, 235, 0.06);
+
+  overflow: hidden;
+
+  transform:
+    rotate(-2deg);
+
+  transition:
+    transform var(--visitor-transition),
+    box-shadow var(--visitor-transition);
+}
+
+
+/* Brillo interno del marcador */
+
+.visitor-pass-form-card__marker::before {
+  position: absolute;
+  top: -55%;
+  left: -25%;
+
+  width: 85%;
+  height: 180%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.28),
+      transparent
+    );
+
+  transform:
+    rotate(24deg);
+
+  pointer-events: none;
+}
+
+
+/* Reacción conjunta al hover */
+
+.visitor-pass-form-card:hover
+.visitor-pass-form-card__marker {
+  transform:
+    rotate(0deg)
+    scale(1.025);
+
+  box-shadow:
+    0 0.9rem 1.8rem rgba(37, 99, 235, 0.25),
+    0 0 0 0.3rem rgba(37, 99, 235, 0.07);
+}
+
+
+/* ==========================================================
+   5. CONTENIDO DEL ENCABEZADO
+========================================================== */
+
+.visitor-pass-form-card__heading {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   6. EYEBROW
+========================================================== */
+
+.visitor-pass-form-card__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.4rem;
+
+  color:
+    var(--visitor-primary);
+
+  font-size: 0.6875rem;
+  font-weight: 850;
+  line-height: 1.3;
+  letter-spacing: 0.11em;
+
+  text-transform: uppercase;
+}
+
+
+/* Punto decorativo */
+
+.visitor-pass-form-card__eyebrow::before {
+  width: 0.42rem;
+  height: 0.42rem;
+
+  flex: 0 0 auto;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--visitor-primary),
+      var(--visitor-cyan)
+    );
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.2rem rgba(37, 99, 235, 0.08);
+}
+
+
+/* ==========================================================
+   7. TÍTULO
+========================================================== */
+
+.visitor-pass-form-card__title {
+  margin: 0;
+
+  color:
+    var(--visitor-text);
+
+  font-size:
+    clamp(
+      1.2rem,
+      2vw,
+      1.45rem
+    );
+
+  font-weight: 850;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   8. DESCRIPCIÓN
+========================================================== */
+
+.visitor-pass-form-card__description {
+  max-width: 46rem;
+
+  margin: 0;
+
+  color:
+    var(--visitor-text-soft);
+
+  font-size: 0.875rem;
+  font-weight: 450;
+  line-height: 1.65;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   9. CUERPO DE LA TARJETA
+========================================================== */
+
+.visitor-pass-form-card__body {
+  position: relative;
+  z-index: 2;
+
+  padding:
+    1.75rem;
+
+  background:
+    rgba(255, 255, 255, 0.72);
+}
+
+
+/* Decoración de fondo muy sutil */
+
+.visitor-pass-form-card__body::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  content: "";
+
+  background-image:
+    linear-gradient(
+      rgba(37, 99, 235, 0.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(37, 99, 235, 0.018) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    2rem 2rem;
+
+  opacity: 0.7;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   10. GRID PRINCIPAL
+========================================================== */
+
+.visitor-pass__grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap:
+    1.35rem
+    1.5rem;
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   11. PREPARACIÓN DE LOS CAMPOS
+========================================================== */
+
+/*
+   La apariencia completa de visitor-pass-field se construirá
+   en la Parte 4. Aquí solo dejamos establecida su posición,
+   tamaño y comportamiento dentro del grid.
+*/
+
+.visitor-pass-field {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  min-width: 0;
+}
+
+
+/* Evita desbordamientos de elementos internos */
+
+.visitor-pass-field > * {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   12. ÚLTIMA FILA
+========================================================== */
+
+/*
+   La cuadrícula actual contiene seis campos, por lo que forma
+   tres filas completas. Esta regla deja preparado el diseño
+   para futuros campos que necesiten ocupar todo el ancho.
+*/
+
+.visitor-pass-field--full {
+  grid-column:
+    1 / -1;
+}
+
+
+/* ==========================================================
+   13. ESTADO CUANDO EL FORMULARIO CONTIENE EL FOCO
+========================================================== */
+
+.visitor-pass-form-card:focus-within {
+  border-color:
+    rgba(96, 165, 250, 0.72);
+
+  box-shadow:
+    0 1.5rem 3rem rgba(37, 99, 235, 0.08),
+    0 0 0 0.2rem rgba(37, 99, 235, 0.045);
+}
+
+
+/* ==========================================================
+   14. ANIMACIÓN DE ENTRADA
+========================================================== */
+
+@keyframes visitor-form-card-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(0.875rem)
+      scale(0.992);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* ==========================================================
+   15. PANTALLAS INTERMEDIAS
+========================================================== */
+
+@media (max-width: 900px) {
+  .visitor-pass__grid {
+    gap:
+      1.2rem
+      1.25rem;
+  }
+
+  .visitor-pass-form-card__header,
+  .visitor-pass-form-card__body {
+    padding:
+      1.5rem;
+  }
+
+  .visitor-pass-form-card__header::after {
+    right:
+      1.5rem;
+    left:
+      1.5rem;
+  }
+}
+
+
+/* ==========================================================
+   16. TABLET
+========================================================== */
+
+@media (max-width: 768px) {
+  .visitor-pass__form {
+    margin:
+      0
+      1.5rem;
+  }
+
+  .visitor-pass-form-card {
+    border-radius:
+      var(--visitor-radius-md);
+  }
+
+  .visitor-pass-form-card__header {
+    gap:
+      0.875rem;
+  }
+
+  .visitor-pass-form-card__marker {
+    width:
+      2.75rem;
+    height:
+      2.75rem;
+  }
+
+  .visitor-pass__grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .visitor-pass-field--full {
+    grid-column:
+      auto;
+  }
+}
+
+
+/* ==========================================================
+   17. CELULAR
+========================================================== */
+
+@media (max-width: 520px) {
+  .visitor-pass__form {
+    margin:
+      0
+      1rem;
+  }
+
+  .visitor-pass-form-card {
+    border-radius:
+      var(--visitor-radius-sm);
+  }
+
+  .visitor-pass-form-card__header {
+    padding:
+      1.25rem;
+
+    gap:
+      0.75rem;
+  }
+
+  .visitor-pass-form-card__header::after {
+    right:
+      1.25rem;
+    left:
+      1.25rem;
+  }
+
+  .visitor-pass-form-card__marker {
+    width:
+      2.5rem;
+    height:
+      2.5rem;
+
+    font-size:
+      0.71875rem;
+
+    border-width:
+      0.1875rem;
+
+    border-radius:
+      var(--visitor-radius-xs);
+  }
+
+  .visitor-pass-form-card__eyebrow {
+    font-size:
+      0.625rem;
+  }
+
+  .visitor-pass-form-card__title {
+    font-size:
+      1.15rem;
+  }
+
+  .visitor-pass-form-card__description {
+    font-size:
+      0.8125rem;
+
+    line-height:
+      1.55;
+  }
+
+  .visitor-pass-form-card__body {
+    padding:
+      1.25rem;
+  }
+
+  .visitor-pass__grid {
+    gap:
+      1.1rem;
+  }
+}
+
+
+/* ==========================================================
+   18. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 360px) {
+  .visitor-pass-form-card__header {
+    align-items:
+      flex-start;
+  }
+
+  .visitor-pass-form-card__marker {
+    width:
+      2.25rem;
+    height:
+      2.25rem;
+  }
+
+  .visitor-pass-form-card__body {
+    padding:
+      1rem;
+  }
+}
+
+
+/* ==========================================================
+   19. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .visitor-pass-form-card:hover {
+    border-color:
+      rgba(203, 213, 225, 0.8);
+
+    box-shadow:
+      var(--visitor-shadow-sm);
+
+    transform:
+      none;
+  }
+
+  .visitor-pass-form-card:hover
+  .visitor-pass-form-card__marker {
+    transform:
+      rotate(-2deg);
+
+    box-shadow:
+      0 0.75rem 1.5rem rgba(37, 99, 235, 0.2),
+      0 0 0 0.25rem rgba(37, 99, 235, 0.06);
+  }
+}
+
+
+/* ==========================================================
+   20. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .visitor-pass-form-card {
+    border-width:
+      0.125rem;
+
+    border-color:
+      #64748b;
+  }
+
+  .visitor-pass-form-card__header {
+    border-bottom-color:
+      #94a3b8;
+  }
+
+  .visitor-pass-form-card__marker {
+    border-color:
+      #ffffff;
+  }
+
+  .visitor-pass-form-card__description {
+    color:
+      #334155;
+  }
+}
+
+
+/* ==========================================================
+   21. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .visitor-pass-form-card,
+  .visitor-pass-form-card__marker {
+    animation:
+      none;
+
+    transition:
+      none;
+  }
+
+  .visitor-pass-form-card:hover,
+  .visitor-pass-form-card:focus-within {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   22. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .visitor-pass__form {
+    margin:
+      0;
+  }
+
+  .visitor-pass-form-card {
+    background:
+      #ffffff;
+
+    border:
+      1px solid
+      #cbd5e1;
+
+    box-shadow:
+      none;
+
+    break-inside:
+      avoid;
+  }
+
+  .visitor-pass-form-card::before,
+  .visitor-pass-form-card::after,
+  .visitor-pass-form-card__body::before {
+    display:
+      none;
+  }
+
+  .visitor-pass-form-card__header,
+  .visitor-pass-form-card__body {
+    background:
+      #ffffff;
+  }
+
+  .visitor-pass-form-card__marker {
+    color:
+      #111827;
+
+    background:
+      #ffffff;
+
+    border:
+      1px solid
+      #64748b;
+
+    box-shadow:
+      none;
+
+    transform:
+      none;
+  }
+
+  .visitor-pass-form-card__eyebrow,
+  .visitor-pass-form-card__title,
+  .visitor-pass-form-card__description {
+    color:
+      #111827;
+  }
+
+  .visitor-pass__grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL
+   VISITOR PASS
+   PARTE 4
+   CAMPOS DEL FORMULARIO
+========================================================== */
+
+
+/* ==========================================================
+   1. CAMPO
+========================================================== */
+
+.visitor-pass-field{
+
+    position:relative;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:.55rem;
+
+    min-width:0;
+
+}
+
+
+/* ==========================================================
+   2. LABEL
+========================================================== */
+
+.visitor-pass-field__label{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.75rem;
+
+    margin:0;
+
+}
+
+.visitor-pass-field__label-text{
+
+    color:
+
+        var(--visitor-text);
+
+    font-size:.9rem;
+    font-weight:700;
+
+    line-height:1.4;
+
+}
+
+
+/* ==========================================================
+   3. REQUIRED
+========================================================== */
+
+.visitor-pass-field__required{
+
+    color:
+
+        var(--visitor-danger);
+
+    font-size:.95rem;
+    font-weight:800;
+
+}
+
+
+/* ==========================================================
+   4. OPTIONAL
+========================================================== */
+
+.visitor-pass-field__optional{
+
+    padding:
+
+        .18rem
+        .55rem;
+
+    color:
+
+        var(--visitor-primary);
+
+    font-size:.68rem;
+    font-weight:700;
+
+    letter-spacing:.04em;
+
+    background:
+
+        rgba(37,99,235,.08);
+
+    border-radius:
+
+        var(--visitor-radius-pill);
+
+}
+
+
+/* ==========================================================
+   5. CONTROL
+========================================================== */
+
+.visitor-pass-field__control{
+
+    position:relative;
+
+    display:flex;
+    align-items:center;
+
+    min-height:3.35rem;
+
+    background:#ffffff;
+
+    border:
+
+        1px solid
+        rgba(203,213,225,.9);
+
+    border-radius:
+
+        var(--visitor-radius-sm);
+
+    overflow:hidden;
+
+    transition:
+
+        border-color var(--visitor-transition),
+
+        box-shadow var(--visitor-transition),
+
+        transform var(--visitor-transition),
+
+        background var(--visitor-transition);
+
+}
+
+
+/* ==========================================================
+   6. ICONO
+========================================================== */
+
+.visitor-pass-field__icon{
+
+    display:grid;
+    place-items:center;
+
+    flex-shrink:0;
+
+    width:3.2rem;
+    height:100%;
+
+    color:
+
+        var(--visitor-primary);
+
+    font-size:1rem;
+    font-weight:700;
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            rgba(37,99,235,.05),
+
+            rgba(37,99,235,.02)
+
+        );
+
+    border-right:
+
+        1px solid
+        rgba(226,232,240,.9);
+
+    transition:
+
+        background var(--visitor-transition),
+
+        color var(--visitor-transition);
+
+}
+
+
+/* ==========================================================
+   7. INPUT
+========================================================== */
+
+.visitor-pass-field__input{
+
+    flex:1;
+
+    width:100%;
+
+    padding:
+
+        .9rem
+        1rem;
+
+    color:
+
+        var(--visitor-text);
+
+    font-size:.92rem;
+    font-weight:500;
+
+    background:transparent;
+
+    border:none;
+    outline:none;
+
+    appearance:none;
+
+}
+
+
+/* ==========================================================
+   8. PLACEHOLDER
+========================================================== */
+
+.visitor-pass-field__input::placeholder{
+
+    color:
+
+        var(--visitor-text-muted);
+
+    opacity:1;
+
+}
+
+
+/* ==========================================================
+   9. HOVER
+========================================================== */
+
+.visitor-pass-field__control:hover{
+
+    border-color:
+
+        rgba(96,165,250,.6);
+
+    transform:
+
+        translateY(-1px);
+
+}
+
+.visitor-pass-field__control:hover
+.visitor-pass-field__icon{
+
+    color:#ffffff;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            var(--visitor-primary),
+
+            var(--visitor-cyan)
+
+        );
+
+}
+
+
+/* ==========================================================
+   10. FOCUS
+========================================================== */
+
+.visitor-pass-field__control:focus-within{
+
+    border-color:
+
+        var(--visitor-primary);
+
+    box-shadow:
+
+        0 0 0 .22rem
+        rgba(37,99,235,.12);
+
+    transform:
+
+        translateY(-1px);
+
+}
+
+.visitor-pass-field__control:focus-within
+.visitor-pass-field__icon{
+
+    color:#ffffff;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            var(--visitor-primary),
+
+            var(--visitor-primary-dark)
+
+        );
+
+}
+
+
+/* ==========================================================
+   11. INPUT FOCUS
+========================================================== */
+
+.visitor-pass-field__input:focus{
+
+    outline:none;
+
+}
+
+
+/* ==========================================================
+   12. DISABLED
+========================================================== */
+
+.visitor-pass-field__control:has(.visitor-pass-field__input:disabled){
+
+    background:
+
+        rgba(248,250,252,.9);
+
+    cursor:not-allowed;
+
+    opacity:.75;
+
+}
+
+.visitor-pass-field__input:disabled{
+
+    cursor:not-allowed;
+
+}
+
+
+/* ==========================================================
+   13. AUTOFILL
+========================================================== */
+
+.visitor-pass-field__input:-webkit-autofill,
+
+.visitor-pass-field__input:-webkit-autofill:hover,
+
+.visitor-pass-field__input:-webkit-autofill:focus{
+
+    -webkit-text-fill-color:
+
+        var(--visitor-text);
+
+    transition:
+        background-color 9999s;
+
+    box-shadow:
+
+        inset 0 0 0 1000px #ffffff;
+
+}
+
+
+/* ==========================================================
+   14. HINT
+========================================================== */
+
+.visitor-pass-field__hint{
+
+    padding-left:.2rem;
+
+    color:
+
+        var(--visitor-text-soft);
+
+    font-size:.76rem;
+
+    line-height:1.55;
+
+}
+
+
+/* ==========================================================
+   15. TABLET
+========================================================== */
+
+@media (max-width:768px){
+
+    .visitor-pass-field__control{
+
+        min-height:3.2rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   16. CELULAR
+========================================================== */
+
+@media (max-width:520px){
+
+    .visitor-pass-field{
+
+        gap:.45rem;
+
+    }
+
+    .visitor-pass-field__label-text{
+
+        font-size:.84rem;
+
+    }
+
+    .visitor-pass-field__optional{
+
+        font-size:.62rem;
+
+    }
+
+    .visitor-pass-field__control{
+
+        min-height:3rem;
+
+    }
+
+    .visitor-pass-field__icon{
+
+        width:2.8rem;
+
+        font-size:.9rem;
+
+    }
+
+    .visitor-pass-field__input{
+
+        padding:
+
+            .8rem
+            .85rem;
+
+        font-size:.88rem;
+
+    }
+
+    .visitor-pass-field__hint{
+
+        font-size:.72rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   17. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width:360px){
+
+    .visitor-pass-field__icon{
+
+        width:2.6rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   18. TOUCH
+========================================================== */
+
+@media (hover:none) and (pointer:coarse){
+
+    .visitor-pass-field__control:hover{
+
+        transform:none;
+
+        border-color:
+
+            rgba(203,213,225,.9);
+
+    }
+
+    .visitor-pass-field__control:hover
+    .visitor-pass-field__icon{
+
+        color:
+
+            var(--visitor-primary);
+
+        background:
+
+            linear-gradient(
+
+                180deg,
+
+                rgba(37,99,235,.05),
+
+                rgba(37,99,235,.02)
+
+            );
+
+    }
+
+}
+
+
+/* ==========================================================
+   19. HIGH CONTRAST
+========================================================== */
+
+@media (prefers-contrast:more){
+
+    .visitor-pass-field__control{
+
+        border-width:2px;
+
+    }
+
+    .visitor-pass-field__icon{
+
+        border-right-width:2px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   20. REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+    .visitor-pass-field__control,
+
+    .visitor-pass-field__icon{
+
+        transition:none;
+
+    }
+
+}
+
+
+/* ==========================================================
+   21. PRINT
+========================================================== */
+
+@media print{
+
+    .visitor-pass-field__control{
+
+        background:#ffffff;
+
+        border:
+
+            1px solid
+            #94a3b8;
+
+        box-shadow:none;
+
+        transform:none;
+
+    }
+
+    .visitor-pass-field__icon{
+
+        color:#111827;
+
+        background:#ffffff;
+
+        border-right:
+
+            1px solid
+            #94a3b8;
+
+    }
+
+    .visitor-pass-field__input{
+
+        color:#111827;
+
+    }
+
+    .visitor-pass-field__hint{
+
+        color:#475569;
+
+    }
+
+}
+
+/* ==========================================================
+   HABITACONTROL
+   VISITOR PASS
+   PARTE 5
+   FOOTER DEL FORMULARIO + ACCIONES + BOTONES
+========================================================== */
+
+
+/* ==========================================================
+   1. FOOTER DE LA TARJETA
+========================================================== */
+
+.visitor-pass-form-card__footer {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  padding:
+    1.35rem
+    1.75rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.9),
+      rgba(241, 245, 249, 0.76)
+    );
+
+  border-top:
+    1px solid
+    rgba(226, 232, 240, 0.96);
+}
+
+
+/* Línea superior decorativa */
+
+.visitor-pass-form-card__footer::before {
+  position: absolute;
+  top: -0.0625rem;
+  right: 1.75rem;
+  left: 1.75rem;
+
+  height: 0.0625rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(37, 99, 235, 0.14),
+      rgba(6, 182, 212, 0.14),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   2. INFORMACIÓN DEL FOOTER
+========================================================== */
+
+.visitor-pass-form-card__footer-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+
+  flex: 1 1 auto;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   3. ICONO INFORMATIVO
+========================================================== */
+
+.visitor-pass-form-card__footer-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+
+  width: 1.65rem;
+  height: 1.65rem;
+
+  margin-top: 0.0625rem;
+
+  color:
+    var(--visitor-primary);
+
+  font-size: 0.75rem;
+  font-weight: 900;
+  line-height: 1;
+
+  background:
+    rgba(37, 99, 235, 0.08);
+
+  border:
+    1px solid
+    rgba(37, 99, 235, 0.14);
+
+  border-radius: 50%;
+}
+
+
+/* Texto informativo */
+
+.visitor-pass-form-card__footer-info p {
+  margin: 0;
+
+  color:
+    var(--visitor-text-soft);
+
+  font-size: 0.775rem;
+  font-weight: 500;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* Asterisco dentro del mensaje */
+
+.visitor-pass-form-card__footer-info strong {
+  color:
+    var(--visitor-danger);
+
+  font-weight: 900;
+}
+
+
+/* ==========================================================
+   4. CONTENEDOR DE ACCIONES
+========================================================== */
+
+.visitor-pass__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.85rem;
+
+  flex: 0 0 auto;
+}
+
+
+/* ==========================================================
+   5. BOTÓN BASE
+========================================================== */
+
+.visitor-pass-action {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+
+  min-width: 9.75rem;
+  min-height: 3rem;
+
+  padding:
+    0.8rem
+    1.25rem;
+
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 750;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    var(--visitor-radius-pill);
+
+  cursor: pointer;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  transition:
+    color var(--visitor-transition),
+    background var(--visitor-transition),
+    border-color var(--visitor-transition),
+    box-shadow var(--visitor-transition),
+    transform var(--visitor-transition),
+    opacity var(--visitor-transition);
+}
+
+
+/* Brillo animado */
+
+.visitor-pass-action::before {
+  position: absolute;
+  top: -50%;
+  bottom: -50%;
+  left: -70%;
+  z-index: -1;
+
+  width: 45%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+
+  transform:
+    rotate(18deg);
+
+  transition:
+    left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+  pointer-events: none;
+}
+
+
+/* Desplazamiento del brillo */
+
+.visitor-pass-action:not(:disabled):hover::before {
+  left: 135%;
+}
+
+
+/* ==========================================================
+   6. ICONO DEL BOTÓN
+========================================================== */
+
+.visitor-pass-action__icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+
+  width: 1.15rem;
+  height: 1.15rem;
+
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+
+  transition:
+    transform var(--visitor-transition);
+}
+
+
+/* ==========================================================
+   7. BOTÓN SECUNDARIO
+========================================================== */
+
+.visitor-pass-action--secondary {
+  color:
+    var(--visitor-text-soft);
+
+  background:
+    rgba(255, 255, 255, 0.96);
+
+  border-color:
+    rgba(203, 213, 225, 0.95);
+
+  box-shadow:
+    0 0.4rem 0.8rem rgba(15, 23, 42, 0.04);
+}
+
+
+/* Hover secundario */
+
+.visitor-pass-action--secondary:not(:disabled):hover {
+  color:
+    var(--visitor-primary-dark);
+
+  background:
+    rgba(239, 246, 255, 0.98);
+
+  border-color:
+    rgba(96, 165, 250, 0.68);
+
+  box-shadow:
+    0 0.8rem 1.5rem rgba(37, 99, 235, 0.1);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+
+/* Movimiento del icono secundario */
+
+.visitor-pass-action--secondary:not(:disabled):hover
+.visitor-pass-action__icon {
+  transform:
+    rotate(-30deg);
+}
+
+
+/* ==========================================================
+   8. BOTÓN PRIMARIO
+========================================================== */
+
+.visitor-pass-action--primary {
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--visitor-primary),
+      var(--visitor-primary-dark) 58%,
+      #1e40af
+    );
+
+  border-color:
+    rgba(29, 78, 216, 0.84);
+
+  box-shadow:
+    0 0.85rem 1.7rem rgba(37, 99, 235, 0.22),
+    inset 0 0.0625rem 0 rgba(255, 255, 255, 0.2);
+}
+
+
+/* Iluminación azul */
+
+.visitor-pass-action--primary::after {
+  position: absolute;
+  right: -2.25rem;
+  bottom: -2.75rem;
+  z-index: -1;
+
+  width: 6rem;
+  height: 6rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(6, 182, 212, 0.38),
+      transparent 68%
+    );
+
+  border-radius: 50%;
+
+  transition:
+    transform var(--visitor-transition),
+    opacity var(--visitor-transition);
+
+  pointer-events: none;
+}
+
+
+/* Hover primario */
+
+.visitor-pass-action--primary:not(:disabled):hover {
+  background:
+    linear-gradient(
+      135deg,
+      #3b82f6,
+      var(--visitor-primary) 55%,
+      var(--visitor-primary-dark)
+    );
+
+  border-color:
+    var(--visitor-primary-dark);
+
+  box-shadow:
+    0 1.05rem 2rem rgba(37, 99, 235, 0.3),
+    0 0 0 0.22rem rgba(37, 99, 235, 0.06);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+
+/* Movimiento del icono primario */
+
+.visitor-pass-action--primary:not(:disabled):hover
+.visitor-pass-action__icon {
+  transform:
+    translateX(0.2rem);
+}
+
+
+/* Luz del botón primario */
+
+.visitor-pass-action--primary:not(:disabled):hover::after {
+  opacity: 0.95;
+
+  transform:
+    scale(1.2);
+}
+
+
+/* ==========================================================
+   9. ESTADO ACTIVE
+========================================================== */
+
+.visitor-pass-action:not(:disabled):active {
+  transform:
+    translateY(0)
+    scale(0.975);
+
+  box-shadow:
+    0 0.35rem 0.75rem rgba(15, 23, 42, 0.12);
+}
+
+
+/* ==========================================================
+   10. ESTADO FOCUS
+========================================================== */
+
+.visitor-pass-action:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 0.22rem rgba(37, 99, 235, 0.2),
+    0 0.85rem 1.7rem rgba(37, 99, 235, 0.14);
+}
+
+
+/* Focus secundario */
+
+.visitor-pass-action--secondary:focus-visible {
+  border-color:
+    var(--visitor-primary);
+
+  box-shadow:
+    0 0 0 0.22rem rgba(37, 99, 235, 0.16),
+    0 0.5rem 1rem rgba(15, 23, 42, 0.08);
+}
+
+
+/* ==========================================================
+   11. ESTADO DISABLED
+========================================================== */
+
+.visitor-pass-action:disabled {
+  cursor:
+    not-allowed;
+
+  transform:
+    none;
+
+  box-shadow:
+    none;
+
+  opacity:
+    0.58;
+}
+
+
+/* Secundario deshabilitado */
+
+.visitor-pass-action--secondary:disabled {
+  color:
+    #94a3b8;
+
+  background:
+    #f8fafc;
+
+  border-color:
+    #e2e8f0;
+}
+
+
+/* Primario deshabilitado */
+
+.visitor-pass-action--primary:disabled {
+  color:
+    rgba(255, 255, 255, 0.88);
+
+  background:
+    linear-gradient(
+      135deg,
+      #94a3b8,
+      #64748b
+    );
+
+  border-color:
+    #94a3b8;
+}
+
+
+/* Sin brillo mientras está deshabilitado */
+
+.visitor-pass-action:disabled::before,
+.visitor-pass-action:disabled::after {
+  display:
+    none;
+}
+
+
+/* ==========================================================
+   12. SPINNER
+========================================================== */
+
+.visitor-pass-action__spinner {
+  display: inline-block;
+  flex: 0 0 auto;
+
+  width: 1rem;
+  height: 1rem;
+
+  border:
+    0.15rem solid
+    rgba(255, 255, 255, 0.36);
+
+  border-top-color:
+    #ffffff;
+
+  border-radius:
+    50%;
+
+  animation:
+    visitor-action-spinner
+    0.78s
+    linear
+    infinite;
+}
+
+
+/* Animación del spinner */
+
+@keyframes visitor-action-spinner {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* ==========================================================
+   13. PANTALLAS INTERMEDIAS
+========================================================== */
+
+@media (max-width: 900px) {
+  .visitor-pass-form-card__footer {
+    padding:
+      1.25rem
+      1.5rem;
+  }
+
+  .visitor-pass-form-card__footer::before {
+    right:
+      1.5rem;
+    left:
+      1.5rem;
+  }
+}
+
+
+/* ==========================================================
+   14. TABLET
+========================================================== */
+
+@media (max-width: 768px) {
+  .visitor-pass-form-card__footer {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    gap:
+      1rem;
+  }
+
+  .visitor-pass__actions {
+    width:
+      100%;
+
+    justify-content:
+      flex-end;
+  }
+}
+
+
+/* ==========================================================
+   15. CELULAR
+========================================================== */
+
+@media (max-width: 520px) {
+  .visitor-pass-form-card__footer {
+    padding:
+      1.15rem
+      1.25rem;
+  }
+
+  .visitor-pass-form-card__footer::before {
+    right:
+      1.25rem;
+    left:
+      1.25rem;
+  }
+
+  .visitor-pass-form-card__footer-info {
+    gap:
+      0.55rem;
+  }
+
+  .visitor-pass-form-card__footer-icon {
+    width:
+      1.5rem;
+    height:
+      1.5rem;
+
+    font-size:
+      0.6875rem;
+  }
+
+  .visitor-pass-form-card__footer-info p {
+    font-size:
+      0.72rem;
+  }
+
+  .visitor-pass__actions {
+    flex-direction:
+      column-reverse;
+
+    align-items:
+      stretch;
+
+    gap:
+      0.7rem;
+  }
+
+  .visitor-pass-action {
+    width:
+      100%;
+
+    min-width:
+      0;
+
+    min-height:
+      3.1rem;
+
+    padding:
+      0.85rem
+      1rem;
+  }
+}
+
+
+/* ==========================================================
+   16. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 360px) {
+  .visitor-pass-form-card__footer {
+    padding:
+      1rem;
+  }
+
+  .visitor-pass-form-card__footer::before {
+    right:
+      1rem;
+    left:
+      1rem;
+  }
+
+  .visitor-pass-action {
+    font-size:
+      0.8125rem;
+  }
+}
+
+
+/* ==========================================================
+   17. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .visitor-pass-action {
+    min-height:
+      3.25rem;
+  }
+
+  .visitor-pass-action:not(:disabled):hover {
+    transform:
+      none;
+  }
+
+  .visitor-pass-action:not(:disabled):hover::before {
+    left:
+      -70%;
+  }
+
+  .visitor-pass-action--secondary:not(:disabled):hover {
+    color:
+      var(--visitor-text-soft);
+
+    background:
+      rgba(255, 255, 255, 0.96);
+
+    border-color:
+      rgba(203, 213, 225, 0.95);
+
+    box-shadow:
+      0 0.4rem 0.8rem rgba(15, 23, 42, 0.04);
+  }
+
+  .visitor-pass-action--primary:not(:disabled):hover {
+    background:
+      linear-gradient(
+        135deg,
+        var(--visitor-primary),
+        var(--visitor-primary-dark) 58%,
+        #1e40af
+      );
+
+    border-color:
+      rgba(29, 78, 216, 0.84);
+
+    box-shadow:
+      0 0.85rem 1.7rem rgba(37, 99, 235, 0.22),
+      inset 0 0.0625rem 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .visitor-pass-action--secondary:not(:disabled):hover
+  .visitor-pass-action__icon,
+  .visitor-pass-action--primary:not(:disabled):hover
+  .visitor-pass-action__icon {
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   18. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .visitor-pass-form-card__footer {
+    border-top-width:
+      0.125rem;
+
+    border-top-color:
+      #64748b;
+  }
+
+  .visitor-pass-action {
+    border-width:
+      0.125rem;
+  }
+
+  .visitor-pass-action--secondary {
+    color:
+      #0f172a;
+
+    border-color:
+      #475569;
+  }
+
+  .visitor-pass-action--primary {
+    background:
+      #1d4ed8;
+
+    border-color:
+      #1e3a8a;
+  }
+
+  .visitor-pass-action:disabled {
+    opacity:
+      0.72;
+  }
+}
+
+
+/* ==========================================================
+   19. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .visitor-pass-action,
+  .visitor-pass-action__icon,
+  .visitor-pass-action::before,
+  .visitor-pass-action::after {
+    transition:
+      none;
+  }
+
+  .visitor-pass-action__spinner {
+    animation-duration:
+      1.4s;
+  }
+
+  .visitor-pass-action:not(:disabled):hover,
+  .visitor-pass-action:not(:disabled):active {
+    transform:
+      none;
+  }
+
+  .visitor-pass-action:not(:disabled):hover::before {
+    left:
+      -70%;
+  }
+}
+
+
+/* ==========================================================
+   20. IMPRESIÓN
+========================================================== */
+
+@media print {
+  .visitor-pass-form-card__footer {
+    padding:
+      1rem;
+
+    background:
+      #ffffff;
+
+    border-top:
+      1px solid
+      #94a3b8;
+  }
+
+  .visitor-pass-form-card__footer::before {
+    display:
+      none;
+  }
+
+  .visitor-pass-form-card__footer-icon {
+    color:
+      #111827;
+
+    background:
+      #ffffff;
+
+    border:
+      1px solid
+      #64748b;
+  }
+
+  .visitor-pass-form-card__footer-info p,
+  .visitor-pass-form-card__footer-info strong {
+    color:
+      #111827;
+  }
+
+  .visitor-pass__actions {
+    display:
+      none;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL
+   VISITOR PASS
+   PARTE 6
+   RESULTADO + QR + TOKEN
+========================================================== */
+
+
+/* ==========================================================
+   CONTENEDOR GENERAL
+========================================================== */
+
+.visitor-pass-result{
+
+    position:relative;
+    z-index:2;
+
+    display:flex;
+    flex-direction:column;
+    gap:1.75rem;
+
+    margin:
+        0
+        2rem
+        2rem;
+
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.visitor-pass-result__header{
+
+    display:flex;
+    align-items:flex-start;
+    gap:1rem;
+
+}
+
+
+/* ==========================================================
+   ICONO
+========================================================== */
+
+.visitor-pass-result__icon{
+
+    display:grid;
+    place-items:center;
+
+    flex-shrink:0;
+
+    width:4rem;
+    height:4rem;
+
+    color:#ffffff;
+
+    font-size:1.25rem;
+    font-weight:800;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #22c55e,
+            var(--visitor-success)
+        );
+
+    border-radius:
+
+        var(--visitor-radius-md);
+
+    box-shadow:
+
+        0 1rem 2rem rgba(22,163,74,.22);
+
+}
+
+
+/* ==========================================================
+   TITULOS
+========================================================== */
+
+.visitor-pass-result__heading{
+
+    display:flex;
+    flex-direction:column;
+    gap:.4rem;
+
+}
+
+.visitor-pass-result__eyebrow{
+
+    color:
+
+        var(--visitor-success);
+
+    font-size:.74rem;
+    font-weight:800;
+
+    letter-spacing:.12em;
+
+    text-transform:uppercase;
+
+}
+
+.visitor-pass-result__title{
+
+    margin:0;
+
+    color:
+
+        var(--visitor-text);
+
+    font-size:1.7rem;
+    font-weight:800;
+
+}
+
+.visitor-pass-result__description{
+
+    margin:0;
+
+    max-width:760px;
+
+    color:
+
+        var(--visitor-text-soft);
+
+    line-height:1.7;
+
+}
+
+
+/* ==========================================================
+   BODY
+========================================================== */
+
+.visitor-pass-result__body{
+
+    display:grid;
+
+    grid-template-columns:
+
+        360px
+        minmax(0,1fr);
+
+    gap:2rem;
+
+    align-items:start;
+
+}
+
+
+/* ==========================================================
+   TARJETA QR
+========================================================== */
+
+.visitor-pass-qr{
+
+    position:relative;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    gap:1.25rem;
+
+    padding:2rem;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f8fafc
+        );
+
+    border:
+
+        1px solid
+        rgba(203,213,225,.8);
+
+    border-radius:
+
+        var(--visitor-radius-lg);
+
+    box-shadow:
+
+        var(--visitor-shadow-sm);
+
+}
+
+
+/* ==========================================================
+   MARCO QR
+========================================================== */
+
+.visitor-pass-qr__frame{
+
+    position:relative;
+
+    display:grid;
+    place-items:center;
+
+    width:250px;
+    height:250px;
+
+    padding:1rem;
+
+    background:#ffffff;
+
+    border-radius:
+
+        var(--visitor-radius-md);
+
+    box-shadow:
+
+        0 1rem 2rem rgba(15,23,42,.08);
+
+}
+
+
+/* ==========================================================
+   IMAGEN QR
+========================================================== */
+
+.visitor-pass-qr__image{
+
+    width:100%;
+    height:auto;
+
+    display:block;
+
+    animation:
+
+        visitor-qr-enter
+
+        .45s
+
+        cubic-bezier(.22,1,.36,1);
+
+}
+
+
+/* ==========================================================
+   ESQUINAS
+========================================================== */
+
+.visitor-pass-qr__frame::before,
+
+.visitor-pass-qr__frame::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:2rem;
+    height:2rem;
+
+    border:
+
+        4px solid
+        var(--visitor-primary);
+
+}
+
+.visitor-pass-qr__frame::before{
+
+    top:-4px;
+    left:-4px;
+
+    border-right:none;
+    border-bottom:none;
+
+    border-radius:
+
+        .6rem
+        0
+        0
+        0;
+
+}
+
+.visitor-pass-qr__frame::after{
+
+    right:-4px;
+    bottom:-4px;
+
+    border-left:none;
+    border-top:none;
+
+    border-radius:
+
+        0
+        0
+        .6rem
+        0;
+
+}
+
+
+/* ==========================================================
+   BADGE
+========================================================== */
+
+.visitor-pass-qr__badge{
+
+    display:inline-flex;
+    align-items:center;
+    gap:.45rem;
+
+    padding:
+
+        .45rem
+        .85rem;
+
+    color:
+
+        var(--visitor-success);
+
+    font-size:.74rem;
+    font-weight:700;
+
+    background:
+
+        rgba(22,163,74,.08);
+
+    border:
+
+        1px solid
+        rgba(22,163,74,.15);
+
+    border-radius:
+
+        var(--visitor-radius-pill);
+
+}
+
+
+/* ==========================================================
+   TOKEN
+========================================================== */
+
+.visitor-pass-token{
+
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+
+    padding:2rem;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f8fafc
+        );
+
+    border:
+
+        1px solid
+        rgba(203,213,225,.85);
+
+    border-radius:
+
+        var(--visitor-radius-lg);
+
+    box-shadow:
+
+        var(--visitor-shadow-sm);
+
+}
+
+
+/* ==========================================================
+   TOKEN TITULO
+========================================================== */
+
+.visitor-pass-token__title{
+
+    margin:0;
+
+    color:
+
+        var(--visitor-text);
+
+    font-size:1.2rem;
+    font-weight:800;
+
+}
+
+
+/* ==========================================================
+   TOKEN DESCRIPCION
+========================================================== */
+
+.visitor-pass-token__description{
+
+    margin:0;
+
+    color:
+
+        var(--visitor-text-soft);
+
+    line-height:1.65;
+
+}
+
+
+/* ==========================================================
+   TOKEN BOX
+========================================================== */
+
+.visitor-pass-token__value{
+
+    padding:1rem;
+
+    color:
+
+        var(--visitor-primary-dark);
+
+    font-family:
+
+        Consolas,
+        monospace;
+
+    font-size:.9rem;
+    font-weight:700;
+
+    letter-spacing:.05em;
+
+    word-break:break-all;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(37,99,235,.04),
+            rgba(37,99,235,.02)
+        );
+
+    border:
+
+        1px dashed
+        rgba(37,99,235,.25);
+
+    border-radius:
+
+        var(--visitor-radius-sm);
+
+}
+
+
+/* ==========================================================
+   NOTA
+========================================================== */
+
+.visitor-pass-token__note{
+
+    padding:1rem;
+
+    color:
+
+        var(--visitor-text-soft);
+
+    font-size:.82rem;
+
+    line-height:1.7;
+
+    background:
+
+        rgba(248,250,252,.85);
+
+    border-left:
+
+        4px solid
+        var(--visitor-primary);
+
+    border-radius:
+
+        var(--visitor-radius-sm);
+
+}
+
+
+/* ==========================================================
+   ANIMACION QR
+========================================================== */
+
+@keyframes visitor-qr-enter{
+
+    from{
+
+        opacity:0;
+
+        transform:
+
+            scale(.9);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+
+            scale(1);
+
+    }
+
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width:900px){
+
+    .visitor-pass-result__body{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .visitor-pass-qr{
+
+        max-width:420px;
+
+        margin:auto;
+
+        width:100%;
+
+    }
+
+}
+
+
+/* ==========================================================
+   CELULAR
+========================================================== */
+
+@media (max-width:520px){
+
+    .visitor-pass-result{
+
+        margin:
+
+            0
+            1rem
+            1rem;
+
+    }
+
+    .visitor-pass-result__header{
+
+        gap:.8rem;
+
+    }
+
+    .visitor-pass-result__icon{
+
+        width:3.2rem;
+        height:3.2rem;
+
+        font-size:1rem;
+
+    }
+
+    .visitor-pass-result__title{
+
+        font-size:1.4rem;
+
+    }
+
+    .visitor-pass-qr,
+
+    .visitor-pass-token{
+
+        padding:1.25rem;
+
+    }
+
+    .visitor-pass-qr__frame{
+
+        width:220px;
+        height:220px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   CELULARES MUY PEQUEÑOS
+========================================================== */
+
+@media (max-width:360px){
+
+    .visitor-pass-qr__frame{
+
+        width:180px;
+        height:180px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   TOUCH
+========================================================== */
+
+@media (hover:none){
+
+    .visitor-pass-qr,
+
+    .visitor-pass-token{
+
+        transform:none;
+
+    }
+
+}
+
+
+/* ==========================================================
+   HIGH CONTRAST
+========================================================== */
+
+@media (prefers-contrast:more){
+
+    .visitor-pass-qr,
+
+    .visitor-pass-token{
+
+        border-width:2px;
+
+    }
+
+    .visitor-pass-token__value{
+
+        border-width:2px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+    .visitor-pass-qr__image{
+
+        animation:none;
+
+    }
+
+}
+
+
+/* ==========================================================
+   PRINT
+========================================================== */
+
+@media print{
+
+    .visitor-pass-result{
+
+        margin:0;
+
+    }
+
+    .visitor-pass-qr,
+
+    .visitor-pass-token{
+
+        box-shadow:none;
+
+        break-inside:avoid;
+
+    }
+
+}
+
+/* ==========================================================
+   HABITACONTROL
+   VISITOR PASS
+   PARTE 7
+   OPTIMIZACIONES FINALES
+========================================================== */
+
+
+/* ==========================================================
+   1. PANTALLAS GRANDES
+========================================================== */
+
+@media (min-width: 1400px) {
+
+    .visitor-pass__shell{
+
+        max-width:1360px;
+
+    }
+
+    .visitor-pass-result__body{
+
+        grid-template-columns:
+
+            400px
+            minmax(0,1fr);
+
+    }
+
+}
+
+
+/* ==========================================================
+   2. ULTRAWIDE
+========================================================== */
+
+@media (min-width:1800px){
+
+    .visitor-pass{
+
+        padding:3rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   3. LANDSCAPE MOVILES
+========================================================== */
+
+@media (max-height:600px) and (orientation:landscape){
+
+    .visitor-pass{
+
+        padding:1rem;
+
+    }
+
+    .visitor-pass__header{
+
+        padding:
+
+            1.25rem
+            1.5rem
+            0;
+
+    }
+
+    .visitor-pass-result__body{
+
+        align-items:center;
+
+    }
+
+}
+
+
+/* ==========================================================
+   4. SAFE AREA IOS
+========================================================== */
+
+@supports(padding:max(0px)){
+
+    .visitor-pass{
+
+        padding-left:
+
+            max(2rem,env(safe-area-inset-left));
+
+        padding-right:
+
+            max(2rem,env(safe-area-inset-right));
+
+        padding-bottom:
+
+            max(2rem,env(safe-area-inset-bottom));
+
+    }
+
+}
+
+
+/* ==========================================================
+   5. SCROLLBAR
+========================================================== */
+
+.visitor-pass *{
+
+    scrollbar-width:thin;
+
+    scrollbar-color:
+
+        rgba(37,99,235,.35)
+
+        transparent;
+
+}
+
+.visitor-pass *::-webkit-scrollbar{
+
+    width:.55rem;
+    height:.55rem;
+
+}
+
+.visitor-pass *::-webkit-scrollbar-thumb{
+
+    background:
+
+        rgba(37,99,235,.30);
+
+    border-radius:
+
+        var(--visitor-radius-pill);
+
+}
+
+.visitor-pass *::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+
+
+/* ==========================================================
+   6. SELECCION DE TEXTO
+========================================================== */
+
+.visitor-pass ::selection{
+
+    color:#ffffff;
+
+    background:
+
+        rgba(37,99,235,.82);
+
+}
+
+
+/* ==========================================================
+   7. IMAGENES
+========================================================== */
+
+.visitor-pass img{
+
+    max-width:100%;
+
+    display:block;
+
+}
+
+
+/* ==========================================================
+   8. SVG
+========================================================== */
+
+.visitor-pass svg{
+
+    flex-shrink:0;
+
+}
+
+
+/* ==========================================================
+   9. BOTONES
+========================================================== */
+
+.visitor-pass button{
+
+    -webkit-tap-highlight-color:transparent;
+
+}
+
+
+/* ==========================================================
+   10. INPUTS
+========================================================== */
+
+.visitor-pass input{
+
+    font:inherit;
+
+}
+
+
+/* ==========================================================
+   11. LINKS
+========================================================== */
+
+.visitor-pass a{
+
+    color:inherit;
+
+    text-decoration:none;
+
+}
+
+
+/* ==========================================================
+   12. MEJORA RENDER
+========================================================== */
+
+.visitor-pass,
+.visitor-pass *{
+
+    -webkit-font-smoothing:antialiased;
+
+    -moz-osx-font-smoothing:grayscale;
+
+}
+
+
+/* ==========================================================
+   13. CONTENCION
+========================================================== */
+
+.visitor-pass__shell{
+
+    contain:layout style;
+
+}
+
+
+/* ==========================================================
+   14. OPTIMIZACION QR
+========================================================== */
+
+.visitor-pass-qr__image{
+
+    image-rendering:auto;
+
+}
+
+
+/* ==========================================================
+   15. FOCUS GLOBAL
+========================================================== */
+
+.visitor-pass :focus-visible{
+
+    scroll-margin-top:2rem;
+
+}
+
+
+/* ==========================================================
+   16. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast:more){
+
+    .visitor-pass{
+
+        --visitor-border:#475569;
+
+    }
+
+}
+
+
+/* ==========================================================
+   17. REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        scroll-behavior:auto;
+
+    }
+
+}
+
+
+/* ==========================================================
+   18. IMPRESION
+========================================================== */
+
+@media print{
+
+    .visitor-pass{
+
+        padding:0;
+
+        background:#ffffff;
+
+    }
+
+    .visitor-pass__shell{
+
+        max-width:none;
+
+        border:none;
+
+        border-radius:0;
+
+        box-shadow:none;
+
+    }
+
+}
+
+
+/* ==========================================================
+   19. CELULARES MUY PEQUEÑOS
+========================================================== */
+
+@media (max-width:320px){
+
+    .visitor-pass{
+
+        padding:.75rem;
+
+    }
+
+    .visitor-pass__header{
+
+        padding:
+
+            1rem
+            1rem
+            0;
+
+    }
+
+    .visitor-pass__title{
+
+        font-size:1.45rem;
+
+    }
+
+}
+
+
+/* ==========================================================
+   20. ANIMACIONES GLOBALES
+========================================================== */
+
+@keyframes visitor-fade-up{
+
+    from{
+
+        opacity:0;
+
+        transform:
+
+            translateY(12px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+
+            translateY(0);
+
+    }
+
+}
+
+.visitor-pass__header,
+.visitor-pass__feedback,
+.visitor-pass__form,
+.visitor-pass-result{
+
+    animation:
+
+        visitor-fade-up
+
+        .45s
+
+        cubic-bezier(.22,1,.36,1);
+
+}
+
+
+/* ==========================================================
+   21. CAPAS
+========================================================== */
+
+.visitor-pass__header,
+.visitor-pass__feedback,
+.visitor-pass__form,
+.visitor-pass-result{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+/* ==========================================================
+   22. FINAL
+========================================================== */
+
+/*
+    HabitaControl
+
+    Visitor Invitation Component
+
+    CSS modular dividido en siete partes.
+
+    ✔ Layout adaptable
+    ✔ Accesibilidad
+    ✔ Responsive
+    ✔ Impresión
+    ✔ Alto contraste
+    ✔ Reduced Motion
+    ✔ Scrollbars
+    ✔ Safe Area
+    ✔ Estados visuales completos
+    ✔ Optimización para Desktop y Mobile
+*/

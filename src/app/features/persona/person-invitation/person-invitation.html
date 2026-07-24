@@ -1,0 +1,496 @@
+<div
+  class="person-invitation-overlay"
+  role="presentation"
+  (click)="cancel()">
+
+  <section
+    class="person-invitation-card"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="person-invitation-title"
+    (click)="$event.stopPropagation()">
+
+    <header class="person-invitation-header">
+      <div class="person-invitation-heading">
+        <span class="person-invitation-eyebrow">
+          Gestión de personas
+        </span>
+
+        <h2
+          id="person-invitation-title"
+          class="person-invitation-title">
+          Enviar invitación
+        </h2>
+
+        <p class="person-invitation-subtitle">
+          Invita una persona de forma individual o registra varios correos en un solo proceso.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="person-invitation-close-button"
+        aria-label="Cerrar formulario de invitación"
+        [disabled]="loading"
+        (click)="cancel()">
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+
+    <nav
+      class="person-invitation-mode-selector"
+      aria-label="Tipo de invitación">
+
+      <button
+        type="button"
+        class="person-invitation-mode-button"
+        [class.person-invitation-mode-button-active]="invitationMode === 'single'"
+        [attr.aria-selected]="invitationMode === 'single'"
+        [disabled]="loading"
+        (click)="changeMode('single')">
+
+        <span class="person-invitation-mode-icon" aria-hidden="true">
+          👤
+        </span>
+
+        <span class="person-invitation-mode-content">
+          <strong>Individual</strong>
+          <small>Invitar un solo correo</small>
+        </span>
+      </button>
+
+      <button
+        type="button"
+        class="person-invitation-mode-button"
+        [class.person-invitation-mode-button-active]="invitationMode === 'mass'"
+        [attr.aria-selected]="invitationMode === 'mass'"
+        [disabled]="loading"
+        (click)="changeMode('mass')">
+
+        <span class="person-invitation-mode-icon" aria-hidden="true">
+          👥
+        </span>
+
+        <span class="person-invitation-mode-content">
+          <strong>Masiva</strong>
+          <small>Invitar varios correos</small>
+        </span>
+      </button>
+
+    </nav>
+
+    <div class="person-invitation-content">
+
+      @if (errorMessage) {
+        <div
+          class="person-invitation-alert person-invitation-alert-error"
+          role="alert">
+
+          <div class="person-invitation-alert-content">
+            <strong>No fue posible completar el proceso</strong>
+            <span>{{ errorMessage }}</span>
+          </div>
+
+          <button
+            type="button"
+            class="person-invitation-alert-close"
+            aria-label="Cerrar mensaje de error"
+            (click)="clearMessages()">
+            ×
+          </button>
+        </div>
+      }
+
+      @if (successMessage) {
+        <div
+          class="person-invitation-alert person-invitation-alert-success"
+          role="status">
+
+          <div class="person-invitation-alert-content">
+            <strong>Proceso completado</strong>
+            <span>{{ successMessage }}</span>
+          </div>
+
+          <button
+            type="button"
+            class="person-invitation-alert-close"
+            aria-label="Cerrar mensaje de éxito"
+            (click)="clearMessages()">
+            ×
+          </button>
+        </div>
+      }
+
+      @if (invitationMode === 'single') {
+        <form
+          class="person-invitation-form"
+          #singleInvitationForm="ngForm"
+          (ngSubmit)="sendInvitation()"
+          novalidate>
+
+          <section class="person-invitation-form-section">
+            <div class="person-invitation-section-heading">
+              <span class="person-invitation-section-eyebrow">
+                Invitación individual
+              </span>
+
+              <h3 class="person-invitation-section-title">
+                Datos de la persona
+              </h3>
+
+              <p class="person-invitation-section-description">
+                Ingresa el correo y selecciona el tipo de acceso que tendrá la persona.
+              </p>
+            </div>
+
+            <div class="person-invitation-field">
+              <label
+                class="person-invitation-label"
+                for="single-email">
+                Correo electrónico
+                <span aria-hidden="true">*</span>
+              </label>
+
+              <div class="person-invitation-input-wrapper">
+                <span
+                  class="person-invitation-input-icon"
+                  aria-hidden="true">
+                  @
+                </span>
+
+                <input
+                  id="single-email"
+                  class="person-invitation-control person-invitation-control-with-icon"
+                  type="email"
+                  name="email"
+                  #emailControl="ngModel"
+                  [(ngModel)]="email"
+                  placeholder="correo@ejemplo.com"
+                  autocomplete="email"
+                  maxlength="254"
+                  [disabled]="loading"
+                  required
+                  email>
+
+                @if (email && !loading) {
+                  <button
+                    type="button"
+                    class="person-invitation-clear-control"
+                    aria-label="Limpiar correo electrónico"
+                    (click)="clearSingleEmail()">
+                    ×
+                  </button>
+                }
+              </div>
+
+              <small class="person-invitation-field-help">
+                La persona recibirá un enlace para completar su registro.
+              </small>
+
+              @if (
+                emailControl.invalid &&
+                (emailControl.dirty || emailControl.touched)
+              ) {
+                <div
+                  class="person-invitation-field-error"
+                  role="alert">
+
+                  @if (emailControl.errors?.['required']) {
+                    Debes ingresar un correo electrónico.
+                  } @else if (emailControl.errors?.['email']) {
+                    El formato del correo electrónico no es válido.
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="person-invitation-field">
+              <label
+                class="person-invitation-label"
+                for="single-person-type">
+                Tipo de persona
+                <span aria-hidden="true">*</span>
+              </label>
+
+              <select
+                id="single-person-type"
+                class="person-invitation-control person-invitation-select"
+                name="personType"
+                [(ngModel)]="personType"
+                [disabled]="loading"
+                required>
+
+                @for (option of personTypes; track option.value) {
+                  <option [ngValue]="option.value">
+                    {{ option.label }}
+                  </option>
+                }
+
+              </select>
+
+              <div class="person-invitation-type-description">
+                @for (option of personTypes; track option.value) {
+                  @if (option.value === personType) {
+                    <strong>{{ option.label }}</strong>
+                    <span>{{ option.description }}</span>
+                  }
+                }
+              </div>
+            </div>
+          </section>
+
+          <footer class="person-invitation-actions">
+            <button
+              type="button"
+              class="person-invitation-button person-invitation-button-secondary"
+              [disabled]="loading"
+              (click)="cancel()">
+              Cancelar
+            </button>
+
+            <button
+              type="submit"
+              class="person-invitation-button person-invitation-button-primary"
+              [disabled]="
+                loading ||
+                singleInvitationForm.invalid ||
+                !canSendSingleInvitation
+              ">
+
+              @if (loading) {
+                <span
+                  class="person-invitation-button-spinner"
+                  aria-hidden="true">
+                </span>
+
+                Enviando invitación...
+              } @else {
+                Enviar invitación
+              }
+            </button>
+          </footer>
+
+        </form>
+      }
+
+      @if (invitationMode === 'mass') {
+        <form
+          class="person-invitation-form"
+          #massInvitationForm="ngForm"
+          (ngSubmit)="sendMassInvitations()"
+          novalidate>
+
+          <section class="person-invitation-form-section">
+            <div class="person-invitation-section-heading">
+              <span class="person-invitation-section-eyebrow">
+                Invitación masiva
+              </span>
+
+              <h3 class="person-invitation-section-title">
+                Lista de correos
+              </h3>
+
+              <p class="person-invitation-section-description">
+                Puedes separar los correos con comas, punto y coma, espacios o saltos de línea.
+              </p>
+            </div>
+
+            <div class="person-invitation-field">
+              <div class="person-invitation-label-row">
+                <label
+                  class="person-invitation-label"
+                  for="mass-emails">
+                  Correos electrónicos
+                  <span aria-hidden="true">*</span>
+                </label>
+
+                <span
+                  class="person-invitation-email-counter"
+                  [class.person-invitation-email-counter-active]="parsedEmailsCount > 0">
+
+                  {{ parsedEmailsCount }}
+
+                  {{
+                    parsedEmailsCount === 1
+                      ? 'correo detectado'
+                      : 'correos detectados'
+                  }}
+                </span>
+              </div>
+
+              <textarea
+                id="mass-emails"
+                class="person-invitation-control person-invitation-textarea"
+                name="massEmails"
+                #massEmailsControl="ngModel"
+                [(ngModel)]="massEmails"
+                rows="9"
+                maxlength="10000"
+                placeholder="persona1@correo.com&#10;persona2@correo.com&#10;persona3@correo.com"
+                [disabled]="loading"
+                required>
+              </textarea>
+
+              <div class="person-invitation-textarea-footer">
+                <small class="person-invitation-field-help">
+                  Los correos repetidos se enviarán una sola vez.
+                </small>
+
+                @if (massEmails) {
+                  <button
+                    type="button"
+                    class="person-invitation-text-button"
+                    [disabled]="loading"
+                    (click)="clearMassEmails()">
+                    Limpiar lista
+                  </button>
+                }
+              </div>
+
+              @if (
+                massEmailsControl.invalid &&
+                (massEmailsControl.dirty || massEmailsControl.touched)
+              ) {
+                <div
+                  class="person-invitation-field-error"
+                  role="alert">
+                  Debes ingresar al menos un correo electrónico.
+                </div>
+              }
+            </div>
+
+            <div class="person-invitation-field">
+              <label
+                class="person-invitation-label"
+                for="mass-person-type">
+                Tipo de persona
+                <span aria-hidden="true">*</span>
+              </label>
+
+              <select
+                id="mass-person-type"
+                class="person-invitation-control person-invitation-select"
+                name="massPersonType"
+                [(ngModel)]="personType"
+                [disabled]="loading"
+                required>
+
+                @for (option of personTypes; track option.value) {
+                  <option [ngValue]="option.value">
+                    {{ option.label }}
+                  </option>
+                }
+
+              </select>
+
+              <div class="person-invitation-type-description">
+                <strong>{{ selectedPersonTypeLabel }}</strong>
+
+                @for (option of personTypes; track option.value) {
+                  @if (option.value === personType) {
+                    <span>{{ option.description }}</span>
+                  }
+                }
+              </div>
+            </div>
+          </section>
+
+          @if (massResult) {
+            <section
+              class="person-invitation-result"
+              aria-labelledby="mass-result-title">
+
+              <div class="person-invitation-result-header">
+                <div>
+                  <span class="person-invitation-section-eyebrow">
+                    Resultado del proceso
+                  </span>
+
+                  <h3
+                    id="mass-result-title"
+                    class="person-invitation-section-title">
+                    Resumen de invitaciones
+                  </h3>
+                </div>
+              </div>
+
+              <div class="person-invitation-result-grid">
+                <article class="person-invitation-result-card">
+                  <span>Total procesadas</span>
+                  <strong>{{ massResult.totalProcessed }}</strong>
+                </article>
+
+                <article class="person-invitation-result-card person-invitation-result-card-success">
+                  <span>Creadas</span>
+                  <strong>{{ massResult.totalCreated }}</strong>
+                </article>
+
+                <article class="person-invitation-result-card person-invitation-result-card-error">
+                  <span>Fallidas</span>
+                  <strong>{{ massResult.totalFailed }}</strong>
+                </article>
+              </div>
+
+              @if (massResult.failed.length > 0) {
+                <div class="person-invitation-failed-list">
+                  <h4>
+                    Invitaciones no creadas
+                  </h4>
+
+                  @for (
+                    failedInvitation of massResult.failed;
+                    track failedInvitation.email
+                  ) {
+                    <article class="person-invitation-failed-item">
+                      <strong>{{ failedInvitation.email }}</strong>
+                      <span>{{ failedInvitation.reason }}</span>
+                    </article>
+                  }
+                </div>
+              }
+            </section>
+          }
+
+          <footer class="person-invitation-actions">
+            <button
+              type="button"
+              class="person-invitation-button person-invitation-button-secondary"
+              [disabled]="loading"
+              (click)="cancel()">
+              Cancelar
+            </button>
+
+            <button
+              type="submit"
+              class="person-invitation-button person-invitation-button-primary"
+              [disabled]="
+                loading ||
+                massInvitationForm.invalid ||
+                !canSendMassInvitations
+              ">
+
+              @if (loading) {
+                <span
+                  class="person-invitation-button-spinner"
+                  aria-hidden="true">
+                </span>
+
+                Procesando invitaciones...
+              } @else {
+                Enviar {{ parsedEmailsCount || '' }}
+                {{
+                  parsedEmailsCount === 1
+                    ? 'invitación'
+                    : 'invitaciones'
+                }}
+              }
+            </button>
+          </footer>
+
+        </form>
+      }
+
+    </div>
+
+  </section>
+</div>

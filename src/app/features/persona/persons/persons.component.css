@@ -1,0 +1,5041 @@
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE PERSONAS
+   PARTE 1: BASE, ENCABEZADO, BOTONES Y ALERTA
+========================================================== */
+
+
+/* ==========================================================
+   1. VARIABLES INTERNAS DEL COMPONENTE
+========================================================== */
+
+:host {
+  /* Colores de marca */
+
+  --people-navy-950: #020617;
+  --people-navy-900: #0f172a;
+  --people-navy-800: #1e293b;
+  --people-navy-700: #334155;
+
+  --people-primary-700: #1d4ed8;
+  --people-primary-600: #2563eb;
+  --people-primary-500: #3b82f6;
+  --people-primary-200: #bfdbfe;
+  --people-primary-100: #dbeafe;
+  --people-primary-50: #eff6ff;
+
+  /* Estados */
+
+  --people-success-700: #15803d;
+  --people-success-600: #16a34a;
+  --people-success-200: #bbf7d0;
+  --people-success-100: #dcfce7;
+  --people-success-50: #f0fdf4;
+
+  --people-warning-800: #92400e;
+  --people-warning-700: #b45309;
+  --people-warning-500: #f59e0b;
+  --people-warning-200: #fde68a;
+  --people-warning-100: #fef3c7;
+  --people-warning-50: #fffbeb;
+
+  --people-danger-800: #991b1b;
+  --people-danger-700: #b91c1c;
+  --people-danger-600: #dc2626;
+  --people-danger-200: #fecaca;
+  --people-danger-100: #fee2e2;
+  --people-danger-50: #fef2f2;
+
+  --people-info-700: #0369a1;
+  --people-info-600: #0284c7;
+  --people-info-200: #bae6fd;
+  --people-info-100: #e0f2fe;
+  --people-info-50: #f0f9ff;
+
+  /* Superficies */
+
+  --people-surface: #ffffff;
+  --people-surface-soft: #f8fafc;
+  --people-surface-muted: #f1f5f9;
+  --people-page-background: #f8fafc;
+
+  /* Bordes */
+
+  --people-border-light: #e2e8f0;
+  --people-border: #cbd5e1;
+  --people-border-dark: #94a3b8;
+
+  /* Textos */
+
+  --people-text-primary: #111827;
+  --people-text-secondary: #475569;
+  --people-text-muted: #64748b;
+  --people-text-soft: #94a3b8;
+  --people-text-white: #ffffff;
+
+  /* Sombras */
+
+  --people-shadow-xs:
+    0 0.0625rem 0.125rem rgba(15, 23, 42, 0.04);
+
+  --people-shadow-sm:
+    0 0.25rem 0.75rem rgba(15, 23, 42, 0.06);
+
+  --people-shadow-md:
+    0 0.75rem 2rem rgba(15, 23, 42, 0.08);
+
+  --people-shadow-lg:
+    0 1.25rem 3rem rgba(15, 23, 42, 0.12);
+
+  --people-shadow-primary:
+    0 0.75rem 1.5rem rgba(37, 99, 235, 0.22);
+
+  --people-shadow-danger:
+    0 0.75rem 1.5rem rgba(220, 38, 38, 0.14);
+
+  /* Radios */
+
+  --people-radius-xs: 0.375rem;
+  --people-radius-sm: 0.5rem;
+  --people-radius-md: 0.75rem;
+  --people-radius-lg: 1rem;
+  --people-radius-xl: 1.25rem;
+  --people-radius-2xl: 1.5rem;
+  --people-radius-pill: 999px;
+
+  /* Espaciados */
+
+  --people-space-2: 0.125rem;
+  --people-space-4: 0.25rem;
+  --people-space-6: 0.375rem;
+  --people-space-8: 0.5rem;
+  --people-space-10: 0.625rem;
+  --people-space-12: 0.75rem;
+  --people-space-16: 1rem;
+  --people-space-20: 1.25rem;
+  --people-space-24: 1.5rem;
+  --people-space-28: 1.75rem;
+  --people-space-32: 2rem;
+  --people-space-40: 2.5rem;
+  --people-space-48: 3rem;
+
+  /* Transiciones */
+
+  --people-transition-fast: 150ms ease;
+  --people-transition-normal: 240ms ease;
+  --people-transition-slow: 360ms ease;
+
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   2. RESET INTERNO DEL COMPONENTE
+========================================================== */
+
+:host *,
+:host *::before,
+:host *::after {
+  box-sizing: border-box;
+}
+
+:host button,
+:host input,
+:host select {
+  font: inherit;
+}
+
+:host button {
+  border: 0;
+}
+
+:host h2,
+:host h3,
+:host p {
+  margin: 0;
+}
+
+:host button,
+:host select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ==========================================================
+   3. CONTENEDOR PRINCIPAL
+========================================================== */
+
+.people-management {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--people-space-24);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--people-space-24);
+
+  color: var(--people-text-primary);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.94),
+      var(--people-page-background)
+    );
+
+  isolation: isolate;
+}
+
+
+/* Decoración ambiental de fondo */
+
+.people-management::before {
+  position: absolute;
+  top: 2rem;
+  right: 3rem;
+  z-index: -1;
+
+  width: 18rem;
+  height: 18rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.055),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* Prevención general de desbordamiento */
+
+.people-management > * {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   4. ENCABEZADO PRINCIPAL
+========================================================== */
+
+.people-management__header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--people-space-24);
+
+  min-width: 0;
+  min-height: 10rem;
+
+  padding:
+    var(--people-space-28)
+    var(--people-space-32);
+
+  color: var(--people-text-white);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--people-navy-950) 0%,
+      var(--people-navy-900) 48%,
+      #172554 100%
+    );
+
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: var(--people-radius-2xl);
+
+  box-shadow:
+    0 1.25rem 3rem rgba(15, 23, 42, 0.18);
+
+  overflow: hidden;
+}
+
+
+/* Línea superior de identidad */
+
+.people-management__header::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 0.25rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--people-primary-600),
+      #38bdf8,
+      var(--people-success-600)
+    );
+}
+
+
+/* Círculo decorativo */
+
+.people-management__header::after {
+  position: absolute;
+  top: 50%;
+  right: -5rem;
+
+  width: 16rem;
+  height: 16rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(59, 130, 246, 0.2),
+      rgba(59, 130, 246, 0.04) 48%,
+      transparent 70%
+    );
+
+  border: 1px solid rgba(147, 197, 253, 0.08);
+  border-radius: 50%;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   5. BLOQUE DE TÍTULO
+========================================================== */
+
+.people-heading {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  max-width: 45rem;
+}
+
+.people-heading__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--people-space-8);
+
+  width: fit-content;
+
+  color: #93c5fd;
+
+  font-size: 0.6875rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.people-heading__eyebrow::before {
+  width: 1.75rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--people-primary-500),
+      #7dd3fc
+    );
+
+  border-radius: var(--people-radius-pill);
+}
+
+.people-heading__title {
+  margin-top: var(--people-space-10);
+
+  color: var(--people-text-white);
+
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.people-heading__description {
+  max-width: 40rem;
+
+  margin-top: var(--people-space-12);
+
+  color: #cbd5e1;
+
+  font-size: 0.9375rem;
+  font-weight: 450;
+  line-height: 1.65;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   6. ACCIONES DEL ENCABEZADO
+========================================================== */
+
+.people-management__actions {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--people-space-12);
+
+  flex: 0 0 auto;
+}
+
+
+/* ==========================================================
+   7. BOTÓN BASE
+========================================================== */
+
+.people-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--people-space-8);
+
+  min-height: 2.875rem;
+
+  padding:
+    var(--people-space-10)
+    var(--people-space-16);
+
+  font-size: 0.8125rem;
+  font-weight: 720;
+  line-height: 1.2;
+
+  border: 1px solid transparent;
+  border-radius: var(--people-radius-md);
+
+  cursor: pointer;
+
+  user-select: none;
+
+  transition:
+    color var(--people-transition-fast),
+    background-color var(--people-transition-fast),
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+.people-button__icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  min-width: 1rem;
+
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.people-button__label {
+  white-space: nowrap;
+}
+
+
+/* Interacción base */
+
+.people-button:hover:not(:disabled) {
+  transform: translateY(-0.0625rem);
+}
+
+.people-button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.people-button:focus-visible {
+  outline: 0.1875rem solid rgba(96, 165, 250, 0.32);
+  outline-offset: 0.1875rem;
+}
+
+.people-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.52;
+
+  transform: none;
+}
+
+
+/* ==========================================================
+   8. BOTÓN PRIMARIO
+========================================================== */
+
+.people-button--primary {
+  color: var(--people-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-500),
+      var(--people-primary-700)
+    );
+
+  border-color: rgba(147, 197, 253, 0.24);
+
+  box-shadow:
+    var(--people-shadow-primary),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.people-button--primary:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      145deg,
+      #60a5fa,
+      var(--people-primary-700)
+    );
+
+  border-color: rgba(191, 219, 254, 0.42);
+
+  box-shadow:
+    0 1rem 2rem rgba(37, 99, 235, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+
+/* ==========================================================
+   9. BOTÓN SECUNDARIO
+========================================================== */
+
+.people-button--secondary {
+  color: #e2e8f0;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border-color: rgba(226, 232, 240, 0.18);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.people-button--secondary:hover:not(:disabled) {
+  color: var(--people-text-white);
+
+  background: rgba(255, 255, 255, 0.14);
+
+  border-color: rgba(226, 232, 240, 0.3);
+
+  box-shadow:
+    0 0.625rem 1.25rem rgba(2, 6, 23, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+
+/* Giro del icono al actualizar */
+
+.people-button--secondary:not(:disabled):active
+.people-button__icon {
+  animation:
+    people-refresh-spin
+    600ms
+    ease;
+}
+
+@keyframes people-refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ==========================================================
+   10. ALERTA GENERAL
+========================================================== */
+
+.people-alert {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--people-space-20);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--people-space-16)
+    var(--people-space-20);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--people-danger-50),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border: 1px solid var(--people-danger-200);
+  border-left: 0.25rem solid var(--people-danger-600);
+  border-radius: var(--people-radius-lg);
+
+  box-shadow: var(--people-shadow-danger);
+
+  overflow: hidden;
+}
+
+
+/* Decoración de la alerta */
+
+.people-alert::before {
+  position: absolute;
+  top: -3rem;
+  right: 4rem;
+
+  width: 8rem;
+  height: 8rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(220, 38, 38, 0.09),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   11. CONTENIDO DE LA ALERTA
+========================================================== */
+
+.people-alert__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  gap: var(--people-space-12);
+
+  min-width: 0;
+}
+
+.people-alert__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 2.75rem;
+  height: 2.75rem;
+
+  color: var(--people-danger-800);
+
+  font-size: 1.125rem;
+  font-weight: 850;
+  line-height: 1;
+
+  background: rgba(255, 255, 255, 0.76);
+
+  border: 1px solid rgba(220, 38, 38, 0.14);
+  border-radius: var(--people-radius-md);
+
+  box-shadow: var(--people-shadow-xs);
+}
+
+.people-alert__message {
+  display: flex;
+  flex-direction: column;
+  gap: var(--people-space-4);
+
+  min-width: 0;
+}
+
+.people-alert__title {
+  color: var(--people-danger-800);
+
+  font-size: 0.9375rem;
+  font-weight: 760;
+  line-height: 1.35;
+}
+
+.people-alert__description {
+  color: var(--people-text-secondary);
+
+  font-size: 0.8125rem;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   12. ACCIÓN DE LA ALERTA
+========================================================== */
+
+.people-alert__action {
+  position: relative;
+  z-index: 1;
+
+  flex: 0 0 auto;
+
+  min-height: 2.75rem;
+
+  padding:
+    var(--people-space-8)
+    var(--people-space-16);
+
+  color: var(--people-text-white);
+
+  font-size: 0.8125rem;
+  font-weight: 720;
+  line-height: 1.2;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-danger-600),
+      var(--people-danger-800)
+    );
+
+  border: 1px solid rgba(153, 27, 27, 0.22);
+  border-radius: var(--people-radius-md);
+
+  box-shadow:
+    0 0.5rem 1.25rem rgba(220, 38, 38, 0.2);
+
+  cursor: pointer;
+
+  transition:
+    background-color var(--people-transition-fast),
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+.people-alert__action:hover {
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-danger-700),
+      #7f1d1d
+    );
+
+  box-shadow:
+    0 0.75rem 1.5rem rgba(220, 38, 38, 0.26);
+
+  transform: translateY(-0.0625rem);
+}
+
+.people-alert__action:active {
+  transform: scale(0.97);
+}
+
+.people-alert__action:focus-visible {
+  outline: 0.1875rem solid rgba(220, 38, 38, 0.25);
+  outline-offset: 0.1875rem;
+}
+
+
+/* ==========================================================
+   13. AJUSTES GENERALES DE ACCESIBILIDAD
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .people-button,
+  .people-alert__action {
+    transition: none;
+  }
+
+  .people-button:hover,
+  .people-button:active,
+  .people-alert__action:hover,
+  .people-alert__action:active {
+    transform: none;
+  }
+
+  .people-button--secondary:not(:disabled):active
+  .people-button__icon {
+    animation: none;
+  }
+}
+
+
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE PERSONAS
+   PARTE 2: RESUMEN, CARGA Y ESTADO VACÍO
+========================================================== */
+
+
+/* ==========================================================
+   1. CUADRÍCULA DEL RESUMEN
+========================================================== */
+
+.people-summary {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: var(--people-space-16);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   2. TARJETA BASE DEL RESUMEN
+========================================================== */
+
+.people-summary-card {
+  --summary-color: var(--people-primary-600);
+  --summary-color-dark: var(--people-primary-700);
+  --summary-background: var(--people-primary-50);
+  --summary-background-strong: var(--people-primary-100);
+  --summary-border: var(--people-primary-200);
+  --summary-glow: rgba(37, 99, 235, 0.11);
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: var(--people-space-16);
+
+  min-width: 0;
+  min-height: 8.5rem;
+
+  padding:
+    var(--people-space-20);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-surface) 0%,
+      rgba(248, 250, 252, 0.96) 100%
+    );
+
+  border: 1px solid var(--people-border-light);
+  border-radius: var(--people-radius-xl);
+
+  box-shadow:
+    0 0.5rem 1.5rem rgba(15, 23, 42, 0.06);
+
+  overflow: hidden;
+
+  transition:
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+
+/* Barra lateral de identidad */
+
+.people-summary-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 0.25rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--summary-color),
+      var(--summary-color-dark)
+    );
+}
+
+
+/* Iluminación ambiental */
+
+.people-summary-card::after {
+  position: absolute;
+  top: -3.5rem;
+  right: -3.5rem;
+
+  width: 9rem;
+  height: 9rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      var(--summary-glow),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* Interacción */
+
+.people-summary-card:hover {
+  border-color: var(--summary-border);
+
+  box-shadow:
+    0 1rem 2.25rem var(--summary-glow),
+    0 0.25rem 0.75rem rgba(15, 23, 42, 0.045);
+
+  transform: translateY(-0.1875rem);
+}
+
+
+/* ==========================================================
+   3. ICONO DE LA TARJETA
+========================================================== */
+
+.people-summary-card__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 3.75rem;
+  height: 3.75rem;
+
+  color: var(--summary-color-dark);
+
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--summary-background),
+      rgba(255, 255, 255, 0.88)
+    );
+
+  border: 1px solid var(--summary-border);
+  border-radius: var(--people-radius-lg);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 0.375rem 0.875rem rgba(15, 23, 42, 0.045);
+
+  transition:
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+.people-summary-card:hover
+.people-summary-card__icon {
+  border-color: var(--summary-color);
+
+  box-shadow:
+    0 0.625rem 1.25rem var(--summary-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  transform:
+    translateY(-0.0625rem)
+    scale(1.045);
+}
+
+
+/* ==========================================================
+   4. CONTENIDO DE LA TARJETA
+========================================================== */
+
+.people-summary-card__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.people-summary-card__label {
+  color: var(--people-text-secondary);
+
+  font-size: 0.75rem;
+  font-weight: 720;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
+.people-summary-card__value {
+  margin-top: var(--people-space-4);
+
+  color: var(--people-text-primary);
+
+  font-size: clamp(1.875rem, 3vw, 2.5rem);
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: -0.045em;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.people-summary-card__description {
+  margin-top: var(--people-space-8);
+
+  color: var(--people-text-muted);
+
+  font-size: 0.71875rem;
+  font-weight: 500;
+  line-height: 1.45;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   5. VARIANTE TOTAL
+========================================================== */
+
+.people-summary-card--total {
+  --summary-color: var(--people-primary-600);
+  --summary-color-dark: var(--people-primary-700);
+  --summary-background: var(--people-primary-50);
+  --summary-background-strong: var(--people-primary-100);
+  --summary-border: var(--people-primary-200);
+  --summary-glow: rgba(37, 99, 235, 0.11);
+}
+
+
+/* ==========================================================
+   6. VARIANTE ACTIVAS
+========================================================== */
+
+.people-summary-card--active {
+  --summary-color: var(--people-success-600);
+  --summary-color-dark: var(--people-success-700);
+  --summary-background: var(--people-success-50);
+  --summary-background-strong: var(--people-success-100);
+  --summary-border: var(--people-success-200);
+  --summary-glow: rgba(22, 163, 74, 0.11);
+}
+
+.people-summary-card--active
+.people-summary-card__value {
+  color: var(--people-success-700);
+}
+
+
+/* ==========================================================
+   7. VARIANTE SUSPENDIDAS
+========================================================== */
+
+.people-summary-card--inactive {
+  --summary-color: var(--people-warning-500);
+  --summary-color-dark: var(--people-warning-800);
+  --summary-background: var(--people-warning-50);
+  --summary-background-strong: var(--people-warning-100);
+  --summary-border: var(--people-warning-200);
+  --summary-glow: rgba(245, 158, 11, 0.12);
+}
+
+.people-summary-card--inactive
+.people-summary-card__value {
+  color: var(--people-warning-800);
+}
+
+
+/* ==========================================================
+   8. VARIANTE ATENCIÓN
+========================================================== */
+
+.people-summary-card--attention {
+  --summary-color: var(--people-danger-600);
+  --summary-color-dark: var(--people-danger-800);
+  --summary-background: var(--people-danger-50);
+  --summary-background-strong: var(--people-danger-100);
+  --summary-border: var(--people-danger-200);
+  --summary-glow: rgba(220, 38, 38, 0.11);
+}
+
+.people-summary-card--attention
+.people-summary-card__value {
+  color: var(--people-danger-800);
+}
+
+
+/* ==========================================================
+   9. ESTADO GENERAL DE CARGA
+========================================================== */
+
+.people-loading-state {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--people-space-20);
+
+  width: 100%;
+  min-width: 0;
+  min-height: 18rem;
+
+  padding:
+    var(--people-space-40)
+    var(--people-space-24);
+
+  text-align: left;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-surface),
+      rgba(248, 250, 252, 0.96)
+    );
+
+  border: 1px solid var(--people-border-light);
+  border-radius: var(--people-radius-2xl);
+
+  box-shadow: var(--people-shadow-md);
+
+  overflow: hidden;
+}
+
+
+/* Línea superior */
+
+.people-loading-state::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--people-primary-600),
+      var(--people-info-600),
+      var(--people-primary-600)
+    );
+
+  background-size: 200% 100%;
+
+  animation:
+    people-loading-line
+    1.4s
+    linear
+    infinite;
+}
+
+
+/* Iluminación decorativa */
+
+.people-loading-state::after {
+  position: absolute;
+  top: -4rem;
+  right: -4rem;
+
+  width: 12rem;
+  height: 12rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.08),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   10. INDICADOR DE CARGA
+========================================================== */
+
+.people-loading-state__indicator {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--people-space-6);
+  flex: 0 0 auto;
+
+  width: 4.5rem;
+  height: 4.5rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-50),
+      var(--people-surface)
+    );
+
+  border: 1px solid var(--people-primary-200);
+  border-radius: var(--people-radius-xl);
+
+  box-shadow:
+    0 0.75rem 1.75rem rgba(37, 99, 235, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+
+/* Puntos animados */
+
+.people-loading-state__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+
+  background: var(--people-primary-600);
+  border-radius: 50%;
+
+  animation:
+    people-loading-dot
+    1.1s
+    ease-in-out
+    infinite;
+}
+
+.people-loading-state__dot:nth-child(2) {
+  animation-delay: 140ms;
+}
+
+.people-loading-state__dot:nth-child(3) {
+  animation-delay: 280ms;
+}
+
+
+/* ==========================================================
+   11. TEXTO DEL ESTADO DE CARGA
+========================================================== */
+
+.people-loading-state__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--people-space-6);
+
+  max-width: 28rem;
+  min-width: 0;
+}
+
+.people-loading-state__title {
+  color: var(--people-text-primary);
+
+  font-size: 1.125rem;
+  font-weight: 780;
+  line-height: 1.3;
+}
+
+.people-loading-state__description {
+  color: var(--people-text-muted);
+
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+
+/* ==========================================================
+   12. ANIMACIONES DE CARGA
+========================================================== */
+
+@keyframes people-loading-line {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+@keyframes people-loading-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+
+    transform: translateY(-0.375rem);
+  }
+}
+
+
+/* ==========================================================
+   13. ESTADO VACÍO
+========================================================== */
+
+.people-empty-state {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--people-space-20);
+
+  width: 100%;
+  min-width: 0;
+  min-height: 25rem;
+
+  padding:
+    var(--people-space-48)
+    var(--people-space-24);
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-surface),
+      rgba(248, 250, 252, 0.98)
+    );
+
+  border: 1px solid var(--people-border-light);
+  border-radius: var(--people-radius-2xl);
+
+  box-shadow: var(--people-shadow-md);
+
+  overflow: hidden;
+}
+
+
+/* Línea superior */
+
+.people-empty-state::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--people-primary-600),
+      var(--people-info-600),
+      var(--people-success-600)
+    );
+}
+
+
+/* Decoración del fondo */
+
+.people-empty-state::after {
+  position: absolute;
+  top: -6rem;
+  left: 50%;
+
+  width: 20rem;
+  height: 20rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.06),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  transform: translateX(-50%);
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   14. ICONO DEL ESTADO VACÍO
+========================================================== */
+
+.people-empty-state__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  width: 5.5rem;
+  height: 5.5rem;
+
+  color: var(--people-primary-700);
+
+  font-size: 2rem;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-50),
+      var(--people-surface)
+    );
+
+  border: 1px solid var(--people-primary-200);
+  border-radius: var(--people-radius-2xl);
+
+  box-shadow:
+    0 1rem 2rem rgba(37, 99, 235, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+
+  transform: rotate(-2deg);
+
+  transition:
+    box-shadow var(--people-transition-normal),
+    transform var(--people-transition-normal);
+}
+
+.people-empty-state:hover
+.people-empty-state__icon {
+  box-shadow:
+    0 1.25rem 2.5rem rgba(37, 99, 235, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  transform:
+    rotate(0)
+    translateY(-0.125rem);
+}
+
+
+/* ==========================================================
+   15. CONTENIDO DEL ESTADO VACÍO
+========================================================== */
+
+.people-empty-state__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  max-width: 32rem;
+  min-width: 0;
+}
+
+.people-empty-state__eyebrow {
+  color: var(--people-primary-700);
+
+  font-size: 0.6875rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.people-empty-state__title {
+  margin-top: var(--people-space-10);
+
+  color: var(--people-text-primary);
+
+  font-size: clamp(1.375rem, 3vw, 1.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+
+  text-wrap: balance;
+}
+
+.people-empty-state__description {
+  max-width: 27rem;
+
+  margin-top: var(--people-space-10);
+
+  color: var(--people-text-muted);
+
+  font-size: 0.875rem;
+  line-height: 1.65;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   16. BOTÓN DENTRO DEL ESTADO VACÍO
+========================================================== */
+
+.people-empty-state > .people-button {
+  position: relative;
+  z-index: 1;
+
+  min-height: 3rem;
+
+  padding:
+    var(--people-space-10)
+    var(--people-space-20);
+}
+
+
+/* ==========================================================
+   17. AJUSTE PARA PANTALLAS INTERMEDIAS
+========================================================== */
+
+@media (max-width: 1120px) {
+  .people-summary {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* ==========================================================
+   18. AJUSTE PARA TABLET
+========================================================== */
+
+@media (max-width: 760px) {
+  .people-summary-card {
+    min-height: 7.75rem;
+
+    padding:
+      var(--people-space-16);
+  }
+
+  .people-summary-card__icon {
+    width: 3.25rem;
+    height: 3.25rem;
+
+    font-size: 1.125rem;
+  }
+
+  .people-loading-state {
+    flex-direction: column;
+
+    min-height: 20rem;
+
+    text-align: center;
+  }
+
+  .people-loading-state__content {
+    align-items: center;
+  }
+}
+
+
+/* ==========================================================
+   19. AJUSTE PARA CELULAR
+========================================================== */
+
+@media (max-width: 560px) {
+  .people-summary {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap: var(--people-space-12);
+  }
+
+  .people-summary-card {
+    min-height: 7rem;
+  }
+
+  .people-summary-card__value {
+    font-size: 2rem;
+  }
+
+  .people-loading-state,
+  .people-empty-state {
+    padding:
+      var(--people-space-32)
+      var(--people-space-16);
+
+    border-radius: var(--people-radius-xl);
+  }
+
+  .people-empty-state {
+    min-height: 22rem;
+  }
+
+  .people-empty-state__icon {
+    width: 4.75rem;
+    height: 4.75rem;
+
+    font-size: 1.625rem;
+  }
+
+  .people-empty-state > .people-button {
+    width: 100%;
+    max-width: 20rem;
+  }
+}
+
+
+/* ==========================================================
+   20. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .people-summary-card:hover,
+  .people-summary-card:hover
+  .people-summary-card__icon,
+  .people-empty-state:hover
+  .people-empty-state__icon {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   21. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .people-summary-card,
+  .people-summary-card__icon,
+  .people-empty-state__icon {
+    transition: none;
+  }
+
+  .people-summary-card:hover,
+  .people-summary-card:hover
+  .people-summary-card__icon,
+  .people-empty-state:hover
+  .people-empty-state__icon {
+    transform: none;
+  }
+
+  .people-loading-state::before,
+  .people-loading-state__dot {
+    animation: none;
+  }
+
+  .people-loading-state__dot {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE PERSONAS
+   PARTE 3: DIRECTORIO, BÚSQUEDA, AUTOCOMPLETADO Y FILTROS
+========================================================== */
+
+
+/* ==========================================================
+   1. CONTENEDOR PRINCIPAL DEL DIRECTORIO
+========================================================== */
+
+.people-directory {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-surface) 0%,
+      rgba(248, 250, 252, 0.96) 100%
+    );
+
+  border: 1px solid var(--people-border-light);
+  border-radius: var(--people-radius-2xl);
+
+  box-shadow:
+    var(--people-shadow-md);
+
+  overflow: hidden;
+}
+
+
+/* Línea superior de identidad */
+
+.people-directory::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--people-primary-600),
+      var(--people-info-600),
+      var(--people-success-600)
+    );
+}
+
+
+/* Decoración ambiental */
+
+.people-directory::after {
+  position: absolute;
+  top: -5rem;
+  right: -4rem;
+  z-index: 0;
+
+  width: 14rem;
+  height: 14rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.055),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.people-directory > * {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   2. BARRA DE HERRAMIENTAS
+========================================================== */
+
+.people-directory__toolbar {
+  position: relative;
+  z-index: 4;
+
+  display: grid;
+  grid-template-columns:
+    minmax(18rem, 1fr)
+    minmax(10rem, 0.32fr)
+    minmax(12rem, 0.38fr);
+
+  align-items: end;
+  gap: var(--people-space-16);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--people-space-24);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.96),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border-bottom: 1px solid var(--people-border-light);
+}
+
+
+/* Línea interna inferior */
+
+.people-directory__toolbar::after {
+  position: absolute;
+  left: var(--people-space-24);
+  right: var(--people-space-24);
+  bottom: 0;
+
+  height: 1px;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(148, 163, 184, 0.42),
+      transparent
+    );
+}
+
+
+/* ==========================================================
+   3. ETIQUETAS DE CAMPOS
+========================================================== */
+
+.people-field-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--people-space-6);
+
+  width: fit-content;
+
+  margin-bottom: var(--people-space-8);
+
+  color: var(--people-text-secondary);
+
+  font-size: 0.71875rem;
+  font-weight: 760;
+  line-height: 1.3;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.people-field-label::before {
+  width: 0.375rem;
+  height: 0.375rem;
+
+  content: "";
+
+  background: var(--people-primary-500);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(59, 130, 246, 0.1);
+}
+
+
+/* ==========================================================
+   4. CONTENEDOR DE BÚSQUEDA
+========================================================== */
+
+.people-search {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.people-search__control {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   5. ENVOLTURA DEL INPUT
+========================================================== */
+
+.people-search__input-container {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 3rem;
+
+  background: var(--people-surface);
+
+  border: 1px solid var(--people-border);
+  border-radius: var(--people-radius-md);
+
+  box-shadow:
+    inset 0 1px 2px rgba(15, 23, 42, 0.035),
+    0 0.125rem 0.375rem rgba(15, 23, 42, 0.025);
+
+  overflow: hidden;
+
+  transition:
+    background-color var(--people-transition-fast),
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast);
+}
+
+.people-search__input-container:hover {
+  border-color: var(--people-border-dark);
+
+  box-shadow:
+    inset 0 1px 2px rgba(15, 23, 42, 0.035),
+    0 0.25rem 0.625rem rgba(15, 23, 42, 0.045);
+}
+
+.people-search__input-container:focus-within {
+  background: var(--people-surface);
+
+  border-color: var(--people-primary-500);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(59, 130, 246, 0.13),
+    0 0.5rem 1.25rem rgba(37, 99, 235, 0.08);
+}
+
+
+/* ==========================================================
+   6. ICONO DE BÚSQUEDA
+========================================================== */
+
+.people-search__icon {
+  position: absolute;
+  top: 50%;
+  left: var(--people-space-16);
+
+  display: grid;
+  place-items: center;
+
+  width: 1.25rem;
+  height: 1.25rem;
+
+  color: var(--people-text-soft);
+
+  font-size: 1.1rem;
+  line-height: 1;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+
+  transition:
+    color var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+.people-search__input-container:focus-within
+.people-search__icon {
+  color: var(--people-primary-600);
+
+  transform:
+    translateY(-50%)
+    scale(1.05);
+}
+
+
+/* ==========================================================
+   7. INPUT DE BÚSQUEDA
+========================================================== */
+
+.people-search__input {
+  width: 100%;
+  min-width: 0;
+  min-height: 3rem;
+
+  padding:
+    var(--people-space-10)
+    7rem
+    var(--people-space-10)
+    3rem;
+
+  color: var(--people-text-primary);
+
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+
+  background: transparent;
+
+  border: 0;
+  outline: 0;
+}
+
+.people-search__input::placeholder {
+  color: var(--people-text-soft);
+
+  font-weight: 450;
+
+  opacity: 1;
+}
+
+.people-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+
+/* ==========================================================
+   8. BOTÓN LIMPIAR
+========================================================== */
+
+.people-search__clear {
+  position: absolute;
+  top: 50%;
+  right: var(--people-space-8);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--people-space-6);
+
+  min-height: 2rem;
+
+  padding:
+    var(--people-space-4)
+    var(--people-space-10);
+
+  color: var(--people-text-secondary);
+
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+
+  background: var(--people-surface-muted);
+
+  border: 1px solid var(--people-border-light);
+  border-radius: var(--people-radius-sm);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+
+  transition:
+    color var(--people-transition-fast),
+    background-color var(--people-transition-fast),
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+.people-search__clear:hover {
+  color: var(--people-danger-700);
+
+  background: var(--people-danger-50);
+
+  border-color: var(--people-danger-200);
+
+  box-shadow:
+    0 0.375rem 0.75rem rgba(220, 38, 38, 0.08);
+
+  transform:
+    translateY(-50%)
+    translateY(-0.0625rem);
+}
+
+.people-search__clear:active {
+  transform:
+    translateY(-50%)
+    scale(0.96);
+}
+
+.people-search__clear:focus-visible {
+  outline: 0.1875rem solid rgba(59, 130, 246, 0.2);
+  outline-offset: 0.125rem;
+}
+
+.people-search__clear > span:first-child {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+
+/* ==========================================================
+   9. PANEL DE AUTOCOMPLETADO
+========================================================== */
+
+.people-autocomplete {
+  position: absolute;
+  top: calc(100% + var(--people-space-8));
+  left: 0;
+  right: 0;
+  z-index: 20;
+
+  display: flex;
+  flex-direction: column;
+
+  max-height: 20rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--people-surface),
+      rgba(248, 250, 252, 0.98)
+    );
+
+  border: 1px solid var(--people-border-light);
+  border-radius: var(--people-radius-lg);
+
+  box-shadow:
+    0 1.5rem 3rem rgba(15, 23, 42, 0.16),
+    0 0.5rem 1.25rem rgba(15, 23, 42, 0.08);
+
+  overflow: hidden;
+
+  transform-origin: top center;
+
+  animation:
+    people-autocomplete-enter
+    180ms
+    ease-out;
+}
+
+
+/* Punta visual del panel */
+
+.people-autocomplete::before {
+  position: absolute;
+  top: -0.375rem;
+  left: 2rem;
+
+  width: 0.75rem;
+  height: 0.75rem;
+
+  content: "";
+
+  background: var(--people-surface);
+
+  border-top: 1px solid var(--people-border-light);
+  border-left: 1px solid var(--people-border-light);
+
+  transform: rotate(45deg);
+}
+
+
+/* ==========================================================
+   10. ENCABEZADO DEL AUTOCOMPLETADO
+========================================================== */
+
+.people-autocomplete__header {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 2.75rem;
+
+  padding:
+    var(--people-space-8)
+    var(--people-space-16);
+
+  color: var(--people-text-muted);
+
+  font-size: 0.6875rem;
+  font-weight: 760;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--people-surface-soft),
+      var(--people-surface)
+    );
+
+  border-bottom: 1px solid var(--people-border-light);
+}
+
+.people-autocomplete__header::after {
+  width: 1.5rem;
+  height: 0.125rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--people-primary-600),
+      var(--people-info-600)
+    );
+
+  border-radius: var(--people-radius-pill);
+}
+
+
+/* ==========================================================
+   11. LISTA DE AUTOCOMPLETADO
+========================================================== */
+
+.people-autocomplete__list {
+  display: flex;
+  flex-direction: column;
+
+  max-height: 16.5rem;
+
+  padding:
+    var(--people-space-8);
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--people-border)
+    transparent;
+}
+
+.people-autocomplete__list::-webkit-scrollbar {
+  width: 0.375rem;
+}
+
+.people-autocomplete__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.people-autocomplete__list::-webkit-scrollbar-thumb {
+  background: var(--people-border);
+
+  border-radius: var(--people-radius-pill);
+}
+
+
+/* ==========================================================
+   12. OPCIÓN DE AUTOCOMPLETADO
+========================================================== */
+
+.people-autocomplete__option {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+  gap: var(--people-space-12);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--people-space-10)
+    var(--people-space-12);
+
+  text-align: left;
+
+  background: transparent;
+
+  border: 1px solid transparent;
+  border-radius: var(--people-radius-md);
+
+  cursor: pointer;
+
+  transition:
+    background-color var(--people-transition-fast),
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+.people-autocomplete__option + .people-autocomplete__option {
+  margin-top: var(--people-space-4);
+}
+
+.people-autocomplete__option:hover {
+  background:
+    linear-gradient(
+      90deg,
+      var(--people-primary-50),
+      rgba(255, 255, 255, 0.96)
+    );
+
+  border-color: var(--people-primary-200);
+
+  box-shadow:
+    0 0.375rem 0.875rem rgba(37, 99, 235, 0.06);
+
+  transform: translateX(0.125rem);
+}
+
+.people-autocomplete__option:focus-visible {
+  outline: 0.1875rem solid rgba(59, 130, 246, 0.18);
+  outline-offset: 0.0625rem;
+
+  background: var(--people-primary-50);
+}
+
+
+/* ==========================================================
+   13. AVATAR DEL AUTOCOMPLETADO
+========================================================== */
+
+.people-autocomplete__avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 2.5rem;
+  height: 2.5rem;
+
+  color: var(--people-primary-700);
+
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-100),
+      var(--people-primary-50)
+    );
+
+  border: 1px solid var(--people-primary-200);
+  border-radius: var(--people-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+
+/* ==========================================================
+   14. INFORMACIÓN DE AUTOCOMPLETADO
+========================================================== */
+
+.people-autocomplete__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--people-space-4);
+
+  min-width: 0;
+}
+
+.people-autocomplete__name {
+  color: var(--people-text-primary);
+
+  font-size: 0.8125rem;
+  font-weight: 720;
+  line-height: 1.35;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.people-autocomplete__metadata {
+  color: var(--people-text-muted);
+
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.people-autocomplete__arrow {
+  color: var(--people-text-soft);
+
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1;
+
+  transition:
+    color var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+.people-autocomplete__option:hover
+.people-autocomplete__arrow {
+  color: var(--people-primary-600);
+
+  transform: translateX(0.125rem);
+}
+
+
+/* ==========================================================
+   15. ANIMACIÓN DEL AUTOCOMPLETADO
+========================================================== */
+
+@keyframes people-autocomplete-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-0.375rem)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* ==========================================================
+   16. CONTENEDOR DE FILTRO
+========================================================== */
+
+.people-filter {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.people-filter__control {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   17. SELECT DE FILTRO
+========================================================== */
+
+.people-filter__select {
+  width: 100%;
+  min-width: 0;
+  min-height: 3rem;
+
+  padding:
+    var(--people-space-10)
+    2.75rem
+    var(--people-space-10)
+    var(--people-space-12);
+
+  color: var(--people-text-primary);
+
+  font-size: 0.8125rem;
+  font-weight: 560;
+  line-height: 1.4;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--people-surface),
+      rgba(248, 250, 252, 0.68)
+    );
+
+  border: 1px solid var(--people-border);
+  border-radius: var(--people-radius-md);
+
+  box-shadow:
+    inset 0 1px 2px rgba(15, 23, 42, 0.025),
+    0 0.125rem 0.375rem rgba(15, 23, 42, 0.02);
+
+  outline: 0;
+
+  appearance: none;
+
+  cursor: pointer;
+
+  transition:
+    background-color var(--people-transition-fast),
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast);
+}
+
+.people-filter__select:hover {
+  border-color: var(--people-border-dark);
+
+  box-shadow:
+    inset 0 1px 2px rgba(15, 23, 42, 0.025),
+    0 0.25rem 0.625rem rgba(15, 23, 42, 0.04);
+}
+
+.people-filter__select:focus {
+  background: var(--people-surface);
+
+  border-color: var(--people-primary-500);
+
+  box-shadow:
+    0 0 0 0.1875rem rgba(59, 130, 246, 0.13),
+    0 0.5rem 1.25rem rgba(37, 99, 235, 0.07);
+}
+
+.people-filter__select option {
+  color: var(--people-text-primary);
+
+  background: var(--people-surface);
+}
+
+
+/* ==========================================================
+   18. FLECHA DEL FILTRO
+========================================================== */
+
+.people-filter__arrow {
+  position: absolute;
+  top: 50%;
+  right: var(--people-space-12);
+
+  display: grid;
+  place-items: center;
+
+  width: 1.25rem;
+  height: 1.25rem;
+
+  color: var(--people-text-muted);
+
+  font-size: 0.875rem;
+  line-height: 1;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+
+  transition:
+    color var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+.people-filter__control:focus-within
+.people-filter__arrow {
+  color: var(--people-primary-600);
+
+  transform:
+    translateY(-50%)
+    rotate(180deg);
+}
+
+
+/* ==========================================================
+   19. ENCABEZADO DEL DIRECTORIO
+========================================================== */
+
+.people-directory__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--people-space-20);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--people-space-20)
+    var(--people-space-24);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--people-surface),
+      rgba(248, 250, 252, 0.72)
+    );
+
+  border-bottom: 1px solid var(--people-border-light);
+}
+
+
+/* ==========================================================
+   20. TÍTULO DEL DIRECTORIO
+========================================================== */
+
+.people-directory__heading {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.people-directory__eyebrow {
+  color: var(--people-primary-700);
+
+  font-size: 0.65625rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.people-directory__title {
+  margin-top: var(--people-space-6);
+
+  color: var(--people-text-primary);
+
+  font-size: 1.125rem;
+  font-weight: 780;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.people-directory__description {
+  margin-top: var(--people-space-4);
+
+  color: var(--people-text-muted);
+
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+
+/* ==========================================================
+   21. CONTADOR DE RESULTADOS
+========================================================== */
+
+.people-directory__result {
+  display: flex;
+  align-items: center;
+  gap: var(--people-space-10);
+  flex: 0 0 auto;
+
+  min-height: 2.75rem;
+
+  padding:
+    var(--people-space-8)
+    var(--people-space-12);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-50),
+      rgba(255, 255, 255, 0.96)
+    );
+
+  border: 1px solid var(--people-primary-200);
+  border-radius: var(--people-radius-md);
+
+  box-shadow:
+    0 0.375rem 0.875rem rgba(37, 99, 235, 0.06);
+}
+
+.people-directory__result-label {
+  color: var(--people-text-muted);
+
+  font-size: 0.6875rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.people-directory__result-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 2rem;
+  height: 2rem;
+
+  padding:
+    0
+    var(--people-space-8);
+
+  color: var(--people-text-white);
+
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-500),
+      var(--people-primary-700)
+    );
+
+  border-radius: var(--people-radius-pill);
+
+  box-shadow:
+    0 0.375rem 0.75rem rgba(37, 99, 235, 0.2);
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================================
+   22. PANTALLAS INTERMEDIAS
+========================================================== */
+
+@media (max-width: 1080px) {
+  .people-directory__toolbar {
+    grid-template-columns:
+      minmax(0, 1fr)
+      repeat(
+        2,
+        minmax(10rem, 0.38fr)
+      );
+  }
+}
+
+
+/* ==========================================================
+   23. TABLET
+========================================================== */
+
+@media (max-width: 860px) {
+  .people-directory__toolbar {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .people-search {
+    grid-column: 1 / -1;
+  }
+
+  .people-autocomplete {
+    max-height: 18rem;
+  }
+}
+
+
+/* ==========================================================
+   24. CELULAR
+========================================================== */
+
+@media (max-width: 620px) {
+  .people-directory {
+    border-radius: var(--people-radius-xl);
+  }
+
+  .people-directory__toolbar {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap: var(--people-space-12);
+
+    padding:
+      var(--people-space-16);
+  }
+
+  .people-directory__toolbar::after {
+    left: var(--people-space-16);
+    right: var(--people-space-16);
+  }
+
+  .people-search {
+    grid-column: auto;
+  }
+
+  .people-search__input {
+    padding-right: 3rem;
+  }
+
+  .people-search__clear {
+    width: 2rem;
+
+    padding: 0;
+  }
+
+  .people-search__clear-label {
+    display: none;
+  }
+
+  .people-directory__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--people-space-12);
+
+    padding:
+      var(--people-space-16);
+  }
+
+  .people-directory__result {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .people-autocomplete__metadata {
+    white-space: normal;
+  }
+}
+
+
+/* ==========================================================
+   25. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 420px) {
+  .people-directory__toolbar {
+    padding:
+      var(--people-space-12);
+  }
+
+  .people-directory__toolbar::after {
+    left: var(--people-space-12);
+    right: var(--people-space-12);
+  }
+
+  .people-field-label {
+    font-size: 0.65625rem;
+  }
+
+  .people-search__input,
+  .people-filter__select {
+    font-size: 0.75rem;
+  }
+
+  .people-autocomplete {
+    left: -0.25rem;
+    right: -0.25rem;
+  }
+
+  .people-autocomplete__option {
+    gap: var(--people-space-8);
+
+    padding:
+      var(--people-space-8);
+  }
+
+  .people-autocomplete__avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .people-directory__header {
+    padding:
+      var(--people-space-12);
+  }
+}
+
+
+/* ==========================================================
+   26. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .people-search__clear:hover,
+  .people-autocomplete__option:hover {
+    transform: none;
+  }
+
+  .people-search__clear,
+  .people-autocomplete__option,
+  .people-filter__select {
+    min-height: 2.75rem;
+  }
+}
+
+
+/* ==========================================================
+   27. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .people-search__input-container,
+  .people-search__icon,
+  .people-search__clear,
+  .people-autocomplete__option,
+  .people-autocomplete__arrow,
+  .people-filter__select,
+  .people-filter__arrow {
+    transition: none;
+  }
+
+  .people-autocomplete {
+    animation: none;
+  }
+
+  .people-search__clear:hover,
+  .people-search__clear:active,
+  .people-autocomplete__option:hover {
+    transform: none;
+  }
+
+  .people-filter__control:focus-within
+  .people-filter__arrow {
+    transform: translateY(-50%);
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE PERSONAS
+   PARTE 4: TABLA, IDENTIDAD, ESTADOS Y ACCIONES
+========================================================== */
+
+
+/* ==========================================================
+   1. CONTENEDOR GENERAL DE LA TABLA
+========================================================== */
+
+.people-table-container {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--people-surface),
+      rgba(248, 250, 252, 0.72)
+    );
+
+  overflow: hidden;
+}
+
+
+/* Sombra lateral izquierda */
+
+.people-table-container::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 4;
+
+  width: 1rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(15, 23, 42, 0.035),
+      transparent
+    );
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+
+/* Sombra lateral derecha */
+
+.people-table-container::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+
+  width: 1rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      270deg,
+      rgba(15, 23, 42, 0.045),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   2. DESPLAZAMIENTO HORIZONTAL
+========================================================== */
+
+.people-table-scroll {
+  width: 100%;
+  min-width: 0;
+
+  overflow-x: auto;
+  overflow-y: visible;
+
+  overscroll-behavior-inline: contain;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--people-border)
+    var(--people-surface-muted);
+}
+
+.people-table-scroll::-webkit-scrollbar {
+  height: 0.625rem;
+}
+
+.people-table-scroll::-webkit-scrollbar-track {
+  background: var(--people-surface-muted);
+
+  border-top: 1px solid var(--people-border-light);
+}
+
+.people-table-scroll::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      90deg,
+      var(--people-border),
+      var(--people-border-dark)
+    );
+
+  border: 0.125rem solid var(--people-surface-muted);
+  border-radius: var(--people-radius-pill);
+}
+
+.people-table-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--people-border-dark);
+}
+
+
+/* ==========================================================
+   3. TABLA BASE
+========================================================== */
+
+.people-table {
+  width: 100%;
+  min-width: 78rem;
+
+  color: var(--people-text-primary);
+
+  font-size: 0.8125rem;
+
+  background: transparent;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  table-layout: fixed;
+}
+
+
+/* Anchos reales de las columnas */
+
+.people-table__heading:nth-child(1),
+.people-table__cell:nth-child(1) {
+  width: 20%;
+  min-width: 17rem;
+}
+
+.people-table__heading:nth-child(2),
+.people-table__cell:nth-child(2) {
+  width: 8%;
+  min-width: 6rem;
+}
+
+.people-table__heading:nth-child(3),
+.people-table__cell:nth-child(3) {
+  width: 11%;
+  min-width: 8.5rem;
+}
+
+.people-table__heading:nth-child(4),
+.people-table__cell:nth-child(4) {
+  width: 11%;
+  min-width: 8.5rem;
+}
+
+.people-table__heading:nth-child(5),
+.people-table__cell:nth-child(5) {
+  width: 13%;
+  min-width: 9.5rem;
+}
+
+.people-table__heading:nth-child(6),
+.people-table__cell:nth-child(6) {
+  width: 12%;
+  min-width: 8.5rem;
+}
+
+.people-table__heading:nth-child(7),
+.people-table__cell:nth-child(7) {
+  width: 25%;
+  min-width: 16rem;
+}
+
+/* ==========================================================
+   4. ENCABEZADO DE LA TABLA
+========================================================== */
+
+.people-table__head {
+  position: relative;
+  z-index: 2;
+}
+
+.people-table__row--header {
+  background:
+    linear-gradient(
+      180deg,
+      var(--people-surface-muted),
+      rgba(248, 250, 252, 0.8)
+    );
+}
+
+.people-table__heading {
+  position: relative;
+
+  padding:
+    var(--people-space-12)
+    var(--people-space-16);
+
+  color: var(--people-text-secondary);
+
+  font-size: 0.6875rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--people-surface-muted),
+      rgba(248, 250, 252, 0.8)
+    );
+
+  border-bottom: 1px solid var(--people-border);
+}
+
+.people-table__heading::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+
+  width: 1px;
+  height: 1.25rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      var(--people-border),
+      transparent
+    );
+
+  transform: translateY(-50%);
+}
+
+.people-table__heading:last-child::after {
+  display: none;
+}
+
+.people-table__heading--actions {
+  text-align: right;
+}
+
+
+/* ==========================================================
+   5. CUERPO DE LA TABLA
+========================================================== */
+
+.people-table__body {
+  position: relative;
+}
+
+.people-table__row--data {
+  position: relative;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  transition:
+    background-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast),
+    opacity var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+
+/* Separación entre filas */
+
+.people-table__row--data:not(:last-child)
+.people-table__cell {
+  border-bottom: 1px solid var(--people-border-light);
+}
+
+
+/* Hover de la fila */
+
+.people-table__row--data:hover {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(239, 246, 255, 0.74),
+      rgba(255, 255, 255, 0.98) 48%,
+      rgba(248, 250, 252, 0.94)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(191, 219, 254, 0.4),
+    inset 0 -1px 0 rgba(191, 219, 254, 0.4);
+}
+
+/* ==========================================================
+   3. TABLA BASE
+========================================================== */
+
+.people-table {
+  width: 100%;
+  min-width: 78rem;
+
+  color: var(--people-text-primary);
+
+  font-size: 0.8125rem;
+
+  background: transparent;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  table-layout: fixed;
+}
+
+
+/* Anchos reales de las columnas */
+
+.people-table__heading:nth-child(1),
+.people-table__cell:nth-child(1) {
+  width: 20%;
+  min-width: 17rem;
+}
+
+.people-table__heading:nth-child(2),
+.people-table__cell:nth-child(2) {
+  width: 8%;
+  min-width: 6rem;
+}
+
+.people-table__heading:nth-child(3),
+.people-table__cell:nth-child(3) {
+  width: 11%;
+  min-width: 8.5rem;
+}
+
+.people-table__heading:nth-child(4),
+.people-table__cell:nth-child(4) {
+  width: 11%;
+  min-width: 8.5rem;
+}
+
+.people-table__heading:nth-child(5),
+.people-table__cell:nth-child(5) {
+  width: 13%;
+  min-width: 9.5rem;
+}
+
+.people-table__heading:nth-child(6),
+.people-table__cell:nth-child(6) {
+  width: 12%;
+  min-width: 8.5rem;
+}
+
+.people-table__heading:nth-child(7),
+.people-table__cell:nth-child(7) {
+  width: 25%;
+  min-width: 16rem;
+}
+
+
+/* ==========================================================
+   6. CELDAS
+========================================================== */
+
+.people-table__cell {
+  position: relative;
+
+  padding:
+    var(--people-space-14, 0.875rem)
+    var(--people-space-16);
+
+  color: var(--people-text-secondary);
+
+  font-size: 0.78125rem;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  vertical-align: middle;
+
+  overflow-wrap: anywhere;
+}
+
+.people-table__cell--actions {
+  padding-right: var(--people-space-20);
+
+  text-align: right;
+}
+
+/* Texto de datos simple */
+
+.person-data {
+  display: inline-block;
+
+  max-width: 100%;
+
+  color: var(--people-text-secondary);
+
+  font-size: 0.78125rem;
+  font-weight: 520;
+  line-height: 1.45;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   7. FILA DE PERSONA INACTIVA
+========================================================== */
+
+.people-table__row--inactive {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(254, 249, 195, 0.24),
+      rgba(255, 255, 255, 0.94)
+    );
+}
+
+.people-table__row--inactive::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--people-warning-500),
+      var(--people-warning-800)
+    );
+}
+
+.people-table__row--inactive
+.person-identity__avatar {
+  color: var(--people-warning-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-warning-100),
+      var(--people-warning-50)
+    );
+
+  border-color: var(--people-warning-200);
+}
+
+.people-table__row--inactive
+.person-identity__name {
+  color: var(--people-text-secondary);
+}
+
+.people-table__row--inactive
+.person-identity__email,
+.people-table__row--inactive
+.person-data,
+.people-table__row--inactive
+.person-location__text {
+  color: var(--people-text-muted);
+}
+
+
+/* ==========================================================
+   8. IDENTIDAD DE LA PERSONA
+========================================================== */
+
+.person-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--people-space-12);
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   9. AVATAR DE LA PERSONA
+========================================================== */
+
+.person-identity__avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 2.875rem;
+  height: 2.875rem;
+
+  color: var(--people-primary-700);
+
+  font-size: 0.9375rem;
+  font-weight: 820;
+  line-height: 1;
+  text-transform: uppercase;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-100),
+      var(--people-primary-50)
+    );
+
+  border: 1px solid var(--people-primary-200);
+  border-radius: var(--people-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 0.25rem 0.625rem rgba(37, 99, 235, 0.07);
+
+  transition:
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+.people-table__row--data:hover
+.person-identity__avatar {
+  border-color: var(--people-primary-500);
+
+  box-shadow:
+    0 0.5rem 1rem rgba(37, 99, 235, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+
+  transform: translateY(-0.0625rem);
+}
+
+
+/* ==========================================================
+   10. NOMBRE Y CORREO
+========================================================== */
+
+.person-identity__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--people-space-4);
+
+  min-width: 0;
+}
+
+.person-identity__name {
+  max-width: 14rem;
+
+  color: var(--people-text-primary);
+
+  font-size: 0.8125rem;
+  font-weight: 730;
+  line-height: 1.35;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.person-identity__email {
+  display: block;
+
+  max-width: 14rem;
+
+  color: var(--people-text-muted);
+
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* ==========================================================
+   11. BADGE DE TIPO DE PERSONA
+========================================================== */
+
+.person-type-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 1.875rem;
+
+  padding:
+    var(--people-space-4)
+    var(--people-space-10);
+
+  color: var(--people-primary-700);
+
+  font-size: 0.6875rem;
+  font-weight: 720;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-50),
+      rgba(255, 255, 255, 0.92)
+    );
+
+  border: 1px solid var(--people-primary-200);
+  border-radius: var(--people-radius-pill);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+
+/* ==========================================================
+   12. UBICACIÓN
+========================================================== */
+
+.person-location {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--people-space-6);
+
+  min-width: 0;
+}
+
+.person-location__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 1.5rem;
+  height: 1.5rem;
+
+  color: var(--people-info-700);
+
+  font-size: 0.8125rem;
+  line-height: 1;
+
+  background: var(--people-info-50);
+
+  border: 1px solid var(--people-info-200);
+  border-radius: var(--people-radius-sm);
+}
+
+.person-location__text {
+  color: var(--people-text-secondary);
+
+  font-size: 0.75rem;
+  font-weight: 560;
+  line-height: 1.4;
+
+  white-space: nowrap;
+}
+
+.person-location--empty {
+  color: var(--people-text-soft);
+
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+
+/* ==========================================================
+   13. BADGE BASE DE ESTADO
+========================================================== */
+
+.person-status-badge {
+  --status-color: var(--people-text-muted);
+  --status-color-dark: var(--people-text-secondary);
+  --status-background: var(--people-surface-muted);
+  --status-border: var(--people-border);
+  --status-glow: rgba(100, 116, 139, 0.12);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--people-space-6);
+
+  min-height: 1.875rem;
+
+  padding:
+    var(--people-space-4)
+    var(--people-space-10);
+
+  color: var(--status-color-dark);
+
+  font-size: 0.6875rem;
+  font-weight: 720;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--status-background),
+      rgba(255, 255, 255, 0.9)
+    );
+
+  border: 1px solid var(--status-border);
+  border-radius: var(--people-radius-pill);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 0.1875rem 0.5rem var(--status-glow);
+}
+
+
+/* Indicador circular */
+
+.person-status-badge__indicator {
+  flex: 0 0 auto;
+
+  width: 0.4375rem;
+  height: 0.4375rem;
+
+  background: var(--status-color);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.1875rem var(--status-glow);
+}
+
+.person-status-badge__label {
+  line-height: 1.2;
+}
+
+
+/* ==========================================================
+   14. ESTADO ACTIVO
+========================================================== */
+
+.person-status-badge--active {
+  --status-color: var(--people-success-600);
+  --status-color-dark: var(--people-success-700);
+  --status-background: var(--people-success-50);
+  --status-border: var(--people-success-200);
+  --status-glow: rgba(22, 163, 74, 0.12);
+}
+
+
+/* ==========================================================
+   15. ESTADO SUSPENDIDO
+========================================================== */
+
+.person-status-badge--inactive {
+  --status-color: var(--people-warning-500);
+  --status-color-dark: var(--people-warning-800);
+  --status-background: var(--people-warning-50);
+  --status-border: var(--people-warning-200);
+  --status-glow: rgba(245, 158, 11, 0.13);
+}
+
+
+/* ==========================================================
+   16. ESTADO DESACTIVADO PERMANENTEMENTE
+========================================================== */
+
+.person-status-badge--blocked {
+  --status-color: var(--people-danger-600);
+  --status-color-dark: var(--people-danger-800);
+  --status-background: var(--people-danger-50);
+  --status-border: var(--people-danger-200);
+  --status-glow: rgba(220, 38, 38, 0.12);
+}
+
+
+/* ==========================================================
+   17. CONTENEDOR DE ACCIONES
+========================================================== */
+
+.person-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: var(--people-space-8);
+
+  width: 100%;
+  min-width: max-content;
+}
+
+
+/* ==========================================================
+   18. BOTÓN BASE DE ACCIÓN
+========================================================== */
+
+.person-actions__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--people-space-6);
+
+  min-height: 2.125rem;
+
+  padding:
+    var(--people-space-6)
+    var(--people-space-10);
+
+  font-size: 0.6875rem;
+  font-weight: 720;
+  line-height: 1.15;
+  white-space: nowrap;
+
+  border: 1px solid transparent;
+  border-radius: var(--people-radius-sm);
+
+  cursor: pointer;
+
+  transition:
+    color var(--people-transition-fast),
+    background-color var(--people-transition-fast),
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast),
+    opacity var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+.person-actions__button:hover:not(:disabled) {
+  transform: translateY(-0.0625rem);
+}
+
+.person-actions__button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.person-actions__button:focus-visible {
+  outline: 0.1875rem solid rgba(59, 130, 246, 0.18);
+  outline-offset: 0.125rem;
+}
+
+.person-actions__button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.46;
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+
+/* ==========================================================
+   19. ICONO DE ACCIÓN
+========================================================== */
+
+.person-actions__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 1rem;
+  height: 1rem;
+
+  font-size: 0.8125rem;
+  line-height: 1;
+}
+
+.person-actions__label {
+  line-height: 1.15;
+}
+
+
+/* ==========================================================
+   20. BOTÓN VER DETALLE
+========================================================== */
+
+.person-actions__button--detail {
+  color: var(--people-primary-700);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-50),
+      rgba(255, 255, 255, 0.94)
+    );
+
+  border-color: var(--people-primary-200);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.person-actions__button--detail:hover:not(:disabled) {
+  color: var(--people-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-500),
+      var(--people-primary-700)
+    );
+
+  border-color: var(--people-primary-600);
+
+  box-shadow:
+    0 0.5rem 1rem rgba(37, 99, 235, 0.2);
+}
+
+
+/* ==========================================================
+   21. BOTÓN SUSPENDER
+========================================================== */
+
+.person-actions__button--status {
+  color: var(--people-warning-800);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-warning-50),
+      rgba(255, 255, 255, 0.94)
+    );
+
+  border-color: var(--people-warning-200);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.person-actions__button--status:hover:not(:disabled) {
+  color: var(--people-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-warning-500),
+      var(--people-warning-800)
+    );
+
+  border-color: var(--people-warning-700);
+
+  box-shadow:
+    0 0.5rem 1rem rgba(245, 158, 11, 0.22);
+}
+
+
+/* ==========================================================
+   22. BOTÓN ACTIVAR
+========================================================== */
+
+.person-actions__button--activate {
+  color: var(--people-success-700);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-success-50),
+      rgba(255, 255, 255, 0.94)
+    );
+
+  border-color: var(--people-success-200);
+}
+
+.person-actions__button--activate:hover:not(:disabled) {
+  color: var(--people-text-white);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-success-600),
+      var(--people-success-700)
+    );
+
+  border-color: var(--people-success-600);
+
+  box-shadow:
+    0 0.5rem 1rem rgba(22, 163, 74, 0.22);
+}
+
+
+/* ==========================================================
+   23. BOTÓN BLOQUEADO POR DESACTIVACIÓN PERMANENTE
+========================================================== */
+
+.person-actions__button--status:disabled {
+  color: var(--people-text-soft);
+
+  background: var(--people-surface-muted);
+
+  border-color: var(--people-border-light);
+}
+
+
+/* ==========================================================
+   24. PANTALLAS MEDIANAS
+========================================================== */
+
+@media (max-width: 1100px) {
+  .people-table {
+    min-width: 68rem;
+  }
+
+  .people-table__heading,
+  .people-table__cell {
+    padding-right: var(--people-space-12);
+    padding-left: var(--people-space-12);
+  }
+
+  .person-identity__name,
+  .person-identity__email {
+    max-width: 12rem;
+  }
+}
+
+
+/* ==========================================================
+   25. TABLET
+========================================================== */
+
+@media (max-width: 820px) {
+  .people-table {
+    min-width: 64rem;
+  }
+
+  .people-table__heading {
+    font-size: 0.65625rem;
+  }
+
+  .people-table__cell {
+    font-size: 0.75rem;
+  }
+
+  .person-identity__avatar {
+    width: 2.625rem;
+    height: 2.625rem;
+  }
+
+  .person-actions {
+    flex-wrap: nowrap;
+  }
+}
+
+
+/* ==========================================================
+   26. CELULAR
+========================================================== */
+
+@media (max-width: 620px) {
+  .people-table {
+    min-width: 60rem;
+  }
+
+  .people-table__heading {
+    padding:
+      var(--people-space-10)
+      var(--people-space-12);
+  }
+
+  .people-table__cell {
+    padding:
+      var(--people-space-12);
+  }
+
+  .person-identity__avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    font-size: 0.8125rem;
+  }
+
+  .person-identity__name,
+  .person-identity__email {
+    max-width: 10rem;
+  }
+
+  .person-actions__label {
+    display: inline;
+  }
+}
+
+
+/* ==========================================================
+   27. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 420px) {
+  .people-table {
+    min-width: 57rem;
+  }
+
+  .people-table__heading,
+  .people-table__cell {
+    padding-right: var(--people-space-10);
+    padding-left: var(--people-space-10);
+  }
+
+  .person-type-badge,
+  .person-status-badge {
+    font-size: 0.65625rem;
+  }
+
+  .person-actions__button {
+    padding:
+      var(--people-space-6)
+      var(--people-space-8);
+  }
+}
+
+
+/* ==========================================================
+   28. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .people-table__row--data:hover {
+    background: rgba(255, 255, 255, 0.96);
+
+    box-shadow: none;
+  }
+
+  .people-table__row--data:hover::before {
+    opacity: 0;
+
+    transform: scaleY(0.45);
+  }
+
+  .people-table__row--data:hover
+  .person-identity__avatar,
+  .person-actions__button:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .person-actions__button {
+    min-height: 2.5rem;
+  }
+}
+
+
+/* ==========================================================
+   29. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .people-table__heading {
+    color: var(--people-navy-900);
+
+    border-bottom-color: var(--people-border-dark);
+  }
+
+  .people-table__row--data:not(:last-child)
+  .people-table__cell {
+    border-bottom-color: var(--people-border);
+  }
+
+  .person-type-badge,
+  .person-status-badge,
+  .person-actions__button {
+    border-width: 0.125rem;
+  }
+
+  .person-identity__email,
+  .person-data,
+  .person-location--empty {
+    color: var(--people-text-secondary);
+  }
+}
+
+
+/* ==========================================================
+   30. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .people-table__row--data,
+  .people-table__row--data::before,
+  .person-identity__avatar,
+  .person-actions__button {
+    transition: none;
+  }
+
+  .people-table__row--data:hover,
+  .people-table__row--data:hover
+  .person-identity__avatar,
+  .person-actions__button:hover,
+  .person-actions__button:active {
+    transform: none;
+  }
+}
+
+/* ==========================================================
+   HABITACONTROL — GESTIÓN DE PERSONAS
+   PARTE 5: PAGINACIÓN, RESPONSIVE FINAL Y REFINAMIENTOS
+========================================================== */
+
+
+/* ==========================================================
+   1. CONTENEDOR GENERAL DE PAGINACIÓN
+========================================================== */
+
+.people-pagination {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--people-space-20);
+
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    var(--people-space-16)
+    var(--people-space-24);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.82),
+      var(--people-surface)
+    );
+
+  border-top: 1px solid var(--people-border-light);
+}
+
+
+/* Línea decorativa superior */
+
+.people-pagination::before {
+  position: absolute;
+  top: 0;
+  left: var(--people-space-24);
+  right: var(--people-space-24);
+
+  height: 1px;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(148, 163, 184, 0.42),
+      transparent
+    );
+}
+
+
+/* ==========================================================
+   2. RESUMEN DE REGISTROS
+========================================================== */
+
+.people-pagination__summary {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--people-space-6);
+
+  min-width: 0;
+
+  color: var(--people-text-muted);
+
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.people-pagination__summary-label {
+  color: var(--people-text-muted);
+
+  font-weight: 500;
+}
+
+.people-pagination__summary-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 1.75rem;
+
+  padding:
+    var(--people-space-2)
+    var(--people-space-8);
+
+  color: var(--people-primary-700);
+
+  font-size: 0.75rem;
+  font-weight: 760;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-50),
+      rgba(255, 255, 255, 0.94)
+    );
+
+  border: 1px solid var(--people-primary-200);
+  border-radius: var(--people-radius-sm);
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================================
+   3. NAVEGACIÓN DE PAGINACIÓN
+========================================================== */
+
+.people-pagination__navigation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--people-space-10);
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   4. BOTÓN BASE DE PAGINACIÓN
+========================================================== */
+
+.people-pagination__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--people-space-6);
+  flex: 0 0 auto;
+
+  min-width: 6.5rem;
+  min-height: 2.5rem;
+
+  padding:
+    var(--people-space-8)
+    var(--people-space-12);
+
+  color: var(--people-text-secondary);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--people-surface),
+      var(--people-surface-soft)
+    );
+
+  border: 1px solid var(--people-border);
+  border-radius: var(--people-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 0.1875rem 0.5rem rgba(15, 23, 42, 0.035);
+
+  cursor: pointer;
+
+  user-select: none;
+
+  transition:
+    color var(--people-transition-fast),
+    background-color var(--people-transition-fast),
+    border-color var(--people-transition-fast),
+    box-shadow var(--people-transition-fast),
+    opacity var(--people-transition-fast),
+    transform var(--people-transition-fast);
+}
+
+
+/* Flechas */
+
+.people-pagination__button > span[aria-hidden="true"] {
+  display: grid;
+  place-items: center;
+
+  width: 1rem;
+  height: 1rem;
+
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1;
+
+  transition:
+    transform var(--people-transition-fast);
+}
+
+
+/* Hover */
+
+.people-pagination__button:hover:not(:disabled) {
+  color: var(--people-primary-700);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-50),
+      var(--people-surface)
+    );
+
+  border-color: var(--people-primary-300, #93c5fd);
+
+  box-shadow:
+    0 0.5rem 1rem rgba(37, 99, 235, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+
+  transform: translateY(-0.0625rem);
+}
+
+
+/* Movimiento de flecha anterior */
+
+.people-pagination__button:first-child:hover:not(:disabled)
+> span[aria-hidden="true"] {
+  transform: translateX(-0.125rem);
+}
+
+
+/* Movimiento de flecha siguiente */
+
+.people-pagination__button:last-child:hover:not(:disabled)
+> span[aria-hidden="true"] {
+  transform: translateX(0.125rem);
+}
+
+
+/* Active */
+
+.people-pagination__button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+
+/* Focus */
+
+.people-pagination__button:focus-visible {
+  outline: 0.1875rem solid rgba(59, 130, 246, 0.2);
+  outline-offset: 0.125rem;
+}
+
+
+/* ==========================================================
+   5. ESTADO DESHABILITADO
+========================================================== */
+
+.people-pagination__button:disabled {
+  color: var(--people-text-soft);
+
+  background: var(--people-surface-muted);
+
+  border-color: var(--people-border-light);
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+
+  opacity: 0.62;
+
+  transform: none;
+}
+
+.people-pagination__button:disabled
+> span[aria-hidden="true"] {
+  opacity: 0.55;
+}
+
+
+/* ==========================================================
+   6. INDICADOR DE PÁGINA ACTUAL
+========================================================== */
+
+.people-pagination__current {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--people-space-6);
+  flex: 0 0 auto;
+
+  min-height: 2.5rem;
+
+  padding:
+    var(--people-space-6)
+    var(--people-space-12);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-50),
+      rgba(255, 255, 255, 0.96)
+    );
+
+  border: 1px solid var(--people-primary-200);
+  border-radius: var(--people-radius-md);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 0.25rem 0.625rem rgba(37, 99, 235, 0.055);
+}
+
+.people-pagination__current-label {
+  color: var(--people-text-muted);
+
+  font-size: 0.6875rem;
+  font-weight: 560;
+  line-height: 1.2;
+}
+
+.people-pagination__current-value {
+  display: inline-grid;
+  place-items: center;
+
+  min-width: 1.75rem;
+  height: 1.75rem;
+
+  padding:
+    0
+    var(--people-space-6);
+
+  color: var(--people-text-white);
+
+  font-size: 0.6875rem;
+  font-weight: 800;
+  line-height: 1;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--people-primary-500),
+      var(--people-primary-700)
+    );
+
+  border-radius: var(--people-radius-pill);
+
+  box-shadow:
+    0 0.25rem 0.625rem rgba(37, 99, 235, 0.2);
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================================
+   7. AJUSTES DEL ENCABEZADO EN PANTALLAS MEDIANAS
+========================================================== */
+
+@media (max-width: 1000px) {
+  .people-management__header {
+    align-items: flex-start;
+  }
+
+  .people-heading {
+    max-width: 38rem;
+  }
+
+  .people-management__actions {
+    align-self: center;
+  }
+}
+
+
+/* ==========================================================
+   8. TABLET HORIZONTAL
+========================================================== */
+
+@media (max-width: 860px) {
+  .people-management {
+    gap: var(--people-space-20);
+
+    padding:
+      var(--people-space-20);
+  }
+
+  .people-management__header {
+    align-items: flex-start;
+    flex-direction: column;
+
+    min-height: auto;
+
+    padding:
+      var(--people-space-24);
+  }
+
+  .people-management__header::after {
+    top: -3rem;
+    right: -4rem;
+
+    transform: none;
+  }
+
+  .people-heading {
+    max-width: 100%;
+  }
+
+  .people-management__actions {
+    align-self: auto;
+    justify-content: flex-start;
+
+    width: 100%;
+  }
+
+  .people-pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .people-pagination__navigation {
+    justify-content: space-between;
+
+    width: 100%;
+  }
+}
+
+
+/* ==========================================================
+   9. TABLET VERTICAL
+========================================================== */
+
+@media (max-width: 720px) {
+  .people-management {
+    padding:
+      var(--people-space-16);
+  }
+
+  .people-management::before {
+    top: 1rem;
+    right: -4rem;
+
+    width: 14rem;
+    height: 14rem;
+  }
+
+  .people-heading__title {
+    font-size: clamp(1.875rem, 8vw, 2.5rem);
+  }
+
+  .people-heading__description {
+    font-size: 0.875rem;
+  }
+
+  .people-alert {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .people-alert__action {
+    align-self: flex-end;
+  }
+
+  .people-pagination {
+    padding:
+      var(--people-space-16);
+  }
+
+  .people-pagination::before {
+    left: var(--people-space-16);
+    right: var(--people-space-16);
+  }
+}
+
+
+/* ==========================================================
+   10. CELULAR
+========================================================== */
+
+@media (max-width: 560px) {
+  .people-management {
+    gap: var(--people-space-16);
+
+    padding:
+      var(--people-space-12);
+  }
+
+  .people-management__header {
+    gap: var(--people-space-20);
+
+    padding:
+      var(--people-space-20)
+      var(--people-space-16);
+
+    border-radius: var(--people-radius-xl);
+  }
+
+  .people-heading__eyebrow {
+    font-size: 0.625rem;
+  }
+
+  .people-heading__eyebrow::before {
+    width: 1.25rem;
+  }
+
+  .people-heading__title {
+    margin-top: var(--people-space-8);
+
+    font-size: 1.875rem;
+  }
+
+  .people-heading__description {
+    margin-top: var(--people-space-10);
+
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+
+  .people-management__actions {
+    display: grid;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: var(--people-space-10);
+  }
+
+  .people-management__actions
+  .people-button {
+    width: 100%;
+
+    padding-right: var(--people-space-10);
+    padding-left: var(--people-space-10);
+  }
+
+  .people-alert {
+    padding:
+      var(--people-space-16);
+
+    border-radius: var(--people-radius-md);
+  }
+
+  .people-alert__content {
+    align-items: flex-start;
+  }
+
+  .people-alert__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .people-alert__action {
+    align-self: stretch;
+
+    width: 100%;
+  }
+
+  .people-pagination {
+    gap: var(--people-space-16);
+
+    padding:
+      var(--people-space-16)
+      var(--people-space-12);
+  }
+
+  .people-pagination::before {
+    left: var(--people-space-12);
+    right: var(--people-space-12);
+  }
+
+  .people-pagination__summary {
+    justify-content: center;
+
+    width: 100%;
+
+    text-align: center;
+  }
+
+  .people-pagination__navigation {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto
+      minmax(0, 1fr);
+
+    gap: var(--people-space-8);
+  }
+
+  .people-pagination__button {
+    min-width: 0;
+
+    padding:
+      var(--people-space-8);
+  }
+
+  .people-pagination__button > span:not([aria-hidden="true"]) {
+    display: none;
+  }
+
+  .people-pagination__button
+  > span[aria-hidden="true"] {
+    font-size: 1.375rem;
+  }
+
+  .people-pagination__current {
+    padding:
+      var(--people-space-6)
+      var(--people-space-8);
+  }
+
+  .people-pagination__current-label {
+    display: none;
+  }
+}
+
+
+/* ==========================================================
+   11. CELULARES PEQUEÑOS
+========================================================== */
+
+@media (max-width: 420px) {
+  .people-management {
+    padding:
+      var(--people-space-8);
+  }
+
+  .people-management__header {
+    padding:
+      var(--people-space-20)
+      var(--people-space-14, 0.875rem);
+  }
+
+  .people-management__actions {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .people-heading__description {
+    max-width: 100%;
+  }
+
+  .people-alert__content {
+    gap: var(--people-space-10);
+  }
+
+  .people-alert__title {
+    font-size: 0.875rem;
+  }
+
+  .people-alert__description {
+    font-size: 0.75rem;
+  }
+
+  .people-pagination {
+    padding:
+      var(--people-space-12);
+  }
+
+  .people-pagination__navigation {
+    grid-template-columns:
+      2.75rem
+      minmax(0, 1fr)
+      2.75rem;
+  }
+
+  .people-pagination__button {
+    width: 2.75rem;
+    min-width: 2.75rem;
+  }
+
+  .people-pagination__current {
+    width: 100%;
+  }
+}
+
+
+/* ==========================================================
+   12. PANTALLAS MUY ANCHAS
+========================================================== */
+
+@media (min-width: 1500px) {
+  .people-management {
+    max-width: 100rem;
+
+    margin-inline: auto;
+
+    padding:
+      var(--people-space-32);
+  }
+
+  .people-management__header {
+    padding:
+      var(--people-space-32)
+      var(--people-space-40);
+  }
+
+  .people-directory__toolbar,
+  .people-directory__header,
+  .people-pagination {
+    padding-right: var(--people-space-32);
+    padding-left: var(--people-space-32);
+  }
+
+  .people-directory__toolbar::after,
+  .people-pagination::before {
+    left: var(--people-space-32);
+    right: var(--people-space-32);
+  }
+}
+
+
+/* ==========================================================
+   13. ORIENTACIÓN HORIZONTAL EN MÓVILES
+========================================================== */
+
+@media (
+  max-height: 520px
+) and (
+  orientation: landscape
+) {
+  .people-management__header {
+    min-height: auto;
+
+    padding-top: var(--people-space-16);
+    padding-bottom: var(--people-space-16);
+  }
+
+  .people-heading__title {
+    font-size: 1.75rem;
+  }
+
+  .people-empty-state,
+  .people-loading-state {
+    min-height: 16rem;
+
+    padding-top: var(--people-space-24);
+    padding-bottom: var(--people-space-24);
+  }
+}
+
+
+/* ==========================================================
+   14. DISPOSITIVOS TÁCTILES
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .people-pagination__button {
+    min-height: 2.75rem;
+  }
+
+  .people-pagination__button:hover:not(:disabled),
+  .people-pagination__button:active:not(:disabled) {
+    transform: none;
+  }
+
+  .people-pagination__button:first-child:hover:not(:disabled)
+  > span[aria-hidden="true"],
+  .people-pagination__button:last-child:hover:not(:disabled)
+  > span[aria-hidden="true"] {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   15. MODO DE ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .people-management__header,
+  .people-directory,
+  .people-summary-card,
+  .people-loading-state,
+  .people-empty-state,
+  .people-alert {
+    border-width: 0.125rem;
+  }
+
+  .people-pagination {
+    border-top-color: var(--people-border-dark);
+  }
+
+  .people-pagination__button,
+  .people-pagination__current,
+  .people-pagination__summary-value {
+    border-width: 0.125rem;
+  }
+
+  .people-pagination__summary-label,
+  .people-pagination__current-label {
+    color: var(--people-text-secondary);
+  }
+}
+
+
+/* ==========================================================
+   16. IMPRESIÓN
+========================================================== */
+
+@media print {
+  :host {
+    --people-page-background: #ffffff;
+    --people-surface: #ffffff;
+    --people-surface-soft: #ffffff;
+    --people-surface-muted: #ffffff;
+  }
+
+  .people-management {
+    gap: 1rem;
+
+    padding: 0;
+
+    color: #000000;
+
+    background: #ffffff;
+  }
+
+  .people-management::before,
+  .people-management__header::before,
+  .people-management__header::after,
+  .people-directory::before,
+  .people-directory::after,
+  .people-summary-card::before,
+  .people-summary-card::after,
+  .people-pagination::before {
+    display: none;
+  }
+
+  .people-management__header {
+    min-height: auto;
+
+    padding:
+      1rem
+      0;
+
+    color: #000000;
+
+    background: #ffffff;
+
+    border: 0;
+    border-bottom: 2px solid #000000;
+    border-radius: 0;
+
+    box-shadow: none;
+  }
+
+  .people-heading__eyebrow,
+  .people-heading__title,
+  .people-heading__description {
+    color: #000000;
+  }
+
+  .people-management__actions,
+  .people-alert__action,
+  .person-actions,
+  .people-pagination {
+    display: none;
+  }
+
+  .people-summary {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(0, 1fr)
+      );
+
+    gap: 0.5rem;
+  }
+
+  .people-summary-card,
+  .people-directory {
+    background: #ffffff;
+
+    border: 1px solid #000000;
+    border-radius: 0;
+
+    box-shadow: none;
+  }
+
+  .people-summary-card {
+    min-height: auto;
+
+    padding: 0.75rem;
+  }
+
+  .people-summary-card__icon {
+    display: none;
+  }
+
+  .people-directory__toolbar {
+    display: none;
+  }
+
+  .people-table-scroll {
+    overflow: visible;
+  }
+
+  .people-table {
+    min-width: 0;
+
+    font-size: 9pt;
+  }
+
+  .people-table__heading,
+  .people-table__cell {
+    padding:
+      0.35rem
+      0.4rem;
+
+    color: #000000;
+
+    background: #ffffff;
+
+    border-color: #000000;
+  }
+
+  .people-table__row--data {
+    background: #ffffff;
+  }
+
+  .person-identity__avatar,
+  .person-location__icon {
+    display: none;
+  }
+
+  .person-type-badge,
+  .person-status-badge {
+    color: #000000;
+
+    background: #ffffff;
+
+    border: 1px solid #000000;
+
+    box-shadow: none;
+  }
+}
+
+
+/* ==========================================================
+   17. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .people-pagination__button,
+  .people-pagination__button
+  > span[aria-hidden="true"] {
+    transition: none;
+  }
+
+  .people-pagination__button:hover,
+  .people-pagination__button:active {
+    transform: none;
+  }
+
+  .people-pagination__button:first-child:hover
+  > span[aria-hidden="true"],
+  .people-pagination__button:last-child:hover
+  > span[aria-hidden="true"] {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   18. PROTECCIÓN FINAL CONTRA DESBORDAMIENTOS
+========================================================== */
+
+.people-management,
+.people-management__header,
+.people-summary,
+.people-directory,
+.people-directory__toolbar,
+.people-directory__header,
+.people-table-container,
+.people-pagination {
+  max-width: 100%;
+}
+
+.people-heading,
+.people-alert__message,
+.people-summary-card__content,
+.people-directory__heading,
+.people-pagination__summary,
+.people-pagination__navigation {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   19. NORMALIZACIÓN DE FOCUS DEL COMPONENTE
+========================================================== */
+
+.people-management :is(
+  button,
+  input,
+  select
+):focus:not(:focus-visible) {
+  outline: none;
+}
+
+
+/* ==========================================================
+   20. FIN DEL COMPONENTE PERSONAS
+========================================================== */

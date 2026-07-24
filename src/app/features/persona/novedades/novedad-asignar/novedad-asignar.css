@@ -1,0 +1,138 @@
+.assign-page {
+  margin-top: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.assign-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.assign-eyebrow {
+  color: #6366f1;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.assign-header h2 {
+  margin: 4px 0;
+  color: #0f172a;
+  font-size: 1.25rem;
+}
+
+.assign-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.assign-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  color: #334155;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.form-group select {
+  height: 44px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 0 14px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.9rem;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.14);
+}
+
+.assign-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.primary-button,
+.secondary-button {
+  border: none;
+  border-radius: 999px;
+  height: 44px;
+  padding: 0 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: #4338ca;
+  color: #ffffff;
+}
+
+.secondary-button {
+  background: #eef2ff;
+  color: #312e81;
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.assign-alert,
+.assign-loading {
+  margin-bottom: 14px;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+}
+
+.assign-alert.error {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.assign-alert.success {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.assign-loading {
+  background: #ffffff;
+  color: #64748b;
+  border: 1px dashed #cbd5e1;
+}
+
+@media (max-width: 760px) {
+  .assign-header,
+  .assign-form,
+  .assign-actions {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+}

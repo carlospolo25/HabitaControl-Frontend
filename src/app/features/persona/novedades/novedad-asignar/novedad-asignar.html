@@ -1,0 +1,116 @@
+<section class="assign-page">
+
+  <header class="assign-header">
+    <div>
+      <span class="assign-eyebrow">
+        Gestión de novedades
+      </span>
+
+      <h2>Asignar novedad</h2>
+
+      <p>
+        Selecciona el miembro del personal que será responsable de atender esta novedad.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="secondary-button"
+      (click)="volver()"
+      [disabled]="isSaving">
+      Cancelar
+    </button>
+  </header>
+
+  @if (errorMessage) {
+    <section class="assign-alert error">
+      {{ errorMessage }}
+    </section>
+  }
+
+  @if (successMessage) {
+    <section class="assign-alert success">
+      {{ successMessage }}
+    </section>
+  }
+
+  @if (isLoading) {
+
+    <section class="assign-loading">
+      <p>Cargando personal disponible...</p>
+    </section>
+
+  } @else {
+
+    <form
+      class="assign-form"
+      (ngSubmit)="asignar()">
+
+      <div class="form-group">
+
+        <label for="persona">
+          Responsable
+        </label>
+
+        <select
+          id="persona"
+          name="persona"
+          [(ngModel)]="personaId"
+          required>
+
+          <option value="">
+            Selecciona un responsable
+          </option>
+
+          @for (persona of responsables; track persona.id) {
+
+            <option [value]="persona.id">
+
+              {{ persona.name }}
+
+              ({{ persona.personTypeName }})
+
+              @if (persona.jobTitle) {
+                - {{ persona.jobTitle }}
+              }
+
+            </option>
+
+          }
+
+        </select>
+
+      </div>
+
+      <footer class="assign-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="volver()"
+          [disabled]="isSaving">
+
+          Cancelar
+
+        </button>
+
+        <button
+          type="submit"
+          class="primary-button"
+          [disabled]="isSaving || !personaId">
+
+          @if (isSaving) {
+            Asignando...
+          } @else {
+            Asignar novedad
+          }
+
+        </button>
+
+      </footer>
+
+    </form>
+
+  }
+
+</section>

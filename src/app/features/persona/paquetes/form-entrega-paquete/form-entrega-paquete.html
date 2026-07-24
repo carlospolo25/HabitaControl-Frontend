@@ -1,0 +1,279 @@
+<div
+  class="delivery-form__backdrop"
+  role="presentation"
+  (click)="cerrarFormulario()">
+
+  <section
+    class="delivery-form__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="delivery-modal-title"
+    aria-describedby="delivery-modal-description"
+    (click)="$event.stopPropagation()">
+
+    <header class="delivery-form__header">
+
+      <div class="delivery-form__heading">
+
+        <span class="delivery-form__eyebrow">
+          Confirmación de entrega
+        </span>
+
+        <h3
+          id="delivery-modal-title"
+          class="delivery-form__title">
+          Entregar paquete
+        </h3>
+
+        <p
+          id="delivery-modal-description"
+          class="delivery-form__description">
+          Registra quién recibe el paquete y solicita su firma de conformidad.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="delivery-form__close-button"
+        aria-label="Cerrar formulario de entrega"
+        [disabled]="isSubmitting"
+        (click)="cerrarFormulario()">
+
+        <span aria-hidden="true">
+          ×
+        </span>
+
+      </button>
+
+    </header>
+
+    <form
+      class="delivery-form__form"
+      (ngSubmit)="confirmarEntrega()"
+      novalidate>
+
+      <div class="delivery-form__content">
+
+        @if (errorMessage) {
+          <div
+            class="delivery-form__alert delivery-form__alert--error"
+            role="alert">
+
+            <span
+              class="delivery-form__alert-icon"
+              aria-hidden="true">
+              !
+            </span>
+
+            <p class="delivery-form__alert-message">
+              {{ errorMessage }}
+            </p>
+
+          </div>
+        }
+
+        <section
+          class="delivery-form__card"
+          aria-labelledby="receiver-information-title">
+
+          <header class="delivery-form__card-header">
+
+            <span
+              class="delivery-form__step"
+              aria-hidden="true">
+              1
+            </span>
+
+            <div class="delivery-form__card-heading">
+
+              <h4
+                id="receiver-information-title"
+                class="delivery-form__card-title">
+                Información de quien recibe
+              </h4>
+
+              <p class="delivery-form__card-description">
+                Registra el nombre completo de la persona que reclama el paquete.
+              </p>
+
+            </div>
+
+          </header>
+
+          <div class="delivery-form__field">
+
+            <label
+              for="entregadoA"
+              class="delivery-form__label">
+              Nombre de quien recibe
+
+              <span
+                class="delivery-form__required"
+                aria-hidden="true">
+                *
+              </span>
+            </label>
+
+            <p
+              id="entregadoA-help"
+              class="delivery-form__help">
+              Escribe el nombre completo de la persona que reclama el paquete.
+            </p>
+
+            <input
+              id="entregadoA"
+              name="entregadoA"
+              class="delivery-form__input"
+              type="text"
+              autocomplete="name"
+              minlength="2"
+              maxlength="150"
+              required
+              aria-describedby="entregadoA-help"
+              [(ngModel)]="entregadoA"
+              [disabled]="isSubmitting"
+              placeholder="Ej. Andrea Martínez">
+
+          </div>
+
+        </section>
+
+        <section
+          class="delivery-form__card delivery-form__card--signature"
+          aria-labelledby="signature-title">
+
+          <header class="delivery-form__card-header">
+
+            <span
+              class="delivery-form__step"
+              aria-hidden="true">
+              2
+            </span>
+
+            <div class="delivery-form__card-heading">
+
+              <h4
+                id="signature-title"
+                class="delivery-form__card-title">
+                Firma de recibido
+
+                <span
+                  class="delivery-form__required"
+                  aria-hidden="true">
+                  *
+                </span>
+              </h4>
+
+              <p class="delivery-form__card-description">
+                Firma dentro del recuadro usando el mouse, el dedo o un lápiz
+                digital.
+              </p>
+
+            </div>
+
+            @if (firmaRealizada) {
+              <span class="delivery-form__signature-status">
+
+                <span
+                  class="delivery-form__signature-indicator"
+                  aria-hidden="true">
+                </span>
+
+                Firma registrada
+
+              </span>
+            }
+
+          </header>
+
+          <div
+            class="delivery-form__signature-pad"
+            [class.delivery-form__signature-pad--completed]="firmaRealizada"
+            [class.delivery-form__signature-pad--disabled]="isSubmitting">
+
+            <canvas
+              #firmaCanvas
+              class="delivery-form__signature-canvas"
+              width="700"
+              height="240"
+              aria-label="Área para registrar la firma de recibido"
+              (pointerdown)="iniciarFirma($event)"
+              (pointermove)="dibujar($event)"
+              (pointerup)="detenerFirma($event)"
+              (pointercancel)="detenerFirma($event)"
+              (pointerleave)="detenerFirma($event)">
+            </canvas>
+
+            @if (!firmaRealizada) {
+              <div
+                class="delivery-form__signature-placeholder"
+                aria-hidden="true">
+
+                <span class="delivery-form__signature-line">
+                </span>
+
+                <span>
+                  Firma aquí
+                </span>
+
+              </div>
+            }
+
+          </div>
+
+          <div class="delivery-form__signature-actions">
+
+            <button
+              type="button"
+              class="delivery-form__button delivery-form__button--light"
+              [disabled]="isSubmitting || !firmaRealizada"
+              (click)="limpiarFirma()">
+              Limpiar firma
+            </button>
+
+          </div>
+
+        </section>
+
+      </div>
+
+      <footer class="delivery-form__footer">
+
+        <button
+          type="button"
+          class="delivery-form__button delivery-form__button--secondary"
+          [disabled]="isSubmitting"
+          (click)="cerrarFormulario()">
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="delivery-form__button delivery-form__button--primary"
+          [disabled]="isSubmitting">
+
+          @if (isSubmitting) {
+            <span
+              class="delivery-form__button-spinner"
+              aria-hidden="true">
+            </span>
+
+            <span>
+              Registrando entrega...
+            </span>
+          } @else {
+            <span>
+              Confirmar entrega
+            </span>
+          }
+
+        </button>
+
+      </footer>
+
+    </form>
+
+  </section>
+
+</div>
