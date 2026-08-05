@@ -11,6 +11,7 @@ import {GestionFinanzas} from '../finanzas/gestion-finanzas/gestion-finanzas'
 import {DashboardOverview} from '../resumen/dashboard-overview/dashboard-overview'
 import { ZonasComunesComponent } from '../persona/reservas/zonas-comunes/zonas-comunes';
 import {GestionReservasComponent} from '../persona/reservas/gestion-zonas-comunes/gestion-reservas'
+import {PerfilUsuarioComponent} from '../perfiles/perfil-usuario/perfil-usuario/perfil-usuario'
 
 
 @Component({
@@ -26,7 +27,8 @@ import {GestionReservasComponent} from '../persona/reservas/gestion-zonas-comune
     DashboardOverview,
     ZonasComunesComponent,
     GestionReservasComponent,
-    GestionFinanzas
+    GestionFinanzas,
+    PerfilUsuarioComponent
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
@@ -45,12 +47,19 @@ export class DashboardPage {
   mostrarResumen = true;
   mostrarZonasComunes = false;
   mostrarFinanzas = false;
+  mostrarPerfilUsuario = false;
 
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
+
+  verPerfilUsuario():void{
+    this.resetVistas();
+
+    this.mostrarPerfilUsuario = true;
+  }
   
   verResumen():void{
     this.resetVistas();
@@ -114,6 +123,7 @@ export class DashboardPage {
     this.mostrarZonasComunes = false;
     this.mostrarFinanzas = false;
     this.mostrarResumen = false;
+    this.mostrarPerfilUsuario = false;
 
   }
 

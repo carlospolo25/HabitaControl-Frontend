@@ -22,6 +22,7 @@ import { ZonasComunesComponent } from '../reservas/zonas-comunes/zonas-comunes';
 import { CrearInvitacionVisitante } from '../visitante/crear-invitacion-visitante/crear-invitacion-visitante';
 import { FormVisitanteComponent } from '../visitante/form-visitante/form-visitante';
 import { ListaVisitantesComponent } from '../visitante/lista-visitantes/lista-visitantes';
+import { PerfilPersonasComponent} from '../../perfiles/perfil-persona/perfil-personas/perfil-personas';
 
 type TipoPersona =
   | 'Residente'
@@ -44,7 +45,8 @@ type VistaPersona =
   | 'mis-reservas'
   | 'mis-vehiculos'
   | 'mis-mascotas'
-  | 'app-crear-invitacion-visitante';
+  | 'app-crear-invitacion-visitante'
+  | 'mi-perfil'
 
 @Component({
   selector: 'app-dashboard-persona',
@@ -69,6 +71,8 @@ type VistaPersona =
 
     MisVehiculosComponent,
     MisMascotasComponent,
+
+    PerfilPersonasComponent
   ],
   templateUrl: './dashboard-persona.html',
   styleUrl: './dashboard-persona.css',
@@ -154,6 +158,10 @@ export class DashboardPersona implements OnInit {
 
   abrirInicio(): void {
     this.cambiarVista('inicio');
+  }
+
+  abrirPerfil(): void {
+    this.cambiarVista('mi-perfil');
   }
 
   abrirNovedad(): void {

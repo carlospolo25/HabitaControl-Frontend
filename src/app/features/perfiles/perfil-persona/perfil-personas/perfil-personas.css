@@ -1,0 +1,4318 @@
+:host {
+  /* =========================================================
+     BRAND
+     ========================================================= */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-light: #dbeafe;
+  --color-primary-dark: #1e40af;
+
+  /* =========================================================
+     NEUTROS
+     ========================================================= */
+  --gray-950: #020617;
+  --gray-900: #0f172a;
+  --gray-800: #1e293b;
+  --gray-700: #334155;
+  --gray-600: #475569;
+  --gray-500: #64748b;
+  --gray-400: #94a3b8;
+  --gray-300: #cbd5e1;
+  --gray-200: #e2e8f0;
+  --gray-100: #f1f5f9;
+  --gray-50: #f8fafc;
+
+  /* =========================================================
+     ESTADOS
+     ========================================================= */
+  --success: #16a34a;
+  --success-light: #dcfce7;
+  --success-border: #86efac;
+  --success-dark: #166534;
+
+  --danger: #dc2626;
+  --danger-light: #fee2e2;
+  --danger-border: #fca5a5;
+  --danger-dark: #991b1b;
+
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --warning-dark: #92400e;
+
+  --info: #0ea5e9;
+  --info-light: #e0f2fe;
+  --info-dark: #075985;
+
+  --accent: #7c3aed;
+  --accent-light: #ede9fe;
+
+  /* =========================================================
+     SUPERFICIES
+     ========================================================= */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --surface-secondary: #f8fafc;
+
+  /* =========================================================
+     BORDES
+     ========================================================= */
+  --border-light: #e2e8f0;
+  --border: #cbd5e1;
+  --border-dark: #94a3b8;
+
+  /* =========================================================
+     TEXTO
+     ========================================================= */
+  --text-primary: #111827;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-disabled: #94a3b8;
+  --text-white: #ffffff;
+
+  /* =========================================================
+     SOMBRAS
+     ========================================================= */
+  --shadow-sm:
+    0 1px 2px rgb(15 23 42 / 0.05);
+
+  --shadow-md:
+    0 8px 24px rgb(15 23 42 / 0.08);
+
+  --shadow-lg:
+    0 16px 40px rgb(15 23 42 / 0.1);
+
+  --shadow-xl:
+    0 24px 64px rgb(15 23 42 / 0.14);
+
+  /* =========================================================
+     RADIOS
+     ========================================================= */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 999px;
+
+  /* =========================================================
+     ESPACIADOS
+     ========================================================= */
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-20: 1.25rem;
+  --space-24: 1.5rem;
+  --space-28: 1.75rem;
+  --space-32: 2rem;
+  --space-40: 2.5rem;
+  --space-48: 3rem;
+
+  display: block;
+  width: 100%;
+}
+
+
+/* =========================================================
+   PÁGINA PRINCIPAL
+   ========================================================= */
+
+.person-profile-page {
+  width: 100%;
+  min-height: 100%;
+
+  padding: var(--space-24);
+
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.07),
+      transparent 25rem
+    ),
+    var(--background);
+
+  color: var(--text-primary);
+}
+
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
+.person-profile-header {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-24);
+
+  width: min(100%, 90rem);
+  margin:
+    0 auto
+    var(--space-24);
+
+  padding:
+    var(--space-24)
+    var(--space-28);
+
+  overflow: hidden;
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.13),
+      transparent 17rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--surface),
+      #eff6ff
+    );
+
+  box-shadow: var(--shadow-md);
+}
+
+.person-profile-header::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.32rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-primary),
+      var(--color-primary-dark)
+    );
+
+  content: '';
+}
+
+.person-profile-header::after {
+  position: absolute;
+  top: -4rem;
+  right: -3rem;
+
+  width: 12rem;
+  height: 12rem;
+
+  border-radius: var(--radius-full);
+
+  background:
+    radial-gradient(
+      circle,
+      rgb(37 99 235 / 0.11),
+      transparent 68%
+    );
+
+  pointer-events: none;
+  content: '';
+}
+
+
+/* =========================================================
+   CONTENIDO DEL ENCABEZADO
+   ========================================================= */
+
+.person-profile-header__content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+.person-profile-header__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  margin-bottom: var(--space-8);
+
+  color: var(--color-primary);
+  font-size: 0.74rem;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.person-profile-header__eyebrow::before {
+  width: 0.48rem;
+  height: 0.48rem;
+
+  border-radius: var(--radius-full);
+
+  background: var(--color-primary);
+
+  box-shadow:
+    0 0 0 0.24rem
+    rgb(37 99 235 / 0.12);
+
+  content: '';
+}
+
+.person-profile-header__title {
+  margin: 0;
+
+  color: var(--gray-900);
+  font-size: clamp(1.65rem, 3vw, 2.2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+
+.person-profile-header__description {
+  max-width: 46rem;
+  margin: var(--space-12) 0 0;
+
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   ACCIONES DEL ENCABEZADO
+   ========================================================= */
+
+.person-profile-header__actions {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   BOTONES GENERALES
+   ========================================================= */
+
+.person-profile-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+
+  min-height: 2.9rem;
+  padding:
+    0.78rem
+    1rem;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.person-profile-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.person-profile-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.person-profile-button:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 0.22);
+  outline-offset: 3px;
+}
+
+.person-profile-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+  transform: none;
+}
+
+.person-profile-button__icon {
+  display: inline-grid;
+  place-items: center;
+
+  min-width: 1rem;
+
+  font-size: 1rem;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   BOTÓN PRINCIPAL
+   ========================================================= */
+
+.person-profile-button--primary {
+  color: var(--text-white);
+  border-color: var(--color-primary);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-primary-dark)
+    );
+
+  box-shadow:
+    0 9px 20px rgb(37 99 235 / 0.2);
+}
+
+.person-profile-button--primary:hover:not(:disabled) {
+  border-color: var(--color-primary-hover);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-hover),
+      var(--color-primary-dark)
+    );
+
+  box-shadow:
+    0 13px 26px rgb(37 99 235 / 0.27);
+}
+
+
+/* =========================================================
+   BOTÓN SECUNDARIO
+   ========================================================= */
+
+.person-profile-button--secondary {
+  color: var(--gray-700);
+  border-color: var(--border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface),
+      var(--surface-secondary)
+    );
+
+  box-shadow: var(--shadow-sm);
+}
+
+.person-profile-button--secondary:hover:not(:disabled) {
+  color: var(--gray-900);
+  border-color: #bfdbfe;
+
+  background: #eff6ff;
+
+  box-shadow:
+    0 8px 18px rgb(37 99 235 / 0.1);
+}
+
+
+/* =========================================================
+   BOTÓN DE CIERRE
+   ========================================================= */
+
+.person-profile-button--close {
+  width: 2.9rem;
+  min-width: 2.9rem;
+  padding: 0;
+
+  color: var(--gray-500);
+  border-color: var(--border-light);
+
+  background: rgb(255 255 255 / 0.84);
+
+  font-size: 1.35rem;
+  font-weight: 400;
+
+  box-shadow: var(--shadow-sm);
+}
+
+.person-profile-button--close:hover:not(:disabled) {
+  color: var(--danger-dark);
+  border-color: var(--danger-border);
+  background: var(--danger-light);
+
+  box-shadow:
+    0 8px 18px rgb(220 38 38 / 0.12);
+}
+
+
+/* =========================================================
+   CONTENIDO GENERAL
+   ========================================================= */
+
+.person-profile-content {
+  display: grid;
+  gap: var(--space-24);
+
+  width: min(100%, 90rem);
+  margin-inline: auto;
+
+  animation:
+    person-profile-content-entry
+    280ms ease-out both;
+}
+
+@keyframes person-profile-content-entry {
+  from {
+    opacity: 0;
+    transform: translateY(0.55rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE INICIAL
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .person-profile-page {
+    padding: var(--space-16);
+  }
+
+  .person-profile-header {
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: var(--space-20);
+    border-radius: var(--radius-lg);
+  }
+
+  .person-profile-header__actions {
+    justify-content: flex-end;
+
+    padding-top: var(--space-16);
+    border-top: 1px solid var(--border-light);
+  }
+}
+
+@media (max-width: 520px) {
+  .person-profile-header__actions {
+    align-items: stretch;
+  }
+
+  .person-profile-button--secondary {
+    flex: 1;
+  }
+
+  .person-profile-header__title {
+    font-size: 1.6rem;
+  }
+
+  .person-profile-header__description {
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .person-profile-page {
+    padding: var(--space-8);
+  }
+
+  .person-profile-header {
+    padding: var(--space-16);
+    border-radius: var(--radius-md);
+  }
+
+  .person-profile-button {
+    font-size: 0.82rem;
+  }
+
+  .person-profile-button--close {
+    width: 2.7rem;
+    min-width: 2.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-content {
+    animation: none;
+  }
+
+  .person-profile-button {
+    transition: none;
+  }
+
+  .person-profile-button:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   ALERTA GENERAL
+   ========================================================= */
+
+.person-profile-alert {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: flex-start;
+  gap: var(--space-12);
+
+  width: min(100%, 90rem);
+  margin:
+    0 auto
+    var(--space-24);
+
+  padding: var(--space-16);
+
+  overflow: hidden;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+
+  animation:
+    person-profile-alert-entry
+    220ms ease-out both;
+}
+
+.person-profile-alert::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.25rem;
+
+  content: '';
+}
+
+
+/* =========================================================
+   ICONO DE ALERTA
+   ========================================================= */
+
+.person-profile-alert__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 2.35rem;
+
+  border-radius: var(--radius-full);
+
+  color: var(--text-white);
+
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   CONTENIDO DE ALERTA
+   ========================================================= */
+
+.person-profile-alert__content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+.person-profile-alert__title {
+  display: block;
+
+  margin-bottom: var(--space-4);
+
+  font-size: 0.94rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.person-profile-alert__message {
+  margin: 0;
+
+  font-size: 0.88rem;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   BOTÓN DE CIERRE DE ALERTA
+   ========================================================= */
+
+.person-profile-alert__close {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+
+  background: transparent;
+
+  font: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
+}
+
+.person-profile-alert__close:hover {
+  border-color: rgb(255 255 255 / 0.55);
+  background: rgb(255 255 255 / 0.56);
+
+  transform: scale(1.04);
+}
+
+.person-profile-alert__close:active {
+  transform: scale(0.98);
+}
+
+.person-profile-alert__close:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 0.2);
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   ALERTA DE ERROR
+   ========================================================= */
+
+.person-profile-alert--error {
+  border-color: var(--danger-border);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(220 38 38 / 0.08),
+      transparent 12rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      rgb(255 255 255 / 0.95)
+    );
+}
+
+.person-profile-alert--error::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--danger),
+      var(--danger-dark)
+    );
+}
+
+.person-profile-alert--error
+.person-profile-alert__icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger),
+      var(--danger-dark)
+    );
+
+  box-shadow:
+    0 0 0 0.28rem
+    rgb(220 38 38 / 0.1);
+}
+
+.person-profile-alert--error
+.person-profile-alert__title {
+  color: var(--danger-dark);
+}
+
+.person-profile-alert--error
+.person-profile-alert__message {
+  color: #7f1d1d;
+}
+
+.person-profile-alert--error
+.person-profile-alert__close {
+  color: var(--danger-dark);
+}
+
+
+/* =========================================================
+   ESTADO DE CARGA
+   ========================================================= */
+
+.person-profile-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-20);
+
+  width: min(100%, 90rem);
+  min-height: 20rem;
+  margin-inline: auto;
+  padding: var(--space-32);
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgb(37 99 235 / 0.07),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      var(--surface-secondary)
+    );
+
+  box-shadow: var(--shadow-md);
+
+  text-align: left;
+}
+
+
+/* =========================================================
+   SPINNER DE CARGA
+   ========================================================= */
+
+.person-profile-loading__spinner {
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 3rem;
+
+  border: 0.24rem solid var(--color-primary-light);
+  border-top-color: var(--color-primary);
+  border-radius: var(--radius-full);
+
+  animation:
+    person-profile-loading-spin
+    760ms linear infinite;
+}
+
+@keyframes person-profile-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   CONTENIDO DE CARGA
+   ========================================================= */
+
+.person-profile-loading__content {
+  max-width: 32rem;
+}
+
+.person-profile-loading__title {
+  margin: 0;
+
+  color: var(--gray-900);
+  font-size: 1.08rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.person-profile-loading__description {
+  margin: var(--space-8) 0 0;
+
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ESTADO VACÍO
+   ========================================================= */
+
+.person-profile-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: min(100%, 90rem);
+  min-height: 22rem;
+  margin-inline: auto;
+  padding: var(--space-32);
+
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-xl);
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgb(37 99 235 / 0.07),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      var(--surface-secondary)
+    );
+
+  box-shadow: var(--shadow-sm);
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   ICONO DEL ESTADO VACÍO
+   ========================================================= */
+
+.person-profile-empty__icon {
+  display: grid;
+  place-items: center;
+
+  width: 5rem;
+  height: 5rem;
+  margin-bottom: var(--space-20);
+
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-full);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      #eff6ff
+    );
+
+  color: var(--color-primary-dark);
+
+  font-size: 2rem;
+  line-height: 1;
+
+  box-shadow:
+    0 12px 28px rgb(37 99 235 / 0.14);
+}
+
+.person-profile-empty__title {
+  margin: 0;
+
+  color: var(--gray-900);
+  font-size: 1.18rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.person-profile-empty__description {
+  max-width: 34rem;
+  margin:
+    var(--space-8)
+    0
+    var(--space-20);
+
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ANIMACIONES
+   ========================================================= */
+
+@keyframes person-profile-alert-entry {
+  from {
+    opacity: 0;
+    transform: translateY(-0.35rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .person-profile-loading,
+  .person-profile-empty {
+    min-height: 18rem;
+    padding: var(--space-24);
+    border-radius: var(--radius-lg);
+  }
+}
+
+@media (max-width: 520px) {
+  .person-profile-alert {
+    grid-template-columns:
+      auto minmax(0, 1fr);
+
+    padding: var(--space-12);
+  }
+
+  .person-profile-alert__close {
+    grid-column: 2;
+    justify-self: end;
+
+    margin-top: calc(var(--space-8) * -1);
+  }
+
+  .person-profile-alert__icon {
+    width: 2.05rem;
+    height: 2.05rem;
+    flex-basis: 2.05rem;
+  }
+
+  .person-profile-alert__title {
+    font-size: 0.88rem;
+  }
+
+  .person-profile-alert__message {
+    font-size: 0.82rem;
+  }
+
+  .person-profile-loading {
+    flex-direction: column;
+
+    min-height: 17rem;
+    padding: var(--space-20);
+
+    text-align: center;
+  }
+
+  .person-profile-loading__spinner {
+    width: 2.7rem;
+    height: 2.7rem;
+    flex-basis: 2.7rem;
+  }
+
+  .person-profile-empty {
+    min-height: 18rem;
+    padding: var(--space-20);
+  }
+
+  .person-profile-empty__icon {
+    width: 4.25rem;
+    height: 4.25rem;
+
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .person-profile-loading,
+  .person-profile-empty {
+    padding: var(--space-16);
+    border-radius: var(--radius-md);
+  }
+
+  .person-profile-loading__description,
+  .person-profile-empty__description {
+    font-size: 0.82rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-alert {
+    animation: none;
+  }
+
+  .person-profile-loading__spinner {
+    animation-duration: 1.5s;
+  }
+}
+
+/* =========================================================
+   TARJETA PRINCIPAL
+   ========================================================= */
+
+.person-profile-hero {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-28);
+
+  padding: var(--space-28);
+
+  overflow: hidden;
+
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-xl);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.14),
+      transparent 20rem
+    ),
+    linear-gradient(
+      135deg,
+      #eff6ff 0%,
+      var(--surface) 52%,
+      var(--surface-secondary) 100%
+    );
+
+  box-shadow: var(--shadow-lg);
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.person-profile-hero::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.32rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-primary),
+      var(--color-primary-dark)
+    );
+
+  content: '';
+}
+
+.person-profile-hero::after {
+  position: absolute;
+  right: -4rem;
+  bottom: -5rem;
+
+  width: 14rem;
+  height: 14rem;
+
+  border-radius: var(--radius-full);
+
+  background:
+    radial-gradient(
+      circle,
+      rgb(37 99 235 / 0.1),
+      transparent 68%
+    );
+
+  pointer-events: none;
+  content: '';
+}
+
+.person-profile-hero:hover {
+  border-color: #93c5fd;
+
+  box-shadow:
+    0 20px 48px rgb(30 64 175 / 0.13);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   IDENTIDAD PRINCIPAL
+   ========================================================= */
+
+.person-profile-hero__identity {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-24);
+
+  min-width: 0;
+}
+
+.person-profile-hero__information {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.person-profile-avatar {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  width: 7.5rem;
+  height: 7.5rem;
+  flex: 0 0 7.5rem;
+
+  overflow: hidden;
+
+  border: 0.42rem solid var(--surface);
+  border-radius: var(--radius-full);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      #bfdbfe
+    );
+
+  box-shadow:
+    0 0 0 1px rgb(37 99 235 / 0.2),
+    0 18px 38px rgb(30 64 175 / 0.2);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.person-profile-avatar::after {
+  position: absolute;
+  inset: 0;
+
+  border-radius: inherit;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgb(255 255 255 / 0.45);
+
+  pointer-events: none;
+  content: '';
+}
+
+.person-profile-hero:hover
+.person-profile-avatar {
+  transform: translateY(-2px) scale(1.01);
+
+  box-shadow:
+    0 0 0 1px rgb(37 99 235 / 0.24),
+    0 22px 44px rgb(30 64 175 / 0.24);
+}
+
+.person-profile-avatar__image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+.person-profile-avatar__initials {
+  display: grid;
+  place-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  color: var(--color-primary-dark);
+
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+
+/* =========================================================
+   TIPO DE PERSONA
+   ========================================================= */
+
+.person-profile-hero__type {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  min-height: 1.9rem;
+  padding:
+    0.36rem
+    0.7rem;
+
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-full);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      rgb(255 255 255 / 0.82)
+    );
+
+  color: var(--color-primary-dark);
+
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+
+  box-shadow: var(--shadow-sm);
+}
+
+.person-profile-hero__type::before {
+  width: 0.42rem;
+  height: 0.42rem;
+
+  border-radius: var(--radius-full);
+
+  background: var(--color-primary);
+
+  box-shadow:
+    0 0 0 0.18rem
+    rgb(37 99 235 / 0.12);
+
+  content: '';
+}
+
+
+/* =========================================================
+   NOMBRE Y CORREO
+   ========================================================= */
+
+.person-profile-hero__name {
+  margin:
+    var(--space-12)
+    0
+    0;
+
+  color: var(--gray-900);
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+
+  overflow-wrap: anywhere;
+}
+
+.person-profile-hero__email {
+  margin: var(--space-8) 0 0;
+
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.45;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   METADATOS
+   ========================================================= */
+
+.person-profile-hero__metadata {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap:
+    var(--space-8)
+    var(--space-12);
+
+  margin-top: var(--space-16);
+}
+
+
+/* =========================================================
+   ESTADO DE LA CUENTA
+   ========================================================= */
+
+.person-profile-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  min-height: 2rem;
+  padding:
+    0.4rem
+    0.72rem;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+
+  background: var(--surface);
+  color: var(--gray-700);
+
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1;
+
+  box-shadow: var(--shadow-sm);
+}
+
+.person-profile-status__indicator {
+  width: 0.48rem;
+  height: 0.48rem;
+  flex: 0 0 0.48rem;
+
+  border-radius: var(--radius-full);
+
+  background: var(--gray-400);
+}
+
+.person-profile-status--active {
+  border-color: var(--success-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--success-light),
+      var(--surface)
+    );
+
+  color: var(--success-dark);
+}
+
+.person-profile-status--active
+.person-profile-status__indicator {
+  background: var(--success);
+
+  box-shadow:
+    0 0 0 0.2rem
+    rgb(22 163 74 / 0.12);
+}
+
+.person-profile-status--inactive {
+  border-color: var(--danger-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      var(--surface)
+    );
+
+  color: var(--danger-dark);
+}
+
+.person-profile-status--inactive
+.person-profile-status__indicator {
+  background: var(--danger);
+
+  box-shadow:
+    0 0 0 0.2rem
+    rgb(220 38 38 / 0.12);
+}
+
+
+/* =========================================================
+   UBICACIÓN O FUNCIÓN
+   ========================================================= */
+
+.person-profile-hero__location {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 2rem;
+  padding:
+    0.4rem
+    0.72rem;
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface),
+      var(--surface-secondary)
+    );
+
+  color: var(--gray-700);
+
+  font-size: 0.74rem;
+  font-weight: 750;
+  line-height: 1;
+
+  box-shadow: var(--shadow-sm);
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   ACCIONES DEL HERO
+   ========================================================= */
+
+.person-profile-hero__actions {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-shrink: 0;
+}
+
+.person-profile-hero__actions
+.person-profile-button--primary {
+  min-width: 10.5rem;
+}
+
+
+/* =========================================================
+   VARIANTE PARA CUENTA INACTIVA
+   ========================================================= */
+
+.person-profile-hero:has(
+  .person-profile-status--inactive
+) {
+  border-color: rgb(252 165 165 / 0.8);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(220 38 38 / 0.08),
+      transparent 18rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      var(--surface)
+    );
+}
+
+.person-profile-hero:has(
+  .person-profile-status--inactive
+)::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--danger),
+      var(--danger-dark)
+    );
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE ENTRADA
+   ========================================================= */
+
+.person-profile-hero {
+  animation:
+    person-profile-hero-entry
+    320ms ease-out both;
+}
+
+@keyframes person-profile-hero-entry {
+  from {
+    opacity: 0;
+    transform: translateY(0.65rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .person-profile-hero {
+    align-items: flex-start;
+  }
+
+  .person-profile-avatar {
+    width: 6.5rem;
+    height: 6.5rem;
+    flex-basis: 6.5rem;
+  }
+
+  .person-profile-avatar__initials {
+    font-size: 1.95rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .person-profile-hero {
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: var(--space-24);
+  }
+
+  .person-profile-hero__identity {
+    align-items: flex-start;
+  }
+
+  .person-profile-hero__actions {
+    justify-content: flex-start;
+
+    padding-top: var(--space-20);
+    border-top: 1px solid var(--border-light);
+  }
+}
+
+@media (max-width: 560px) {
+  .person-profile-hero__identity {
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+  }
+
+  .person-profile-hero__information {
+    width: 100%;
+  }
+
+  .person-profile-hero__metadata {
+    justify-content: center;
+  }
+
+  .person-profile-hero__actions
+  .person-profile-button--primary {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .person-profile-hero {
+    padding: var(--space-20);
+    border-radius: var(--radius-lg);
+  }
+
+  .person-profile-avatar {
+    width: 5.75rem;
+    height: 5.75rem;
+    flex-basis: 5.75rem;
+  }
+
+  .person-profile-avatar__initials {
+    font-size: 1.65rem;
+  }
+
+  .person-profile-hero__name {
+    font-size: 1.5rem;
+  }
+
+  .person-profile-hero__email {
+    font-size: 0.84rem;
+  }
+
+  .person-profile-status,
+  .person-profile-hero__location {
+    font-size: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-hero {
+    animation: none;
+    transition: none;
+  }
+
+  .person-profile-avatar {
+    transition: none;
+  }
+
+  .person-profile-hero:hover,
+  .person-profile-hero:hover
+  .person-profile-avatar {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   SECCIONES GENERALES
+   ========================================================= */
+
+.person-profile-section {
+  position: relative;
+
+  padding: var(--space-24);
+
+  overflow: hidden;
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      var(--surface-secondary) 100%
+    );
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.person-profile-section::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.25rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-primary),
+      var(--color-primary-light)
+    );
+
+  opacity: 0.9;
+
+  content: '';
+}
+
+.person-profile-section:hover {
+  border-color: #bfdbfe;
+
+  box-shadow:
+    0 15px 34px rgb(15 23 42 / 0.08);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ENCABEZADO DE SECCIÓN
+   ========================================================= */
+
+.person-profile-section__header {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-20);
+
+  margin-bottom: var(--space-24);
+  padding-bottom: var(--space-20);
+
+  border-bottom: 1px solid var(--border-light);
+}
+
+.person-profile-section__heading {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-16);
+
+  min-width: 0;
+}
+
+.person-profile-section__icon {
+  display: grid;
+  place-items: center;
+
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 3rem;
+
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-md);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      #eff6ff
+    );
+
+  color: var(--color-primary-dark);
+
+  font-size: 1.2rem;
+  line-height: 1;
+
+  box-shadow:
+    0 8px 18px rgb(37 99 235 / 0.1);
+}
+
+.person-profile-section__title {
+  margin: 0;
+
+  color: var(--gray-900);
+  font-size: 1.12rem;
+  font-weight: 850;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.person-profile-section__description {
+  max-width: 46rem;
+  margin: var(--space-8) 0 0;
+
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   INSIGNIA DE SECCIÓN
+   ========================================================= */
+
+.person-profile-section__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 2rem;
+  max-width: 14rem;
+  padding:
+    0.4rem
+    0.75rem;
+
+  overflow: hidden;
+
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-full);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      var(--surface)
+    );
+
+  color: var(--color-primary-dark);
+
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* =========================================================
+   CUADRÍCULA DE DETALLES
+   ========================================================= */
+
+.person-profile-details-grid {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: var(--space-16);
+}
+
+
+/* =========================================================
+   TARJETA DE DETALLE
+   ========================================================= */
+
+.person-profile-detail {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+
+  min-width: 0;
+  min-height: 6.25rem;
+  padding: var(--space-16);
+
+  overflow: hidden;
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface),
+      var(--surface-secondary)
+    );
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    border-color 170ms ease,
+    background-color 170ms ease,
+    box-shadow 170ms ease,
+    transform 170ms ease;
+}
+
+.person-profile-detail::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.2rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-primary),
+      #93c5fd
+    );
+
+  opacity: 0.86;
+
+  content: '';
+}
+
+.person-profile-detail:hover {
+  border-color: #bfdbfe;
+
+  background:
+    linear-gradient(
+      145deg,
+      #eff6ff,
+      var(--surface)
+    );
+
+  box-shadow:
+    0 10px 24px rgb(37 99 235 / 0.08);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DETALLE DESTACADO
+   ========================================================= */
+
+.person-profile-detail--featured {
+  grid-column: span 2;
+
+  min-height: 7rem;
+
+  border-color: #bfdbfe;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.1),
+      transparent 13rem
+    ),
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      var(--surface)
+    );
+}
+
+.person-profile-detail--featured::before {
+  width: 0.28rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-primary),
+      var(--color-primary-dark)
+    );
+}
+
+.person-profile-detail--featured
+.person-profile-detail__label {
+  color: var(--color-primary-dark);
+}
+
+.person-profile-detail--featured
+.person-profile-detail__value {
+  color: var(--gray-900);
+  font-size: 1.05rem;
+}
+
+
+/* =========================================================
+   ETIQUETA Y VALOR
+   ========================================================= */
+
+.person-profile-detail__label {
+  display: block;
+
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1.3;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.person-profile-detail__value {
+  display: block;
+
+  min-width: 0;
+
+  color: var(--gray-800);
+  font-size: 0.94rem;
+  font-weight: 800;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   ENLACES
+   ========================================================= */
+
+.person-profile-detail__value--link {
+  width: fit-content;
+  max-width: 100%;
+
+  color: var(--color-primary-dark);
+
+  text-decoration: underline;
+  text-decoration-color:
+    rgb(37 99 235 / 0.3);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22rem;
+
+  transition:
+    color 150ms ease,
+    text-decoration-color 150ms ease;
+}
+
+.person-profile-detail__value--link:hover {
+  color: var(--color-primary-hover);
+  text-decoration-color: var(--color-primary-hover);
+}
+
+.person-profile-detail__value--link:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 0.2);
+  outline-offset: 3px;
+
+  border-radius: 0.2rem;
+}
+
+
+/* =========================================================
+   INFORMACIÓN PERSONAL
+   ========================================================= */
+
+.person-profile-section:not(
+  .person-profile-section--resident
+):not(
+  .person-profile-section--staff
+):not(
+  .person-profile-section--emergency
+):not(
+  .person-profile-section--preferences
+) {
+  border-color: rgb(191 219 254 / 0.9);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.07),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      #f8fbff
+    );
+}
+
+
+/* =========================================================
+   DOCUMENTO
+   ========================================================= */
+
+.person-profile-section:not(
+  .person-profile-section--resident
+):not(
+  .person-profile-section--staff
+):not(
+  .person-profile-section--emergency
+):not(
+  .person-profile-section--preferences
+)
+.person-profile-detail:nth-child(2)
+.person-profile-detail__value {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+
+/* =========================================================
+   CORREO Y TELÉFONO
+   ========================================================= */
+
+.person-profile-section:not(
+  .person-profile-section--resident
+):not(
+  .person-profile-section--staff
+):not(
+  .person-profile-section--emergency
+):not(
+  .person-profile-section--preferences
+)
+.person-profile-detail:nth-child(3),
+.person-profile-section:not(
+  .person-profile-section--resident
+):not(
+  .person-profile-section--staff
+):not(
+  .person-profile-section--emergency
+):not(
+  .person-profile-section--preferences
+)
+.person-profile-detail:nth-child(4) {
+  border-color: rgb(186 230 253 / 0.9);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--info-light),
+      var(--surface)
+    );
+}
+
+.person-profile-section:not(
+  .person-profile-section--resident
+):not(
+  .person-profile-section--staff
+):not(
+  .person-profile-section--emergency
+):not(
+  .person-profile-section--preferences
+)
+.person-profile-detail:nth-child(3)::before,
+.person-profile-section:not(
+  .person-profile-section--resident
+):not(
+  .person-profile-section--staff
+):not(
+  .person-profile-section--emergency
+):not(
+  .person-profile-section--preferences
+)
+.person-profile-detail:nth-child(4)::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--info),
+      #7dd3fc
+    );
+}
+
+
+/* =========================================================
+   TIPO DE SANGRE
+   ========================================================= */
+
+.person-profile-section:not(
+  .person-profile-section--resident
+):not(
+  .person-profile-section--staff
+):not(
+  .person-profile-section--emergency
+):not(
+  .person-profile-section--preferences
+)
+.person-profile-detail:nth-child(7) {
+  border-color: rgb(252 165 165 / 0.8);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--danger-light),
+      var(--surface)
+    );
+}
+
+.person-profile-section:not(
+  .person-profile-section--resident
+):not(
+  .person-profile-section--staff
+):not(
+  .person-profile-section--emergency
+):not(
+  .person-profile-section--preferences
+)
+.person-profile-detail:nth-child(7)::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--danger),
+      var(--danger-border)
+    );
+}
+
+.person-profile-section:not(
+  .person-profile-section--resident
+):not(
+  .person-profile-section--staff
+):not(
+  .person-profile-section--emergency
+):not(
+  .person-profile-section--preferences
+)
+.person-profile-detail:nth-child(7)
+.person-profile-detail__value {
+  color: var(--danger-dark);
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   ANIMACIÓN ESCALONADA
+   ========================================================= */
+
+.person-profile-detail {
+  animation:
+    person-profile-detail-entry
+    280ms ease-out both;
+}
+
+.person-profile-detail:nth-child(1) {
+  animation-delay: 30ms;
+}
+
+.person-profile-detail:nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.person-profile-detail:nth-child(3) {
+  animation-delay: 90ms;
+}
+
+.person-profile-detail:nth-child(4) {
+  animation-delay: 120ms;
+}
+
+.person-profile-detail:nth-child(5) {
+  animation-delay: 150ms;
+}
+
+.person-profile-detail:nth-child(6) {
+  animation-delay: 180ms;
+}
+
+.person-profile-detail:nth-child(7) {
+  animation-delay: 210ms;
+}
+
+.person-profile-detail:nth-child(8) {
+  animation-delay: 240ms;
+}
+
+@keyframes person-profile-detail-entry {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .person-profile-section {
+    padding: var(--space-20);
+    border-radius: var(--radius-lg);
+  }
+
+  .person-profile-section__header {
+    margin-bottom: var(--space-20);
+    padding-bottom: var(--space-16);
+  }
+
+  .person-profile-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .person-profile-detail--featured {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .person-profile-section__header {
+    flex-direction: column;
+  }
+
+  .person-profile-section__heading {
+    gap: var(--space-12);
+  }
+
+  .person-profile-section__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-basis: 2.75rem;
+  }
+
+  .person-profile-section__badge {
+    align-self: flex-start;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .person-profile-section {
+    padding: var(--space-16);
+  }
+
+  .person-profile-section__title {
+    font-size: 1rem;
+  }
+
+  .person-profile-section__description {
+    font-size: 0.82rem;
+  }
+
+  .person-profile-detail {
+    min-height: auto;
+    padding: var(--space-14, 0.875rem);
+  }
+
+  .person-profile-detail__label {
+    font-size: 0.65rem;
+  }
+
+  .person-profile-detail__value {
+    font-size: 0.88rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-section,
+  .person-profile-detail {
+    animation: none;
+    transition: none;
+  }
+
+  .person-profile-section:hover,
+  .person-profile-detail:hover {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   SECCIÓN DEL RESIDENTE
+   ========================================================= */
+
+.person-profile-section--resident {
+  border-color: rgb(134 239 172 / 0.8);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(22 163 74 / 0.09),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      #f7fef9
+    );
+}
+
+.person-profile-section--resident::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--success),
+      var(--success-border)
+    );
+}
+
+.person-profile-section--resident:hover {
+  border-color: var(--success-border);
+
+  box-shadow:
+    0 16px 34px rgb(22 101 52 / 0.09);
+}
+
+.person-profile-section--resident
+.person-profile-section__icon {
+  border-color: var(--success-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--success-light),
+      #f0fdf4
+    );
+
+  color: var(--success-dark);
+
+  box-shadow:
+    0 8px 18px rgb(22 163 74 / 0.11);
+}
+
+.person-profile-section--resident
+.person-profile-section__badge {
+  border-color: var(--success-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--success-light),
+      var(--surface)
+    );
+
+  color: var(--success-dark);
+}
+
+
+/* =========================================================
+   DETALLES DEL RESIDENTE
+   ========================================================= */
+
+.person-profile-section--resident
+.person-profile-detail {
+  border-color: rgb(187 247 208 / 0.95);
+
+  background:
+    linear-gradient(
+      145deg,
+      #f0fdf4,
+      var(--surface)
+    );
+}
+
+.person-profile-section--resident
+.person-profile-detail::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--success),
+      var(--success-border)
+    );
+}
+
+.person-profile-section--resident
+.person-profile-detail:hover {
+  border-color: var(--success-border);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--success-light),
+      var(--surface)
+    );
+
+  box-shadow:
+    0 10px 24px rgb(22 163 74 / 0.09);
+}
+
+.person-profile-section--resident
+.person-profile-detail__label {
+  color: var(--success-dark);
+}
+
+
+/* =========================================================
+   UBICACIÓN RESIDENCIAL DESTACADA
+   ========================================================= */
+
+.person-profile-section--resident
+.person-profile-detail--featured {
+  min-height: 7.5rem;
+
+  border-color: var(--success-border);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(22 163 74 / 0.12),
+      transparent 12rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--success-light),
+      var(--surface)
+    );
+}
+
+.person-profile-section--resident
+.person-profile-detail--featured::after {
+  position: absolute;
+  top: 50%;
+  right: var(--space-20);
+
+  display: grid;
+  place-items: center;
+
+  width: 3rem;
+  height: 3rem;
+
+  border: 1px solid var(--success-border);
+  border-radius: var(--radius-lg);
+
+  background: rgb(255 255 255 / 0.72);
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+  content: '🏠';
+}
+
+.person-profile-section--resident
+.person-profile-detail--featured
+.person-profile-detail__label,
+.person-profile-section--resident
+.person-profile-detail--featured
+.person-profile-detail__value {
+  max-width: calc(100% - 4rem);
+}
+
+.person-profile-section--resident
+.person-profile-detail--featured
+.person-profile-detail__value {
+  color: var(--success-dark);
+  font-size: 1.08rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   TORRE Y APARTAMENTO
+   ========================================================= */
+
+.person-profile-section--resident
+.person-profile-detail:nth-child(2),
+.person-profile-section--resident
+.person-profile-detail:nth-child(3) {
+  min-height: 7rem;
+}
+
+.person-profile-section--resident
+.person-profile-detail:nth-child(2)
+.person-profile-detail__value,
+.person-profile-section--resident
+.person-profile-detail:nth-child(3)
+.person-profile-detail__value {
+  color: var(--gray-900);
+  font-size: 1.2rem;
+  font-weight: 900;
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================================
+   PARENTESCO
+   ========================================================= */
+
+.person-profile-section--resident
+.person-profile-detail:nth-child(4) {
+  border-color: rgb(186 230 253 / 0.9);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--info-light),
+      var(--surface)
+    );
+}
+
+.person-profile-section--resident
+.person-profile-detail:nth-child(4)::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--info),
+      #7dd3fc
+    );
+}
+
+.person-profile-section--resident
+.person-profile-detail:nth-child(4)
+.person-profile-detail__label {
+  color: var(--info-dark);
+}
+
+
+/* =========================================================
+   SECCIÓN DE PERSONAL
+   ========================================================= */
+
+.person-profile-section--staff {
+  border-color: rgb(196 181 253 / 0.8);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(124 58 237 / 0.1),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      #faf9ff
+    );
+}
+
+.person-profile-section--staff::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--accent),
+      #c4b5fd
+    );
+}
+
+.person-profile-section--staff:hover {
+  border-color: #c4b5fd;
+
+  box-shadow:
+    0 16px 34px rgb(76 29 149 / 0.1);
+}
+
+.person-profile-section--staff
+.person-profile-section__icon {
+  border-color: #ddd6fe;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-light),
+      #f5f3ff
+    );
+
+  color: #5b21b6;
+
+  box-shadow:
+    0 8px 18px rgb(124 58 237 / 0.12);
+}
+
+.person-profile-section--staff
+.person-profile-section__badge {
+  border-color: #c4b5fd;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-light),
+      var(--surface)
+    );
+
+  color: #5b21b6;
+}
+
+
+/* =========================================================
+   DETALLES DEL PERSONAL
+   ========================================================= */
+
+.person-profile-section--staff
+.person-profile-detail {
+  border-color: rgb(221 214 254 / 0.95);
+
+  background:
+    linear-gradient(
+      145deg,
+      #f5f3ff,
+      var(--surface)
+    );
+}
+
+.person-profile-section--staff
+.person-profile-detail::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--accent),
+      #c4b5fd
+    );
+}
+
+.person-profile-section--staff
+.person-profile-detail:hover {
+  border-color: #c4b5fd;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--accent-light),
+      var(--surface)
+    );
+
+  box-shadow:
+    0 10px 24px rgb(124 58 237 / 0.09);
+}
+
+.person-profile-section--staff
+.person-profile-detail__label {
+  color: #6d28d9;
+}
+
+
+/* =========================================================
+   FUNCIÓN LABORAL DESTACADA
+   ========================================================= */
+
+.person-profile-section--staff
+.person-profile-detail--featured {
+  min-height: 7.5rem;
+
+  border-color: #c4b5fd;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(124 58 237 / 0.12),
+      transparent 12rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--accent-light),
+      var(--surface)
+    );
+}
+
+.person-profile-section--staff
+.person-profile-detail--featured::after {
+  position: absolute;
+  top: 50%;
+  right: var(--space-20);
+
+  display: grid;
+  place-items: center;
+
+  width: 3rem;
+  height: 3rem;
+
+  border: 1px solid #c4b5fd;
+  border-radius: var(--radius-lg);
+
+  background: rgb(255 255 255 / 0.72);
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+  content: '🪪';
+}
+
+.person-profile-section--staff
+.person-profile-detail--featured
+.person-profile-detail__label,
+.person-profile-section--staff
+.person-profile-detail--featured
+.person-profile-detail__value {
+  max-width: calc(100% - 4rem);
+}
+
+.person-profile-section--staff
+.person-profile-detail--featured
+.person-profile-detail__value {
+  color: #5b21b6;
+  font-size: 1.08rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   CARGO
+   ========================================================= */
+
+.person-profile-section--staff
+.person-profile-detail:nth-child(2)
+.person-profile-detail__value {
+  color: var(--gray-900);
+  font-size: 1.02rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   EMPRESA CONTRATISTA
+   ========================================================= */
+
+.person-profile-section--staff
+.person-profile-detail:nth-child(3) {
+  border-color: rgb(186 230 253 / 0.9);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--info-light),
+      var(--surface)
+    );
+}
+
+.person-profile-section--staff
+.person-profile-detail:nth-child(3)::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--info),
+      #7dd3fc
+    );
+}
+
+.person-profile-section--staff
+.person-profile-detail:nth-child(3)
+.person-profile-detail__label {
+  color: var(--info-dark);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .person-profile-section--resident
+  .person-profile-detail--featured
+  .person-profile-detail__label,
+  .person-profile-section--resident
+  .person-profile-detail--featured
+  .person-profile-detail__value,
+  .person-profile-section--staff
+  .person-profile-detail--featured
+  .person-profile-detail__label,
+  .person-profile-section--staff
+  .person-profile-detail--featured
+  .person-profile-detail__value {
+    max-width: calc(100% - 4rem);
+  }
+}
+
+@media (max-width: 520px) {
+  .person-profile-section--resident
+  .person-profile-detail--featured::after,
+  .person-profile-section--staff
+  .person-profile-detail--featured::after {
+    display: none;
+  }
+
+  .person-profile-section--resident
+  .person-profile-detail--featured
+  .person-profile-detail__label,
+  .person-profile-section--resident
+  .person-profile-detail--featured
+  .person-profile-detail__value,
+  .person-profile-section--staff
+  .person-profile-detail--featured
+  .person-profile-detail__label,
+  .person-profile-section--staff
+  .person-profile-detail--featured
+  .person-profile-detail__value {
+    max-width: 100%;
+  }
+
+  .person-profile-section--resident
+  .person-profile-detail:nth-child(2)
+  .person-profile-detail__value,
+  .person-profile-section--resident
+  .person-profile-detail:nth-child(3)
+  .person-profile-detail__value {
+    font-size: 1.05rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-section--resident,
+  .person-profile-section--staff,
+  .person-profile-section--resident
+  .person-profile-detail,
+  .person-profile-section--staff
+  .person-profile-detail {
+    transition: none;
+  }
+}
+
+/* =========================================================
+   SECCIÓN DE CONTACTO DE EMERGENCIA
+   ========================================================= */
+
+.person-profile-section--emergency {
+  border-color: rgb(252 165 165 / 0.8);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(220 38 38 / 0.09),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      #fffafa
+    );
+}
+
+.person-profile-section--emergency::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--danger),
+      var(--danger-border)
+    );
+}
+
+.person-profile-section--emergency:hover {
+  border-color: var(--danger-border);
+
+  box-shadow:
+    0 16px 34px rgb(153 27 27 / 0.09);
+}
+
+
+/* =========================================================
+   ICONO DE LA SECCIÓN
+   ========================================================= */
+
+.person-profile-section--emergency
+.person-profile-section__icon {
+  border-color: var(--danger-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      #fff7f7
+    );
+
+  color: var(--danger-dark);
+
+  box-shadow:
+    0 8px 18px rgb(220 38 38 / 0.11);
+}
+
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
+.person-profile-section--emergency
+.person-profile-section__title {
+  color: var(--danger-dark);
+}
+
+.person-profile-section--emergency
+.person-profile-section__description {
+  color: #7f1d1d;
+}
+
+
+/* =========================================================
+   TARJETAS DE CONTACTO
+   ========================================================= */
+
+.person-profile-section--emergency
+.person-profile-detail {
+  min-height: 7rem;
+
+  border-color: rgb(254 202 202 / 0.95);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--danger-light),
+      var(--surface)
+    );
+}
+
+.person-profile-section--emergency
+.person-profile-detail::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--danger),
+      var(--danger-border)
+    );
+}
+
+.person-profile-section--emergency
+.person-profile-detail:hover {
+  border-color: var(--danger-border);
+
+  background:
+    linear-gradient(
+      145deg,
+      #fecaca,
+      var(--surface)
+    );
+
+  box-shadow:
+    0 10px 24px rgb(220 38 38 / 0.09);
+}
+
+.person-profile-section--emergency
+.person-profile-detail__label {
+  color: var(--danger-dark);
+}
+
+
+/* =========================================================
+   NOMBRE DEL CONTACTO
+   ========================================================= */
+
+.person-profile-section--emergency
+.person-profile-detail:nth-child(1) {
+  position: relative;
+
+  padding-right: 4.75rem;
+}
+
+.person-profile-section--emergency
+.person-profile-detail:nth-child(1)::after {
+  position: absolute;
+  top: 50%;
+  right: var(--space-16);
+
+  display: grid;
+  place-items: center;
+
+  width: 2.75rem;
+  height: 2.75rem;
+
+  border: 1px solid var(--danger-border);
+  border-radius: var(--radius-lg);
+
+  background: rgb(255 255 255 / 0.72);
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+  content: '👤';
+}
+
+.person-profile-section--emergency
+.person-profile-detail:nth-child(1)
+.person-profile-detail__value {
+  color: var(--gray-900);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   TELÉFONO DEL CONTACTO
+   ========================================================= */
+
+.person-profile-section--emergency
+.person-profile-detail:nth-child(2) {
+  position: relative;
+
+  border-color: rgb(253 186 116 / 0.9);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--warning-light),
+      var(--surface)
+    );
+}
+
+.person-profile-section--emergency
+.person-profile-detail:nth-child(2)::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--warning),
+      #fbbf24
+    );
+}
+
+.person-profile-section--emergency
+.person-profile-detail:nth-child(2)::after {
+  position: absolute;
+  top: 50%;
+  right: var(--space-16);
+
+  display: grid;
+  place-items: center;
+
+  width: 2.75rem;
+  height: 2.75rem;
+
+  border: 1px solid #fcd34d;
+  border-radius: var(--radius-lg);
+
+  background: rgb(255 255 255 / 0.72);
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+  content: '☎';
+}
+
+.person-profile-section--emergency
+.person-profile-detail:nth-child(2)
+.person-profile-detail__label {
+  color: var(--warning-dark);
+}
+
+.person-profile-section--emergency
+.person-profile-detail:nth-child(2)
+.person-profile-detail__value {
+  max-width: calc(100% - 4rem);
+
+  color: var(--warning-dark);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   ENLACE TELEFÓNICO
+   ========================================================= */
+
+.person-profile-section--emergency
+.person-profile-detail__value--link {
+  color: var(--danger-dark);
+
+  text-decoration-color:
+    rgb(220 38 38 / 0.35);
+}
+
+.person-profile-section--emergency
+.person-profile-detail__value--link:hover {
+  color: var(--danger);
+  text-decoration-color: var(--danger);
+}
+
+
+/* =========================================================
+   AVISO VISUAL DE USO RESTRINGIDO
+   ========================================================= */
+
+.person-profile-section--emergency
+.person-profile-section__header::after {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  align-self: flex-start;
+
+  min-height: 2rem;
+  padding:
+    0.4rem
+    0.75rem;
+
+  border: 1px solid var(--danger-border);
+  border-radius: var(--radius-full);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      var(--surface)
+    );
+
+  color: var(--danger-dark);
+
+  font-size: 0.68rem;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  content: 'Uso de emergencia';
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 760px) {
+  .person-profile-section--emergency
+  .person-profile-section__header::after {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .person-profile-section--emergency
+  .person-profile-detail:nth-child(1),
+  .person-profile-section--emergency
+  .person-profile-detail:nth-child(2) {
+    padding-right: var(--space-16);
+  }
+
+  .person-profile-section--emergency
+  .person-profile-detail:nth-child(1)::after,
+  .person-profile-section--emergency
+  .person-profile-detail:nth-child(2)::after {
+    display: none;
+  }
+
+  .person-profile-section--emergency
+  .person-profile-detail:nth-child(2)
+  .person-profile-detail__value {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .person-profile-section--emergency
+  .person-profile-section__description {
+    font-size: 0.8rem;
+  }
+
+  .person-profile-section--emergency
+  .person-profile-detail {
+    min-height: auto;
+  }
+
+  .person-profile-section--emergency
+  .person-profile-detail__value {
+    font-size: 0.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-section--emergency,
+  .person-profile-section--emergency
+  .person-profile-detail {
+    transition: none;
+  }
+}
+
+
+/* =========================================================
+   SECCIÓN DE PREFERENCIAS
+   ========================================================= */
+
+.person-profile-section--preferences {
+  border-color: rgb(186 230 253 / 0.9);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(14 165 233 / 0.09),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      #f8fdff
+    );
+}
+
+.person-profile-section--preferences::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--info),
+      #7dd3fc
+    );
+}
+
+.person-profile-section--preferences:hover {
+  border-color: #7dd3fc;
+
+  box-shadow:
+    0 16px 34px rgb(7 89 133 / 0.09);
+}
+
+.person-profile-section--preferences
+.person-profile-section__icon {
+  border-color: #bae6fd;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--info-light),
+      #f0f9ff
+    );
+
+  color: var(--info-dark);
+
+  box-shadow:
+    0 8px 18px rgb(14 165 233 / 0.11);
+}
+
+
+/* =========================================================
+   CONTENEDOR DE PREFERENCIAS
+   ========================================================= */
+
+.person-profile-preferences {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: var(--space-16);
+}
+
+
+/* =========================================================
+   TARJETA DE PREFERENCIA
+   ========================================================= */
+
+.person-profile-preference {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-16);
+
+  min-width: 0;
+  min-height: 7.5rem;
+  padding: var(--space-20);
+
+  overflow: hidden;
+
+  border: 1px solid #bae6fd;
+  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--info-light),
+      var(--surface)
+    );
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease,
+    transform 170ms ease;
+}
+
+.person-profile-preference::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.24rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--info),
+      #7dd3fc
+    );
+
+  content: '';
+}
+
+.person-profile-preference:hover {
+  border-color: #7dd3fc;
+
+  box-shadow:
+    0 11px 26px rgb(14 165 233 / 0.09);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ICONO DE PREFERENCIA
+   ========================================================= */
+
+.person-profile-preference__icon {
+  display: grid;
+  place-items: center;
+
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 3rem;
+
+  border: 1px solid #bae6fd;
+  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(
+      135deg,
+      #e0f2fe,
+      #f0f9ff
+    );
+
+  color: var(--info-dark);
+
+  font-size: 1.15rem;
+  line-height: 1;
+
+  box-shadow:
+    0 8px 18px rgb(14 165 233 / 0.1);
+}
+
+
+/* =========================================================
+   CONTENIDO DE PREFERENCIA
+   ========================================================= */
+
+.person-profile-preference__content {
+  min-width: 0;
+}
+
+.person-profile-preference__label {
+  display: block;
+
+  margin-bottom: var(--space-8);
+
+  color: var(--info-dark);
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1.3;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.person-profile-preference__value {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  color: var(--gray-800);
+  font-size: 0.94rem;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.person-profile-preference__value::before {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 0.5rem;
+
+  border-radius: var(--radius-full);
+
+  background: var(--gray-400);
+
+  content: '';
+}
+
+
+/* =========================================================
+   NOTIFICACIONES ACTIVADAS
+   ========================================================= */
+
+.person-profile-preference__value--enabled {
+  color: var(--success-dark);
+}
+
+.person-profile-preference__value--enabled::before {
+  background: var(--success);
+
+  box-shadow:
+    0 0 0 0.2rem
+    rgb(22 163 74 / 0.12);
+}
+
+
+/* =========================================================
+   NOTIFICACIONES DESACTIVADAS
+   ========================================================= */
+
+.person-profile-preference__value--disabled {
+  color: var(--danger-dark);
+}
+
+.person-profile-preference__value--disabled::before {
+  background: var(--danger);
+
+  box-shadow:
+    0 0 0 0.2rem
+    rgb(220 38 38 / 0.12);
+}
+
+
+/* =========================================================
+   OBSERVACIONES
+   ========================================================= */
+
+.person-profile-preference--notes {
+  border-color: rgb(221 214 254 / 0.95);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(124 58 237 / 0.09),
+      transparent 12rem
+    ),
+    linear-gradient(
+      145deg,
+      var(--accent-light),
+      var(--surface)
+    );
+}
+
+.person-profile-preference--notes::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--accent),
+      #c4b5fd
+    );
+}
+
+.person-profile-preference--notes:hover {
+  border-color: #c4b5fd;
+
+  box-shadow:
+    0 11px 26px rgb(124 58 237 / 0.09);
+}
+
+.person-profile-preference--notes
+.person-profile-preference__icon {
+  border-color: #ddd6fe;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-light),
+      #f5f3ff
+    );
+
+  color: #5b21b6;
+}
+
+.person-profile-preference--notes
+.person-profile-preference__label {
+  color: #6d28d9;
+}
+
+.person-profile-preference__description {
+  margin: 0;
+
+  color: var(--gray-700);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.65;
+
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   AVISO DE PRIVACIDAD
+   ========================================================= */
+
+.person-profile-privacy-notice {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-16);
+
+  padding: var(--space-20);
+
+  overflow: hidden;
+
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-lg);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.1),
+      transparent 15rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      var(--surface)
+    );
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.person-profile-privacy-notice::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.28rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-primary),
+      var(--color-primary-dark)
+    );
+
+  content: '';
+}
+
+.person-profile-privacy-notice::after {
+  position: absolute;
+  right: -3rem;
+  bottom: -4rem;
+
+  width: 10rem;
+  height: 10rem;
+
+  border-radius: var(--radius-full);
+
+  background:
+    radial-gradient(
+      circle,
+      rgb(37 99 235 / 0.09),
+      transparent 68%
+    );
+
+  pointer-events: none;
+  content: '';
+}
+
+.person-profile-privacy-notice:hover {
+  border-color: #93c5fd;
+
+  box-shadow:
+    0 14px 30px rgb(30 64 175 / 0.09);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ICONO DE PRIVACIDAD
+   ========================================================= */
+
+.person-profile-privacy-notice__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 3rem;
+
+  border: 1px solid #93c5fd;
+  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      var(--surface)
+    );
+
+  color: var(--color-primary-dark);
+
+  font-size: 1.15rem;
+  line-height: 1;
+
+  box-shadow:
+    0 9px 20px rgb(37 99 235 / 0.13);
+}
+
+
+/* =========================================================
+   CONTENIDO DE PRIVACIDAD
+   ========================================================= */
+
+.person-profile-privacy-notice__content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+.person-profile-privacy-notice__title {
+  margin: 0;
+
+  color: var(--color-primary-dark);
+  font-size: 0.96rem;
+  font-weight: 850;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.person-profile-privacy-notice__description {
+  max-width: 64rem;
+  margin: var(--space-8) 0 0;
+
+  color: var(--gray-700);
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .person-profile-preferences {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .person-profile-preference,
+  .person-profile-privacy-notice {
+    flex-direction: column;
+    padding: var(--space-16);
+  }
+
+  .person-profile-preference__icon,
+  .person-profile-privacy-notice__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-basis: 2.75rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .person-profile-preference {
+    min-height: auto;
+  }
+
+  .person-profile-preference__label {
+    font-size: 0.66rem;
+  }
+
+  .person-profile-preference__value,
+  .person-profile-preference__description {
+    font-size: 0.84rem;
+  }
+
+  .person-profile-privacy-notice__title {
+    font-size: 0.9rem;
+  }
+
+  .person-profile-privacy-notice__description {
+    font-size: 0.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-preference,
+  .person-profile-privacy-notice {
+    transition: none;
+  }
+
+  .person-profile-preference:hover,
+  .person-profile-privacy-notice:hover {
+    transform: none;
+  }
+}
+
+
+
+/* =========================================================
+   AJUSTES GLOBALES DEL COMPONENTE
+   ========================================================= */
+
+.person-profile-page,
+.person-profile-page *,
+.person-profile-page *::before,
+.person-profile-page *::after {
+  box-sizing: border-box;
+}
+
+.person-profile-page {
+  isolation: isolate;
+}
+
+.person-profile-page img {
+  max-width: 100%;
+}
+
+.person-profile-page button,
+.person-profile-page a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.person-profile-page ::selection {
+  color: var(--text-white);
+  background: var(--color-primary);
+}
+
+
+/* =========================================================
+   MANEJO DE TEXTOS LARGOS
+   ========================================================= */
+
+.person-profile-header__title,
+.person-profile-header__description,
+.person-profile-hero__name,
+.person-profile-hero__email,
+.person-profile-hero__location,
+.person-profile-section__title,
+.person-profile-section__description,
+.person-profile-detail__label,
+.person-profile-detail__value,
+.person-profile-preference__description,
+.person-profile-privacy-notice__title,
+.person-profile-privacy-notice__description {
+  overflow-wrap: anywhere;
+}
+
+.person-profile-header__content,
+.person-profile-hero__identity,
+.person-profile-hero__information,
+.person-profile-section__heading,
+.person-profile-detail,
+.person-profile-preference__content,
+.person-profile-privacy-notice__content {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   FOCO ACCESIBLE
+   ========================================================= */
+
+.person-profile-page button:focus-visible,
+.person-profile-page a:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 0.22);
+  outline-offset: 3px;
+}
+
+.person-profile-page button:focus:not(:focus-visible),
+.person-profile-page a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+
+/* =========================================================
+   ESTADOS DESHABILITADOS
+   ========================================================= */
+
+.person-profile-page [disabled] {
+  cursor: not-allowed;
+}
+
+.person-profile-button:disabled {
+  box-shadow: none;
+  filter: saturate(0.75);
+}
+
+
+/* =========================================================
+   ACTUALIZACIÓN EN SEGUNDO PLANO
+   ========================================================= */
+
+.person-profile-header:has(
+  .person-profile-button--secondary:disabled
+) {
+  cursor: progress;
+}
+
+.person-profile-header:has(
+  .person-profile-button--secondary:disabled
+)
+.person-profile-header__content {
+  opacity: 0.78;
+}
+
+.person-profile-header__content {
+  transition: opacity 180ms ease;
+}
+
+
+/* =========================================================
+   PANTALLAS GRANDES
+   ========================================================= */
+
+@media (min-width: 1280px) {
+  .person-profile-page {
+    padding: var(--space-32);
+  }
+
+  .person-profile-header {
+    padding:
+      var(--space-28)
+      var(--space-32);
+  }
+
+  .person-profile-content {
+    gap: var(--space-28);
+  }
+
+  .person-profile-hero {
+    padding: var(--space-32);
+  }
+
+  .person-profile-section {
+    padding: var(--space-28);
+  }
+
+  .person-profile-details-grid,
+  .person-profile-preferences {
+    gap: var(--space-20);
+  }
+
+  .person-profile-detail,
+  .person-profile-preference {
+    padding: var(--space-20);
+  }
+}
+
+
+/* =========================================================
+   MONITORES MUY GRANDES
+   ========================================================= */
+
+@media (min-width: 1600px) {
+  .person-profile-header,
+  .person-profile-content,
+  .person-profile-alert,
+  .person-profile-loading,
+  .person-profile-empty {
+    width: min(100%, 96rem);
+  }
+
+  .person-profile-details-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .person-profile-detail--featured {
+    grid-column: span 3;
+  }
+
+  .person-profile-section--resident
+  .person-profile-detail--featured,
+  .person-profile-section--staff
+  .person-profile-detail--featured {
+    grid-column: span 3;
+  }
+
+  .person-profile-preferences {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* =========================================================
+   TABLET HORIZONTAL
+   ========================================================= */
+
+@media (
+  min-width: 769px
+) and (
+  max-width: 1100px
+) {
+  .person-profile-page {
+    padding: var(--space-20);
+  }
+
+  .person-profile-header {
+    padding: var(--space-20);
+  }
+
+  .person-profile-hero {
+    padding: var(--space-24);
+  }
+
+  .person-profile-section {
+    padding: var(--space-20);
+  }
+
+  .person-profile-avatar {
+    width: 6.5rem;
+    height: 6.5rem;
+    flex-basis: 6.5rem;
+  }
+
+  .person-profile-details-grid {
+    gap: var(--space-12);
+  }
+}
+
+
+/* =========================================================
+   MÓVILES MEDIANOS
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .person-profile-page {
+    padding: var(--space-12);
+  }
+
+  .person-profile-header {
+    margin-bottom: var(--space-20);
+  }
+
+  .person-profile-content {
+    gap: var(--space-20);
+  }
+
+  .person-profile-header__actions {
+    width: 100%;
+  }
+
+  .person-profile-button--secondary {
+    flex: 1;
+  }
+
+  .person-profile-hero__metadata {
+    width: 100%;
+  }
+
+  .person-profile-status,
+  .person-profile-hero__location {
+    justify-content: center;
+  }
+}
+
+
+/* =========================================================
+   MÓVILES PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 340px) {
+  .person-profile-page {
+    padding: var(--space-4);
+  }
+
+  .person-profile-header,
+  .person-profile-hero,
+  .person-profile-section,
+  .person-profile-alert,
+  .person-profile-loading,
+  .person-profile-empty,
+  .person-profile-privacy-notice {
+    border-radius: var(--radius-md);
+  }
+
+  .person-profile-header {
+    padding: var(--space-14, 0.875rem);
+  }
+
+  .person-profile-header__eyebrow {
+    font-size: 0.66rem;
+  }
+
+  .person-profile-header__title {
+    font-size: 1.4rem;
+  }
+
+  .person-profile-header__description {
+    font-size: 0.8rem;
+  }
+
+  .person-profile-header__actions {
+    gap: var(--space-8);
+  }
+
+  .person-profile-button {
+    min-height: 2.7rem;
+    padding-inline: 0.75rem;
+
+    font-size: 0.78rem;
+  }
+
+  .person-profile-button--close {
+    width: 2.7rem;
+    min-width: 2.7rem;
+    padding: 0;
+  }
+
+  .person-profile-hero {
+    padding: var(--space-16);
+  }
+
+  .person-profile-avatar {
+    width: 5.25rem;
+    height: 5.25rem;
+    flex-basis: 5.25rem;
+  }
+
+  .person-profile-avatar__initials {
+    font-size: 1.5rem;
+  }
+
+  .person-profile-hero__name {
+    font-size: 1.35rem;
+  }
+
+  .person-profile-section {
+    padding: var(--space-14, 0.875rem);
+  }
+
+  .person-profile-section__heading {
+    gap: var(--space-8);
+  }
+
+  .person-profile-section__icon {
+    width: 2.45rem;
+    height: 2.45rem;
+    flex-basis: 2.45rem;
+  }
+
+  .person-profile-detail,
+  .person-profile-preference,
+  .person-profile-privacy-notice {
+    padding: var(--space-12);
+  }
+}
+
+
+/* =========================================================
+   MÓVIL EN ORIENTACIÓN HORIZONTAL
+   ========================================================= */
+
+@media (
+  max-height: 520px
+) and (
+  orientation: landscape
+) {
+  .person-profile-page {
+    padding: var(--space-12);
+  }
+
+  .person-profile-header {
+    padding: var(--space-16);
+  }
+
+  .person-profile-header__description {
+    max-width: 38rem;
+  }
+
+  .person-profile-hero {
+    padding: var(--space-16);
+  }
+
+  .person-profile-avatar {
+    width: 5.5rem;
+    height: 5.5rem;
+    flex-basis: 5.5rem;
+  }
+
+  .person-profile-section {
+    padding: var(--space-16);
+  }
+
+  .person-profile-details-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .person-profile-detail--featured {
+    grid-column: span 2;
+  }
+}
+
+
+/* =========================================================
+   CONTRASTE ALTO
+   ========================================================= */
+
+@media (prefers-contrast: more) {
+  .person-profile-header,
+  .person-profile-hero,
+  .person-profile-section,
+  .person-profile-detail,
+  .person-profile-preference,
+  .person-profile-alert,
+  .person-profile-loading,
+  .person-profile-empty,
+  .person-profile-privacy-notice,
+  .person-profile-button {
+    border-width: 2px;
+  }
+
+  .person-profile-header__description,
+  .person-profile-section__description,
+  .person-profile-detail__label,
+  .person-profile-preference__description,
+  .person-profile-privacy-notice__description {
+    color: var(--gray-700);
+  }
+
+  .person-profile-button--primary {
+    background: var(--color-primary-dark);
+  }
+}
+
+
+/* =========================================================
+   MOVIMIENTO REDUCIDO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-page *,
+  .person-profile-page *::before,
+  .person-profile-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .person-profile-header,
+  .person-profile-hero,
+  .person-profile-section,
+  .person-profile-detail,
+  .person-profile-preference,
+  .person-profile-privacy-notice,
+  .person-profile-button {
+    transform: none !important;
+  }
+}
+
+
+/* =========================================================
+   COMPATIBILIDAD SIN :HAS
+   ========================================================= */
+
+@supports not selector(:has(*)) {
+  .person-profile-header__content {
+    opacity: 1;
+  }
+
+  .person-profile-hero {
+    border-color: #bfdbfe;
+  }
+}
+
+
+/* =========================================================
+   IMPRESIÓN
+   ========================================================= */
+
+@media print {
+  :host {
+    --surface: #ffffff;
+    --surface-secondary: #ffffff;
+    --background: #ffffff;
+    --text-primary: #000000;
+    --text-secondary: #262626;
+    --text-muted: #404040;
+    --border-light: #d4d4d4;
+    --border: #a3a3a3;
+
+    color: #000000;
+  }
+
+  .person-profile-page {
+    padding: 0;
+
+    background: #ffffff;
+  }
+
+  .person-profile-header,
+  .person-profile-hero,
+  .person-profile-section,
+  .person-profile-detail,
+  .person-profile-preference,
+  .person-profile-privacy-notice,
+  .person-profile-alert {
+    break-inside: avoid;
+
+    border-color: #a3a3a3;
+
+    background: #ffffff !important;
+    box-shadow: none !important;
+  }
+
+  .person-profile-header::before,
+  .person-profile-header::after,
+  .person-profile-hero::before,
+  .person-profile-hero::after,
+  .person-profile-section::before,
+  .person-profile-detail::before,
+  .person-profile-preference::before,
+  .person-profile-privacy-notice::before,
+  .person-profile-privacy-notice::after {
+    display: none;
+  }
+
+  .person-profile-header__actions,
+  .person-profile-hero__actions,
+  .person-profile-alert__close {
+    display: none !important;
+  }
+
+  .person-profile-content {
+    display: block;
+  }
+
+  .person-profile-hero,
+  .person-profile-section,
+  .person-profile-privacy-notice {
+    margin-top: 1rem;
+  }
+
+  .person-profile-details-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .person-profile-detail--featured {
+    grid-column: span 2;
+  }
+
+  .person-profile-avatar {
+    border-color: #a3a3a3;
+    box-shadow: none;
+  }
+
+  .person-profile-detail__value--link {
+    color: #000000;
+    text-decoration: none;
+  }
+}
+
+
+/* =========================================================
+   COLORES FORZADOS
+   ========================================================= */
+
+@media (forced-colors: active) {
+  .person-profile-header,
+  .person-profile-hero,
+  .person-profile-section,
+  .person-profile-detail,
+  .person-profile-preference,
+  .person-profile-alert,
+  .person-profile-loading,
+  .person-profile-empty,
+  .person-profile-privacy-notice,
+  .person-profile-button,
+  .person-profile-avatar {
+    border: 1px solid CanvasText;
+  }
+
+  .person-profile-header::before,
+  .person-profile-hero::before,
+  .person-profile-section::before,
+  .person-profile-detail::before,
+  .person-profile-preference::before,
+  .person-profile-alert::before,
+  .person-profile-privacy-notice::before {
+    background: CanvasText;
+  }
+
+  .person-profile-page button:focus-visible,
+  .person-profile-page a:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}

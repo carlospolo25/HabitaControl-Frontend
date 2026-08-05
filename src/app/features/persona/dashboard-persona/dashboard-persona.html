@@ -112,22 +112,66 @@
         </button>
       }
     </nav>
-
-    <button type="button" class="logout-button" (click)="logout()">
-      Cerrar sesión
-    </button>
   </aside>
 
   <main class="persona-content">
 
     <header class="persona-header">
-      <div>
-        <span class="eyebrow">Dashboard persona</span>
-        <h1>Panel {{ tipo }}</h1>
-        <p>
+
+      <div class="persona-header__content">
+
+        <span class="eyebrow">
+          Dashboard persona
+        </span>
+
+        <h1 class="persona-header__title">
+          Panel {{ tipo }}
+        </h1>
+
+        <p class="persona-header__description">
           Gestiona tus operaciones según tu rol dentro del conjunto residencial.
         </p>
+
       </div>
+
+      <div class="persona-header__actions">
+
+        <button
+          type="button"
+          class="persona-header__profile-button"
+          (click)="abrirPerfil()">
+
+          <span
+            class="persona-header__profile-icon"
+            aria-hidden="true">
+            👤
+          </span>
+
+          <span>
+            Mi perfil
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="persona-header__logout-button"
+          (click)="logout()">
+
+          <span
+            class="persona-header__logout-icon"
+            aria-hidden="true">
+            ↪
+          </span>
+
+          <span>
+            Cerrar sesión
+          </span>
+
+        </button>
+
+      </div>
+
     </header>
 
     <section class="persona-panel">
@@ -194,6 +238,12 @@
         </app-crear-invitacion-visitante>
       }
 
+      @if (vistaActiva === 'mi-perfil') {
+        <app-perfil-personas
+          (cerrar)="cerrarVistaActual()">
+        </app-perfil-personas>
+      }
+
       @if (
         vistaActiva === 'zonas-comunes' &&
         puedeVerReservas
@@ -241,3 +291,4 @@
     (onClose)="cerrarVistaActual()">
   </app-form-seguimiento>
 }
+

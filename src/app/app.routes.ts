@@ -46,6 +46,13 @@ export const routes: Routes = [
   },
 
   {
+    path: 'seguridad/cerrar-sesiones',
+    loadComponent: () =>
+      import('./features/seguridad/cerrar-sesiones/cerrar-sesiones')
+        .then(m => m.CerrarSesionesComponent),
+  },
+
+  {
     path: 'dashboard',
     canActivate: [authGuardGuard],
     loadComponent: () =>

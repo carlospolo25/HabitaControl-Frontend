@@ -2278,4 +2278,384 @@ p {
   }
 }
 
+/* =========================================================
+   HEADER - ACCIONES DE LA CUENTA
+   ========================================================= */
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.dashboard-header__account-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+.dashboard-header__profile-button,
+.dashboard-header__logout-button {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+
+  min-height: 3.5rem;
+  padding: 0.85rem 1.15rem;
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+
+  background: var(--surface);
+
+  cursor: pointer;
+
+  transition:
+    background-color .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease;
+}
+
+.dashboard-header__profile-button:hover,
+.dashboard-header__logout-button:hover {
+  transform: translateY(-1px);
+
+  border-color: var(--color-primary-light);
+
+  box-shadow: var(--shadow-md);
+
+  background: var(--surface-hover);
+}
+
+.dashboard-header__profile-button:active,
+.dashboard-header__logout-button:active {
+  transform: scale(.98);
+}
+
+.dashboard-header__profile-button:focus-visible,
+.dashboard-header__logout-button:focus-visible {
+  outline: 3px solid rgb(37 99 235 / .18);
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   PERFIL ACTIVO
+   ========================================================= */
+
+.dashboard-header__profile-button--active {
+  border-color: var(--color-primary);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      var(--surface)
+    );
+}
+
+/* =========================================================
+   BOTÓN DE PERFIL
+   ========================================================= */
+
+.dashboard-header__profile-button {
+  min-width: 13.5rem;
+
+  color: var(--text-primary);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface),
+      var(--surface-secondary)
+    );
+}
+
+.dashboard-header__profile-icon {
+  display: grid;
+  place-items: center;
+
+  width: 2.65rem;
+  height: 2.65rem;
+  flex: 0 0 2.65rem;
+
+  border: 1px solid #bfdbfe;
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      #eff6ff
+    );
+
+  color: var(--color-primary-dark);
+
+  font-size: 1.1rem;
+  line-height: 1;
+
+  box-shadow:
+    0 6px 14px rgb(37 99 235 / 0.12);
+
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.dashboard-header__profile-button:hover
+.dashboard-header__profile-icon {
+  transform: translateY(-1px);
+
+  border-color: #93c5fd;
+
+  box-shadow:
+    0 9px 18px rgb(37 99 235 / 0.17);
+}
+
+.dashboard-header__profile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+
+  min-width: 0;
+}
+
+.dashboard-header__profile-label {
+  color: var(--gray-900);
+
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.dashboard-header__profile-description {
+  color: var(--text-muted);
+
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.25;
+
+  white-space: nowrap;
+}
+
+.dashboard-header__profile-button--active
+.dashboard-header__profile-icon {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--text-white);
+
+  box-shadow:
+    0 7px 18px rgb(37 99 235 / 0.24);
+}
+
+.dashboard-header__profile-button--active
+.dashboard-header__profile-label {
+  color: var(--color-primary-dark);
+}
+
+
+/* =========================================================
+   BOTÓN CERRAR SESIÓN
+   ========================================================= */
+
+.dashboard-header__logout-button {
+  position: relative;
+
+  color: var(--danger-dark);
+  border-color: rgb(252 165 165 / 0.8);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      var(--surface)
+    );
+}
+
+.dashboard-header__logout-button:hover {
+  color: var(--text-white);
+  border-color: var(--danger);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger),
+      var(--danger-dark)
+    );
+
+  box-shadow:
+    0 10px 22px rgb(220 38 38 / 0.2);
+}
+
+.dashboard-header__logout-icon {
+  display: grid;
+  place-items: center;
+
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 2.2rem;
+
+  border: 1px solid rgb(252 165 165 / 0.85);
+  border-radius: var(--radius-md);
+
+  background: rgb(255 255 255 / 0.72);
+  color: var(--danger);
+
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1;
+
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.dashboard-header__logout-button:hover
+.dashboard-header__logout-icon {
+  color: var(--text-white);
+  border-color: rgb(255 255 255 / 0.35);
+  background: rgb(255 255 255 / 0.14);
+
+  transform: translateX(1px);
+}
+
+.dashboard-header__logout-label {
+  color: inherit;
+
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.2;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   SEPARACIÓN VISUAL ENTRE ACCIONES
+   ========================================================= */
+
+.dashboard-header__logout-button::before {
+  position: absolute;
+  top: 50%;
+  left: -0.55rem;
+
+  width: 1px;
+  height: 2.2rem;
+
+  background: var(--border-light);
+
+  transform: translateY(-50%);
+
+  content: '';
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 980px) {
+  .dashboard-header {
+    align-items: flex-start;
+  }
+
+  .dashboard-header__account-actions {
+    gap: 0.75rem;
+  }
+
+  .dashboard-header__profile-button {
+    min-width: auto;
+  }
+
+  .dashboard-header__profile-description {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard-header__account-actions {
+    width: 100%;
+    justify-content: flex-end;
+
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .dashboard-header__profile-button {
+    flex: 1;
+  }
+
+  .dashboard-header__profile-description {
+    display: block;
+  }
+}
+
+@media (max-width: 520px) {
+  .dashboard-header__account-actions {
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .dashboard-header__profile-button {
+    min-width: 0;
+  }
+
+  .dashboard-header__logout-button {
+    width: 3.5rem;
+    min-width: 3.5rem;
+    padding-inline: 0;
+    justify-content: center;
+  }
+
+  .dashboard-header__logout-label {
+    display: none;
+  }
+
+  .dashboard-header__logout-button::before {
+    left: -0.4rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .dashboard-header__profile-button {
+    padding-inline: 0.75rem;
+  }
+
+  .dashboard-header__profile-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    flex-basis: 2.4rem;
+  }
+
+  .dashboard-header__profile-label {
+    font-size: 0.84rem;
+  }
+
+  .dashboard-header__profile-description {
+    font-size: 0.66rem;
+  }
+
+  .dashboard-header__logout-button {
+    width: 3.2rem;
+    min-width: 3.2rem;
+  }
+}
+
 

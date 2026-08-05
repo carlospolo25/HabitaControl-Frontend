@@ -1,0 +1,774 @@
+<section class="person-profile-page">
+
+  @if (mostrarFormulario && perfil) {
+
+    <!-- =====================================================
+         FORMULARIO DE EDICIÓN
+         ===================================================== -->
+    <app-form-perfil-persona
+      [perfil]="perfil"
+      (cerrar)="cerrarFormulario()"
+      (perfilActualizado)="recibirPerfilActualizado($event)">
+    </app-form-perfil-persona>
+
+  } @else {
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <header class="person-profile-header">
+
+      <div class="person-profile-header__content">
+
+        <span class="person-profile-header__eyebrow">
+          Cuenta personal
+        </span>
+
+        <h2 class="person-profile-header__title">
+          Mi perfil
+        </h2>
+
+        <p class="person-profile-header__description">
+          Consulta y administra la información asociada a tu cuenta en
+          HabitaControl.
+        </p>
+
+      </div>
+
+      <div class="person-profile-header__actions">
+
+        <button
+          type="button"
+          class="person-profile-button person-profile-button--secondary"
+          (click)="cargarPerfil()"
+          [disabled]="isLoading"
+          aria-label="Actualizar información del perfil">
+
+          <span
+            class="person-profile-button__icon"
+            aria-hidden="true">
+            ↻
+          </span>
+
+          <span>
+            {{ isLoading ? 'Actualizando...' : 'Actualizar' }}
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="person-profile-button person-profile-button--close"
+          (click)="cerrarVista()"
+          aria-label="Cerrar perfil">
+
+          <span aria-hidden="true">
+            ×
+          </span>
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MENSAJE DE ERROR
+         ===================================================== -->
+    @if (hasError && errorMessage) {
+      <section
+        class="person-profile-alert person-profile-alert--error"
+        role="alert">
+
+        <span
+          class="person-profile-alert__icon"
+          aria-hidden="true">
+          !
+        </span>
+
+        <div class="person-profile-alert__content">
+
+          <strong class="person-profile-alert__title">
+            No fue posible cargar el perfil
+          </strong>
+
+          <p class="person-profile-alert__message">
+            {{ errorMessage }}
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="person-profile-alert__close"
+          (click)="cerrarError()"
+          aria-label="Cerrar mensaje de error">
+          ×
+        </button>
+
+      </section>
+    }
+
+
+    <!-- =====================================================
+         ESTADO DE CARGA
+         ===================================================== -->
+    @if (isLoading && !perfil) {
+      <section
+        class="person-profile-loading"
+        aria-live="polite">
+
+        <div
+          class="person-profile-loading__spinner"
+          aria-hidden="true">
+        </div>
+
+        <div class="person-profile-loading__content">
+
+          <h3 class="person-profile-loading__title">
+            Cargando tu perfil
+          </h3>
+
+          <p class="person-profile-loading__description">
+            Estamos consultando la información asociada a tu cuenta.
+          </p>
+
+        </div>
+
+      </section>
+    }
+
+
+    <!-- =====================================================
+         ESTADO SIN INFORMACIÓN
+         ===================================================== -->
+    @if (!isLoading && !hasError && !perfil) {
+      <section class="person-profile-empty">
+
+        <div
+          class="person-profile-empty__icon"
+          aria-hidden="true">
+          👤
+        </div>
+
+        <h3 class="person-profile-empty__title">
+          No hay información disponible
+        </h3>
+
+        <p class="person-profile-empty__description">
+          No fue posible encontrar los datos asociados a tu cuenta.
+        </p>
+
+        <button
+          type="button"
+          class="person-profile-button person-profile-button--primary"
+          (click)="cargarPerfil()">
+
+          Intentar nuevamente
+        </button>
+
+      </section>
+    }
+
+
+    <!-- =====================================================
+         CONTENIDO DEL PERFIL
+         ===================================================== -->
+    @if (perfil) {
+      <div class="person-profile-content">
+
+        <!-- =================================================
+             TARJETA PRINCIPAL
+             ================================================= -->
+        <article class="person-profile-hero">
+
+          <div class="person-profile-hero__identity">
+
+            <div class="person-profile-avatar">
+
+              @if (obtenerFotoPerfil(); as fotoPerfil) {
+                <img
+                  class="person-profile-avatar__image"
+                  [src]="fotoPerfil"
+                  [alt]="'Fotografía de perfil de ' + perfil.name"
+                  (error)="manejarErrorFoto()">
+              } @else {
+                <span
+                  class="person-profile-avatar__initials"
+                  aria-label="Iniciales de la persona">
+                  {{ obtenerIniciales() }}
+                </span>
+              }
+
+            </div>
+
+            <div class="person-profile-hero__information">
+
+              <span class="person-profile-hero__type">
+                {{ perfil.personTypeName || 'Persona' }}
+              </span>
+
+              <h3 class="person-profile-hero__name">
+                {{ perfil.name || 'Sin nombre registrado' }}
+              </h3>
+
+              <p class="person-profile-hero__email">
+                {{ perfil.email || 'Sin correo registrado' }}
+              </p>
+
+              <div class="person-profile-hero__metadata">
+
+                <span
+                  class="person-profile-status"
+                  [class.person-profile-status--active]="perfil.active"
+                  [class.person-profile-status--inactive]="!perfil.active">
+
+                  <span
+                    class="person-profile-status__indicator"
+                    aria-hidden="true">
+                  </span>
+
+                  {{ perfil.active ? 'Cuenta activa' : 'Cuenta suspendida' }}
+                </span>
+
+                @if (perfil.personType === 1) {
+                  <span class="person-profile-hero__location">
+                    Torre {{ perfil.tower || '—' }} ·
+                    Apto. {{ perfil.apartment || '—' }}
+                  </span>
+                } @else {
+                  <span class="person-profile-hero__location">
+                    {{ perfil.jobTitle || perfil.personTypeName }}
+                  </span>
+                }
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="person-profile-hero__actions">
+
+            <button
+              type="button"
+              class="person-profile-button person-profile-button--primary"
+              (click)="abrirFormulario()"
+              [disabled]="isLoading || !perfil.active">
+
+              <span
+                class="person-profile-button__icon"
+                aria-hidden="true">
+                ✎
+              </span>
+
+              <span>
+                Editar perfil
+              </span>
+
+            </button>
+
+          </div>
+
+        </article>
+
+
+        <!-- =================================================
+             INFORMACIÓN PERSONAL
+             ================================================= -->
+        <section class="person-profile-section">
+
+          <header class="person-profile-section__header">
+
+            <div class="person-profile-section__heading">
+
+              <div
+                class="person-profile-section__icon"
+                aria-hidden="true">
+                👤
+              </div>
+
+              <div>
+                <h3 class="person-profile-section__title">
+                  Información personal
+                </h3>
+
+                <p class="person-profile-section__description">
+                  Datos de identificación y contacto asociados a tu cuenta.
+                </p>
+              </div>
+
+            </div>
+
+          </header>
+
+          <div class="person-profile-details-grid">
+
+            <article class="person-profile-detail">
+
+              <span class="person-profile-detail__label">
+                Nombre completo
+              </span>
+
+              <strong class="person-profile-detail__value">
+                {{ perfil.name || 'Sin registro' }}
+              </strong>
+
+            </article>
+
+            <article class="person-profile-detail">
+
+              <span class="person-profile-detail__label">
+                Documento
+              </span>
+
+              <strong class="person-profile-detail__value">
+                {{ perfil.document || 'Sin registro' }}
+              </strong>
+
+            </article>
+
+            <article class="person-profile-detail">
+
+              <span class="person-profile-detail__label">
+                Correo electrónico
+              </span>
+
+              @if (perfil.email) {
+                <a
+                  class="person-profile-detail__value person-profile-detail__value--link"
+                  [href]="'mailto:' + perfil.email">
+                  {{ perfil.email }}
+                </a>
+              } @else {
+                <strong class="person-profile-detail__value">
+                  Sin registro
+                </strong>
+              }
+
+            </article>
+
+            <article class="person-profile-detail">
+
+              <span class="person-profile-detail__label">
+                Teléfono
+              </span>
+
+              @if (perfil.phone) {
+                <a
+                  class="person-profile-detail__value person-profile-detail__value--link"
+                  [href]="'tel:' + perfil.phone">
+                  {{ perfil.phone }}
+                </a>
+              } @else {
+                <strong class="person-profile-detail__value">
+                  Sin registro
+                </strong>
+              }
+
+            </article>
+
+            <article class="person-profile-detail">
+
+              <span class="person-profile-detail__label">
+                Tipo de persona
+              </span>
+
+              <strong class="person-profile-detail__value">
+                {{ perfil.personTypeName || 'Sin registro' }}
+              </strong>
+
+            </article>
+
+            <article class="person-profile-detail">
+
+              <span class="person-profile-detail__label">
+                Fecha de nacimiento
+              </span>
+
+              <strong class="person-profile-detail__value">
+                {{ formatearFecha(perfil.birthDate) }}
+              </strong>
+
+            </article>
+
+            <article class="person-profile-detail">
+
+              <span class="person-profile-detail__label">
+                Estado de la cuenta
+              </span>
+
+              <strong class="person-profile-detail__value">
+                {{ perfil.status || (perfil.active ? 'Activa' : 'Suspendida') }}
+              </strong>
+
+            </article>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             INFORMACIÓN DEL RESIDENTE
+             ================================================= -->
+        @if (perfil.personType === 1) {
+          <section class="person-profile-section person-profile-section--resident">
+
+            <header class="person-profile-section__header">
+
+              <div class="person-profile-section__heading">
+
+                <div
+                  class="person-profile-section__icon"
+                  aria-hidden="true">
+                  🏠
+                </div>
+
+                <div>
+                  <h3 class="person-profile-section__title">
+                    Información residencial
+                  </h3>
+
+                  <p class="person-profile-section__description">
+                    Ubicación y relación registrada dentro de la copropiedad.
+                  </p>
+                </div>
+
+              </div>
+
+              <span class="person-profile-section__badge">
+                Residente
+              </span>
+
+            </header>
+
+            <div class="person-profile-details-grid">
+
+              <article class="person-profile-detail person-profile-detail--featured">
+
+                <span class="person-profile-detail__label">
+                  Ubicación residencial
+                </span>
+
+                <strong class="person-profile-detail__value">
+                  Torre {{ perfil.tower || 'Sin registro' }} ·
+                  Apartamento {{ perfil.apartment || 'Sin registro' }}
+                </strong>
+
+              </article>
+
+              <article class="person-profile-detail">
+
+                <span class="person-profile-detail__label">
+                  Torre
+                </span>
+
+                <strong class="person-profile-detail__value">
+                  {{ perfil.tower || 'Sin registro' }}
+                </strong>
+
+              </article>
+
+              <article class="person-profile-detail">
+
+                <span class="person-profile-detail__label">
+                  Apartamento
+                </span>
+
+                <strong class="person-profile-detail__value">
+                  {{ perfil.apartment || 'Sin registro' }}
+                </strong>
+
+              </article>
+
+              <article class="person-profile-detail">
+
+                <span class="person-profile-detail__label">
+                  Parentesco o relación
+                </span>
+
+                <strong class="person-profile-detail__value">
+                  {{ perfil.relationship || 'Sin registro' }}
+                </strong>
+
+              </article>
+
+            </div>
+
+          </section>
+        }
+
+
+        <!-- =================================================
+             INFORMACIÓN LABORAL
+             ================================================= -->
+        @if (perfil.personType === 2 || perfil.personType === 3) {
+          <section class="person-profile-section person-profile-section--staff">
+
+            <header class="person-profile-section__header">
+
+              <div class="person-profile-section__heading">
+
+                <div
+                  class="person-profile-section__icon"
+                  aria-hidden="true">
+                  🪪
+                </div>
+
+                <div>
+                  <h3 class="person-profile-section__title">
+                    Información laboral
+                  </h3>
+
+                  <p class="person-profile-section__description">
+                    Datos relacionados con tu función dentro de la
+                    copropiedad.
+                  </p>
+                </div>
+
+              </div>
+
+              <span class="person-profile-section__badge">
+                {{ perfil.personTypeName }}
+              </span>
+
+            </header>
+
+            <div class="person-profile-details-grid">
+
+              <article class="person-profile-detail person-profile-detail--featured">
+
+                <span class="person-profile-detail__label">
+                  Función registrada
+                </span>
+
+                <strong class="person-profile-detail__value">
+                  {{ perfil.jobTitle || perfil.personTypeName || 'Sin registro' }}
+                </strong>
+
+              </article>
+
+              <article class="person-profile-detail">
+
+                <span class="person-profile-detail__label">
+                  Cargo
+                </span>
+
+                <strong class="person-profile-detail__value">
+                  {{ perfil.jobTitle || 'Sin registro' }}
+                </strong>
+
+              </article>
+
+              <article class="person-profile-detail">
+
+                <span class="person-profile-detail__label">
+                  Empresa contratista
+                </span>
+
+                <strong class="person-profile-detail__value">
+                  {{ perfil.contractorCompany || 'No aplica' }}
+                </strong>
+
+              </article>
+
+            </div>
+
+          </section>
+        }
+
+
+        <!-- =================================================
+             CONTACTO DE EMERGENCIA
+             ================================================= -->
+        <section class="person-profile-section person-profile-section--emergency">
+
+          <header class="person-profile-section__header">
+
+            <div class="person-profile-section__heading">
+
+              <div
+                class="person-profile-section__icon"
+                aria-hidden="true">
+                🛟
+              </div>
+
+              <div>
+                <h3 class="person-profile-section__title">
+                  Contacto de emergencia
+                </h3>
+
+                <p class="person-profile-section__description">
+                  Información utilizada únicamente ante una situación de
+                  emergencia.
+                </p>
+              </div>
+
+            </div>
+
+          </header>
+
+          <div class="person-profile-details-grid">
+
+            <article class="person-profile-detail">
+
+              <span class="person-profile-detail__label">
+                Nombre del contacto
+              </span>
+
+              <strong class="person-profile-detail__value">
+                {{ perfil.emergencyContactName || 'Sin registro' }}
+              </strong>
+
+            </article>
+
+            <article class="person-profile-detail">
+
+              <span class="person-profile-detail__label">
+                Teléfono del contacto
+              </span>
+
+              @if (perfil.emergencyContactPhone) {
+                <a
+                  class="person-profile-detail__value person-profile-detail__value--link"
+                  [href]="'tel:' + perfil.emergencyContactPhone">
+                  {{ perfil.emergencyContactPhone }}
+                </a>
+              } @else {
+                <strong class="person-profile-detail__value">
+                  Sin registro
+                </strong>
+              }
+
+            </article>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PREFERENCIAS Y OBSERVACIONES
+             ================================================= -->
+        <section class="person-profile-section person-profile-section--preferences">
+
+          <header class="person-profile-section__header">
+
+            <div class="person-profile-section__heading">
+
+              <div
+                class="person-profile-section__icon"
+                aria-hidden="true">
+                ⚙
+              </div>
+
+              <div>
+                <h3 class="person-profile-section__title">
+                  Preferencias y observaciones
+                </h3>
+
+                <p class="person-profile-section__description">
+                  Configuración de comunicaciones e información adicional
+                  de tu perfil.
+                </p>
+              </div>
+
+            </div>
+
+          </header>
+
+          <div class="person-profile-preferences">
+
+            <article class="person-profile-preference">
+
+              <div
+                class="person-profile-preference__icon"
+                aria-hidden="true">
+                🔔
+              </div>
+
+              <div class="person-profile-preference__content">
+
+                <span class="person-profile-preference__label">
+                  Notificaciones
+                </span>
+
+                <strong
+                  class="person-profile-preference__value"
+                  [class.person-profile-preference__value--enabled]="perfil.receivesNotifications"
+                  [class.person-profile-preference__value--disabled]="!perfil.receivesNotifications">
+
+                  {{
+                    perfil.receivesNotifications
+                      ? 'Notificaciones activadas'
+                      : 'Notificaciones desactivadas'
+                  }}
+
+                </strong>
+
+              </div>
+
+            </article>
+
+            <article class="person-profile-preference person-profile-preference--notes">
+
+              <div
+                class="person-profile-preference__icon"
+                aria-hidden="true">
+                📝
+              </div>
+
+              <div class="person-profile-preference__content">
+
+                <span class="person-profile-preference__label">
+                  Observaciones
+                </span>
+
+                <p class="person-profile-preference__description">
+                  {{ perfil.notes || 'No hay observaciones registradas.' }}
+                </p>
+
+              </div>
+
+            </article>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             AVISO DE PRIVACIDAD
+             ================================================= -->
+        <aside class="person-profile-privacy-notice">
+
+          <div
+            class="person-profile-privacy-notice__icon"
+            aria-hidden="true">
+            🔒
+          </div>
+
+          <div class="person-profile-privacy-notice__content">
+
+            <h3 class="person-profile-privacy-notice__title">
+              Control sobre tu información personal
+            </h3>
+
+            <p class="person-profile-privacy-notice__description">
+              Puedes consultar, actualizar y corregir tus datos personales
+              desde esta sección. La información será tratada conforme a
+              las políticas de privacidad de HabitaControl.
+            </p>
+
+          </div>
+
+        </aside>
+
+      </div>
+    }
+
+  }
+
+</section>

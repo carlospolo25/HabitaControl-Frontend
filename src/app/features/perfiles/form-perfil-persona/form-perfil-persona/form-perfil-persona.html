@@ -1,0 +1,821 @@
+<section
+  class="person-profile-form-shell"
+  aria-labelledby="person-profile-form-title">
+
+  <!-- =====================================================
+       ENCABEZADO
+       ===================================================== -->
+  <header class="person-profile-form-header">
+
+    <div class="person-profile-form-header__content">
+
+      <span class="person-profile-form-header__eyebrow">
+        Edición de cuenta
+      </span>
+
+      <h2
+        id="person-profile-form-title"
+        class="person-profile-form-header__title">
+        Actualizar mi perfil
+      </h2>
+
+      <p class="person-profile-form-header__description">
+        Modifica tu información personal, tus datos de contacto y la
+        información asociada a tu función dentro de la copropiedad.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="person-profile-form-header__close-button"
+      (click)="cancelar()"
+      [disabled]="isSubmitting"
+      aria-label="Cerrar formulario">
+      ×
+    </button>
+
+  </header>
+
+
+  <!-- =====================================================
+       MENSAJE DE ERROR
+       ===================================================== -->
+  @if (errorMessage) {
+    <section
+      class="person-profile-form-alert person-profile-form-alert--error"
+      role="alert">
+
+      <span
+        class="person-profile-form-alert__icon"
+        aria-hidden="true">
+        !
+      </span>
+
+      <div class="person-profile-form-alert__content">
+
+        <strong class="person-profile-form-alert__title">
+          No fue posible completar la operación
+        </strong>
+
+        <p class="person-profile-form-alert__message">
+          {{ errorMessage }}
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="person-profile-form-alert__close"
+        (click)="cerrarError()"
+        aria-label="Cerrar mensaje de error">
+        ×
+      </button>
+
+    </section>
+  }
+
+
+  <!-- =====================================================
+       MENSAJE DE ÉXITO
+       ===================================================== -->
+  @if (successMessage) {
+    <section
+      class="person-profile-form-alert person-profile-form-alert--success"
+      role="status">
+
+      <span
+        class="person-profile-form-alert__icon"
+        aria-hidden="true">
+        ✓
+      </span>
+
+      <div class="person-profile-form-alert__content">
+
+        <strong class="person-profile-form-alert__title">
+          Perfil actualizado
+        </strong>
+
+        <p class="person-profile-form-alert__message">
+          {{ successMessage }}
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="person-profile-form-alert__close"
+        (click)="cerrarExito()"
+        aria-label="Cerrar mensaje de confirmación">
+        ×
+      </button>
+
+    </section>
+  }
+
+
+  <!-- =====================================================
+       FORMULARIO
+       ===================================================== -->
+  <form
+    class="person-profile-form"
+    (ngSubmit)="guardar()"
+    novalidate>
+
+    <!-- ===================================================
+         FOTOGRAFÍA
+         =================================================== -->
+    <section
+      class="person-profile-form-section
+             person-profile-form-section--photo">
+
+      <header class="person-profile-form-section__header">
+
+        <div class="person-profile-form-section__heading">
+
+          <span
+            class="person-profile-form-section__icon"
+            aria-hidden="true">
+            📷
+          </span>
+
+          <div>
+
+            <h3 class="person-profile-form-section__title">
+              Fotografía de perfil
+            </h3>
+
+            <p class="person-profile-form-section__description">
+              Selecciona una imagen clara en formato JPG, PNG o WebP.
+            </p>
+
+          </div>
+
+        </div>
+
+      </header>
+
+      <div class="person-profile-photo-editor">
+
+        <div class="person-profile-photo-editor__preview">
+
+          @if (obtenerFotoVisible(); as fotoVisible) {
+            <img
+              class="person-profile-photo-editor__image"
+              [src]="fotoVisible"
+              [alt]="'Vista previa de la fotografía de ' + name"
+              (error)="manejarErrorFoto()">
+          } @else {
+            <span class="person-profile-photo-editor__initials">
+              {{ obtenerIniciales() }}
+            </span>
+          }
+
+        </div>
+
+        <div class="person-profile-photo-editor__content">
+
+          <div class="person-profile-photo-editor__information">
+
+            <h4 class="person-profile-photo-editor__title">
+              Imagen de la cuenta
+            </h4>
+
+            <p class="person-profile-photo-editor__description">
+              La imagen no puede superar los 5 MB. Para obtener un mejor
+              resultado se recomienda utilizar una fotografía cuadrada.
+            </p>
+
+          </div>
+
+          <div class="person-profile-photo-editor__actions">
+
+            <label
+              class="person-profile-photo-editor__select-button"
+              [class.person-profile-photo-editor__select-button--disabled]="isSubmitting">
+
+              <input
+                #inputFoto
+                type="file"
+                class="person-profile-photo-editor__input"
+                accept="image/jpeg,image/png,image/webp"
+                (change)="seleccionarFoto($event)"
+                [disabled]="isSubmitting">
+
+              <span aria-hidden="true">
+                📁
+              </span>
+
+              <span>
+                Seleccionar fotografía
+              </span>
+
+            </label>
+
+            @if (fotoSeleccionada) {
+              <button
+                type="button"
+                class="person-profile-photo-editor__remove-button"
+                (click)="quitarFotoSeleccionada(inputFoto)"
+                [disabled]="isSubmitting">
+
+                Quitar selección
+              </button>
+            }
+
+          </div>
+
+          @if (fotoSeleccionada) {
+            <div class="person-profile-photo-editor__selected-file">
+
+              <span
+                class="person-profile-photo-editor__selected-icon"
+                aria-hidden="true">
+                ✓
+              </span>
+
+              <span class="person-profile-photo-editor__selected-name">
+                {{ fotoSeleccionada.name }}
+              </span>
+
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         INFORMACIÓN DE LA CUENTA
+         =================================================== -->
+    <section class="person-profile-form-section">
+
+      <header class="person-profile-form-section__header">
+
+        <div class="person-profile-form-section__heading">
+
+          <span
+            class="person-profile-form-section__icon"
+            aria-hidden="true">
+            👤
+          </span>
+
+          <div>
+
+            <h3 class="person-profile-form-section__title">
+              Información personal
+            </h3>
+
+            <p class="person-profile-form-section__description">
+              Datos básicos de identificación y contacto de tu cuenta.
+            </p>
+
+          </div>
+
+        </div>
+
+        <span class="person-profile-form-section__badge">
+          {{ obtenerNombreTipoPersona() }}
+        </span>
+
+      </header>
+
+      <div class="person-profile-form-grid">
+
+        <div class="person-profile-form-field">
+
+          <label
+            for="person-profile-name"
+            class="person-profile-form-field__label">
+            Nombre completo
+
+            <span
+              class="person-profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="person-profile-name"
+            type="text"
+            class="person-profile-form-field__control"
+            name="name"
+            [(ngModel)]="name"
+            maxlength="150"
+            autocomplete="name"
+            [disabled]="isSubmitting"
+            required>
+
+          <span class="person-profile-form-field__hint">
+            Máximo 150 caracteres.
+          </span>
+
+        </div>
+
+        <div class="person-profile-form-field">
+
+          <label
+            for="person-profile-phone"
+            class="person-profile-form-field__label">
+            Teléfono
+
+            <span
+              class="person-profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="person-profile-phone"
+            type="tel"
+            class="person-profile-form-field__control"
+            name="phone"
+            [(ngModel)]="phone"
+            maxlength="30"
+            autocomplete="tel"
+            inputmode="tel"
+            [disabled]="isSubmitting"
+            required>
+
+          <span class="person-profile-form-field__hint">
+            Número de contacto principal asociado a tu cuenta.
+          </span>
+
+        </div>
+
+        <div class="person-profile-form-field">
+
+          <label
+            for="person-profile-birth-date"
+            class="person-profile-form-field__label">
+            Fecha de nacimiento
+          </label>
+
+          <input
+            id="person-profile-birth-date"
+            type="date"
+            class="person-profile-form-field__control"
+            name="birthDate"
+            [(ngModel)]="birthDate"
+            autocomplete="bday"
+            [disabled]="isSubmitting">
+
+          <span class="person-profile-form-field__hint">
+            Este dato hace parte de la información de censo.
+          </span>
+
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         INFORMACIÓN DEL RESIDENTE
+         =================================================== -->
+    @if (esResidente()) {
+      <section
+        class="person-profile-form-section
+               person-profile-form-section--resident">
+
+        <header class="person-profile-form-section__header">
+
+          <div class="person-profile-form-section__heading">
+
+            <span
+              class="person-profile-form-section__icon"
+              aria-hidden="true">
+              🏠
+            </span>
+
+            <div>
+
+              <h3 class="person-profile-form-section__title">
+                Información residencial
+              </h3>
+
+              <p class="person-profile-form-section__description">
+                Ubicación y relación registrada dentro de la copropiedad.
+              </p>
+
+            </div>
+
+          </div>
+
+          <span class="person-profile-form-section__badge">
+            Residente
+          </span>
+
+        </header>
+
+        <div class="person-profile-form-grid">
+            
+          <div
+            class="person-profile-form-field
+                   person-profile-form-field--wide">
+
+            <label
+              for="person-profile-relationship"
+              class="person-profile-form-field__label">
+              Parentesco o relación
+
+              <span
+                class="person-profile-form-field__required"
+                aria-hidden="true">
+                *
+              </span>
+            </label>
+
+            <input
+              id="person-profile-relationship"
+              type="text"
+              class="person-profile-form-field__control"
+              name="relationship"
+              [(ngModel)]="relationship"
+              maxlength="100"
+              autocomplete="off"
+              [disabled]="isSubmitting"
+              required>
+
+            <span class="person-profile-form-field__hint">
+              Ejemplo: propietario, arrendatario, hijo, pareja o familiar.
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+    }
+
+
+    <!-- ===================================================
+         INFORMACIÓN LABORAL
+         =================================================== -->
+    @if (esPersonalConjunto()) {
+      <section
+        class="person-profile-form-section
+               person-profile-form-section--staff">
+
+        <header class="person-profile-form-section__header">
+
+          <div class="person-profile-form-section__heading">
+
+            <span
+              class="person-profile-form-section__icon"
+              aria-hidden="true">
+              🪪
+            </span>
+
+            <div>
+
+              <h3 class="person-profile-form-section__title">
+                Información laboral
+              </h3>
+
+              <p class="person-profile-form-section__description">
+                Información relacionada con tu función dentro de la
+                copropiedad.
+              </p>
+
+            </div>
+
+          </div>
+
+          <span class="person-profile-form-section__badge">
+            {{ obtenerNombreTipoPersona() }}
+          </span>
+
+        </header>
+
+        <div class="person-profile-form-grid">
+
+          <div class="person-profile-form-field">
+
+            <label
+              for="person-profile-job-title"
+              class="person-profile-form-field__label">
+              Cargo
+
+              <span
+                class="person-profile-form-field__required"
+                aria-hidden="true">
+                *
+              </span>
+            </label>
+
+            <input
+              id="person-profile-job-title"
+              type="text"
+              class="person-profile-form-field__control"
+              name="jobTitle"
+              [(ngModel)]="jobTitle"
+              maxlength="100"
+              autocomplete="organization-title"
+              [disabled]="isSubmitting"
+              required>
+
+          </div>
+
+          <div class="person-profile-form-field">
+
+            <label
+              for="person-profile-contractor-company"
+              class="person-profile-form-field__label">
+              Empresa contratista
+            </label>
+
+            <input
+              id="person-profile-contractor-company"
+              type="text"
+              class="person-profile-form-field__control"
+              name="contractorCompany"
+              [(ngModel)]="contractorCompany"
+              maxlength="150"
+              autocomplete="organization"
+              [disabled]="isSubmitting">
+
+            <span class="person-profile-form-field__hint">
+              Déjalo vacío cuando no exista una empresa contratista.
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+    }
+
+
+    <!-- ===================================================
+         CONTACTO DE EMERGENCIA
+         =================================================== -->
+    <section
+      class="person-profile-form-section
+             person-profile-form-section--emergency">
+
+      <header class="person-profile-form-section__header">
+
+        <div class="person-profile-form-section__heading">
+
+          <span
+            class="person-profile-form-section__icon"
+            aria-hidden="true">
+            🛟
+          </span>
+
+          <div>
+
+            <h3 class="person-profile-form-section__title">
+              Contacto de emergencia
+            </h3>
+
+            <p class="person-profile-form-section__description">
+              Datos que podrán ser utilizados ante una situación que
+              requiera contactar a una persona de confianza.
+            </p>
+
+          </div>
+
+        </div>
+
+      </header>
+
+      <div class="person-profile-form-grid">
+
+        <div class="person-profile-form-field">
+
+          <label
+            for="person-profile-emergency-name"
+            class="person-profile-form-field__label">
+            Nombre del contacto
+
+            <span
+              class="person-profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="person-profile-emergency-name"
+            type="text"
+            class="person-profile-form-field__control"
+            name="emergencyContactName"
+            [(ngModel)]="emergencyContactName"
+            maxlength="150"
+            autocomplete="off"
+            [disabled]="isSubmitting"
+            required>
+
+        </div>
+
+        <div class="person-profile-form-field">
+
+          <label
+            for="person-profile-emergency-phone"
+            class="person-profile-form-field__label">
+            Teléfono del contacto
+
+            <span
+              class="person-profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="person-profile-emergency-phone"
+            type="tel"
+            class="person-profile-form-field__control"
+            name="emergencyContactPhone"
+            [(ngModel)]="emergencyContactPhone"
+            maxlength="30"
+            autocomplete="off"
+            inputmode="tel"
+            [disabled]="isSubmitting"
+            required>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         PREFERENCIAS
+         =================================================== -->
+    <section
+      class="person-profile-form-section
+             person-profile-form-section--preferences">
+
+      <header class="person-profile-form-section__header">
+
+        <div class="person-profile-form-section__heading">
+
+          <span
+            class="person-profile-form-section__icon"
+            aria-hidden="true">
+            ⚙
+          </span>
+
+          <div>
+
+            <h3 class="person-profile-form-section__title">
+              Preferencias y observaciones
+            </h3>
+
+            <p class="person-profile-form-section__description">
+              Configura las comunicaciones de tu cuenta y registra
+              información adicional.
+            </p>
+
+          </div>
+
+        </div>
+
+      </header>
+
+      <div class="person-profile-form-preferences">
+
+        <label class="person-profile-form-toggle">
+
+          <input
+            type="checkbox"
+            class="person-profile-form-toggle__input"
+            name="receivesNotifications"
+            [(ngModel)]="receivesNotifications"
+            [disabled]="isSubmitting">
+
+          <span
+            class="person-profile-form-toggle__control"
+            aria-hidden="true">
+          </span>
+
+          <span class="person-profile-form-toggle__content">
+
+            <strong class="person-profile-form-toggle__title">
+              Recibir notificaciones
+            </strong>
+
+            <span class="person-profile-form-toggle__description">
+              Permite que HabitaControl envíe comunicaciones relacionadas
+              con novedades, paquetes y otras operaciones de la residencia.
+            </span>
+
+          </span>
+
+        </label>
+
+        <div
+          class="person-profile-form-field
+                 person-profile-form-field--wide">
+
+          <label
+            for="person-profile-notes"
+            class="person-profile-form-field__label">
+            Observaciones
+          </label>
+
+          <textarea
+            id="person-profile-notes"
+            class="person-profile-form-field__control
+                   person-profile-form-field__control--textarea"
+            name="notes"
+            [(ngModel)]="notes"
+            maxlength="500"
+            rows="5"
+            [disabled]="isSubmitting">
+          </textarea>
+
+          <span class="person-profile-form-field__hint">
+            Máximo 500 caracteres.
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         AVISO
+         =================================================== -->
+    <aside class="person-profile-form-notice">
+
+      <span
+        class="person-profile-form-notice__icon"
+        aria-hidden="true">
+        ℹ
+      </span>
+
+      <div class="person-profile-form-notice__content">
+
+        <h3 class="person-profile-form-notice__title">
+          Revisa la información antes de guardar
+        </h3>
+
+        <p class="person-profile-form-notice__description">
+          Los cambios realizados actualizarán los datos personales y de
+          contacto asociados a tu cuenta en HabitaControl.
+        </p>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ===================================================
+         ACCIONES
+         =================================================== -->
+    <footer class="person-profile-form-actions">
+
+      <button
+        type="button"
+        class="person-profile-form-button
+               person-profile-form-button--secondary"
+        (click)="cancelar()"
+        [disabled]="isSubmitting">
+
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="person-profile-form-button
+               person-profile-form-button--primary"
+        [disabled]="isSubmitting">
+
+        @if (isSubmitting) {
+          <span
+            class="person-profile-form-button__spinner"
+            aria-hidden="true">
+          </span>
+
+          <span>
+            Guardando cambios...
+          </span>
+        } @else {
+          <span aria-hidden="true">
+            ✓
+          </span>
+
+          <span>
+            Guardar cambios
+          </span>
+        }
+
+      </button>
+
+    </footer>
+
+  </form>
+
+</section>

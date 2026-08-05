@@ -1,0 +1,187 @@
+<section class="cerrar-sesiones-page">
+  <div class="cerrar-sesiones-card">
+
+    <header class="cerrar-sesiones-header">
+      <div class="security-icon" aria-hidden="true">
+        🛡️
+      </div>
+
+      <span class="eyebrow">
+        Seguridad de la cuenta
+      </span>
+
+      <h1>
+        Protección de sesiones
+      </h1>
+    </header>
+
+    @if (estado === 'confirmacion') {
+      <section class="state-content confirmation-state">
+        <div class="state-icon warning-icon" aria-hidden="true">
+          !
+        </div>
+
+        <h2>
+          ¿No reconoces este inicio de sesión?
+        </h2>
+
+        <p class="state-description">
+          Al continuar, se cerrarán todas las sesiones activas asociadas
+          a tu cuenta de HabitaControl.
+        </p>
+
+        <div class="security-notice">
+          <strong>Ten en cuenta:</strong>
+
+          <ul>
+            <li>
+              Se revocarán todas las sesiones abiertas en otros dispositivos.
+            </li>
+
+            <li>
+              Tendrás que iniciar sesión nuevamente.
+            </li>
+
+            <li>
+              Después del cierre, te recomendamos cambiar tu contraseña.
+            </li>
+          </ul>
+        </div>
+
+        <button
+          type="button"
+          class="primary-button danger-button"
+          (click)="cerrarSesiones()"
+          [disabled]="isLoading">
+          Cerrar todas mis sesiones
+        </button>
+
+        <p class="secondary-message">
+          Si reconoces el inicio de sesión, puedes cerrar esta página sin
+          realizar ninguna acción.
+        </p>
+      </section>
+    }
+
+    @if (estado === 'procesando') {
+      <section
+        class="state-content processing-state"
+        aria-live="polite">
+
+        <div class="spinner" aria-hidden="true"></div>
+
+        <h2>
+          Cerrando sesiones
+        </h2>
+
+        <p class="state-description">
+          Estamos revocando las sesiones activas de tu cuenta.
+          No cierres esta ventana.
+        </p>
+      </section>
+    }
+
+    @if (estado === 'exito') {
+      <section
+        class="state-content success-state"
+        aria-live="polite">
+
+        <div class="state-icon success-icon" aria-hidden="true">
+          ✓
+        </div>
+
+        <h2>
+          Sesiones cerradas correctamente
+        </h2>
+
+        <p class="state-description">
+          {{
+            successMessage ||
+            'Todas las sesiones activas fueron cerradas correctamente.'
+          }}
+        </p>
+
+        <div class="success-notice">
+          <strong>Recomendación de seguridad</strong>
+
+          <p>
+            Cambia tu contraseña antes de volver a iniciar sesión,
+            especialmente si no reconoces el acceso reportado.
+          </p>
+        </div>
+
+        <div class="login-actions">
+          <button
+            type="button"
+            class="primary-button"
+            (click)="irAlLoginAdministrador()">
+            Ingresar como administrador
+          </button>
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="irAlLoginPersona()">
+            Ingresar como persona
+          </button>
+        </div>
+      </section>
+    }
+
+    @if (estado === 'error') {
+      <section
+        class="state-content error-state"
+        aria-live="assertive">
+
+        <div class="state-icon error-icon" aria-hidden="true">
+          ×
+        </div>
+
+        <h2>
+          No fue posible cerrar las sesiones
+        </h2>
+
+        <p class="state-description">
+          {{
+            errorMessage ||
+            'El enlace puede ser inválido, haber expirado o haber sido utilizado anteriormente.'
+          }}
+        </p>
+
+        <div class="error-notice">
+          <strong>¿Qué puedes hacer?</strong>
+
+          <p>
+            Inicia sesión nuevamente y cambia tu contraseña.
+            Si no puedes acceder a tu cuenta, utiliza la opción de recuperación.
+          </p>
+        </div>
+
+        <div class="login-actions">
+          <button
+            type="button"
+            class="primary-button"
+            (click)="irAlLoginAdministrador()">
+            Ir al acceso de administrador
+          </button>
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="irAlLoginPersona()">
+            Ir al acceso de personas
+          </button>
+        </div>
+      </section>
+    }
+
+    <footer class="cerrar-sesiones-footer">
+      <span>HabitaControl</span>
+
+      <p>
+        Protección y control para tu comunidad residencial.
+      </p>
+    </footer>
+
+  </div>
+</section>

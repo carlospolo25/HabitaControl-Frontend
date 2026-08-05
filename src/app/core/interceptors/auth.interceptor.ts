@@ -30,7 +30,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     req.url.includes('/auth/logout') ||
     req.url.includes('/authPersona/login-persona') ||
     req.url.includes('/authPersona/refresh') ||
-    req.url.includes('/authPersona/logout');
+    req.url.includes('/authPersona/logout') ||
+    req.url.includes('/Seguridad/cerrar-sesiones');
 
   if (isPublicRoute) {
     return next(req);

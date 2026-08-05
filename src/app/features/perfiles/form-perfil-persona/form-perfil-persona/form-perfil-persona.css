@@ -1,0 +1,3887 @@
+:host {
+  /* =========================================================
+     BRAND
+     ========================================================= */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-light: #dbeafe;
+  --color-primary-dark: #1e40af;
+
+  /* =========================================================
+     NEUTROS
+     ========================================================= */
+  --gray-950: #020617;
+  --gray-900: #0f172a;
+  --gray-800: #1e293b;
+  --gray-700: #334155;
+  --gray-600: #475569;
+  --gray-500: #64748b;
+  --gray-400: #94a3b8;
+  --gray-300: #cbd5e1;
+  --gray-200: #e2e8f0;
+  --gray-100: #f1f5f9;
+  --gray-50: #f8fafc;
+
+  /* =========================================================
+     ESTADOS
+     ========================================================= */
+  --success: #16a34a;
+  --success-light: #dcfce7;
+  --success-border: #86efac;
+  --success-dark: #166534;
+
+  --danger: #dc2626;
+  --danger-light: #fee2e2;
+  --danger-border: #fca5a5;
+  --danger-dark: #991b1b;
+
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --warning-dark: #92400e;
+
+  --info: #0ea5e9;
+  --info-light: #e0f2fe;
+  --info-dark: #075985;
+
+  --accent: #7c3aed;
+  --accent-light: #ede9fe;
+
+  /* =========================================================
+     SUPERFICIES
+     ========================================================= */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --surface-secondary: #f8fafc;
+
+  /* =========================================================
+     BORDES
+     ========================================================= */
+  --border-light: #e2e8f0;
+  --border: #cbd5e1;
+  --border-dark: #94a3b8;
+
+  /* =========================================================
+     TEXTO
+     ========================================================= */
+  --text-primary: #111827;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-disabled: #94a3b8;
+  --text-white: #ffffff;
+
+  /* =========================================================
+     SOMBRAS
+     ========================================================= */
+  --shadow-sm:
+    0 1px 2px rgb(15 23 42 / 0.05);
+
+  --shadow-md:
+    0 8px 24px rgb(15 23 42 / 0.08);
+
+  --shadow-lg:
+    0 16px 40px rgb(15 23 42 / 0.1);
+
+  --shadow-xl:
+    0 24px 64px rgb(15 23 42 / 0.14);
+
+  /* =========================================================
+     RADIOS
+     ========================================================= */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 999px;
+
+  /* =========================================================
+     ESPACIADOS
+     ========================================================= */
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-20: 1.25rem;
+  --space-24: 1.5rem;
+  --space-28: 1.75rem;
+  --space-32: 2rem;
+  --space-40: 2.5rem;
+  --space-48: 3rem;
+
+  display: block;
+  width: 100%;
+}
+
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.person-profile-form-shell {
+  position: relative;
+
+  width: min(100%, 90rem);
+  margin-inline: auto;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.09),
+      transparent 24rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      var(--surface-secondary) 100%
+    );
+
+  color: var(--text-primary);
+
+  box-shadow: var(--shadow-lg);
+
+  animation:
+    person-profile-form-entry
+    280ms ease-out both;
+}
+
+.person-profile-form-shell::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.3rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-primary),
+      var(--color-primary-dark)
+    );
+
+  content: '';
+}
+
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
+.person-profile-form-header {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-24);
+
+  padding:
+    var(--space-28)
+    var(--space-32);
+
+  overflow: hidden;
+
+  border-bottom: 1px solid var(--border-light);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.12),
+      transparent 16rem
+    ),
+    linear-gradient(
+      135deg,
+      rgb(255 255 255 / 0.98),
+      rgb(239 246 255 / 0.9)
+    );
+}
+
+.person-profile-form-header::after {
+  position: absolute;
+  top: -4rem;
+  right: -3rem;
+
+  width: 11rem;
+  height: 11rem;
+
+  border-radius: var(--radius-full);
+
+  background:
+    radial-gradient(
+      circle,
+      rgb(37 99 235 / 0.1),
+      transparent 68%
+    );
+
+  pointer-events: none;
+  content: '';
+}
+
+
+/* =========================================================
+   CONTENIDO DEL ENCABEZADO
+   ========================================================= */
+
+.person-profile-form-header__content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+.person-profile-form-header__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  margin-bottom: var(--space-8);
+
+  color: var(--color-primary);
+
+  font-size: 0.74rem;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.person-profile-form-header__eyebrow::before {
+  width: 0.5rem;
+  height: 0.5rem;
+
+  border-radius: var(--radius-full);
+
+  background: var(--color-primary);
+
+  box-shadow:
+    0 0 0 0.25rem
+    rgb(37 99 235 / 0.12);
+
+  content: '';
+}
+
+.person-profile-form-header__title {
+  margin: 0;
+
+  color: var(--gray-900);
+
+  font-size: clamp(1.65rem, 3vw, 2.2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+
+.person-profile-form-header__description {
+  max-width: 50rem;
+  margin: var(--space-12) 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   BOTÓN DE CIERRE
+   ========================================================= */
+
+.person-profile-form-header__close-button {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  width: 2.8rem;
+  height: 2.8rem;
+  flex: 0 0 2.8rem;
+  padding: 0;
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+
+  background: rgb(255 255 255 / 0.84);
+  color: var(--gray-500);
+
+  font: inherit;
+  font-size: 1.45rem;
+  font-weight: 400;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.person-profile-form-header__close-button:hover:not(:disabled) {
+  color: var(--danger-dark);
+  border-color: var(--danger-border);
+  background: var(--danger-light);
+
+  box-shadow:
+    0 8px 18px rgb(220 38 38 / 0.12);
+
+  transform: translateY(-1px);
+}
+
+.person-profile-form-header__close-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.person-profile-form-header__close-button:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 0.22);
+  outline-offset: 3px;
+}
+
+.person-profile-form-header__close-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   CUERPO DEL FORMULARIO
+   ========================================================= */
+
+.person-profile-form {
+  display: grid;
+  gap: var(--space-24);
+
+  padding:
+    var(--space-28)
+    var(--space-32)
+    var(--space-32);
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE ENTRADA
+   ========================================================= */
+
+@keyframes person-profile-form-entry {
+  from {
+    opacity: 0;
+    transform: translateY(0.65rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE INICIAL
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .person-profile-form-shell {
+    border-radius: var(--radius-lg);
+  }
+
+  .person-profile-form-header {
+    padding: var(--space-24);
+  }
+
+  .person-profile-form {
+    padding: var(--space-24);
+  }
+}
+
+@media (max-width: 520px) {
+  .person-profile-form-header {
+    gap: var(--space-16);
+    padding: var(--space-20);
+  }
+
+  .person-profile-form-header__title {
+    font-size: 1.6rem;
+  }
+
+  .person-profile-form-header__description {
+    font-size: 0.88rem;
+  }
+
+  .person-profile-form-header__close-button {
+    width: 2.55rem;
+    height: 2.55rem;
+    flex-basis: 2.55rem;
+  }
+
+  .person-profile-form {
+    gap: var(--space-20);
+    padding: var(--space-20);
+  }
+}
+
+@media (max-width: 360px) {
+  .person-profile-form-header {
+    padding: var(--space-16);
+  }
+
+  .person-profile-form {
+    padding: var(--space-16);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-form-shell {
+    animation: none;
+  }
+}
+
+
+/* =========================================================
+   ALERTAS DEL FORMULARIO
+   ========================================================= */
+
+.person-profile-form-alert {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: flex-start;
+  gap: var(--space-12);
+
+  margin:
+    var(--space-24)
+    var(--space-32)
+    0;
+
+  padding: var(--space-16);
+
+  overflow: hidden;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+
+  animation:
+    person-profile-form-alert-entry
+    220ms ease-out both;
+}
+
+.person-profile-form-alert::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.25rem;
+
+  content: '';
+}
+
+
+/* =========================================================
+   ICONO DE LA ALERTA
+   ========================================================= */
+
+.person-profile-form-alert__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 2.35rem;
+
+  border-radius: var(--radius-full);
+
+  color: var(--text-white);
+
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+
+  box-shadow:
+    0 0 0 0.28rem
+    rgb(255 255 255 / 0.45);
+}
+
+
+/* =========================================================
+   CONTENIDO DE LA ALERTA
+   ========================================================= */
+
+.person-profile-form-alert__content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+.person-profile-form-alert__title {
+  display: block;
+
+  margin-bottom: var(--space-4);
+
+  font-size: 0.94rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.person-profile-form-alert__message {
+  margin: 0;
+
+  font-size: 0.88rem;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   BOTÓN PARA CERRAR LA ALERTA
+   ========================================================= */
+
+.person-profile-form-alert__close {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+
+  background: transparent;
+
+  font: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
+}
+
+.person-profile-form-alert__close:hover {
+  border-color: rgb(255 255 255 / 0.58);
+  background: rgb(255 255 255 / 0.58);
+
+  transform: scale(1.04);
+}
+
+.person-profile-form-alert__close:active {
+  transform: scale(0.98);
+}
+
+.person-profile-form-alert__close:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 0.2);
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   ALERTA DE ERROR
+   ========================================================= */
+
+.person-profile-form-alert--error {
+  border-color: var(--danger-border);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(220 38 38 / 0.08),
+      transparent 12rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      rgb(255 255 255 / 0.95)
+    );
+}
+
+.person-profile-form-alert--error::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--danger),
+      var(--danger-dark)
+    );
+}
+
+.person-profile-form-alert--error
+.person-profile-form-alert__icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger),
+      var(--danger-dark)
+    );
+
+  box-shadow:
+    0 0 0 0.28rem
+    rgb(220 38 38 / 0.1);
+}
+
+.person-profile-form-alert--error
+.person-profile-form-alert__title {
+  color: var(--danger-dark);
+}
+
+.person-profile-form-alert--error
+.person-profile-form-alert__message {
+  color: #7f1d1d;
+}
+
+.person-profile-form-alert--error
+.person-profile-form-alert__close {
+  color: var(--danger-dark);
+}
+
+
+/* =========================================================
+   ALERTA DE ÉXITO
+   ========================================================= */
+
+.person-profile-form-alert--success {
+  border-color: var(--success-border);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(22 163 74 / 0.08),
+      transparent 12rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--success-light),
+      rgb(255 255 255 / 0.95)
+    );
+}
+
+.person-profile-form-alert--success::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--success),
+      var(--success-dark)
+    );
+}
+
+.person-profile-form-alert--success
+.person-profile-form-alert__icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--success),
+      var(--success-dark)
+    );
+
+  box-shadow:
+    0 0 0 0.28rem
+    rgb(22 163 74 / 0.1);
+}
+
+.person-profile-form-alert--success
+.person-profile-form-alert__title {
+  color: var(--success-dark);
+}
+
+.person-profile-form-alert--success
+.person-profile-form-alert__message {
+  color: #14532d;
+}
+
+.person-profile-form-alert--success
+.person-profile-form-alert__close {
+  color: var(--success-dark);
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE ENTRADA
+   ========================================================= */
+
+@keyframes person-profile-form-alert-entry {
+  from {
+    opacity: 0;
+    transform: translateY(-0.35rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .person-profile-form-alert {
+    margin:
+      var(--space-20)
+      var(--space-24)
+      0;
+  }
+}
+
+@media (max-width: 520px) {
+  .person-profile-form-alert {
+    margin:
+      var(--space-16)
+      var(--space-20)
+      0;
+
+    padding: var(--space-12);
+  }
+
+  .person-profile-form-alert__icon {
+    width: 2.05rem;
+    height: 2.05rem;
+    flex-basis: 2.05rem;
+  }
+
+  .person-profile-form-alert__title {
+    font-size: 0.88rem;
+  }
+
+  .person-profile-form-alert__message {
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .person-profile-form-alert {
+    grid-template-columns:
+      auto minmax(0, 1fr);
+  }
+
+  .person-profile-form-alert__close {
+    grid-column: 2;
+    justify-self: end;
+
+    margin-top: calc(var(--space-8) * -1);
+  }
+}
+
+@media (max-width: 360px) {
+  .person-profile-form-alert {
+    margin:
+      var(--space-12)
+      var(--space-16)
+      0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-form-alert {
+    animation: none;
+  }
+
+  .person-profile-form-alert__close {
+    transition: none;
+  }
+
+  .person-profile-form-alert__close:hover {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   SECCIÓN DE FOTOGRAFÍA
+   ========================================================= */
+
+.person-profile-form-section--photo {
+  position: relative;
+
+  overflow: hidden;
+
+  border-color: #bfdbfe;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.11),
+      transparent 18rem
+    ),
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      var(--surface)
+    );
+}
+
+.person-profile-form-section--photo::after {
+  position: absolute;
+  top: -4rem;
+  right: -3rem;
+
+  width: 11rem;
+  height: 11rem;
+
+  border-radius: var(--radius-full);
+
+  background:
+    radial-gradient(
+      circle,
+      rgb(37 99 235 / 0.1),
+      transparent 68%
+    );
+
+  pointer-events: none;
+  content: '';
+}
+
+
+/* =========================================================
+   EDITOR DE FOTOGRAFÍA
+   ========================================================= */
+
+.person-profile-photo-editor {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-24);
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   VISTA PREVIA
+   ========================================================= */
+
+.person-profile-photo-editor__preview {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  width: 8rem;
+  height: 8rem;
+  flex: 0 0 8rem;
+
+  overflow: hidden;
+
+  border: 0.4rem solid var(--surface);
+  border-radius: var(--radius-full);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      #bfdbfe
+    );
+
+  box-shadow:
+    0 0 0 1px rgb(37 99 235 / 0.2),
+    0 16px 34px rgb(30 64 175 / 0.2);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.person-profile-photo-editor__preview::after {
+  position: absolute;
+  inset: 0;
+
+  border-radius: inherit;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgb(255 255 255 / 0.4);
+
+  pointer-events: none;
+  content: '';
+}
+
+.person-profile-form-section--photo:hover
+.person-profile-photo-editor__preview {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 0 0 1px rgb(37 99 235 / 0.24),
+    0 20px 38px rgb(30 64 175 / 0.24);
+}
+
+.person-profile-photo-editor__image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+.person-profile-photo-editor__initials {
+  display: grid;
+  place-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  color: var(--color-primary-dark);
+
+  font-size: 2.1rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
+.person-profile-photo-editor__content {
+  display: grid;
+  gap: var(--space-16);
+
+  min-width: 0;
+}
+
+.person-profile-photo-editor__information {
+  min-width: 0;
+}
+
+.person-profile-photo-editor__title {
+  margin: 0;
+
+  color: var(--gray-900);
+
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.person-profile-photo-editor__description {
+  max-width: 42rem;
+  margin: var(--space-8) 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ACCIONES DE FOTOGRAFÍA
+   ========================================================= */
+
+.person-profile-photo-editor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.person-profile-photo-editor__select-button,
+.person-profile-photo-editor__remove-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+
+  min-height: 2.75rem;
+  padding:
+    0.72rem
+    1rem;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+
+/* =========================================================
+   BOTÓN PARA SELECCIONAR
+   ========================================================= */
+
+.person-profile-photo-editor__select-button {
+  color: var(--text-white);
+  border-color: var(--color-primary);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-primary-dark)
+    );
+
+  box-shadow:
+    0 8px 18px rgb(37 99 235 / 0.2);
+}
+
+.person-profile-photo-editor__select-button:hover:not(
+  .person-profile-photo-editor__select-button--disabled
+) {
+  border-color: var(--color-primary-hover);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-hover),
+      var(--color-primary-dark)
+    );
+
+  box-shadow:
+    0 12px 24px rgb(37 99 235 / 0.26);
+
+  transform: translateY(-1px);
+}
+
+.person-profile-photo-editor__select-button:active:not(
+  .person-profile-photo-editor__select-button--disabled
+) {
+  transform: translateY(0);
+}
+
+.person-profile-photo-editor__select-button--disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   BOTÓN PARA QUITAR
+   ========================================================= */
+
+.person-profile-photo-editor__remove-button {
+  color: var(--danger-dark);
+  border-color: var(--danger-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      var(--surface)
+    );
+}
+
+.person-profile-photo-editor__remove-button:hover:not(:disabled) {
+  color: var(--text-white);
+  border-color: var(--danger);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger),
+      var(--danger-dark)
+    );
+
+  box-shadow:
+    0 9px 20px rgb(220 38 38 / 0.18);
+
+  transform: translateY(-1px);
+}
+
+.person-profile-photo-editor__remove-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.person-profile-photo-editor__remove-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.person-profile-photo-editor__select-button:focus-visible,
+.person-profile-photo-editor__remove-button:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 0.22);
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   INPUT DE ARCHIVO OCULTO
+   ========================================================= */
+
+.person-profile-photo-editor__input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+
+  border: 0;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   ARCHIVO SELECCIONADO
+   ========================================================= */
+
+.person-profile-photo-editor__selected-file {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  width: fit-content;
+  max-width: 100%;
+  padding:
+    0.55rem
+    0.75rem;
+
+  border: 1px solid var(--success-border);
+  border-radius: var(--radius-md);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--success-light),
+      var(--surface)
+    );
+
+  color: var(--success-dark);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.person-profile-photo-editor__selected-icon {
+  display: grid;
+  place-items: center;
+
+  width: 1.35rem;
+  height: 1.35rem;
+  flex: 0 0 1.35rem;
+
+  border-radius: var(--radius-full);
+
+  background: var(--success);
+  color: var(--text-white);
+
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.person-profile-photo-editor__selected-name {
+  min-width: 0;
+
+  overflow: hidden;
+
+  color: var(--success-dark);
+
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.35;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 760px) {
+  .person-profile-photo-editor {
+    grid-template-columns: 1fr;
+
+    justify-items: center;
+
+    text-align: center;
+  }
+
+  .person-profile-photo-editor__content {
+    width: 100%;
+    justify-items: center;
+  }
+
+  .person-profile-photo-editor__description {
+    max-width: 32rem;
+  }
+
+  .person-profile-photo-editor__actions {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .person-profile-photo-editor {
+    gap: var(--space-20);
+  }
+
+  .person-profile-photo-editor__preview {
+    width: 6.75rem;
+    height: 6.75rem;
+    flex-basis: 6.75rem;
+  }
+
+  .person-profile-photo-editor__initials {
+    font-size: 1.8rem;
+  }
+
+  .person-profile-photo-editor__actions {
+    width: 100%;
+  }
+
+  .person-profile-photo-editor__select-button,
+  .person-profile-photo-editor__remove-button {
+    width: 100%;
+  }
+
+  .person-profile-photo-editor__selected-file {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .person-profile-photo-editor__preview {
+    width: 6rem;
+    height: 6rem;
+    flex-basis: 6rem;
+  }
+
+  .person-profile-photo-editor__title {
+    font-size: 0.94rem;
+  }
+
+  .person-profile-photo-editor__description {
+    font-size: 0.82rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-photo-editor__preview,
+  .person-profile-photo-editor__select-button,
+  .person-profile-photo-editor__remove-button {
+    transition: none;
+  }
+
+  .person-profile-form-section--photo:hover
+  .person-profile-photo-editor__preview,
+  .person-profile-photo-editor__select-button:hover,
+  .person-profile-photo-editor__remove-button:hover {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   SECCIONES GENERALES DEL FORMULARIO
+   ========================================================= */
+
+.person-profile-form-section {
+  position: relative;
+
+  padding: var(--space-24);
+
+  overflow: hidden;
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      var(--surface-secondary) 100%
+    );
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.person-profile-form-section::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.25rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-primary),
+      #93c5fd
+    );
+
+  content: '';
+}
+
+.person-profile-form-section:hover {
+  border-color: #bfdbfe;
+
+  box-shadow:
+    0 14px 32px rgb(15 23 42 / 0.08);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ENCABEZADO DE SECCIÓN
+   ========================================================= */
+
+.person-profile-form-section__header {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-20);
+
+  margin-bottom: var(--space-24);
+  padding-bottom: var(--space-20);
+
+  border-bottom: 1px solid var(--border-light);
+}
+
+.person-profile-form-section__heading {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-16);
+
+  min-width: 0;
+}
+
+.person-profile-form-section__icon {
+  display: grid;
+  place-items: center;
+
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 3rem;
+
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-md);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      #eff6ff
+    );
+
+  color: var(--color-primary-dark);
+
+  font-size: 1.2rem;
+  line-height: 1;
+
+  box-shadow:
+    0 8px 18px rgb(37 99 235 / 0.1);
+}
+
+.person-profile-form-section__title {
+  margin: 0;
+
+  color: var(--gray-900);
+
+  font-size: 1.12rem;
+  font-weight: 850;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.person-profile-form-section__description {
+  max-width: 46rem;
+  margin: var(--space-8) 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   INSIGNIA DEL TIPO DE PERSONA
+   ========================================================= */
+
+.person-profile-form-section__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 2rem;
+  max-width: 14rem;
+  padding:
+    0.4rem
+    0.75rem;
+
+  overflow: hidden;
+
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-full);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      var(--surface)
+    );
+
+  color: var(--color-primary-dark);
+
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* =========================================================
+   CUADRÍCULA DE CAMPOS
+   ========================================================= */
+
+.person-profile-form-grid {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap:
+    var(--space-20)
+    var(--space-16);
+}
+
+
+/* =========================================================
+   CAMPO DEL FORMULARIO
+   ========================================================= */
+
+.person-profile-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+
+  min-width: 0;
+}
+
+.person-profile-form-field--wide {
+  grid-column: span 2;
+}
+
+
+/* =========================================================
+   ETIQUETA
+   ========================================================= */
+
+.person-profile-form-field__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+
+  width: fit-content;
+
+  color: var(--gray-700);
+
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.person-profile-form-field__required {
+  color: var(--danger);
+
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   CONTROL GENERAL
+   ========================================================= */
+
+.person-profile-form-field__control {
+  width: 100%;
+  min-height: 3rem;
+  padding:
+    0.78rem
+    0.9rem;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+
+  outline: none;
+
+  background: var(--surface);
+  color: var(--text-primary);
+
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+
+  box-shadow:
+    inset 0 1px 2px rgb(15 23 42 / 0.03);
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.person-profile-form-field__control::placeholder {
+  color: var(--text-disabled);
+}
+
+.person-profile-form-field__control:hover:not(:disabled) {
+  border-color: var(--border-dark);
+}
+
+.person-profile-form-field__control:focus {
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 0.22rem
+      rgb(37 99 235 / 0.13),
+    inset 0 1px 2px
+      rgb(15 23 42 / 0.03);
+}
+
+.person-profile-form-field__control:disabled {
+  cursor: not-allowed;
+
+  border-color: var(--border-light);
+
+  background: var(--gray-100);
+  color: var(--text-disabled);
+
+  opacity: 0.78;
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.person-profile-form-field__control--select {
+  appearance: none;
+
+  padding-right: 2.75rem;
+
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--gray-500) 50%
+    ),
+    linear-gradient(
+      135deg,
+      var(--gray-500) 50%,
+      transparent 50%
+    );
+
+  background-position:
+    calc(100% - 1.15rem) 50%,
+    calc(100% - 0.85rem) 50%;
+
+  background-size:
+    0.35rem 0.35rem,
+    0.35rem 0.35rem;
+
+  background-repeat: no-repeat;
+
+  cursor: pointer;
+}
+
+.person-profile-form-field__control--select:disabled {
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.person-profile-form-field__control--textarea {
+  min-height: 8rem;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   FECHA
+   ========================================================= */
+
+.person-profile-form-field__control[type='date'] {
+  color-scheme: light;
+
+  cursor: pointer;
+}
+
+.person-profile-form-field__control[type='date']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+
+  opacity: 0.68;
+
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.person-profile-form-field__control[type='date']:hover
+::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   VALIDACIÓN VISUAL DE ANGULAR
+   ========================================================= */
+
+.person-profile-form-field__control.ng-touched.ng-invalid {
+  border-color: var(--danger-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      var(--surface)
+    );
+
+  box-shadow:
+    0 0 0 0.18rem
+    rgb(220 38 38 / 0.08);
+}
+
+.person-profile-form-field__control.ng-touched.ng-invalid:focus {
+  border-color: var(--danger);
+
+  box-shadow:
+    0 0 0 0.22rem
+    rgb(220 38 38 / 0.12);
+}
+
+.person-profile-form-field__control.ng-touched.ng-valid {
+  border-color: var(--success-border);
+}
+
+
+/* =========================================================
+   TEXTO DE AYUDA
+   ========================================================= */
+
+.person-profile-form-field__hint {
+  display: block;
+
+  color: var(--text-muted);
+
+  font-size: 0.72rem;
+  font-weight: 550;
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   INFORMACIÓN PERSONAL
+   ========================================================= */
+
+.person-profile-form-section:not(
+  .person-profile-form-section--photo
+):not(
+  .person-profile-form-section--resident
+):not(
+  .person-profile-form-section--staff
+):not(
+  .person-profile-form-section--emergency
+):not(
+  .person-profile-form-section--preferences
+) {
+  border-color: rgb(191 219 254 / 0.9);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.07),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      #f8fbff
+    );
+}
+
+
+/* =========================================================
+   CAMPO DE TIPO DE SANGRE
+   ========================================================= */
+
+#person-profile-blood-type {
+  border-color: rgb(252 165 165 / 0.85);
+
+  background-color: #fffafa;
+
+  color: var(--danger-dark);
+
+  font-weight: 800;
+}
+
+#person-profile-blood-type:focus {
+  border-color: var(--danger);
+
+  box-shadow:
+    0 0 0 0.22rem
+    rgb(220 38 38 / 0.12);
+}
+
+
+/* =========================================================
+   ANIMACIÓN ESCALONADA
+   ========================================================= */
+
+.person-profile-form-field {
+  animation:
+    person-profile-form-field-entry
+    260ms ease-out both;
+}
+
+.person-profile-form-field:nth-child(1) {
+  animation-delay: 30ms;
+}
+
+.person-profile-form-field:nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.person-profile-form-field:nth-child(3) {
+  animation-delay: 90ms;
+}
+
+.person-profile-form-field:nth-child(4) {
+  animation-delay: 120ms;
+}
+
+.person-profile-form-field:nth-child(5) {
+  animation-delay: 150ms;
+}
+
+.person-profile-form-field:nth-child(6) {
+  animation-delay: 180ms;
+}
+
+@keyframes person-profile-form-field-entry {
+  from {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .person-profile-form-section {
+    padding: var(--space-20);
+    border-radius: var(--radius-lg);
+  }
+
+  .person-profile-form-section__header {
+    margin-bottom: var(--space-20);
+    padding-bottom: var(--space-16);
+  }
+
+  .person-profile-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .person-profile-form-field--wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .person-profile-form-section__header {
+    flex-direction: column;
+  }
+
+  .person-profile-form-section__heading {
+    gap: var(--space-12);
+  }
+
+  .person-profile-form-section__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-basis: 2.75rem;
+  }
+
+  .person-profile-form-section__badge {
+    align-self: flex-start;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .person-profile-form-section {
+    padding: var(--space-16);
+  }
+
+  .person-profile-form-section__title {
+    font-size: 1rem;
+  }
+
+  .person-profile-form-section__description {
+    font-size: 0.82rem;
+  }
+
+  .person-profile-form-field__control {
+    min-height: 2.85rem;
+    padding:
+      0.72rem
+      0.8rem;
+
+    font-size: 0.88rem;
+  }
+
+  .person-profile-form-field__label {
+    font-size: 0.78rem;
+  }
+
+  .person-profile-form-field__hint {
+    font-size: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-form-section,
+  .person-profile-form-field {
+    animation: none;
+    transition: none;
+  }
+
+  .person-profile-form-section:hover {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   SECCIÓN DEL RESIDENTE
+   ========================================================= */
+
+.person-profile-form-section--resident {
+  border-color: rgb(134 239 172 / 0.8);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(22 163 74 / 0.09),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      #f7fef9
+    );
+}
+
+.person-profile-form-section--resident::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--success),
+      var(--success-border)
+    );
+}
+
+.person-profile-form-section--resident:hover {
+  border-color: var(--success-border);
+
+  box-shadow:
+    0 16px 34px rgb(22 101 52 / 0.09);
+}
+
+.person-profile-form-section--resident
+.person-profile-form-section__icon {
+  border-color: var(--success-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--success-light),
+      #f0fdf4
+    );
+
+  color: var(--success-dark);
+
+  box-shadow:
+    0 8px 18px rgb(22 163 74 / 0.11);
+}
+
+.person-profile-form-section--resident
+.person-profile-form-section__badge {
+  border-color: var(--success-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--success-light),
+      var(--surface)
+    );
+
+  color: var(--success-dark);
+}
+
+
+/* =========================================================
+   CAMPOS DEL RESIDENTE
+   ========================================================= */
+
+.person-profile-form-section--resident
+.person-profile-form-field__label {
+  color: var(--success-dark);
+}
+
+.person-profile-form-section--resident
+.person-profile-form-field__control {
+  border-color: rgb(187 247 208 / 0.95);
+
+  background:
+    linear-gradient(
+      145deg,
+      #f0fdf4,
+      var(--surface)
+    );
+}
+
+.person-profile-form-section--resident
+.person-profile-form-field__control:hover:not(:disabled) {
+  border-color: var(--success-border);
+}
+
+.person-profile-form-section--resident
+.person-profile-form-field__control:focus {
+  border-color: var(--success);
+
+  box-shadow:
+    0 0 0 0.22rem
+      rgb(22 163 74 / 0.12),
+    inset 0 1px 2px
+      rgb(15 23 42 / 0.03);
+}
+
+
+/* =========================================================
+   TORRE Y APARTAMENTO
+   ========================================================= */
+
+#person-profile-tower,
+#person-profile-apartment {
+  color: var(--gray-900);
+
+  font-size: 1rem;
+  font-weight: 850;
+
+  font-variant-numeric: tabular-nums;
+}
+
+#person-profile-tower {
+  border-color: #bfdbfe;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      var(--surface)
+    );
+}
+
+#person-profile-apartment {
+  border-color: var(--success-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--success-light),
+      var(--surface)
+    );
+}
+
+
+/* =========================================================
+   PARENTESCO
+   ========================================================= */
+
+#person-profile-relationship {
+  border-color: rgb(186 230 253 / 0.95);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--info-light),
+      var(--surface)
+    );
+}
+
+#person-profile-relationship:focus {
+  border-color: var(--info);
+
+  box-shadow:
+    0 0 0 0.22rem
+    rgb(14 165 233 / 0.12);
+}
+
+
+/* =========================================================
+   SECCIÓN DE PERSONAL
+   ========================================================= */
+
+.person-profile-form-section--staff {
+  border-color: rgb(196 181 253 / 0.8);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(124 58 237 / 0.1),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      #faf9ff
+    );
+}
+
+.person-profile-form-section--staff::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--accent),
+      #c4b5fd
+    );
+}
+
+.person-profile-form-section--staff:hover {
+  border-color: #c4b5fd;
+
+  box-shadow:
+    0 16px 34px rgb(76 29 149 / 0.1);
+}
+
+.person-profile-form-section--staff
+.person-profile-form-section__icon {
+  border-color: #ddd6fe;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-light),
+      #f5f3ff
+    );
+
+  color: #5b21b6;
+
+  box-shadow:
+    0 8px 18px rgb(124 58 237 / 0.12);
+}
+
+.person-profile-form-section--staff
+.person-profile-form-section__badge {
+  border-color: #c4b5fd;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-light),
+      var(--surface)
+    );
+
+  color: #5b21b6;
+}
+
+
+/* =========================================================
+   CAMPOS DEL PERSONAL
+   ========================================================= */
+
+.person-profile-form-section--staff
+.person-profile-form-field__label {
+  color: #6d28d9;
+}
+
+.person-profile-form-section--staff
+.person-profile-form-field__control {
+  border-color: rgb(221 214 254 / 0.95);
+
+  background:
+    linear-gradient(
+      145deg,
+      #f5f3ff,
+      var(--surface)
+    );
+}
+
+.person-profile-form-section--staff
+.person-profile-form-field__control:hover:not(:disabled) {
+  border-color: #c4b5fd;
+}
+
+.person-profile-form-section--staff
+.person-profile-form-field__control:focus {
+  border-color: var(--accent);
+
+  box-shadow:
+    0 0 0 0.22rem
+      rgb(124 58 237 / 0.12),
+    inset 0 1px 2px
+      rgb(15 23 42 / 0.03);
+}
+
+
+/* =========================================================
+   CARGO
+   ========================================================= */
+
+#person-profile-job-title {
+  color: #5b21b6;
+
+  font-size: 0.98rem;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   EMPRESA CONTRATISTA
+   ========================================================= */
+
+#person-profile-contractor-company {
+  border-color: rgb(186 230 253 / 0.95);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--info-light),
+      var(--surface)
+    );
+}
+
+#person-profile-contractor-company:focus {
+  border-color: var(--info);
+
+  box-shadow:
+    0 0 0 0.22rem
+    rgb(14 165 233 / 0.12);
+}
+
+
+/* =========================================================
+   SECCIÓN DE EMERGENCIA
+   ========================================================= */
+
+.person-profile-form-section--emergency {
+  border-color: rgb(252 165 165 / 0.8);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(220 38 38 / 0.09),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      #fffafa
+    );
+}
+
+.person-profile-form-section--emergency::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--danger),
+      var(--danger-border)
+    );
+}
+
+.person-profile-form-section--emergency:hover {
+  border-color: var(--danger-border);
+
+  box-shadow:
+    0 16px 34px rgb(153 27 27 / 0.09);
+}
+
+.person-profile-form-section--emergency
+.person-profile-form-section__icon {
+  border-color: var(--danger-border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      #fff7f7
+    );
+
+  color: var(--danger-dark);
+
+  box-shadow:
+    0 8px 18px rgb(220 38 38 / 0.11);
+}
+
+.person-profile-form-section--emergency
+.person-profile-form-section__title {
+  color: var(--danger-dark);
+}
+
+.person-profile-form-section--emergency
+.person-profile-form-section__description {
+  color: #7f1d1d;
+}
+
+
+/* =========================================================
+   CAMPOS DE EMERGENCIA
+   ========================================================= */
+
+.person-profile-form-section--emergency
+.person-profile-form-field__label {
+  color: var(--danger-dark);
+}
+
+.person-profile-form-section--emergency
+.person-profile-form-field__control {
+  border-color: rgb(254 202 202 / 0.95);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--danger-light),
+      var(--surface)
+    );
+}
+
+.person-profile-form-section--emergency
+.person-profile-form-field__control:hover:not(:disabled) {
+  border-color: var(--danger-border);
+}
+
+.person-profile-form-section--emergency
+.person-profile-form-field__control:focus {
+  border-color: var(--danger);
+
+  box-shadow:
+    0 0 0 0.22rem
+      rgb(220 38 38 / 0.12),
+    inset 0 1px 2px
+      rgb(15 23 42 / 0.03);
+}
+
+
+/* =========================================================
+   NOMBRE DEL CONTACTO
+   ========================================================= */
+
+#person-profile-emergency-name {
+  color: var(--gray-900);
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   TELÉFONO DEL CONTACTO
+   ========================================================= */
+
+#person-profile-emergency-phone {
+  border-color: #fcd34d;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--warning-light),
+      var(--surface)
+    );
+
+  color: var(--warning-dark);
+
+  font-weight: 850;
+}
+
+#person-profile-emergency-phone:focus {
+  border-color: var(--warning);
+
+  box-shadow:
+    0 0 0 0.22rem
+    rgb(245 158 11 / 0.14);
+}
+
+
+/* =========================================================
+   VALIDACIONES DENTRO DE VARIANTES
+   ========================================================= */
+
+.person-profile-form-section--resident
+.person-profile-form-field__control.ng-touched.ng-invalid,
+.person-profile-form-section--staff
+.person-profile-form-field__control.ng-touched.ng-invalid,
+.person-profile-form-section--emergency
+.person-profile-form-field__control.ng-touched.ng-invalid {
+  border-color: var(--danger);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      var(--surface)
+    );
+}
+
+.person-profile-form-section--resident
+.person-profile-form-field__control.ng-touched.ng-valid {
+  border-color: var(--success);
+}
+
+.person-profile-form-section--staff
+.person-profile-form-field__control.ng-touched.ng-valid {
+  border-color: var(--accent);
+}
+
+.person-profile-form-section--emergency
+.person-profile-form-field__control.ng-touched.ng-valid {
+  border-color: var(--success-border);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 520px) {
+  #person-profile-tower,
+  #person-profile-apartment,
+  #person-profile-job-title,
+  #person-profile-emergency-name,
+  #person-profile-emergency-phone {
+    font-size: 0.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-form-section--resident,
+  .person-profile-form-section--staff,
+  .person-profile-form-section--emergency {
+    transition: none;
+  }
+}
+
+
+/* =========================================================
+   SECCIÓN DE PREFERENCIAS
+   ========================================================= */
+
+.person-profile-form-section--preferences {
+  border-color: rgb(186 230 253 / 0.9);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(14 165 233 / 0.09),
+      transparent 18rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      #f8fdff
+    );
+}
+
+.person-profile-form-section--preferences::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--info),
+      #7dd3fc
+    );
+}
+
+.person-profile-form-section--preferences:hover {
+  border-color: #7dd3fc;
+
+  box-shadow:
+    0 16px 34px rgb(7 89 133 / 0.09);
+}
+
+.person-profile-form-section--preferences
+.person-profile-form-section__icon {
+  border-color: #bae6fd;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--info-light),
+      #f0f9ff
+    );
+
+  color: var(--info-dark);
+
+  box-shadow:
+    0 8px 18px rgb(14 165 233 / 0.11);
+}
+
+
+/* =========================================================
+   CONTENEDOR DE PREFERENCIAS
+   ========================================================= */
+
+.person-profile-form-preferences {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  gap: var(--space-20);
+}
+
+
+/* =========================================================
+   INTERRUPTOR DE NOTIFICACIONES
+   ========================================================= */
+
+.person-profile-form-toggle {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-16);
+
+  min-width: 0;
+  padding: var(--space-20);
+
+  overflow: hidden;
+
+  border: 1px solid #bae6fd;
+  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--info-light),
+      var(--surface)
+    );
+
+  box-shadow: var(--shadow-sm);
+
+  cursor: pointer;
+
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease,
+    transform 170ms ease;
+}
+
+.person-profile-form-toggle::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.24rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--info),
+      #7dd3fc
+    );
+
+  content: '';
+}
+
+.person-profile-form-toggle:hover {
+  border-color: #7dd3fc;
+
+  box-shadow:
+    0 11px 26px rgb(14 165 233 / 0.09);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   INPUT OCULTO DEL INTERRUPTOR
+   ========================================================= */
+
+.person-profile-form-toggle__input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+
+  border: 0;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   CONTROL VISUAL DEL INTERRUPTOR
+   ========================================================= */
+
+.person-profile-form-toggle__control {
+  position: relative;
+
+  width: 3.35rem;
+  height: 1.85rem;
+  flex: 0 0 3.35rem;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+
+  background: var(--gray-300);
+
+  box-shadow:
+    inset 0 1px 3px rgb(15 23 42 / 0.12);
+
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.person-profile-form-toggle__control::after {
+  position: absolute;
+  top: 50%;
+  left: 0.18rem;
+
+  width: 1.4rem;
+  height: 1.4rem;
+
+  border-radius: var(--radius-full);
+
+  background: var(--surface);
+
+  box-shadow:
+    0 2px 6px rgb(15 23 42 / 0.22);
+
+  transform: translateY(-50%);
+
+  transition:
+    left 180ms ease,
+    transform 180ms ease;
+}
+
+
+/* =========================================================
+   INTERRUPTOR ACTIVADO
+   ========================================================= */
+
+.person-profile-form-toggle__input:checked
++ .person-profile-form-toggle__control {
+  border-color: var(--success);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--success),
+      #22c55e
+    );
+
+  box-shadow:
+    inset 0 1px 3px rgb(22 101 52 / 0.18),
+    0 0 0 0.2rem rgb(22 163 74 / 0.08);
+}
+
+.person-profile-form-toggle__input:checked
++ .person-profile-form-toggle__control::after {
+  left: 1.7rem;
+}
+
+
+/* =========================================================
+   FOCO DEL INTERRUPTOR
+   ========================================================= */
+
+.person-profile-form-toggle__input:focus-visible
++ .person-profile-form-toggle__control {
+  outline: 3px solid rgb(37 99 235 / 0.22);
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   INTERRUPTOR DESHABILITADO
+   ========================================================= */
+
+.person-profile-form-toggle:has(
+  .person-profile-form-toggle__input:disabled
+) {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.person-profile-form-toggle__input:disabled
++ .person-profile-form-toggle__control {
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   CONTENIDO DEL INTERRUPTOR
+   ========================================================= */
+
+.person-profile-form-toggle__content {
+  display: block;
+
+  min-width: 0;
+}
+
+.person-profile-form-toggle__title {
+  display: block;
+
+  color: var(--gray-900);
+
+  font-size: 0.94rem;
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+.person-profile-form-toggle__description {
+  display: block;
+
+  max-width: 54rem;
+  margin-top: var(--space-8);
+
+  color: var(--text-secondary);
+
+  font-size: 0.84rem;
+  line-height: 1.6;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   OBSERVACIONES
+   ========================================================= */
+
+.person-profile-form-section--preferences
+.person-profile-form-field--wide {
+  padding: var(--space-20);
+
+  border: 1px solid #ddd6fe;
+  border-radius: var(--radius-lg);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(124 58 237 / 0.08),
+      transparent 12rem
+    ),
+    linear-gradient(
+      145deg,
+      var(--accent-light),
+      var(--surface)
+    );
+
+  box-shadow: var(--shadow-sm);
+}
+
+.person-profile-form-section--preferences
+.person-profile-form-field--wide
+.person-profile-form-field__label {
+  color: #6d28d9;
+}
+
+#person-profile-notes {
+  border-color: #c4b5fd;
+
+  background:
+    rgb(255 255 255 / 0.84);
+}
+
+#person-profile-notes:focus {
+  border-color: var(--accent);
+
+  box-shadow:
+    0 0 0 0.22rem
+    rgb(124 58 237 / 0.12);
+}
+
+
+/* =========================================================
+   AVISO INFORMATIVO
+   ========================================================= */
+
+.person-profile-form-notice {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-16);
+
+  padding: var(--space-20);
+
+  overflow: hidden;
+
+  border: 1px solid rgb(186 230 253 / 0.95);
+  border-radius: var(--radius-lg);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(14 165 233 / 0.11),
+      transparent 14rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--info-light),
+      var(--surface)
+    );
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.person-profile-form-notice::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.28rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--info),
+      #7dd3fc
+    );
+
+  content: '';
+}
+
+.person-profile-form-notice::after {
+  position: absolute;
+  right: -3rem;
+  bottom: -4rem;
+
+  width: 10rem;
+  height: 10rem;
+
+  border-radius: var(--radius-full);
+
+  background:
+    radial-gradient(
+      circle,
+      rgb(14 165 233 / 0.09),
+      transparent 68%
+    );
+
+  pointer-events: none;
+  content: '';
+}
+
+.person-profile-form-notice:hover {
+  border-color: #7dd3fc;
+
+  box-shadow:
+    0 14px 28px rgb(7 89 133 / 0.08);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ICONO DEL AVISO
+   ========================================================= */
+
+.person-profile-form-notice__icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 3rem;
+
+  border: 1px solid #7dd3fc;
+  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(
+      135deg,
+      #e0f2fe,
+      #f0f9ff
+    );
+
+  color: var(--info-dark);
+
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1;
+
+  box-shadow:
+    0 9px 20px rgb(14 165 233 / 0.13);
+}
+
+
+/* =========================================================
+   CONTENIDO DEL AVISO
+   ========================================================= */
+
+.person-profile-form-notice__content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+.person-profile-form-notice__title {
+  margin: 0;
+
+  color: var(--info-dark);
+
+  font-size: 0.96rem;
+  font-weight: 850;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.person-profile-form-notice__description {
+  max-width: 62rem;
+  margin: var(--space-8) 0 0;
+
+  color: #0c4a6e;
+
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ACCIONES DEL FORMULARIO
+   ========================================================= */
+
+.person-profile-form-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-12);
+
+  margin:
+    0
+    calc(var(--space-32) * -1)
+    calc(var(--space-32) * -1);
+
+  padding:
+    var(--space-20)
+    var(--space-32);
+
+  border-top: 1px solid var(--border-light);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.88),
+      rgb(255 255 255 / 0.98)
+    );
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 -10px 24px rgb(15 23 42 / 0.06);
+}
+
+
+/* =========================================================
+   BOTONES DEL FORMULARIO
+   ========================================================= */
+
+.person-profile-form-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+
+  min-height: 3rem;
+  padding:
+    0.8rem
+    1.15rem;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.person-profile-form-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.person-profile-form-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.person-profile-form-button:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 0.22);
+  outline-offset: 3px;
+}
+
+.person-profile-form-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
+}
+
+
+/* =========================================================
+   BOTÓN SECUNDARIO
+   ========================================================= */
+
+.person-profile-form-button--secondary {
+  color: var(--gray-700);
+  border-color: var(--border);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface),
+      var(--surface-secondary)
+    );
+
+  box-shadow: var(--shadow-sm);
+}
+
+.person-profile-form-button--secondary:hover:not(:disabled) {
+  color: var(--gray-900);
+  border-color: var(--border-dark);
+
+  background: var(--surface-hover);
+
+  box-shadow:
+    0 8px 18px rgb(15 23 42 / 0.08);
+}
+
+
+/* =========================================================
+   BOTÓN PRINCIPAL
+   ========================================================= */
+
+.person-profile-form-button--primary {
+  min-width: 12rem;
+
+  color: var(--text-white);
+  border-color: var(--color-primary);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-primary-dark)
+    );
+
+  box-shadow:
+    0 10px 22px rgb(37 99 235 / 0.22);
+}
+
+.person-profile-form-button--primary:hover:not(:disabled) {
+  border-color: var(--color-primary-hover);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-hover),
+      var(--color-primary-dark)
+    );
+
+  box-shadow:
+    0 14px 28px rgb(37 99 235 / 0.28);
+}
+
+.person-profile-form-button--primary:disabled {
+  background:
+    linear-gradient(
+      135deg,
+      #60a5fa,
+      #3b82f6
+    );
+
+  box-shadow:
+    0 8px 18px rgb(37 99 235 / 0.16);
+}
+
+
+/* =========================================================
+   SPINNER DEL BOTÓN
+   ========================================================= */
+
+.person-profile-form-button__spinner {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 1rem;
+
+  border:
+    0.16rem solid
+    rgb(255 255 255 / 0.38);
+
+  border-top-color: var(--text-white);
+  border-radius: var(--radius-full);
+
+  animation:
+    person-profile-form-button-spin
+    760ms linear infinite;
+}
+
+@keyframes person-profile-form-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .person-profile-form-actions {
+    margin:
+      0
+      calc(var(--space-24) * -1)
+      calc(var(--space-24) * -1);
+
+    padding:
+      var(--space-16)
+      var(--space-24);
+  }
+}
+
+@media (max-width: 560px) {
+  .person-profile-form-toggle {
+    grid-template-columns: 1fr;
+    justify-items: flex-start;
+
+    padding: var(--space-16);
+  }
+
+  .person-profile-form-section--preferences
+  .person-profile-form-field--wide {
+    padding: var(--space-16);
+  }
+
+  .person-profile-form-notice {
+    flex-direction: column;
+    padding: var(--space-16);
+  }
+
+  .person-profile-form-notice__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-basis: 2.75rem;
+  }
+
+  .person-profile-form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+
+    margin:
+      0
+      calc(var(--space-20) * -1)
+      calc(var(--space-20) * -1);
+
+    padding:
+      var(--space-16)
+      var(--space-20);
+  }
+
+  .person-profile-form-button {
+    width: 100%;
+  }
+
+  .person-profile-form-button--primary {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .person-profile-form-toggle {
+    padding: var(--space-12);
+  }
+
+  .person-profile-form-toggle__title {
+    font-size: 0.88rem;
+  }
+
+  .person-profile-form-toggle__description,
+  .person-profile-form-notice__description {
+    font-size: 0.8rem;
+  }
+
+  .person-profile-form-actions {
+    margin:
+      0
+      calc(var(--space-16) * -1)
+      calc(var(--space-16) * -1);
+
+    padding:
+      var(--space-12)
+      var(--space-16);
+  }
+
+  .person-profile-form-button {
+    min-height: 2.85rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-form-toggle,
+  .person-profile-form-toggle__control,
+  .person-profile-form-toggle__control::after,
+  .person-profile-form-notice,
+  .person-profile-form-button {
+    transition: none;
+  }
+
+  .person-profile-form-toggle:hover,
+  .person-profile-form-notice:hover,
+  .person-profile-form-button:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .person-profile-form-button__spinner {
+    animation-duration: 1.5s;
+  }
+}
+
+
+/* =========================================================
+   AJUSTES GLOBALES DEL COMPONENTE
+   ========================================================= */
+
+.person-profile-form-shell,
+.person-profile-form-shell *,
+.person-profile-form-shell *::before,
+.person-profile-form-shell *::after {
+  box-sizing: border-box;
+}
+
+.person-profile-form-shell {
+  isolation: isolate;
+}
+
+.person-profile-form-shell img {
+  max-width: 100%;
+}
+
+.person-profile-form-shell button,
+.person-profile-form-shell input,
+.person-profile-form-shell select,
+.person-profile-form-shell textarea,
+.person-profile-form-shell label {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.person-profile-form-shell ::selection {
+  color: var(--text-white);
+  background: var(--color-primary);
+}
+
+
+/* =========================================================
+   MANEJO DE CONTENIDO LARGO
+   ========================================================= */
+
+.person-profile-form-header__title,
+.person-profile-form-header__description,
+.person-profile-form-section__title,
+.person-profile-form-section__description,
+.person-profile-form-field__label,
+.person-profile-form-field__hint,
+.person-profile-form-toggle__title,
+.person-profile-form-toggle__description,
+.person-profile-form-notice__title,
+.person-profile-form-notice__description,
+.person-profile-photo-editor__title,
+.person-profile-photo-editor__description {
+  overflow-wrap: anywhere;
+}
+
+.person-profile-form-header__content,
+.person-profile-form-section__heading,
+.person-profile-form-field,
+.person-profile-form-toggle__content,
+.person-profile-form-notice__content,
+.person-profile-photo-editor__content,
+.person-profile-photo-editor__information {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   FOCO ACCESIBLE GLOBAL
+   ========================================================= */
+
+.person-profile-form-shell button:focus-visible,
+.person-profile-form-shell input:focus-visible,
+.person-profile-form-shell select:focus-visible,
+.person-profile-form-shell textarea:focus-visible,
+.person-profile-form-shell label:has(
+  .person-profile-photo-editor__input:focus-visible
+) {
+  outline: 3px solid rgb(37 99 235 / 0.22);
+  outline-offset: 3px;
+}
+
+.person-profile-form-shell button:focus:not(:focus-visible),
+.person-profile-form-shell input:focus:not(:focus-visible),
+.person-profile-form-shell select:focus:not(:focus-visible),
+.person-profile-form-shell textarea:focus:not(:focus-visible) {
+  outline: none;
+}
+
+
+/* =========================================================
+   ESTADOS DE SOLO LECTURA Y DESHABILITADOS
+   ========================================================= */
+
+.person-profile-form-shell [disabled] {
+  cursor: not-allowed;
+}
+
+.person-profile-form-field__control[readonly] {
+  border-color: var(--border-light);
+
+  background: var(--gray-100);
+  color: var(--text-secondary);
+}
+
+.person-profile-form-field__control:disabled,
+.person-profile-form-button:disabled,
+.person-profile-photo-editor__remove-button:disabled,
+.person-profile-form-header__close-button:disabled {
+  filter: saturate(0.78);
+}
+
+
+/* =========================================================
+   ESTADO GENERAL DURANTE EL ENVÍO
+   ========================================================= */
+
+.person-profile-form:has(
+  .person-profile-form-button--primary:disabled
+) {
+  cursor: progress;
+}
+
+.person-profile-form:has(
+  .person-profile-form-button--primary:disabled
+)
+.person-profile-form-section,
+.person-profile-form:has(
+  .person-profile-form-button--primary:disabled
+)
+.person-profile-form-notice {
+  opacity: 0.88;
+}
+
+.person-profile-form-section,
+.person-profile-form-notice {
+  transition:
+    opacity 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+
+/* =========================================================
+   AUTOCOMPLETADO DEL NAVEGADOR
+   ========================================================= */
+
+.person-profile-form-field__control:-webkit-autofill,
+.person-profile-form-field__control:-webkit-autofill:hover,
+.person-profile-form-field__control:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-primary);
+
+  box-shadow:
+    0 0 0 1000px
+    var(--surface)
+    inset;
+
+  transition:
+    background-color 9999s ease-out;
+}
+
+.person-profile-form-section--resident
+.person-profile-form-field__control:-webkit-autofill {
+  box-shadow:
+    0 0 0 1000px
+    #f7fef9
+    inset;
+}
+
+.person-profile-form-section--staff
+.person-profile-form-field__control:-webkit-autofill {
+  box-shadow:
+    0 0 0 1000px
+    #faf9ff
+    inset;
+}
+
+.person-profile-form-section--emergency
+.person-profile-form-field__control:-webkit-autofill {
+  box-shadow:
+    0 0 0 1000px
+    #fffafa
+    inset;
+}
+
+
+/* =========================================================
+   PANTALLAS GRANDES
+   ========================================================= */
+
+@media (min-width: 1280px) {
+  .person-profile-form-header {
+    padding:
+      var(--space-32)
+      var(--space-40);
+  }
+
+  .person-profile-form {
+    gap: var(--space-28);
+
+    padding:
+      var(--space-32)
+      var(--space-40)
+      var(--space-40);
+  }
+
+  .person-profile-form-section {
+    padding: var(--space-28);
+  }
+
+  .person-profile-form-grid {
+    gap:
+      var(--space-24)
+      var(--space-20);
+  }
+
+  .person-profile-form-alert {
+    margin:
+      var(--space-28)
+      var(--space-40)
+      0;
+  }
+
+  .person-profile-form-actions {
+    margin:
+      0
+      calc(var(--space-40) * -1)
+      calc(var(--space-40) * -1);
+
+    padding:
+      var(--space-20)
+      var(--space-40);
+  }
+}
+
+
+/* =========================================================
+   MONITORES MUY GRANDES
+   ========================================================= */
+
+@media (min-width: 1600px) {
+  .person-profile-form-shell {
+    width: min(100%, 96rem);
+  }
+
+  .person-profile-form-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .person-profile-form-field--wide {
+    grid-column: span 3;
+  }
+
+  .person-profile-form-section--resident
+  .person-profile-form-grid,
+  .person-profile-form-section--staff
+  .person-profile-form-grid,
+  .person-profile-form-section--emergency
+  .person-profile-form-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .person-profile-form-section--resident
+  .person-profile-form-field--wide,
+  .person-profile-form-section--staff
+  .person-profile-form-field--wide,
+  .person-profile-form-section--emergency
+  .person-profile-form-field--wide {
+    grid-column: span 2;
+  }
+}
+
+
+/* =========================================================
+   TABLET HORIZONTAL
+   ========================================================= */
+
+@media (
+  min-width: 769px
+) and (
+  max-width: 1100px
+) {
+  .person-profile-form-header {
+    padding: var(--space-24);
+  }
+
+  .person-profile-form {
+    padding:
+      var(--space-24)
+      var(--space-24)
+      var(--space-28);
+  }
+
+  .person-profile-form-section {
+    padding: var(--space-20);
+  }
+
+  .person-profile-photo-editor__preview {
+    width: 7rem;
+    height: 7rem;
+    flex-basis: 7rem;
+  }
+
+  .person-profile-form-actions {
+    margin:
+      0
+      calc(var(--space-24) * -1)
+      calc(var(--space-28) * -1);
+
+    padding:
+      var(--space-16)
+      var(--space-24);
+  }
+}
+
+
+/* =========================================================
+   MÓVILES PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 340px) {
+  .person-profile-form-shell {
+    border-radius: var(--radius-md);
+  }
+
+  .person-profile-form-header {
+    padding: var(--space-14, 0.875rem);
+  }
+
+  .person-profile-form-header__eyebrow {
+    font-size: 0.66rem;
+  }
+
+  .person-profile-form-header__title {
+    font-size: 1.4rem;
+  }
+
+  .person-profile-form-header__description {
+    font-size: 0.8rem;
+  }
+
+  .person-profile-form {
+    gap: var(--space-16);
+    padding: var(--space-14, 0.875rem);
+  }
+
+  .person-profile-form-section,
+  .person-profile-form-notice {
+    padding: var(--space-12);
+    border-radius: var(--radius-md);
+  }
+
+  .person-profile-form-section__header {
+    gap: var(--space-12);
+  }
+
+  .person-profile-form-section__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-basis: 2.5rem;
+  }
+
+  .person-profile-form-field__control {
+    font-size: 0.84rem;
+  }
+
+  .person-profile-form-toggle {
+    padding: var(--space-12);
+  }
+
+  .person-profile-form-actions {
+    margin:
+      0
+      calc(var(--space-14, 0.875rem) * -1)
+      calc(var(--space-14, 0.875rem) * -1);
+
+    padding:
+      var(--space-12)
+      var(--space-14, 0.875rem);
+  }
+}
+
+
+/* =========================================================
+   MÓVIL EN ORIENTACIÓN HORIZONTAL
+   ========================================================= */
+
+@media (
+  max-height: 520px
+) and (
+  orientation: landscape
+) {
+  .person-profile-form-header {
+    padding: var(--space-16);
+  }
+
+  .person-profile-form-header__description {
+    max-width: 38rem;
+  }
+
+  .person-profile-form {
+    gap: var(--space-16);
+    padding: var(--space-16);
+  }
+
+  .person-profile-form-section {
+    padding: var(--space-16);
+  }
+
+  .person-profile-photo-editor {
+    grid-template-columns:
+      auto minmax(0, 1fr);
+
+    justify-items: stretch;
+
+    text-align: left;
+  }
+
+  .person-profile-photo-editor__preview {
+    width: 5.5rem;
+    height: 5.5rem;
+    flex-basis: 5.5rem;
+  }
+
+  .person-profile-photo-editor__content {
+    justify-items: stretch;
+  }
+
+  .person-profile-photo-editor__actions {
+    justify-content: flex-start;
+  }
+
+  .person-profile-form-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .person-profile-form-field--wide {
+    grid-column: span 2;
+  }
+
+  .person-profile-form-actions {
+    position: static;
+  }
+}
+
+
+/* =========================================================
+   CONTRASTE ALTO
+   ========================================================= */
+
+@media (prefers-contrast: more) {
+  .person-profile-form-shell,
+  .person-profile-form-section,
+  .person-profile-form-alert,
+  .person-profile-form-notice,
+  .person-profile-photo-editor__preview,
+  .person-profile-form-field__control,
+  .person-profile-form-button,
+  .person-profile-form-toggle {
+    border-width: 2px;
+  }
+
+  .person-profile-form-header__description,
+  .person-profile-form-section__description,
+  .person-profile-form-field__hint,
+  .person-profile-photo-editor__description,
+  .person-profile-form-toggle__description,
+  .person-profile-form-notice__description {
+    color: var(--gray-700);
+  }
+
+  .person-profile-form-button--primary,
+  .person-profile-photo-editor__select-button {
+    background: var(--color-primary-dark);
+  }
+}
+
+
+/* =========================================================
+   MOVIMIENTO REDUCIDO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .person-profile-form-shell *,
+  .person-profile-form-shell *::before,
+  .person-profile-form-shell *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .person-profile-form-section:hover,
+  .person-profile-form-notice:hover,
+  .person-profile-form-toggle:hover,
+  .person-profile-form-button:hover:not(:disabled),
+  .person-profile-photo-editor__select-button:hover,
+  .person-profile-photo-editor__remove-button:hover {
+    transform: none;
+  }
+}
+
+
+/* =========================================================
+   COMPATIBILIDAD SIN :HAS
+   ========================================================= */
+
+@supports not selector(:has(*)) {
+  .person-profile-form-section,
+  .person-profile-form-notice {
+    opacity: 1;
+  }
+
+  .person-profile-photo-editor__select-button:focus-within {
+    outline: 3px solid
+      rgb(37 99 235 / 0.22);
+
+    outline-offset: 3px;
+  }
+
+  .person-profile-form-toggle {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   IMPRESIÓN
+   ========================================================= */
+
+@media print {
+  :host {
+    --surface: #ffffff;
+    --surface-secondary: #ffffff;
+    --text-primary: #000000;
+    --text-secondary: #262626;
+    --text-muted: #404040;
+    --border-light: #d4d4d4;
+    --border: #a3a3a3;
+
+    color: #000000;
+  }
+
+  .person-profile-form-shell {
+    width: 100%;
+    max-width: none;
+
+    overflow: visible;
+
+    border: 0;
+    border-radius: 0;
+
+    background: #ffffff;
+    box-shadow: none;
+  }
+
+  .person-profile-form-shell::before,
+  .person-profile-form-header::after,
+  .person-profile-form-section::after,
+  .person-profile-form-notice::after {
+    display: none;
+  }
+
+  .person-profile-form-header {
+    padding: 1rem;
+
+    border: 1px solid #a3a3a3;
+
+    background: #ffffff;
+  }
+
+  .person-profile-form-header__close-button,
+  .person-profile-photo-editor__actions,
+  .person-profile-form-actions {
+    display: none !important;
+  }
+
+  .person-profile-form {
+    display: block;
+    padding: 0;
+  }
+
+  .person-profile-form-section,
+  .person-profile-form-notice,
+  .person-profile-form-alert {
+    break-inside: avoid;
+
+    margin-top: 1rem;
+    padding: 1rem;
+
+    border: 1px solid #a3a3a3;
+
+    background: #ffffff !important;
+    box-shadow: none !important;
+  }
+
+  .person-profile-form-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .person-profile-form-field__control {
+    border-color: #a3a3a3;
+
+    background: #ffffff !important;
+    color: #000000;
+
+    box-shadow: none;
+  }
+
+  .person-profile-photo-editor__preview {
+    border-color: #a3a3a3;
+    box-shadow: none;
+  }
+
+  .person-profile-form-toggle {
+    border-color: #a3a3a3;
+
+    background: #ffffff !important;
+    box-shadow: none;
+  }
+}
+
+
+/* =========================================================
+   COLORES FORZADOS
+   ========================================================= */
+
+@media (forced-colors: active) {
+  .person-profile-form-shell,
+  .person-profile-form-section,
+  .person-profile-form-alert,
+  .person-profile-form-notice,
+  .person-profile-form-field__control,
+  .person-profile-form-button,
+  .person-profile-photo-editor__preview,
+  .person-profile-photo-editor__select-button,
+  .person-profile-photo-editor__remove-button,
+  .person-profile-form-toggle {
+    border: 1px solid CanvasText;
+  }
+
+  .person-profile-form-shell::before,
+  .person-profile-form-alert::before,
+  .person-profile-form-notice::before,
+  .person-profile-form-section::before {
+    background: CanvasText;
+  }
+
+  .person-profile-form-shell button:focus-visible,
+  .person-profile-form-shell input:focus-visible,
+  .person-profile-form-shell select:focus-visible,
+  .person-profile-form-shell textarea:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}
+
+

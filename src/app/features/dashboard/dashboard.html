@@ -179,28 +179,6 @@
 
     </nav>
 
-    <!-- Sidebar footer -->
-    <footer class="sidebar-footer">
-
-      <button
-        type="button"
-        class="sidebar-footer__logout-button"
-        (click)="logout()">
-
-        <span
-          class="sidebar-footer__logout-icon"
-          aria-hidden="true">
-          ↪
-        </span>
-
-        <span class="sidebar-footer__logout-label">
-          Cerrar sesión
-        </span>
-
-      </button>
-
-    </footer>
-
   </aside>
 
 
@@ -209,7 +187,6 @@
   ========================== -->
   <main class="admin-dashboard__main">
 
-    <!-- Main header -->
     <header class="dashboard-header">
 
       <div class="dashboard-header__content">
@@ -225,6 +202,54 @@
         <p class="dashboard-header__description">
           Gestiona la operación diaria de tu conjunto residencial.
         </p>
+
+      </div>
+
+      <div class="dashboard-header__account-actions">
+
+        <button
+          type="button"
+          class="dashboard-header__profile-button"
+          [class.dashboard-header__profile-button--active]="mostrarPerfilUsuario"
+          (click)="verPerfilUsuario()">
+
+          <span
+            class="dashboard-header__profile-icon"
+            aria-hidden="true">
+            👤
+          </span>
+
+          <span class="dashboard-header__profile-content">
+
+            <span class="dashboard-header__profile-label">
+              Mi perfil
+            </span>
+
+            <span class="dashboard-header__profile-description">
+              Cuenta de Usuario
+            </span>
+
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="dashboard-header__logout-button"
+          (click)="logout()"
+          aria-label="Cerrar sesión">
+
+          <span
+            class="dashboard-header__logout-icon"
+            aria-hidden="true">
+            ↪
+          </span>
+
+          <span class="dashboard-header__logout-label">
+            Cerrar sesión
+          </span>
+
+        </button>
 
       </div>
 
@@ -272,6 +297,11 @@
         <app-gestion-reservas
           *ngIf="mostrarReservaComponent">
         </app-gestion-reservas>
+
+        <app-perfil-usuario
+          *ngIf="mostrarPerfilUsuario"
+          (cerrar)="verResumen()">
+        </app-perfil-usuario>
 
       </div>
 

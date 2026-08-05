@@ -653,3 +653,405 @@ button {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* =========================================================
+   ENCABEZADO DEL DASHBOARD PERSONA
+   ========================================================= */
+
+.persona-header {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  padding: 1.5rem 1.75rem;
+
+  overflow: hidden;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(37 99 235 / 0.12),
+      transparent 17rem
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #eff6ff
+    );
+
+  box-shadow:
+    0 8px 24px rgb(15 23 42 / 0.08);
+}
+
+.persona-header::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 0.3rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      #2563eb,
+      #1e40af
+    );
+
+  content: '';
+}
+
+.persona-header::after {
+  position: absolute;
+  top: -4rem;
+  right: -3rem;
+
+  width: 12rem;
+  height: 12rem;
+
+  border-radius: 999px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgb(37 99 235 / 0.1),
+      transparent 68%
+    );
+
+  pointer-events: none;
+  content: '';
+}
+
+
+/* =========================================================
+   CONTENIDO DEL ENCABEZADO
+   ========================================================= */
+
+.persona-header__content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+.persona-header .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-bottom: 0.5rem;
+
+  color: #2563eb;
+
+  font-size: 0.74rem;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.persona-header .eyebrow::before {
+  width: 0.48rem;
+  height: 0.48rem;
+
+  border-radius: 999px;
+
+  background: #2563eb;
+
+  box-shadow:
+    0 0 0 0.24rem
+    rgb(37 99 235 / 0.12);
+
+  content: '';
+}
+
+.persona-header__title {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: clamp(1.65rem, 3vw, 2.2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+
+.persona-header__description {
+  max-width: 46rem;
+  margin: 0.75rem 0 0;
+
+  color: #475569;
+
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   ACCIONES DEL ENCABEZADO
+   ========================================================= */
+
+.persona-header__actions {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   BOTONES GENERALES
+   ========================================================= */
+
+.persona-header__profile-button,
+.persona-header__logout-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  min-height: 2.9rem;
+  padding: 0.78rem 1rem;
+
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.persona-header__profile-button:hover,
+.persona-header__logout-button:hover {
+  transform: translateY(-1px);
+}
+
+.persona-header__profile-button:active,
+.persona-header__logout-button:active {
+  transform: translateY(0);
+}
+
+.persona-header__profile-button:focus-visible,
+.persona-header__logout-button:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 0.22);
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   BOTÓN MI PERFIL
+   ========================================================= */
+
+.persona-header__profile-button {
+  color: #1e40af;
+  border-color: #bfdbfe;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dbeafe,
+      #ffffff
+    );
+
+  box-shadow:
+    0 7px 18px rgb(37 99 235 / 0.12);
+}
+
+.persona-header__profile-button:hover {
+  color: #ffffff;
+  border-color: #2563eb;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1e40af
+    );
+
+  box-shadow:
+    0 11px 24px rgb(37 99 235 / 0.23);
+}
+
+.persona-header__profile-icon {
+  display: inline-grid;
+  place-items: center;
+
+  min-width: 1rem;
+
+  font-size: 1rem;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   BOTÓN CERRAR SESIÓN
+   ========================================================= */
+
+.persona-header__logout-button {
+  color: #991b1b;
+  border-color: #fca5a5;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fee2e2,
+      #ffffff
+    );
+
+  box-shadow:
+    0 7px 18px rgb(220 38 38 / 0.1);
+}
+
+.persona-header__logout-button:hover {
+  color: #ffffff;
+  border-color: #dc2626;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc2626,
+      #991b1b
+    );
+
+  box-shadow:
+    0 11px 24px rgb(220 38 38 / 0.22);
+}
+
+.persona-header__logout-icon {
+  display: inline-grid;
+  place-items: center;
+
+  min-width: 1rem;
+
+  font-size: 1rem;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   PERFIL ACTIVO
+   ========================================================= */
+
+.persona-header__profile-button--active {
+  color: #ffffff;
+  border-color: #2563eb;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1e40af
+    );
+
+  box-shadow:
+    0 11px 24px rgb(37 99 235 / 0.23);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .persona-header {
+    align-items: stretch;
+  }
+
+  .persona-header__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .persona-header__profile-button,
+  .persona-header__logout-button {
+    min-width: 10rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .persona-header {
+    flex-direction: column;
+
+    padding: 1.25rem;
+  }
+
+  .persona-header__actions {
+    flex-direction: row;
+    justify-content: flex-end;
+
+    width: 100%;
+    padding-top: 1rem;
+
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .persona-header__profile-button,
+  .persona-header__logout-button {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .persona-header__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .persona-header__profile-button,
+  .persona-header__logout-button {
+    width: 100%;
+  }
+
+  .persona-header__title {
+    font-size: 1.6rem;
+  }
+
+  .persona-header__description {
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .persona-header {
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .persona-header__profile-button,
+  .persona-header__logout-button {
+    min-height: 2.75rem;
+    padding-inline: 0.8rem;
+
+    font-size: 0.82rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .persona-header__profile-button,
+  .persona-header__logout-button {
+    transition: none;
+  }
+
+  .persona-header__profile-button:hover,
+  .persona-header__logout-button:hover {
+    transform: none;
+  }
+}

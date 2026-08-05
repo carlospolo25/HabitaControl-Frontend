@@ -1,0 +1,813 @@
+<section
+  class="profile-form-shell"
+  aria-labelledby="profile-form-title">
+
+  <!-- =====================================================
+       ENCABEZADO
+       ===================================================== -->
+  <header class="profile-form-header">
+
+    <div class="profile-form-header__content">
+
+      <span class="profile-form-header__eyebrow">
+        Edición de cuenta
+      </span>
+
+      <h2
+        id="profile-form-title"
+        class="profile-form-header__title">
+        Actualizar perfil
+      </h2>
+
+      <p class="profile-form-header__description">
+        Modifica tu información personal y los datos administrativos
+        registrados de la residencia.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="profile-form-header__close-button"
+      (click)="cancelar()"
+      [disabled]="isSubmitting"
+      aria-label="Cerrar formulario">
+      ×
+    </button>
+
+  </header>
+
+
+  <!-- =====================================================
+       MENSAJE DE ERROR
+       ===================================================== -->
+  @if (errorMessage) {
+    <section
+      class="profile-form-alert profile-form-alert--error"
+      role="alert">
+
+      <span
+        class="profile-form-alert__icon"
+        aria-hidden="true">
+        !
+      </span>
+
+      <div class="profile-form-alert__content">
+
+        <strong class="profile-form-alert__title">
+          No fue posible completar la operación
+        </strong>
+
+        <p class="profile-form-alert__message">
+          {{ errorMessage }}
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="profile-form-alert__close"
+        (click)="cerrarError()"
+        aria-label="Cerrar mensaje de error">
+        ×
+      </button>
+
+    </section>
+  }
+
+
+  <!-- =====================================================
+       MENSAJE DE ÉXITO
+       ===================================================== -->
+  @if (successMessage) {
+    <section
+      class="profile-form-alert profile-form-alert--success"
+      role="status">
+
+      <span
+        class="profile-form-alert__icon"
+        aria-hidden="true">
+        ✓
+      </span>
+
+      <div class="profile-form-alert__content">
+
+        <strong class="profile-form-alert__title">
+          Perfil actualizado
+        </strong>
+
+        <p class="profile-form-alert__message">
+          {{ successMessage }}
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="profile-form-alert__close"
+        (click)="cerrarExito()"
+        aria-label="Cerrar mensaje de confirmación">
+        ×
+      </button>
+
+    </section>
+  }
+
+
+  <!-- =====================================================
+       FORMULARIO
+       ===================================================== -->
+  <form
+    class="profile-form"
+    (ngSubmit)="guardar()"
+    novalidate>
+
+    <!-- ===================================================
+         FOTOGRAFÍA
+         =================================================== -->
+    <section class="profile-form-section profile-form-section--photo">
+
+      <header class="profile-form-section__header">
+
+        <div class="profile-form-section__heading">
+
+          <span
+            class="profile-form-section__icon"
+            aria-hidden="true">
+            📷
+          </span>
+
+          <div>
+            <h3 class="profile-form-section__title">
+              Fotografía de perfil
+            </h3>
+
+            <p class="profile-form-section__description">
+              Selecciona una imagen clara en formato JPG, PNG o WebP.
+            </p>
+          </div>
+
+        </div>
+
+      </header>
+
+      <div class="profile-photo-editor">
+
+        <div class="profile-photo-editor__preview">
+
+          @if (obtenerFotoVisible(); as fotoVisible) {
+            <img
+              class="profile-photo-editor__image"
+              [src]="fotoVisible"
+              [alt]="'Vista previa de la fotografía de ' + nombre"
+              (error)="manejarErrorFoto()">
+          } @else {
+            <span class="profile-photo-editor__initials">
+              {{ obtenerIniciales() }}
+            </span>
+          }
+
+        </div>
+
+        <div class="profile-photo-editor__content">
+
+          <div class="profile-photo-editor__information">
+
+            <h4 class="profile-photo-editor__title">
+              Imagen del administrador
+            </h4>
+
+            <p class="profile-photo-editor__description">
+              La imagen no puede superar los 5 MB. Se recomienda utilizar
+              una fotografía cuadrada para obtener un mejor resultado.
+            </p>
+
+          </div>
+
+          <div class="profile-photo-editor__actions">
+
+            <label
+              class="profile-photo-editor__select-button"
+              [class.profile-photo-editor__select-button--disabled]="isSubmitting">
+
+              <input
+                #inputFoto
+                type="file"
+                class="profile-photo-editor__input"
+                accept="image/jpeg,image/png,image/webp"
+                (change)="seleccionarFoto($event)"
+                [disabled]="isSubmitting">
+
+              <span aria-hidden="true">
+                📁
+              </span>
+
+              <span>
+                Seleccionar fotografía
+              </span>
+
+            </label>
+
+            @if (fotoSeleccionada) {
+              <button
+                type="button"
+                class="profile-photo-editor__remove-button"
+                (click)="quitarFotoSeleccionada(inputFoto)"
+                [disabled]="isSubmitting">
+
+                Quitar selección
+              </button>
+            }
+
+          </div>
+
+          @if (fotoSeleccionada) {
+            <div class="profile-photo-editor__selected-file">
+
+              <span
+                class="profile-photo-editor__selected-icon"
+                aria-hidden="true">
+                ✓
+              </span>
+
+              <span class="profile-photo-editor__selected-name">
+                {{ fotoSeleccionada.name }}
+              </span>
+
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         INFORMACIÓN PERSONAL
+         =================================================== -->
+    <section class="profile-form-section">
+
+      <header class="profile-form-section__header">
+
+        <div class="profile-form-section__heading">
+
+          <span
+            class="profile-form-section__icon"
+            aria-hidden="true">
+            👤
+          </span>
+
+          <div>
+            <h3 class="profile-form-section__title">
+              Información personal
+            </h3>
+
+            <p class="profile-form-section__description">
+              Datos de identificación y contacto del administrador.
+            </p>
+          </div>
+
+        </div>
+
+        <span class="profile-form-section__required-note">
+          Campos obligatorios
+        </span>
+
+      </header>
+
+      <div class="profile-form-grid">
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-admin-name"
+            class="profile-form-field__label">
+            Nombre completo
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-admin-name"
+            type="text"
+            class="profile-form-field__control"
+            name="nombre"
+            [(ngModel)]="nombre"
+            maxlength="150"
+            autocomplete="name"
+            [disabled]="isSubmitting"
+            required>
+
+          <span class="profile-form-field__hint">
+            Máximo 150 caracteres.
+          </span>
+
+        </div>
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-admin-document"
+            class="profile-form-field__label">
+            Documento
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-admin-document"
+            type="text"
+            class="profile-form-field__control"
+            name="documento"
+            [(ngModel)]="documento"
+            maxlength="50"
+            autocomplete="off"
+            [disabled]="isSubmitting"
+            required>
+
+          <span class="profile-form-field__hint">
+            Número de identificación del administrador.
+          </span>
+
+        </div>
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-admin-phone"
+            class="profile-form-field__label">
+            Teléfono
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-admin-phone"
+            type="tel"
+            class="profile-form-field__control"
+            name="telefono"
+            [(ngModel)]="telefono"
+            maxlength="30"
+            autocomplete="tel"
+            inputmode="tel"
+            [disabled]="isSubmitting"
+            required>
+
+        </div>
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-admin-email"
+            class="profile-form-field__label">
+            Correo electrónico
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-admin-email"
+            type="email"
+            class="profile-form-field__control"
+            name="email"
+            [(ngModel)]="email"
+            maxlength="150"
+            autocomplete="email"
+            inputmode="email"
+            [disabled]="isSubmitting"
+            required>
+
+          <span class="profile-form-field__hint">
+            Se utilizará para el acceso y las comunicaciones de la cuenta.
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         INFORMACIÓN DE LA RESIDENCIA
+         =================================================== -->
+    <section class="profile-form-section profile-form-section--tenant">
+
+      <header class="profile-form-section__header">
+
+        <div class="profile-form-section__heading">
+
+          <span
+            class="profile-form-section__icon"
+            aria-hidden="true">
+            🏢
+          </span>
+
+          <div>
+            <h3 class="profile-form-section__title">
+              Información de la residencia
+            </h3>
+
+            <p class="profile-form-section__description">
+              Datos institucionales y de contacto de la copropiedad.
+            </p>
+          </div>
+
+        </div>
+
+      </header>
+
+      <div class="profile-form-grid">
+
+        <div class="profile-form-field profile-form-field--wide">
+
+          <label
+            for="profile-tenant-name"
+            class="profile-form-field__label">
+            Nombre de la residencia
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-tenant-name"
+            type="text"
+            class="profile-form-field__control"
+            name="nombreEmpresa"
+            [(ngModel)]="nombreEmpresa"
+            maxlength="150"
+            autocomplete="organization"
+            [disabled]="isSubmitting"
+            required>
+
+        </div>
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-tenant-nit"
+            class="profile-form-field__label">
+            NIT
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-tenant-nit"
+            type="text"
+            class="profile-form-field__control"
+            name="nit"
+            [(ngModel)]="nit"
+            maxlength="30"
+            autocomplete="off"
+            [disabled]="isSubmitting"
+            required>
+
+        </div>
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-tenant-domain"
+            class="profile-form-field__label">
+            Dominio
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-tenant-domain"
+            type="text"
+            class="profile-form-field__control"
+            name="dominio"
+            [(ngModel)]="dominio"
+            maxlength="150"
+            autocomplete="off"
+            autocapitalize="none"
+            spellcheck="false"
+            [disabled]="isSubmitting"
+            required>
+
+          <span class="profile-form-field__hint">
+            Identificador único utilizado por la residencia.
+          </span>
+
+        </div>
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-property-type"
+            class="profile-form-field__label">
+            Tipo de propiedad
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-property-type"
+            type="text"
+            class="profile-form-field__control"
+            name="tipoPropiedad"
+            [(ngModel)]="tipoPropiedad"
+            maxlength="80"
+            [disabled]="isSubmitting"
+            required>
+
+        </div>
+
+        <div class="profile-form-field profile-form-field--wide">
+
+          <label
+            for="profile-tenant-address"
+            class="profile-form-field__label">
+            Dirección
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-tenant-address"
+            type="text"
+            class="profile-form-field__control"
+            name="direccion"
+            [(ngModel)]="direccion"
+            maxlength="250"
+            autocomplete="street-address"
+            [disabled]="isSubmitting"
+            required>
+
+        </div>
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-tenant-city"
+            class="profile-form-field__label">
+            Ciudad
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-tenant-city"
+            type="text"
+            class="profile-form-field__control"
+            name="ciudad"
+            [(ngModel)]="ciudad"
+            maxlength="100"
+            autocomplete="address-level2"
+            [disabled]="isSubmitting"
+            required>
+
+        </div>
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-tenant-phone"
+            class="profile-form-field__label">
+            Teléfono de contacto
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-tenant-phone"
+            type="tel"
+            class="profile-form-field__control"
+            name="telefonoEmpresa"
+            [(ngModel)]="telefonoEmpresa"
+            maxlength="30"
+            autocomplete="tel"
+            inputmode="tel"
+            [disabled]="isSubmitting"
+            required>
+
+        </div>
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-tenant-email"
+            class="profile-form-field__label">
+            Correo de contacto
+            <span
+              class="profile-form-field__required"
+              aria-hidden="true">
+              *
+            </span>
+          </label>
+
+          <input
+            id="profile-tenant-email"
+            type="email"
+            class="profile-form-field__control"
+            name="emailContacto"
+            [(ngModel)]="emailContacto"
+            maxlength="150"
+            autocomplete="email"
+            inputmode="email"
+            [disabled]="isSubmitting"
+            required>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CAPACIDAD
+         =================================================== -->
+    <section class="profile-form-section profile-form-section--capacity">
+
+      <header class="profile-form-section__header">
+
+        <div class="profile-form-section__heading">
+
+          <span
+            class="profile-form-section__icon"
+            aria-hidden="true">
+            📊
+          </span>
+
+          <div>
+            <h3 class="profile-form-section__title">
+              Capacidad registrada
+            </h3>
+
+            <p class="profile-form-section__description">
+              Información general sobre la distribución de la residencia.
+            </p>
+          </div>
+
+        </div>
+
+      </header>
+
+      <div class="profile-form-grid profile-form-grid--capacity">
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-tenant-towers"
+            class="profile-form-field__label">
+            Cantidad de torres
+          </label>
+
+          <input
+            id="profile-tenant-towers"
+            type="number"
+            class="profile-form-field__control"
+            name="cantidadTorres"
+            [(ngModel)]="cantidadTorres"
+            min="0"
+            step="1"
+            inputmode="numeric"
+            [disabled]="isSubmitting">
+
+          <span class="profile-form-field__hint">
+            Déjalo vacío si no aplica.
+          </span>
+
+        </div>
+
+        <div class="profile-form-field">
+
+          <label
+            for="profile-tenant-apartments"
+            class="profile-form-field__label">
+            Cantidad de apartamentos
+          </label>
+
+          <input
+            id="profile-tenant-apartments"
+            type="number"
+            class="profile-form-field__control"
+            name="cantidadApartamentos"
+            [(ngModel)]="cantidadApartamentos"
+            min="0"
+            step="1"
+            inputmode="numeric"
+            [disabled]="isSubmitting">
+
+          <span class="profile-form-field__hint">
+            Registra la capacidad total de la copropiedad.
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         AVISO
+         =================================================== -->
+    <aside class="profile-form-notice">
+
+      <span
+        class="profile-form-notice__icon"
+        aria-hidden="true">
+        ℹ
+      </span>
+
+      <div class="profile-form-notice__content">
+
+        <h3 class="profile-form-notice__title">
+          Revisa la información antes de guardar
+        </h3>
+
+        <p class="profile-form-notice__description">
+          Los cambios realizados afectarán los datos visibles de tu cuenta
+          administrativa y de la residencia asociada.
+        </p>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ===================================================
+         ACCIONES
+         =================================================== -->
+    <footer class="profile-form-actions">
+
+      <button
+        type="button"
+        class="profile-form-button profile-form-button--secondary"
+        (click)="cancelar()"
+        [disabled]="isSubmitting">
+
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="profile-form-button profile-form-button--primary"
+        [disabled]="isSubmitting">
+
+        @if (isSubmitting) {
+          <span
+            class="profile-form-button__spinner"
+            aria-hidden="true">
+          </span>
+
+          <span>
+            Guardando cambios...
+          </span>
+        } @else {
+          <span aria-hidden="true">
+            ✓
+          </span>
+
+          <span>
+            Guardar cambios
+          </span>
+        }
+
+      </button>
+
+    </footer>
+
+  </form>
+
+</section>
