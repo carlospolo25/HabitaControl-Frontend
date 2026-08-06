@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 
 import { NovedadAsignar } from '../novedad-asignar/novedad-asignar';
@@ -16,7 +17,12 @@ import { NovedadService } from '../../../../core/services/novedad/novedad';
 @Component({
   selector: 'app-lista-novedades',
   standalone: true,
-  imports: [CommonModule, NovedadAsignar, NovedadEventosDetalle],
+ imports: [
+  CommonModule,
+  FormsModule,
+  NovedadAsignar,
+  NovedadEventosDetalle,
+],
   templateUrl: './lista-novedades.html',
   styleUrl: './lista-novedades.css',
 })
@@ -28,6 +34,15 @@ export class ListaNovedadesComponent implements OnInit {
   @Output() verHistorial = new EventEmitter<string>();
 
   novedades: any[] = [];
+  filteredNovedades: any[] = [];
+
+  searchTerm = '';
+
+  selectedStatus = 'all';
+
+  selectedAssignment = 'all';
+
+  selectedSort = 'recent';
 
   isLoading = false;
   errorMessage = '';
@@ -75,10 +90,15 @@ export class ListaNovedadesComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          this.novedades = Array.isArray(response) ? response : [];
+          this.novedades = Array.isArray(response)
+            ? response
+            : [];
+
+          this.applyFilters();
         },
         error: (err) => {
           this.novedades = [];
+          this.filteredNovedades = [];
           this.errorMessage =
             err?.error?.message ??
             err?.error?.mensaje ??
@@ -146,6 +166,86 @@ export class ListaNovedadesComponent implements OnInit {
 
   canViewHistory(): boolean {
     return this.isAdmin || this.isSecurity || this.isMaintenance;
+  }
+
+  applyFilters(): void {
+    let data = [...this.novedades];
+
+    const term = this.searchTerm
+      .trim()
+      .toLowerCase();
+
+    if (term) {
+      data = data.filter((n) =>
+        (n.titulo ?? '')
+          .toLowerCase()
+          .includes(term) ||
+
+        (n.descripcion ?? '')
+          .toLowerCase()
+          .includes(term) ||
+
+        (n.reportadaPor ?? '')
+          .toLowerCase()
+          .includes(term) ||
+
+        (n.asignadaA ?? '')
+          .toLowerCase()
+          .includes(term)
+      );
+    }
+
+    if (this.selectedStatus !== 'all') {
+      data = data.filter(
+        (n) => n.estado === this.selectedStatus
+      );
+    }
+
+    if (this.selectedAssignment === 'assigned') {
+      data = data.filter(
+        (n) => !!n.asignadaA
+      );
+    }
+
+    if (this.selectedAssignment === 'unassigned') {
+      data = data.filter(
+        (n) => !n.asignadaA
+      );
+    }
+
+    switch (this.selectedSort) {
+      case 'oldest':
+        data.sort(
+          (a, b) =>
+            new Date(a.fechaCreacion).getTime() -
+            new Date(b.fechaCreacion).getTime()
+        );
+        break;
+
+      case 'events':
+        data.sort(
+          (a, b) =>
+            (b.totalEventos ?? 0) -
+            (a.totalEventos ?? 0)
+        );
+        break;
+
+      default:
+        data.sort(
+          (a, b) =>
+            new Date(
+              b.ultimaActualizacion ??
+                b.fechaCreacion
+            ).getTime() -
+            new Date(
+              a.ultimaActualizacion ??
+                a.fechaCreacion
+            ).getTime()
+        );
+        break;
+    }
+
+    this.filteredNovedades = data;
   }
 
   private loadUserPermissions(): void {
@@ -229,6 +329,15 @@ export class ListaNovedadesComponent implements OnInit {
     this.isAdmin = this.esAdmin;
     this.isSecurity = false;
     this.isMaintenance = false;
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.selectedStatus = 'all';
+    this.selectedAssignment = 'all';
+    this.selectedSort = 'recent';
+
+    this.applyFilters();
   }
 
   private ejecutarAccion(action: () => void): void {

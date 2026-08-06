@@ -104,16 +104,74 @@
             </p>
 
             <footer class="registro-footer">
-              <span>
-                Registrado por: <strong>{{ evento.registradoPor || '—' }}</strong>
+
+              <span class="registro-footer__author">
+                Registrado por:
+                <strong>
+                  {{ evento.registradoPor || '—' }}
+                </strong>
               </span>
 
-              @if (evento.imagenUrl) {
-                <a [href]="evento.imagenUrl" target="_blank" rel="noopener noreferrer">
-                  Ver evidencia
-                </a>
-              }
             </footer>
+
+            @if (evento.imagenUrl) {
+
+              <figure class="registro-evidencia">
+
+                <div class="registro-evidencia__media">
+
+                  <img
+                    class="registro-evidencia__image"
+                    [src]="obtenerImagenUrl(evento.imagenUrl)"
+                    [alt]="'Evidencia del registro ' + (index + 1)"
+                    loading="lazy"
+                    (error)="manejarErrorImagen(evento.id)">
+
+                  @if (imagenConError(evento.id)) {
+                    <div class="registro-evidencia__error">
+
+                      <span
+                        class="registro-evidencia__error-icon"
+                        aria-hidden="true">
+                        !
+                      </span>
+
+                      <span>
+                        No fue posible cargar la evidencia.
+                      </span>
+
+                    </div>
+                  }
+
+                </div>
+
+                <figcaption class="registro-evidencia__caption">
+
+                  <div class="registro-evidencia__text">
+
+                    <span class="registro-evidencia__eyebrow">
+                      Evidencia fotográfica
+                    </span>
+
+                    <strong class="registro-evidencia__title">
+                      Imagen adjunta al registro
+                    </strong>
+
+                  </div>
+
+                  <a
+                    class="registro-evidencia__link"
+                    [href]="obtenerImagenUrl(evento.imagenUrl)"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    Abrir original
+                  </a>
+
+                </figcaption>
+
+              </figure>
+
+            }
           </article>
         }
       </section>

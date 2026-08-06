@@ -43,51 +43,138 @@ export class PersonsComponent implements OnInit {
   }
 
   private loadUserPermissions(): void {
-    const token = localStorage.getItem('accessToken');
+    const adminToken =
+      localStorage.getItem('accessToken');
+
+    const personaToken =
+      localStorage.getItem('personaAccessToken');
+
+    const token =
+      personaToken ?? adminToken;
+
+    this.isAdmin = false;
+    this.isSecurity = false;
 
     if (!token) {
-      this.isAdmin = false;
-      this.isSecurity = false;
+      console.warn(
+        'No existe un token disponible para consultar personas.'
+      );
+
       return;
     }
 
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const partes = token.split('.');
+
+      if (partes.length !== 3) {
+        throw new Error('El token no tiene un formato válido.');
+      }
+
+      const payloadBase64 = partes[1]
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+      const payloadConPadding =
+        payloadBase64.padEnd(
+          payloadBase64.length +
+            ((4 - payloadBase64.length % 4) % 4),
+          '='
+        );
+
+      const payload = JSON.parse(
+        atob(payloadConPadding)
+      );
 
       const role =
-        payload.Role ||
-        payload.role ||
-        payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+        payload.Role ??
+        payload.role ??
+        payload.Rol ??
+        payload.rol ??
+        payload[
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        ] ??
+        '';
 
       const personType =
-        payload.PersonType ||
-        payload.personType ||
-        payload.Tipo ||
-        payload.tipo;
+        payload.PersonType ??
+        payload.personType ??
+        payload.TipoPersona ??
+        payload.tipoPersona ??
+        payload.Tipo ??
+        payload.tipo ??
+        '';
 
-      this.isAdmin = role === 'Admin';
-      this.isSecurity = personType === 'Seguridad' || role === 'Seguridad';
+      const roleNormalizado =
+        String(role)
+          .trim()
+          .toLowerCase();
 
-      console.log('===== PERSONS PERMISSIONS =====');
+      const tipoNormalizado =
+        String(personType)
+          .trim()
+          .toLowerCase();
+
+      this.isAdmin =
+        roleNormalizado === 'admin';
+
+      this.isSecurity =
+        tipoNormalizado === 'seguridad' ||
+        tipoNormalizado === '2' ||
+        roleNormalizado === 'seguridad';
+
+      console.log(
+        '===== PERSONS PERMISSIONS ====='
+      );
+
+      console.log('TOKEN UTILIZADO:', {
+        esPersona: !!personaToken,
+        esAdmin: !personaToken && !!adminToken,
+      });
+
       console.log('PAYLOAD:', payload);
       console.log('ROLE:', role);
       console.log('PERSON TYPE:', personType);
       console.log('isAdmin:', this.isAdmin);
       console.log('isSecurity:', this.isSecurity);
     } catch (error) {
-      console.error('Error leyendo permisos de persona:', error);
+      console.error(
+        'Error leyendo permisos de personas:',
+        error
+      );
+
       this.isAdmin = false;
       this.isSecurity = false;
     }
   }
 
   loadPeople(): void {
+    if (this.isLoading) {
+      return;
+    }
+
     this.isLoading = true;
     this.hasErrors = false;
     this.errorMessage = '';
 
-    this.personService
-      .getPeople()
+    const request$ = this.isAdmin
+      ? this.personService.getPeople()
+      : this.isSecurity
+        ? this.personService.getSecurityVisiblePeople()
+        : null;
+
+    if (!request$) {
+      this.isLoading = false;
+      this.hasErrors = true;
+
+      this.errorMessage =
+        'No tienes permisos para consultar la lista de personas.';
+
+      this.cdr.detectChanges();
+
+      return;
+    }
+
+    request$
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -95,13 +182,32 @@ export class PersonsComponent implements OnInit {
         })
       )
       .subscribe({
-        next: (people) => {
-          this.people = people;
+        next: (people: PersonResponse[]) => {
+          this.people =
+            Array.isArray(people)
+              ? people
+              : [];
+
+          this.hasErrors = false;
+          this.errorMessage = '';
+
+          this.resetPagination();
         },
-        error: ({ error }) => {
+
+        error: (error) => {
+          console.error(
+            'Error cargando personas:',
+            error
+          );
+
+          this.people = [];
           this.hasErrors = true;
+
           this.errorMessage =
-            error?.message ?? 'No se pudieron cargar las personas.';
+            error?.error?.message ??
+            error?.error?.mensaje ??
+            error?.message ??
+            'No se pudieron cargar las personas.';
         },
       });
   }
@@ -117,17 +223,44 @@ export class PersonsComponent implements OnInit {
   }
 
   togglePersonStatus(personId: string): void {
+    if (!this.isAdmin) {
+      this.hasErrors = true;
+
+      this.errorMessage =
+        'Solo un administrador puede cambiar el estado de una persona.';
+
+      return;
+    }
+
+    if (!personId) {
+      return;
+    }
+
     this.hasErrors = false;
     this.errorMessage = '';
 
-    this.personService.togglePersonStatus(personId).subscribe({
-      next: () => this.loadPeople(),
-      error: ({ error }) => {
-        this.hasErrors = true;
-        this.errorMessage =
-          error?.message ?? 'No se pudo cambiar el estado de la persona.';
-      },
-    });
+    this.personService
+      .togglePersonStatus(personId)
+      .subscribe({
+        next: () => {
+          this.loadPeople();
+        },
+
+        error: (error) => {
+          console.error(
+            'Error cambiando el estado de la persona:',
+            error
+          );
+
+          this.hasErrors = true;
+
+          this.errorMessage =
+            error?.error?.message ??
+            error?.error?.mensaje ??
+            error?.message ??
+            'No se pudo cambiar el estado de la persona.';
+        },
+      });
   }
 
   get activePeopleCount(): number {

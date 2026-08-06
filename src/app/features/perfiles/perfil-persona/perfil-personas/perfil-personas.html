@@ -738,6 +738,86 @@
 
         </section>
 
+<!-- =================================================
+     SEGURIDAD DE LA CUENTA
+================================================= -->
+
+        <section class="person-profile-section person-profile-section--security">
+
+          <header class="person-profile-section__header">
+
+            <div class="person-profile-section__heading">
+
+              <div
+                class="person-profile-section__icon"
+                aria-hidden="true">
+                🔒
+              </div>
+
+              <div>
+
+                <h3 class="person-profile-section__title">
+                  Seguridad de la cuenta
+                </h3>
+
+                <p class="person-profile-section__description">
+                  Protege el acceso a tu cuenta y actualiza tu contraseña cuando lo
+                  consideres necesario.
+                </p>
+
+              </div>
+
+            </div>
+
+          </header>
+
+
+          <article class="person-profile-security-card">
+
+            <div class="person-profile-security-card__content">
+
+              <span class="person-profile-security-card__badge">
+                Seguridad
+              </span>
+
+              <h4 class="person-profile-security-card__title">
+                Cambiar contraseña
+              </h4>
+
+              <p class="person-profile-security-card__description">
+                Se enviará un enlace seguro a tu correo electrónico para que puedas
+                crear una nueva contraseña y mantener protegida tu cuenta.
+              </p>
+
+            </div>
+
+
+            <div class="person-profile-security-card__actions">
+
+              <button
+                type="button"
+                class="person-profile-button person-profile-button--primary"
+                (click)="irACambiarContrasena()"
+                [disabled]="isLoading || !perfil.active">
+
+                <span
+                  class="person-profile-button__icon"
+                  aria-hidden="true">
+                  🔑
+                </span>
+
+                <span>
+                  Cambiar contraseña
+                </span>
+
+              </button>
+
+            </div>
+
+          </article>
+
+        </section>
+
 
         <!-- =================================================
              AVISO DE PRIVACIDAD

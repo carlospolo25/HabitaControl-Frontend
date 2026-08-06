@@ -1,8 +1,8 @@
 <section class="packages-list">
 
-  <!--======================================================
-    HEADER
-  =======================================================-->
+  <!-- ======================================================
+       HEADER
+  ======================================================= -->
 
   <header class="packages-list__header">
 
@@ -33,12 +33,13 @@
 
         <span
           class="packages-list__refresh-icon"
+          [class.packages-list__refresh-icon--loading]="isLoading"
           aria-hidden="true">
           ↻
         </span>
 
         <span>
-          Actualizar
+          {{ isLoading ? 'Actualizando...' : 'Actualizar' }}
         </span>
 
       </button>
@@ -48,9 +49,258 @@
   </header>
 
 
-  <!--======================================================
-    MENSAJE DE ERROR
-  =======================================================-->
+  <!-- ======================================================
+       FILTROS
+  ======================================================= -->
+
+  @if (paquetes.length > 0) {
+
+    <section
+      class="packages-filters"
+      aria-labelledby="packages-filters-title">
+
+      <header class="packages-filters__header">
+
+        <div class="packages-filters__heading">
+
+          <span class="packages-filters__eyebrow">
+            Búsqueda avanzada
+          </span>
+
+          <h3
+            id="packages-filters-title"
+            class="packages-filters__title">
+            Filtrar paquetes
+          </h3>
+
+          <p class="packages-filters__description">
+            Busca registros y limita los resultados por estado, torre,
+            apartamento u orden de recepción.
+          </p>
+
+        </div>
+
+        @if (hayFiltrosActivos) {
+
+          <button
+            type="button"
+            class="packages-filters__clear-button"
+            (click)="limpiarFiltros()">
+            Limpiar filtros
+          </button>
+
+        }
+
+      </header>
+
+
+      <div class="packages-filters__grid">
+
+        <!-- BUSCADOR -->
+
+        <div class="packages-filters__field packages-filters__field--search">
+
+          <label
+            class="packages-filters__label"
+            for="package-search">
+            Buscar
+          </label>
+
+          <div class="packages-filters__search">
+
+            <span
+              class="packages-filters__search-icon"
+              aria-hidden="true">
+              ⌕
+            </span>
+
+            <input
+              id="package-search"
+              type="search"
+              name="packageSearchTerm"
+              class="packages-filters__input packages-filters__input--search"
+              placeholder="Destinatario, descripción, ubicación o persona..."
+              autocomplete="off"
+              [(ngModel)]="searchTerm"
+              (input)="aplicarFiltros()" />
+
+          </div>
+
+        </div>
+
+
+        <!-- ESTADO -->
+
+        <div class="packages-filters__field">
+
+          <label
+            class="packages-filters__label"
+            for="package-status">
+            Estado
+          </label>
+
+          <select
+            id="package-status"
+            name="selectedPackageStatus"
+            class="packages-filters__select"
+            [(ngModel)]="selectedStatus"
+            (change)="aplicarFiltros()">
+
+            <option value="all">
+              Todos los estados
+            </option>
+
+            <option [value]="EstadoPaquete.Pendiente">
+              Pendiente
+            </option>
+
+            <option [value]="EstadoPaquete.Entregado">
+              Entregado
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- TORRE -->
+
+        <div class="packages-filters__field">
+
+          <label
+            class="packages-filters__label"
+            for="package-tower">
+            Torre
+          </label>
+
+          <select
+            id="package-tower"
+            name="selectedPackageTower"
+            class="packages-filters__select"
+            [(ngModel)]="selectedTower"
+            (change)="cambiarTorre()">
+
+            <option value="">
+              Todas las torres
+            </option>
+
+            @for (torre of torresDisponibles; track torre) {
+
+              <option [value]="torre">
+                Torre {{ torre }}
+              </option>
+
+            }
+
+          </select>
+
+        </div>
+
+
+        <!-- APARTAMENTO -->
+
+        <div class="packages-filters__field">
+
+          <label
+            class="packages-filters__label"
+            for="package-apartment">
+            Apartamento
+          </label>
+
+          <select
+            id="package-apartment"
+            name="selectedPackageApartment"
+            class="packages-filters__select"
+            [(ngModel)]="selectedApartment"
+            (change)="aplicarFiltros()">
+
+            <option value="">
+              Todos los apartamentos
+            </option>
+
+            @for (
+              apartamento of apartamentosDisponibles;
+              track apartamento
+            ) {
+
+              <option [value]="apartamento">
+                Apto. {{ apartamento }}
+              </option>
+
+            }
+
+          </select>
+
+        </div>
+
+
+        <!-- ORDEN -->
+
+        <div class="packages-filters__field">
+
+          <label
+            class="packages-filters__label"
+            for="package-sort">
+            Ordenar por
+          </label>
+
+          <select
+            id="package-sort"
+            name="selectedPackageSort"
+            class="packages-filters__select"
+            [(ngModel)]="selectedSort"
+            (change)="aplicarFiltros()">
+
+            <option value="recent">
+              Recepción más reciente
+            </option>
+
+            <option value="oldest">
+              Recepción más antigua
+            </option>
+
+            <option value="status">
+              Estado
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <footer class="packages-filters__summary">
+
+        <span>
+          Mostrando
+          <strong>{{ paquetesFiltrados.length }}</strong>
+          de
+          <strong>{{ paquetes.length }}</strong>
+          paquetes
+        </span>
+
+        @if (
+          hayFiltrosActivos &&
+          paquetesFiltrados.length === 0
+        ) {
+
+          <span class="packages-filters__no-results">
+            No se encontraron coincidencias.
+          </span>
+
+        }
+
+      </footer>
+
+    </section>
+
+  }
+
+
+  <!-- ======================================================
+       MENSAJE DE ERROR
+  ======================================================= -->
 
   @if (errorMessage) {
 
@@ -73,15 +323,16 @@
   }
 
 
-  <!--======================================================
-    ESTADO DE CARGA
-  =======================================================-->
+  <!-- ======================================================
+       ESTADO DE CARGA
+  ======================================================= -->
 
   @if (isLoading) {
 
     <section
       class="packages-list__state packages-list__state--loading"
-      aria-live="polite">
+      aria-live="polite"
+      aria-busy="true">
 
       <div
         class="packages-list__loader"
@@ -104,10 +355,9 @@
 
   } @else if (paquetes.length === 0) {
 
-
-    <!--====================================================
-      ESTADO VACÍO
-    =====================================================-->
+    <!-- ====================================================
+         ESTADO VACÍO GENERAL
+    ===================================================== -->
 
     <section class="packages-list__state packages-list__state--empty">
 
@@ -131,12 +381,47 @@
 
     </section>
 
+  } @else if (paquetesFiltrados.length === 0) {
+
+    <!-- ====================================================
+         SIN COINCIDENCIAS
+    ===================================================== -->
+
+    <section class="packages-list__state packages-list__state--filtered-empty">
+
+      <div
+        class="packages-list__state-icon packages-list__state-icon--search"
+        aria-hidden="true">
+        ⌕
+      </div>
+
+      <div class="packages-list__state-content">
+
+        <h3 class="packages-list__state-title">
+          No hay paquetes que coincidan
+        </h3>
+
+        <p class="packages-list__state-description">
+          Modifica la búsqueda o selecciona otros filtros para consultar
+          los registros.
+        </p>
+
+        <button
+          type="button"
+          class="packages-list__clear-filters-button"
+          (click)="limpiarFiltros()">
+          Limpiar filtros
+        </button>
+
+      </div>
+
+    </section>
+
   } @else {
 
-
-    <!--====================================================
-      CONTENIDO PRINCIPAL
-    =====================================================-->
+    <!-- ====================================================
+         CONTENIDO PRINCIPAL
+    ===================================================== -->
 
     <section class="packages-list__content">
 
@@ -149,23 +434,39 @@
           </span>
 
           <strong class="packages-list__summary-value">
-            {{ paquetes.length }}
+            {{ paquetesFiltrados.length }}
           </strong>
 
           <span class="packages-list__summary-text">
-            paquetes encontrados
+            {{
+              paquetesFiltrados.length === 1
+                ? 'paquete encontrado'
+                : 'paquetes encontrados'
+            }}
           </span>
 
         </div>
 
+        @if (hayFiltrosActivos) {
+
+          <span class="packages-list__filtered-indicator">
+            Vista filtrada
+          </span>
+
+        }
+
       </div>
 
 
-      <!--==================================================
-        TABLA
-      ===================================================-->
+      <!-- ==================================================
+           TABLA
+      =================================================== -->
 
-      <div class="packages-list__table-wrapper">
+      <div
+        class="packages-list__table-wrapper"
+        role="region"
+        aria-label="Listado de paquetes registrados"
+        tabindex="0">
 
         <table class="packages-list__table">
 
@@ -240,10 +541,12 @@
 
           <tbody class="packages-list__table-body">
 
-            @for (paquete of paquetes; track paquete.id) {
+            @for (
+              paquete of paquetesFiltrados;
+              track paquete.id
+            ) {
 
               <tr class="packages-list__table-row packages-list__table-row--data">
-
 
                 <!-- DESTINATARIO -->
 
@@ -256,7 +559,7 @@
                     <div
                       class="packages-list__recipient-avatar"
                       aria-hidden="true">
-                      {{ paquete.nombreDestinatario.charAt(0) }}
+                      {{ paquete.nombreDestinatario.charAt(0).toUpperCase() }}
                     </div>
 
                     <div class="packages-list__recipient-info">
@@ -266,7 +569,8 @@
                       </strong>
 
                       <span class="packages-list__recipient-location">
-                        Torre {{ paquete.torre }} · Apto. {{ paquete.apartamento }}
+                        Torre {{ paquete.torre }} ·
+                        Apto. {{ paquete.apartamento }}
                       </span>
 
                     </div>
@@ -346,7 +650,9 @@
 
                   <div
                     class="packages-list__date"
-                    [class.packages-list__date--pending]="!paquete.fechaEntrega">
+                    [class.packages-list__date--pending]="
+                      !paquete.fechaEntrega
+                    ">
 
                     <span
                       class="packages-list__date-icon"
@@ -375,8 +681,15 @@
 
                   <span
                     class="packages-list__status"
-                    [class.packages-list__status--pending]="paquete.estado === EstadoPaquete.Pendiente"
-                    [class.packages-list__status--delivered]="paquete.estado === EstadoPaquete.Entregado">
+                    [class.packages-list__status--pending]="
+                      paquete.estado === EstadoPaquete.Pendiente
+                    "
+                    [class.packages-list__status--received]="
+                      paquete.estado === EstadoPaquete.Pendiente
+                    "
+                    [class.packages-list__status--delivered]="
+                      paquete.estado === EstadoPaquete.Entregado
+                    ">
 
                     <span
                       class="packages-list__status-indicator"
@@ -392,7 +705,7 @@
                 </td>
 
 
-                <!-- QUIEN RECIBE -->
+                <!-- QUIÉN RECIBE -->
 
                 <td
                   class="packages-list__table-cell"
@@ -400,7 +713,9 @@
 
                   <span
                     class="packages-list__person-value"
-                    [class.packages-list__person-value--empty]="!paquete.entregadoA">
+                    [class.packages-list__person-value--empty]="
+                      !paquete.entregadoA
+                    ">
 
                     {{ paquete.entregadoA || 'Sin entregar' }}
 
@@ -409,7 +724,7 @@
                 </td>
 
 
-                <!-- QUIEN ENTREGA -->
+                <!-- QUIÉN ENTREGA -->
 
                 <td
                   class="packages-list__table-cell"
@@ -417,7 +732,9 @@
 
                   <span
                     class="packages-list__person-value"
-                    [class.packages-list__person-value--empty]="!paquete.entregadoPor">
+                    [class.packages-list__person-value--empty]="
+                      !paquete.entregadoPor
+                    ">
 
                     {{ paquete.entregadoPor || 'Sin entregar' }}
 
@@ -495,9 +812,9 @@
 </section>
 
 
-<!--========================================================
-  MODAL DE ENTREGA
-=========================================================-->
+<!-- ========================================================
+     MODAL DE ENTREGA
+========================================================= -->
 
 @if (mostrarEntrega) {
 

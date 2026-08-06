@@ -335,3 +335,85 @@
   opacity: 0.55;
   cursor: not-allowed;
 }
+
+/* ==========================================================
+   EVIDENCIA FOTOGRÁFICA
+========================================================== */
+
+.registro-evidencia {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+
+  margin-top: var(--space-16);
+  padding: var(--space-20);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface),
+      var(--surface-secondary)
+    );
+
+  border: 1px solid var(--border-light);
+  border-left: 5px solid var(--color-primary);
+
+  border-radius: var(--radius-xl);
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.registro-evidencia:hover {
+  transform: translateY(-3px);
+
+  border-left-color: var(--color-primary-dark);
+
+  box-shadow: var(--shadow-lg);
+}
+
+.registro-evidencia__media {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gray-100),
+      var(--gray-50)
+    );
+
+  border: 1px solid var(--border-light);
+
+  min-height: 240px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.registro-evidencia__image {
+  display: block;
+
+  width: 100%;
+  max-height: 420px;
+
+  object-fit: contain;
+
+  transition:
+    transform .35s ease,
+    filter .35s ease;
+}
+
+.registro-evidencia:hover
+.registro-evidencia__image {
+  transform: scale(1.02);
+}

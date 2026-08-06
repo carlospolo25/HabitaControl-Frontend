@@ -577,6 +577,82 @@
       </section>
 
       <!-- ===================================================
+     SEGURIDAD DE LA CUENTA
+=================================================== -->
+
+      <section class="profile-section">
+
+        <header class="profile-section__header">
+
+          <div class="profile-section__heading">
+
+            <div
+              class="profile-section__icon"
+              aria-hidden="true">
+              🔒
+            </div>
+
+            <div>
+
+              <h3 class="profile-section__title">
+                Seguridad de la cuenta
+              </h3>
+
+              <p class="profile-section__description">
+                Mantén protegida tu cuenta administrando el acceso y actualizando
+                tu contraseña cuando lo consideres necesario.
+              </p>
+
+            </div>
+
+          </div>
+
+        </header>
+
+        <article class="profile-security-card">
+
+          <div class="profile-security-card__content">
+
+            <span class="profile-security-card__badge">
+              Seguridad
+            </span>
+
+            <h4 class="profile-security-card__title">
+              Cambiar contraseña
+            </h4>
+
+            <p class="profile-security-card__description">
+              Se enviará un enlace seguro a tu correo electrónico para crear una
+              nueva contraseña. Esta operación cerrará el proceso anterior de
+              recuperación si existía uno activo.
+            </p>
+
+          </div>
+
+          <div class="profile-security-card__actions">
+
+            <button
+              type="button"
+              class="profile-button profile-button--primary"
+              (click)="irACambiarContrasena()">
+
+              <span
+                class="profile-button__icon"
+                aria-hidden="true">
+                🔑
+              </span>
+
+              Cambiar contraseña
+
+            </button>
+
+          </div>
+
+        </article>
+
+      </section>
+
+      <!-- ===================================================
            AVISO DE PRIVACIDAD Y AUTOGESTIÓN
            =================================================== -->
       <aside class="profile-privacy-notice">

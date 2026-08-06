@@ -1,10 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { finalize } from 'rxjs';
+
 import {
   Dashboard,
-  DashboardOverviewResponse,
   DashboardNewsOperationalResponse,
+  DashboardOverviewResponse,
   DashboardTodayActivityResponse,
 } from '../../../core/services/dashboard/dashboard';
 
@@ -29,8 +35,8 @@ export class DashboardOverview implements OnInit {
   todayError = '';
 
   constructor(
-    private dashboardService: Dashboard,
-    private cdr: ChangeDetectorRef
+    private readonly dashboardService: Dashboard,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -38,19 +44,30 @@ export class DashboardOverview implements OnInit {
   }
 
   get isLoading(): boolean {
-    return this.loadingOverview || this.loadingNews || this.loadingToday;
+    return (
+      this.loadingOverview ||
+      this.loadingNews ||
+      this.loadingToday
+    );
   }
 
   get hasData(): boolean {
-    return !!(this.overview || this.newsSummary || this.todayActivity);
+    return Boolean(
+      this.overview ||
+      this.newsSummary ||
+      this.todayActivity
+    );
   }
 
   get hasErrors(): boolean {
-    return !!(this.overviewError || this.newsError || this.todayError);
+    return Boolean(
+      this.overviewError ||
+      this.newsError ||
+      this.todayError
+    );
   }
 
   loadDashboard(): void {
-    this.clearDashboard();
     this.clearErrors();
 
     this.loadOverview();
@@ -77,7 +94,7 @@ export class DashboardOverview implements OnInit {
         next: (response) => {
           this.overview = response;
         },
-        error: (error) => {
+        error: (error: HttpErrorResponse) => {
           this.overviewError = this.getErrorMessage(error);
         },
       });
@@ -98,7 +115,7 @@ export class DashboardOverview implements OnInit {
         next: (response) => {
           this.newsSummary = response;
         },
-        error: (error) => {
+        error: (error: HttpErrorResponse) => {
           this.newsError = this.getErrorMessage(error);
         },
       });
@@ -119,16 +136,10 @@ export class DashboardOverview implements OnInit {
         next: (response) => {
           this.todayActivity = response;
         },
-        error: (error) => {
+        error: (error: HttpErrorResponse) => {
           this.todayError = this.getErrorMessage(error);
         },
       });
-  }
-
-  private clearDashboard(): void {
-    this.overview = null;
-    this.newsSummary = null;
-    this.todayActivity = null;
   }
 
   private clearErrors(): void {
@@ -137,28 +148,28 @@ export class DashboardOverview implements OnInit {
     this.todayError = '';
   }
 
-  private getErrorMessage(error: any): string {
-    if (error?.error?.message) {
+  private getErrorMessage(error: HttpErrorResponse): string {
+    if (error.error?.message) {
       return error.error.message;
     }
 
-    if (typeof error?.error === 'string') {
+    if (typeof error.error === 'string') {
       return error.error;
     }
 
-    if (error?.status === 0) {
+    if (error.status === 0) {
       return 'No fue posible conectar con el servidor. Verifica tu conexión e intenta nuevamente.';
     }
 
-    if (error?.status === 401) {
+    if (error.status === 401) {
       return 'Tu sesión ha expirado. Inicia sesión nuevamente.';
     }
 
-    if (error?.status === 403) {
+    if (error.status === 403) {
       return 'No tienes permisos para ver esta información.';
     }
 
-    if (error?.status === 404) {
+    if (error.status === 404) {
       return 'No se encontró la información solicitada.';
     }
 

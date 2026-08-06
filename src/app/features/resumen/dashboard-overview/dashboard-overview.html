@@ -1,41 +1,46 @@
 <section class="admin-overview">
 
-  <!-- =====================================================
-       ENCABEZADO PRINCIPAL
-  ====================================================== -->
-
   <header class="admin-overview__header">
 
     <div class="overview-heading">
+
       <span class="overview-heading__eyebrow">
         Centro de operación
       </span>
 
       <h2 class="overview-heading__title">
-        Dashboard
+        Resumen operativo
       </h2>
 
       <p class="overview-heading__description">
-        Estado actual del conjunto residencial y señales que requieren revisión.
+        Consulta el estado actual de la operación, los indicadores principales
+        y las señales que requieren atención.
       </p>
+
     </div>
 
     <div class="admin-overview__header-actions">
+
       <button
         type="button"
         class="overview-refresh-button"
-        title="Actualizar información"
-        aria-label="Actualizar información del dashboard"
+        aria-label="Actualizar información del resumen"
         (click)="retry()"
         [disabled]="isLoading">
 
         <span
           class="overview-refresh-button__icon"
+          [class.overview-refresh-button__icon--loading]="isLoading"
           aria-hidden="true">
           ↻
         </span>
 
+        <span class="overview-refresh-button__label">
+          {{ isLoading ? 'Actualizando' : 'Actualizar' }}
+        </span>
+
       </button>
+
     </div>
 
   </header>
@@ -236,7 +241,9 @@
        RESUMEN GENERAL
   ====================================================== -->
 
-  <section class="overview-block overview-block--metrics">
+  <section
+    class="overview-block overview-block--metrics"
+    [attr.aria-busy]="loadingOverview">
 
     <header class="overview-block__header">
 
@@ -432,7 +439,9 @@
        RESUMEN OPERATIVO
   ====================================================== -->
 
-  <section class="overview-block overview-block--operations">
+  <section
+    class="overview-block overview-block--operations"
+    [attr.aria-busy]="loadingNews">
 
     <header class="overview-block__header">
 
@@ -458,7 +467,8 @@
       @if (loadingNews) {
         <div
           class="operations-panel operations-panel--loading"
-          aria-label="Cargando resumen operativo">
+          aria-label="Cargando resumen operativo"
+          [attr.aria-busy]="loadingNews">
         </div>
       }
 
@@ -540,6 +550,7 @@
 
                     <p class="news-empty-state__message">
                       No hay novedades operativas pendientes.
+                      La operación se encuentra al día.
                     </p>
 
                   </div>
@@ -625,7 +636,7 @@
                     </span>
 
                     <p class="news-empty-state__message">
-                      No hay novedades de gestión pendientes.
+                      No hay novedades administrativas pendientes de seguimiento.
                     </p>
 
                   </div>
@@ -687,7 +698,9 @@
        ACTIVIDAD DEL DÍA
   ====================================================== -->
 
-  <section class="overview-block overview-block--daily-activity">
+  <section
+    class="overview-block overview-block--daily-activity"
+    [attr.aria-busy]="loadingToday">
 
     <header class="overview-block__header">
 
@@ -713,7 +726,8 @@
       @if (loadingToday) {
         <div
           class="daily-activity-loading-grid"
-          aria-label="Cargando actividad del día">
+          aria-label="Cargando actividad del día"
+          [attr.aria-busy]="loadingToday">
 
           <article class="daily-activity-card daily-activity-card--loading"></article>
           <article class="daily-activity-card daily-activity-card--loading"></article>

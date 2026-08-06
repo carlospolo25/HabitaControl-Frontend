@@ -1,140 +1,253 @@
-/*==========================================================
-  HABITACONTROL
-  PACKAGES LIST
-  PARTE 1
-  VARIABLES · CONTAINER · HEADER · REFRESH BUTTON
-==========================================================*/
+/* ==========================================================
+   HABITACONTROL — LISTA DE PAQUETES
+   PARTE 1: VARIABLES, BASE, CONTENEDOR Y HEADER
+========================================================== */
 
 
-/*==========================================================
-  VARIABLES DEL COMPONENTE
-==========================================================*/
+/* ==========================================================
+   1. VARIABLES
+========================================================== */
 
 :host {
-  --packages-primary: #2563eb;
-  --packages-primary-dark: #1d4ed8;
-  --packages-primary-soft: #dbeafe;
+  /* Marca */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-light: #dbeafe;
+  --color-primary-dark: #1e40af;
 
-  --packages-success: #16a34a;
-  --packages-warning: #f59e0b;
-  --packages-danger: #dc2626;
-  --packages-cyan: #0ea5e9;
+  /* Neutros */
+  --gray-950: #020617;
+  --gray-900: #0f172a;
+  --gray-800: #1e293b;
+  --gray-700: #334155;
+  --gray-600: #475569;
+  --gray-500: #64748b;
+  --gray-400: #94a3b8;
+  --gray-300: #cbd5e1;
+  --gray-200: #e2e8f0;
+  --gray-100: #f1f5f9;
+  --gray-50: #f8fafc;
 
-  --packages-text: #111827;
-  --packages-text-soft: #475569;
-  --packages-text-muted: #64748b;
+  /* Estados */
+  --success: #16a34a;
+  --success-light: #dcfce7;
+  --success-border: #86efac;
+  --success-dark: #166534;
 
-  --packages-border: #dbe4ef;
-  --packages-border-soft: #e2e8f0;
+  --danger: #dc2626;
+  --danger-light: #fee2e2;
+  --danger-border: #fca5a5;
+  --danger-dark: #991b1b;
 
-  --packages-surface: #ffffff;
-  --packages-surface-alt: #f8fafc;
-  --packages-background: #f1f5f9;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --warning-border: #fcd34d;
+  --warning-dark: #92400e;
 
-  --packages-radius-sm: 0.75rem;
-  --packages-radius-md: 1rem;
-  --packages-radius-lg: 1.4rem;
-  --packages-radius-pill: 999px;
+  --info: #0ea5e9;
+  --info-light: #e0f2fe;
+  --info-border: #7dd3fc;
+  --info-dark: #075985;
 
-  --packages-shadow-sm:
-    0 0.4rem 1rem rgba(15, 23, 42, 0.05);
+  --accent: #7c3aed;
+  --accent-light: #ede9fe;
+  --accent-border: #c4b5fd;
+  --accent-dark: #5b21b6;
 
-  --packages-shadow-md:
-    0 1rem 2.3rem rgba(15, 23, 42, 0.08);
+  /* Superficies */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --surface-secondary: #f8fafc;
 
-  --packages-transition:
-    0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Bordes */
+  --border-light: #e2e8f0;
+  --border: #cbd5e1;
+  --border-dark: #94a3b8;
+
+  /* Texto */
+  --text-primary: #111827;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-disabled: #94a3b8;
+  --text-white: #ffffff;
+
+  /* Sombras */
+  --shadow-sm:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 2px 5px rgba(15, 23, 42, 0.04);
+
+  --shadow-md:
+    0 8px 24px rgba(15, 23, 42, 0.07),
+    0 3px 9px rgba(15, 23, 42, 0.04);
+
+  --shadow-lg:
+    0 18px 44px rgba(15, 23, 42, 0.1),
+    0 6px 18px rgba(15, 23, 42, 0.05);
+
+  --shadow-xl:
+    0 30px 72px rgba(15, 23, 42, 0.14),
+    0 12px 30px rgba(15, 23, 42, 0.07);
+
+  /* Radios */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-pill: 999px;
+
+  /* Espaciados */
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-20: 1.25rem;
+  --space-24: 1.5rem;
+  --space-28: 1.75rem;
+  --space-32: 2rem;
+  --space-40: 2.5rem;
+  --space-48: 3rem;
+  --space-56: 3.5rem;
+  --space-64: 4rem;
+
+  /* Transiciones */
+  --transition-fast: 160ms ease;
+  --transition-normal: 230ms ease;
+  --transition-slow:
+    340ms cubic-bezier(0.22, 1, 0.36, 1);
 
   display: block;
+
+  width: 100%;
   min-width: 0;
 }
 
 
-/*==========================================================
-  CONTENEDOR PRINCIPAL
-==========================================================*/
+/* ==========================================================
+   2. RESET LOCAL
+========================================================== */
+
+:host,
+:host *,
+:host *::before,
+:host *::after {
+  box-sizing: border-box;
+}
+
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  margin: 0;
+}
+
+
+/* ==========================================================
+   3. CONTENEDOR PRINCIPAL
+========================================================== */
 
 .packages-list {
   position: relative;
 
   display: flex;
   flex-direction: column;
-  gap: 1.35rem;
+  gap: var(--space-24);
 
   width: 100%;
   min-width: 0;
 
-  padding: 1.5rem;
+  padding: var(--space-32);
 
-  overflow: hidden;
-
-  color:
-    var(--packages-text);
+  color: var(--text-primary);
 
   background:
+    radial-gradient(
+      circle at 3% 3%,
+      rgba(37, 99, 235, 0.075),
+      transparent 25rem
+    ),
+    radial-gradient(
+      circle at 94% 12%,
+      rgba(14, 165, 233, 0.055),
+      transparent 23rem
+    ),
+    radial-gradient(
+      circle at 80% 90%,
+      rgba(124, 58, 237, 0.04),
+      transparent 24rem
+    ),
     linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.995),
-      rgba(248, 250, 252, 0.97)
+      180deg,
+      var(--surface),
+      var(--background)
     );
 
   border:
     1px solid
-    rgba(203, 213, 225, 0.78);
+    rgba(226, 232, 240, 0.82);
 
-  border-radius:
-    var(--packages-radius-lg);
+  border-radius: var(--radius-2xl);
 
-  box-shadow:
-    var(--packages-shadow-md);
-
+  overflow: hidden;
   isolation: isolate;
 }
 
 
-/* Línea superior de identidad */
+/* Halo superior */
 
 .packages-list::before {
   position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-
-  z-index: 3;
-
-  height: 0.25rem;
-
-  content: "";
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--packages-primary),
-      var(--packages-cyan),
-      var(--packages-success)
-    );
-}
-
-
-/* Luz ambiental */
-
-.packages-list::after {
-  position: absolute;
-  top: -10rem;
-  right: -9rem;
-
+  top: -11rem;
+  left: -10rem;
   z-index: -1;
 
-  width: 25rem;
-  height: 25rem;
+  width: 28rem;
+  height: 28rem;
 
   content: "";
 
   background:
     radial-gradient(
       circle,
-      rgba(37, 99, 235, 0.09),
+      rgba(37, 99, 235, 0.12),
       transparent 70%
+    );
+
+  border-radius: 50%;
+  filter: blur(0.5rem);
+
+  pointer-events: none;
+}
+
+
+/* Halo inferior */
+
+.packages-list::after {
+  position: absolute;
+  right: -12rem;
+  bottom: -13rem;
+  z-index: -1;
+
+  width: 30rem;
+  height: 30rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(14, 165, 233, 0.08),
+      transparent 72%
     );
 
   border-radius: 50%;
@@ -143,160 +256,216 @@
 }
 
 
-/*==========================================================
-  HEADER
-==========================================================*/
+/* ==========================================================
+   4. HEADER PRINCIPAL
+========================================================== */
 
 .packages-list__header {
   position: relative;
-  z-index: 2;
+  z-index: 1;
 
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 2rem;
+  gap: var(--space-32);
 
-  min-width: 0;
+  min-height: 10.5rem;
 
   padding:
-    0.5rem
-    0.25rem
-    1.35rem;
+    var(--space-28)
+    var(--space-32);
 
-  border-bottom:
+  background:
+    linear-gradient(
+      135deg,
+      var(--gray-900) 0%,
+      var(--gray-800) 58%,
+      var(--color-primary-dark) 145%
+    );
+
+  border:
     1px solid
-    rgba(226, 232, 240, 0.92);
+    rgba(148, 163, 184, 0.15);
+
+  border-radius: var(--radius-xl);
+
+  box-shadow:
+    0 1.4rem 3.3rem rgba(15, 23, 42, 0.17);
+
+  overflow: hidden;
+  isolation: isolate;
 }
 
 
-/*==========================================================
-  CONTENEDOR DE TÍTULOS
-==========================================================*/
+/* Línea superior corporativa */
 
-.packages-list__heading {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  gap: 0.42rem;
+.packages-list__header::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
 
-  min-width: 0;
-}
-
-
-/*==========================================================
-  EYEBROW
-==========================================================*/
-
-.packages-list__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.48rem;
-
-  width: max-content;
-  max-width: 100%;
-
-  color:
-    var(--packages-primary);
-
-  font-size: 0.72rem;
-  font-weight: 850;
-  line-height: 1.3;
-
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-
-  overflow-wrap: anywhere;
-}
-
-
-/* Indicador visual */
-
-.packages-list__eyebrow::before {
-  flex: 0 0 auto;
-
-  width: 0.48rem;
-  height: 0.48rem;
+  height: 0.22rem;
 
   content: "";
 
   background:
     linear-gradient(
-      135deg,
-      var(--packages-primary),
-      var(--packages-cyan)
+      90deg,
+      var(--color-primary),
+      var(--info),
+      var(--accent),
+      var(--success)
     );
+
+  pointer-events: none;
+}
+
+
+/* Decoración derecha */
+
+.packages-list__header::after {
+  position: absolute;
+  top: 50%;
+  right: -8rem;
+  z-index: -1;
+
+  width: 24rem;
+  height: 24rem;
+
+  content: "";
+
+  border:
+    2.8rem solid
+    rgba(255, 255, 255, 0.035);
 
   border-radius: 50%;
 
+  transform: translateY(-50%);
+
   box-shadow:
-    0 0 0 0.22rem rgba(37, 99, 235, 0.08);
+    0 0 0 3rem rgba(37, 99, 235, 0.028);
+
+  pointer-events: none;
 }
 
 
-/*==========================================================
-  TÍTULO
-==========================================================*/
+/* ==========================================================
+   5. BLOQUE DEL TÍTULO
+========================================================== */
 
-.packages-list__title {
-  margin: 0;
+.packages-list__heading {
+  position: relative;
+  z-index: 2;
 
-  color:
-    var(--packages-text);
-
-  font-size:
-    clamp(
-      1.45rem,
-      2vw,
-      1.85rem
-    );
-
-  font-weight: 900;
-  line-height: 1.18;
-
-  letter-spacing: -0.025em;
-
-  overflow-wrap: anywhere;
-}
-
-
-/*==========================================================
-  DESCRIPCIÓN
-==========================================================*/
-
-.packages-list__description {
-  max-width: 48rem;
-
-  margin: 0;
-
-  color:
-    var(--packages-text-soft);
-
-  font-size: 0.9rem;
-  font-weight: 500;
-  line-height: 1.7;
-
-  overflow-wrap: anywhere;
-}
-
-
-/*==========================================================
-  ACCIONES DEL HEADER
-==========================================================*/
-
-.packages-list__header-actions {
   display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.75rem;
+  flex-direction: column;
+  align-items: flex-start;
 
+  max-width: 48rem;
   min-width: 0;
 }
 
 
-/*==========================================================
-  BOTÓN ACTUALIZAR
-==========================================================*/
+/* ==========================================================
+   6. EYEBROW
+========================================================== */
+
+.packages-list__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  margin-bottom: var(--space-8);
+
+  color: #93c5fd;
+
+  font-size: 0.74rem;
+  font-weight: 850;
+  line-height: 1.2;
+
+  letter-spacing: 0.115em;
+  text-transform: uppercase;
+}
+
+.packages-list__eyebrow::before {
+  width: 1.75rem;
+  height: 0.1875rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--info),
+      #60a5fa
+    );
+
+  border-radius: var(--radius-pill);
+}
+
+
+/* ==========================================================
+   7. TÍTULO
+========================================================== */
+
+.packages-list__title {
+  color: var(--text-white);
+
+  font-size:
+    clamp(
+      2rem,
+      4vw,
+      3rem
+    );
+
+  font-weight: 850;
+  line-height: 1.05;
+
+  letter-spacing: -0.04em;
+
+  text-wrap: balance;
+}
+
+
+/* ==========================================================
+   8. DESCRIPCIÓN
+========================================================== */
+
+.packages-list__description {
+  max-width: 42rem;
+
+  margin-top: var(--space-12);
+
+  color: var(--gray-300);
+
+  font-size: 0.9375rem;
+  font-weight: 450;
+  line-height: 1.72;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   9. ACCIONES DEL HEADER
+========================================================== */
+
+.packages-list__header-actions {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex: 0 0 auto;
+}
+
+
+/* ==========================================================
+   10. BOTÓN ACTUALIZAR
+========================================================== */
 
 .packages-list__refresh-button {
   position: relative;
@@ -304,256 +473,1101 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.58rem;
+  gap: var(--space-8);
 
-  min-width: 8.5rem;
-  min-height: 2.8rem;
+  min-width: 9.5rem;
+  min-height: 3.25rem;
 
   padding:
-    0.72rem
-    1.1rem;
+    var(--space-12)
+    var(--space-20);
 
-  overflow: hidden;
-
-  color:
-    var(--packages-primary);
-
-  font: inherit;
-  font-size: 0.82rem;
-  font-weight: 800;
-  line-height: 1.2;
-
-  white-space: nowrap;
+  color: var(--text-white);
 
   background:
     linear-gradient(
-      180deg,
-      #ffffff,
-      #eff6ff
+      145deg,
+      var(--color-primary),
+      var(--color-primary-hover)
     );
 
   border:
     1px solid
-    rgba(147, 197, 253, 0.88);
+    rgba(147, 197, 253, 0.4);
 
-  border-radius:
-    0.9rem;
-
-  cursor: pointer;
+  border-radius: var(--radius-lg);
 
   box-shadow:
-    0 0.45rem 1rem rgba(37, 99, 235, 0.08);
+    0 0.8rem 1.8rem rgba(37, 99, 235, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  font-size: 0.8125rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+  overflow: hidden;
 
   transition:
-    color var(--packages-transition),
-    background var(--packages-transition),
-    border-color var(--packages-transition),
-    box-shadow var(--packages-transition),
-    opacity var(--packages-transition),
-    transform var(--packages-transition);
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 
-/* Brillo interno */
+/* Brillo dinámico */
 
 .packages-list__refresh-button::before {
   position: absolute;
-  inset: 0;
+  top: -60%;
+  bottom: -60%;
+  left: -78%;
+
+  width: 46%;
 
   content: "";
 
   background:
     linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.32),
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.65),
       transparent
     );
+
+  transform: rotate(18deg);
+
+  transition:
+    left 540ms cubic-bezier(0.22, 1, 0.36, 1);
 
   pointer-events: none;
 }
 
 
-/* Elementos sobre el brillo */
-
-.packages-list__refresh-button > * {
-  position: relative;
-  z-index: 2;
-}
-
-
-/* Hover */
-
 .packages-list__refresh-button:hover:not(:disabled) {
-  color:
-    #ffffff;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--packages-primary),
-      var(--packages-primary-dark)
-    );
-
   border-color:
-    var(--packages-primary);
+    rgba(191, 219, 254, 0.58);
 
   box-shadow:
-    0 0.9rem 1.7rem rgba(37, 99, 235, 0.22);
+    0 1.05rem 2.2rem rgba(37, 99, 235, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
 
-  transform:
-    translateY(-0.12rem);
+  transform: translateY(-0.125rem);
 }
 
 
-/* Active */
+.packages-list__refresh-button:hover:not(:disabled)::before {
+  left: 138%;
+}
+
 
 .packages-list__refresh-button:active:not(:disabled) {
   transform:
+    translateY(0)
     scale(0.97);
 }
 
 
-/* Focus */
-
 .packages-list__refresh-button:focus-visible {
   outline:
-    0.18rem solid
-    rgba(37, 99, 235, 0.3);
+    0.1875rem solid
+    rgba(147, 197, 253, 0.5);
 
-  outline-offset:
-    0.16rem;
+  outline-offset: 0.1875rem;
 }
 
 
-/* Disabled */
-
 .packages-list__refresh-button:disabled {
-  color:
-    #64748b;
-
-  background:
-    #f1f5f9;
-
-  border-color:
-    #dbe4ef;
-
-  opacity: 0.68;
+  opacity: 0.58;
 
   cursor: not-allowed;
 
   box-shadow: none;
-
   transform: none;
 }
 
 
-/*==========================================================
-  ICONO ACTUALIZAR
-==========================================================*/
+/* ==========================================================
+   11. ICONO DE ACTUALIZACIÓN
+========================================================== */
 
 .packages-list__refresh-icon {
-  display: inline-grid;
-  place-items: center;
+  display: inline-block;
 
   flex: 0 0 auto;
-
-  width: 1.15rem;
-  height: 1.15rem;
 
   font-size: 1rem;
   font-weight: 900;
   line-height: 1;
-
-  transform-origin: center;
 }
 
 
-/* Giro durante la carga */
-
-.packages-list__refresh-button:disabled
-.packages-list__refresh-icon {
+.packages-list__refresh-icon--loading {
   animation:
-    packagesRefreshSpin
-    0.9s linear infinite;
+    packages-refresh-spin
+    850ms
+    linear
+    infinite;
 }
 
 
-/*==========================================================
-  PROTECCIÓN CONTRA DESBORDAMIENTOS
-==========================================================*/
-
-.packages-list,
-.packages-list__header,
-.packages-list__heading,
-.packages-list__title,
-.packages-list__description,
-.packages-list__header-actions {
-  min-width: 0;
-}
-
-
-/*==========================================================
-  ANIMACIÓN
-==========================================================*/
-
-@keyframes packagesRefreshSpin {
-  from {
-    transform:
-      rotate(0deg);
-  }
-
+@keyframes packages-refresh-spin {
   to {
-    transform:
-      rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
-/*==========================================================
-  HABITACONTROL
-  PACKAGES LIST
-  PARTE 2
-  ALERTS · LOADING STATE · EMPTY STATE
-==========================================================*/
+
+/* ==========================================================
+   12. RESPONSIVE
+========================================================== */
+
+@media (max-width: 900px) {
+  .packages-list {
+    padding: var(--space-24);
+  }
+
+  .packages-list__header {
+    flex-direction: column;
+    align-items: stretch;
+
+    min-height: auto;
+
+    padding: var(--space-24);
+  }
+
+  .packages-list__header-actions,
+  .packages-list__refresh-button {
+    width: 100%;
+  }
+}
 
 
-/*==========================================================
-  ALERTA BASE
-==========================================================*/
+@media (max-width: 520px) {
+  .packages-list {
+    gap: var(--space-20);
 
-.packages-list__alert {
+    padding: var(--space-16);
+
+    border-radius: var(--radius-xl);
+  }
+
+  .packages-list__header {
+    padding: var(--space-20);
+
+    border-radius: var(--radius-lg);
+  }
+
+  .packages-list__title {
+    font-size: 1.8rem;
+  }
+
+  .packages-list__description {
+    font-size: 0.84rem;
+    line-height: 1.62;
+  }
+
+  .packages-list__refresh-button {
+    min-height: 3rem;
+  }
+}
+
+
+/* ==========================================================
+   13. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .packages-list__refresh-button,
+  .packages-list__refresh-button::before,
+  .packages-list__refresh-icon {
+    animation: none;
+    transition: none;
+  }
+
+  .packages-list__refresh-button:hover:not(:disabled),
+  .packages-list__refresh-button:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   HABITACONTROL — LISTA DE PAQUETES
+   PARTE 2: FILTROS, BUSCADOR, SELECTS Y RESUMEN
+========================================================== */
+
+
+/* ==========================================================
+   14. TARJETA DE FILTROS
+========================================================== */
+
+.packages-filters {
   position: relative;
-  z-index: 2;
+  z-index: 1;
 
   display: flex;
-  flex: 0 0 auto;
-  align-items: flex-start;
-  gap: 0.8rem;
+  flex-direction: column;
+  gap: var(--space-24);
 
+  width: 100%;
   min-width: 0;
 
   padding:
-    0.95rem
-    1rem;
+    var(--space-28)
+    var(--space-32);
 
-  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.97),
+      rgba(248, 250, 252, 0.96)
+    );
 
   border:
-    1px solid transparent;
+    1px solid
+    rgba(226, 232, 240, 0.94);
 
-  border-radius:
-    var(--packages-radius-md);
+  border-radius: var(--radius-xl);
 
   box-shadow:
-    var(--packages-shadow-sm);
+    var(--shadow-md);
 
-  animation:
-    packagesAlertEnter
-    0.34s
-    cubic-bezier(0.22, 1, 0.36, 1);
+  backdrop-filter: blur(1rem);
+  -webkit-backdrop-filter: blur(1rem);
+
+  overflow: hidden;
 }
 
 
-/* Línea lateral decorativa */
+/* Línea superior decorativa */
+
+.packages-filters::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  height: 0.18rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info),
+      var(--accent)
+    );
+
+  opacity: 0.9;
+
+  pointer-events: none;
+}
+
+
+/* Halo sutil */
+
+.packages-filters::after {
+  position: absolute;
+  top: -8rem;
+  right: -7rem;
+  z-index: -1;
+
+  width: 20rem;
+  height: 20rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.075),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   15. HEADER DE FILTROS
+========================================================== */
+
+.packages-filters__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-24);
+
+  min-width: 0;
+}
+
+
+.packages-filters__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  max-width: 44rem;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   16. EYEBROW
+========================================================== */
+
+.packages-filters__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  margin-bottom: var(--space-8);
+
+  color: var(--color-primary);
+
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1.2;
+
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+
+.packages-filters__eyebrow::before {
+  width: 1.5rem;
+  height: 0.18rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info)
+    );
+
+  border-radius: var(--radius-pill);
+}
+
+
+/* ==========================================================
+   17. TÍTULO Y DESCRIPCIÓN
+========================================================== */
+
+.packages-filters__title {
+  color: var(--text-primary);
+
+  font-size: 1.35rem;
+  font-weight: 850;
+  line-height: 1.25;
+
+  letter-spacing: -0.03em;
+}
+
+
+.packages-filters__description {
+  max-width: 42rem;
+
+  margin-top: var(--space-8);
+
+  color: var(--text-secondary);
+
+  font-size: 0.875rem;
+  font-weight: 450;
+  line-height: 1.68;
+}
+
+
+/* ==========================================================
+   18. BOTÓN LIMPIAR FILTROS
+========================================================== */
+
+.packages-filters__clear-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  min-width: 8.75rem;
+  min-height: 2.9rem;
+
+  padding:
+    var(--space-12)
+    var(--space-20);
+
+  color: var(--color-primary-dark);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(219, 234, 254, 0.84),
+      rgba(255, 255, 255, 0.96)
+    );
+
+  border:
+    1px solid
+    rgba(147, 197, 253, 0.68);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow:
+    0 0.55rem 1.25rem rgba(37, 99, 235, 0.08);
+
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+
+.packages-filters__clear-button:hover {
+  border-color:
+    rgba(96, 165, 250, 0.86);
+
+  box-shadow:
+    0 0.8rem 1.6rem rgba(37, 99, 235, 0.13);
+
+  transform: translateY(-0.125rem);
+}
+
+
+.packages-filters__clear-button:active {
+  transform: scale(0.97);
+}
+
+
+.packages-filters__clear-button:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(37, 99, 235, 0.18);
+
+  outline-offset: 0.1875rem;
+}
+
+
+/* ==========================================================
+   19. GRID DE FILTROS
+========================================================== */
+
+.packages-filters__grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(20rem, 2fr)
+    repeat(
+      4,
+      minmax(10.5rem, 1fr)
+    );
+
+  gap: var(--space-20);
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   20. CAMPOS
+========================================================== */
+
+.packages-filters__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+
+  min-width: 0;
+}
+
+
+.packages-filters__field--search {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   21. LABELS
+========================================================== */
+
+.packages-filters__label {
+  color: var(--text-secondary);
+
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1.2;
+
+  letter-spacing: 0.085em;
+  text-transform: uppercase;
+}
+
+
+/* ==========================================================
+   22. BUSCADOR
+========================================================== */
+
+.packages-filters__search {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+.packages-filters__search-icon {
+  position: absolute;
+  top: 50%;
+  left: var(--space-16);
+  z-index: 2;
+
+  display: grid;
+  place-items: center;
+
+  width: 1.25rem;
+  height: 1.25rem;
+
+  color: var(--text-muted);
+
+  font-size: 1.1rem;
+  font-weight: 900;
+  line-height: 1;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+
+  transition:
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+
+/* ==========================================================
+   23. INPUT
+========================================================== */
+
+.packages-filters__input {
+  width: 100%;
+  min-width: 0;
+  min-height: 3.2rem;
+
+  padding:
+    var(--space-12)
+    var(--space-16);
+
+  color: var(--text-primary);
+
+  font-size: 0.85rem;
+  font-weight: 550;
+  line-height: 1.4;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(248, 250, 252, 0.97)
+    );
+
+  border:
+    1px solid
+    rgba(203, 213, 225, 0.94);
+
+  border-radius: var(--radius-md);
+
+  outline: none;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    0 0.25rem 0.7rem rgba(15, 23, 42, 0.035);
+
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+
+.packages-filters__input--search {
+  padding-left: 3.1rem;
+}
+
+
+.packages-filters__input::placeholder {
+  color: var(--gray-400);
+  opacity: 1;
+}
+
+
+.packages-filters__input:hover {
+  background: var(--surface);
+
+  border-color:
+    rgba(96, 165, 250, 0.72);
+}
+
+
+.packages-filters__input:focus {
+  background: var(--surface);
+
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 0.22rem rgba(37, 99, 235, 0.1),
+    0 0.75rem 1.55rem rgba(37, 99, 235, 0.07);
+
+  transform: translateY(-0.0625rem);
+}
+
+
+.packages-filters__search:focus-within
+.packages-filters__search-icon {
+  color: var(--color-primary);
+
+  transform:
+    translateY(-50%)
+    scale(1.08);
+}
+
+
+.packages-filters__input::-webkit-search-cancel-button {
+  cursor: pointer;
+  opacity: 0.62;
+}
+
+
+/* ==========================================================
+   24. SELECTS
+========================================================== */
+
+.packages-filters__select {
+  width: 100%;
+  min-width: 0;
+  min-height: 3.2rem;
+
+  padding:
+    var(--space-12)
+    2.8rem
+    var(--space-12)
+    var(--space-16);
+
+  color: var(--text-primary);
+
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+
+  background-color:
+    rgba(255, 255, 255, 0.99);
+
+  border:
+    1px solid
+    rgba(203, 213, 225, 0.94);
+
+  border-radius: var(--radius-md);
+
+  outline: none;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    0 0.25rem 0.7rem rgba(15, 23, 42, 0.035);
+
+  cursor: pointer;
+
+  appearance: none;
+
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--text-muted) 50%
+    ),
+    linear-gradient(
+      135deg,
+      var(--text-muted) 50%,
+      transparent 50%
+    );
+
+  background-position:
+    calc(100% - 1.12rem)
+    calc(50% - 0.1rem),
+    calc(100% - 0.82rem)
+    calc(50% - 0.1rem);
+
+  background-size:
+    0.34rem 0.34rem,
+    0.34rem 0.34rem;
+
+  background-repeat: no-repeat;
+
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+
+.packages-filters__select:hover {
+  background-color: var(--surface);
+
+  border-color:
+    rgba(96, 165, 250, 0.72);
+}
+
+
+.packages-filters__select:focus {
+  background-color: var(--surface);
+
+  border-color: var(--color-primary);
+
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--color-primary) 50%
+    ),
+    linear-gradient(
+      135deg,
+      var(--color-primary) 50%,
+      transparent 50%
+    );
+
+  box-shadow:
+    0 0 0 0.22rem rgba(37, 99, 235, 0.1),
+    0 0.75rem 1.55rem rgba(37, 99, 235, 0.07);
+
+  transform: translateY(-0.0625rem);
+}
+
+
+.packages-filters__select option {
+  color: var(--text-primary);
+  background: var(--surface);
+}
+
+
+/* ==========================================================
+   25. RESUMEN
+========================================================== */
+
+.packages-filters__summary {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+
+  min-height: 3.2rem;
+
+  padding:
+    var(--space-12)
+    var(--space-16);
+
+  color: var(--text-secondary);
+
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.5;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(241, 245, 249, 0.84),
+      rgba(248, 250, 252, 0.97)
+    );
+
+  border:
+    1px solid
+    rgba(226, 232, 240, 0.94);
+
+  border-radius: var(--radius-md);
+}
+
+
+/* Línea decorativa */
+
+.packages-filters__summary::before {
+  position: absolute;
+  top: 0;
+  right: var(--space-16);
+  left: var(--space-16);
+
+  height: 0.0625rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(37, 99, 235, 0.18),
+      transparent
+    );
+}
+
+
+/* Valores */
+
+.packages-filters__summary strong {
+  color: var(--color-primary-dark);
+
+  font-size: 0.875rem;
+  font-weight: 850;
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================================
+   26. SIN RESULTADOS
+========================================================== */
+
+.packages-filters__no-results {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  color: var(--danger-dark);
+
+  font-size: 0.775rem;
+  font-weight: 750;
+}
+
+
+.packages-filters__no-results::before {
+  width: 0.48rem;
+  height: 0.48rem;
+
+  flex: 0 0 auto;
+
+  content: "";
+
+  background: var(--danger);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.22rem rgba(220, 38, 38, 0.1);
+}
+
+
+/* ==========================================================
+   27. RESPONSIVE — ESCRITORIO MEDIO
+========================================================== */
+
+@media (max-width: 1320px) {
+  .packages-filters__grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .packages-filters__field--search {
+    grid-column:
+      1 / -1;
+  }
+}
+
+
+/* ==========================================================
+   28. RESPONSIVE — TABLET
+========================================================== */
+
+@media (max-width: 768px) {
+  .packages-filters {
+    gap: var(--space-20);
+
+    padding: var(--space-24);
+  }
+
+  .packages-filters__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .packages-filters__clear-button {
+    width: 100%;
+  }
+
+  .packages-filters__grid {
+    gap: var(--space-16);
+  }
+
+  .packages-filters__summary {
+    align-items: flex-start;
+  }
+}
+
+
+/* ==========================================================
+   29. RESPONSIVE — CELULAR
+========================================================== */
+
+@media (max-width: 520px) {
+  .packages-filters {
+    padding: var(--space-20);
+
+    border-radius: var(--radius-lg);
+  }
+
+  .packages-filters__title {
+    font-size: 1.15rem;
+  }
+
+  .packages-filters__description {
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  .packages-filters__grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .packages-filters__field--search {
+    grid-column: auto;
+  }
+
+  .packages-filters__input,
+  .packages-filters__select {
+    min-height: 3.1rem;
+
+    font-size: 0.83rem;
+  }
+
+  .packages-filters__summary {
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: var(--space-8);
+  }
+}
+
+
+/* ==========================================================
+   30. TÁCTIL
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .packages-filters__input:focus,
+  .packages-filters__select:focus {
+    transform: none;
+  }
+
+  .packages-filters__clear-button:hover {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   31. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .packages-filters,
+  .packages-filters__input,
+  .packages-filters__select,
+  .packages-filters__summary {
+    border-width: 0.125rem;
+    border-color: var(--gray-600);
+  }
+}
+
+
+/* ==========================================================
+   32. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .packages-filters__clear-button,
+  .packages-filters__input,
+  .packages-filters__search-icon,
+  .packages-filters__select {
+    transition: none;
+  }
+
+  .packages-filters__clear-button:hover,
+  .packages-filters__clear-button:active,
+  .packages-filters__input:focus,
+  .packages-filters__select:focus {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   HABITACONTROL — LISTA DE PAQUETES
+   PARTE 3: ALERTAS, CARGA, ESTADOS VACÍOS Y RESUMEN
+========================================================== */
+
+
+/* ==========================================================
+   33. ALERTA BASE
+========================================================== */
+
+.packages-list__alert {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+
+  width: 100%;
+
+  padding:
+    var(--space-16)
+    var(--space-20);
+
+  color: var(--text-primary);
+
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.6;
+
+  background: var(--surface);
+
+  border:
+    1px solid
+    var(--border-light);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    var(--shadow-sm);
+
+  overflow: hidden;
+
+  animation:
+    packages-feedback-enter
+    360ms
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+
+/* Barra lateral */
 
 .packages-list__alert::before {
   position: absolute;
@@ -561,57 +1575,81 @@
   bottom: 0;
   left: 0;
 
-  width: 0.24rem;
-
-  content: "";
-
-  border-radius:
-    var(--packages-radius-pill);
-}
-
-
-/* Brillo interno */
-
-.packages-list__alert::after {
-  position: absolute;
-  top: -4rem;
-  right: -3rem;
-
-  width: 10rem;
-  height: 10rem;
+  width: 0.32rem;
 
   content: "";
 
   background:
-    radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.5),
-      transparent 70%
-    );
-
-  border-radius: 50%;
-
-  pointer-events: none;
+    var(--gray-400);
 }
 
 
-/*==========================================================
-  ALERTA DE ERROR
-==========================================================*/
+/* ==========================================================
+   34. ICONO DE ALERTA
+========================================================== */
+
+.packages-list__alert-icon {
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 1.9rem;
+  height: 1.9rem;
+
+  color: var(--text-white);
+
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1;
+
+  background:
+    var(--gray-500);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0.4rem 0.9rem
+    rgba(15, 23, 42, 0.14);
+}
+
+
+/* ==========================================================
+   35. MENSAJE DE ALERTA
+========================================================== */
+
+.packages-list__alert-message {
+  flex: 1 1 auto;
+
+  min-width: 0;
+
+  padding-top: 0.16rem;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   36. ALERTA DE ERROR
+========================================================== */
 
 .packages-list__alert--error {
   color:
-    #991b1b;
+    var(--danger-dark);
 
   background:
     linear-gradient(
       135deg,
-      rgba(254, 242, 242, 0.99),
-      rgba(255, 247, 237, 0.95)
+      rgba(254, 226, 226, 0.96),
+      rgba(255, 255, 255, 0.98)
     );
 
   border-color:
-    rgba(252, 165, 165, 0.82);
+    rgba(252, 165, 165, 0.86);
+
+  box-shadow:
+    0 0.75rem 1.8rem
+    rgba(220, 38, 38, 0.08);
 }
 
 
@@ -619,429 +1657,643 @@
   background:
     linear-gradient(
       180deg,
-      var(--packages-danger),
-      #f97316
+      #ef4444,
+      var(--danger)
     );
 }
 
 
-/*==========================================================
-  ICONO DE ALERTA
-==========================================================*/
-
+.packages-list__alert--error
 .packages-list__alert-icon {
-  position: relative;
-  z-index: 2;
-
-  display: inline-grid;
-  place-items: center;
-
-  flex: 0 0 auto;
-
-  width: 1.85rem;
-  height: 1.85rem;
-
-  color:
-    #ffffff;
-
-  font-size: 0.8rem;
-  font-weight: 900;
-  line-height: 1;
-
   background:
     linear-gradient(
-      145deg,
-      var(--packages-danger),
-      #b91c1c
+      135deg,
+      #ef4444,
+      var(--danger)
     );
-
-  border:
-    0.15rem solid
-    rgba(255, 255, 255, 0.86);
-
-  border-radius: 50%;
-
-  box-shadow:
-    0 0.4rem 0.9rem rgba(220, 38, 38, 0.2);
 }
 
 
-/*==========================================================
-  MENSAJE DE ALERTA
-==========================================================*/
-
-.packages-list__alert-message {
-  position: relative;
-  z-index: 2;
-
-  flex: 1 1 auto;
-
-  min-width: 0;
-
-  margin: 0;
-  padding-top: 0.2rem;
-
-  font-size: 0.84rem;
-  font-weight: 650;
-  line-height: 1.55;
-
-  overflow-wrap: anywhere;
-}
-
-
-/*==========================================================
-  ESTADO BASE
-==========================================================*/
+/* ==========================================================
+   37. ESTADO BASE
+========================================================== */
 
 .packages-list__state {
   position: relative;
-  z-index: 2;
+  z-index: 1;
 
   display: flex;
-  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  gap: 1.15rem;
+  gap: var(--space-20);
 
-  min-width: 0;
-  min-height: 16rem;
+  min-height: 17rem;
 
   padding:
-    2.5rem
-    2rem;
+    var(--space-48)
+    var(--space-24);
 
-  overflow: hidden;
-
-  text-align: left;
+  text-align: center;
 
   background:
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.98),
-      rgba(248, 250, 252, 0.95)
+      rgba(248, 250, 252, 0.96)
     );
 
   border:
-    1px dashed
-    rgba(148, 163, 184, 0.58);
+    1px solid
+    rgba(203, 213, 225, 0.82);
 
   border-radius:
-    var(--packages-radius-lg);
+    var(--radius-xl);
 
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.72),
-    var(--packages-shadow-sm);
+    var(--shadow-md);
+
+  overflow: hidden;
+  isolation: isolate;
 
   animation:
-    packagesStateEnter
-    0.38s
-    cubic-bezier(0.22, 1, 0.36, 1);
+    packages-state-enter
+    420ms
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
 }
 
 
-/* Cuadrícula decorativa */
+/* Halo ambiental */
 
 .packages-list__state::before {
   position: absolute;
-  inset: 0;
-
+  top: 50%;
+  left: 50%;
   z-index: -1;
 
-  content: "";
-
-  background-image:
-    linear-gradient(
-      rgba(148, 163, 184, 0.055) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(148, 163, 184, 0.055) 1px,
-      transparent 1px
-    );
-
-  background-size:
-    1.75rem
-    1.75rem;
-
-  pointer-events: none;
-}
-
-
-/* Luz ambiental */
-
-.packages-list__state::after {
-  position: absolute;
-  right: -5rem;
-  bottom: -6rem;
-
-  z-index: -1;
-
-  width: 17rem;
-  height: 17rem;
+  width: 24rem;
+  height: 24rem;
 
   content: "";
 
   background:
     radial-gradient(
       circle,
-      rgba(37, 99, 235, 0.09),
+      rgba(37, 99, 235, 0.1),
       transparent 70%
     );
 
   border-radius: 50%;
 
+  transform:
+    translate(-50%, -50%);
+
   pointer-events: none;
 }
 
 
-/*==========================================================
-  CONTENIDO DEL ESTADO
-==========================================================*/
+/* Línea inferior */
 
-.packages-list__state-content {
-  display: flex;
-  flex: 0 1 auto;
-  flex-direction: column;
-  gap: 0.35rem;
+.packages-list__state::after {
+  position: absolute;
+  right: 20%;
+  bottom: 0;
+  left: 20%;
 
-  min-width: 0;
-  max-width: 30rem;
-}
-
-
-/*==========================================================
-  TÍTULO DEL ESTADO
-==========================================================*/
-
-.packages-list__state-title {
-  margin: 0;
-
-  color:
-    var(--packages-text);
-
-  font-size: 1.05rem;
-  font-weight: 850;
-  line-height: 1.3;
-
-  letter-spacing: -0.015em;
-
-  overflow-wrap: anywhere;
-}
-
-
-/*==========================================================
-  DESCRIPCIÓN DEL ESTADO
-==========================================================*/
-
-.packages-list__state-description {
-  margin: 0;
-
-  color:
-    var(--packages-text-muted);
-
-  font-size: 0.84rem;
-  font-weight: 500;
-  line-height: 1.65;
-
-  overflow-wrap: anywhere;
-}
-
-
-/*==========================================================
-  ESTADO DE CARGA
-==========================================================*/
-
-.packages-list__state--loading {
-  border-color:
-    rgba(147, 197, 253, 0.72);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(239, 246, 255, 0.88),
-      rgba(255, 255, 255, 0.98)
-    );
-}
-
-
-/*==========================================================
-  LOADER
-==========================================================*/
-
-.packages-list__loader {
-  position: relative;
-
-  display: grid;
-  place-items: center;
-
-  flex: 0 0 auto;
-
-  width: 3.6rem;
-  height: 3.6rem;
-
-  border:
-    0.24rem solid
-    rgba(147, 197, 253, 0.42);
-
-  border-top-color:
-    var(--packages-primary);
-
-  border-right-color:
-    var(--packages-cyan);
-
-  border-radius: 50%;
-
-  box-shadow:
-    0 0 0 0.45rem rgba(37, 99, 235, 0.05),
-    0 0.8rem 1.5rem rgba(37, 99, 235, 0.12);
-
-  animation:
-    packagesLoaderSpin
-    0.82s linear infinite;
-}
-
-
-/* Núcleo del loader */
-
-.packages-list__loader::before {
-  width: 0.72rem;
-  height: 0.72rem;
+  height: 0.2rem;
 
   content: "";
 
   background:
     linear-gradient(
-      135deg,
-      var(--packages-primary),
-      var(--packages-cyan)
+      90deg,
+      transparent,
+      rgba(37, 99, 235, 0.5),
+      transparent
     );
+
+  border-radius:
+    var(--radius-pill);
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   38. CONTENIDO DEL ESTADO
+========================================================== */
+
+.packages-list__state-content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+
+  max-width: 34rem;
+  min-width: 0;
+}
+
+
+/* Título */
+
+.packages-list__state-title {
+  color: var(--text-primary);
+
+  font-size: 1.25rem;
+  font-weight: 850;
+  line-height: 1.35;
+
+  letter-spacing: -0.02em;
+}
+
+
+/* Descripción */
+
+.packages-list__state-description {
+  color: var(--text-secondary);
+
+  font-size: 0.875rem;
+  font-weight: 450;
+  line-height: 1.7;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   39. ESTADO DE CARGA
+========================================================== */
+
+.packages-list__state--loading {
+  color:
+    var(--color-primary-dark);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(219, 234, 254, 0.62)
+    );
+
+  border-color:
+    rgba(147, 197, 253, 0.7);
+}
+
+
+.packages-list__state--loading::before {
+  animation:
+    packages-loading-pulse
+    2.3s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   40. SPINNER
+========================================================== */
+
+.packages-list__loader {
+  position: relative;
+  z-index: 1;
+
+  flex: 0 0 auto;
+
+  width: 3rem;
+  height: 3rem;
+
+  border:
+    0.28rem solid
+    rgba(37, 99, 235, 0.14);
+
+  border-top-color:
+    var(--color-primary);
+
+  border-right-color:
+    var(--info);
 
   border-radius: 50%;
 
   box-shadow:
-    0 0 0 0.28rem rgba(37, 99, 235, 0.08);
+    0 0.7rem 1.5rem
+    rgba(37, 99, 235, 0.15);
+
+  animation:
+    packages-loading-spin
+    850ms
+    linear
+    infinite;
 }
 
 
-/*==========================================================
-  ESTADO VACÍO
-==========================================================*/
+/* ==========================================================
+   41. ESTADO VACÍO GENERAL
+========================================================== */
 
 .packages-list__state--empty {
   flex-direction: column;
-  gap: 0.9rem;
 
-  text-align: center;
+  border-style: dashed;
 
   border-color:
-    rgba(203, 213, 225, 0.85);
+    rgba(148, 163, 184, 0.68);
 }
 
 
-/*==========================================================
-  ICONO DEL ESTADO VACÍO
-==========================================================*/
+/* ==========================================================
+   42. ICONO DEL ESTADO
+========================================================== */
 
 .packages-list__state-icon {
   position: relative;
+  z-index: 1;
 
   display: grid;
   place-items: center;
 
   flex: 0 0 auto;
 
-  width: 5.1rem;
-  height: 5.1rem;
+  width: 5rem;
+  height: 5rem;
 
-  font-size: 2.15rem;
+  color: var(--color-primary-dark);
+
+  font-size: 2.1rem;
+  font-weight: 900;
   line-height: 1;
 
   background:
     linear-gradient(
       145deg,
-      #ffffff,
-      #eff6ff
+      var(--surface),
+      var(--color-primary-light)
     );
 
   border:
     1px solid
-    rgba(147, 197, 253, 0.7);
+    rgba(147, 197, 253, 0.82);
 
   border-radius:
-    1.45rem;
+    1.4rem;
 
   box-shadow:
-    0 0.9rem 1.8rem rgba(37, 99, 235, 0.12);
+    0 1rem 2rem
+    rgba(37, 99, 235, 0.13);
 
   transform:
     rotate(-3deg);
 
-  transition:
-    box-shadow var(--packages-transition),
-    transform var(--packages-transition);
+  animation:
+    packages-empty-float
+    3.2s
+    ease-in-out
+    infinite;
 }
 
 
-/* Halo decorativo */
+/* ==========================================================
+   43. SIN COINCIDENCIAS
+========================================================== */
 
-.packages-list__state-icon::before {
-  position: absolute;
-  inset: -0.55rem;
+.packages-list__state--filtered-empty {
+  flex-direction: column;
 
-  z-index: -1;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(254, 243, 199, 0.4)
+    );
+
+  border-style: dashed;
+
+  border-color:
+    rgba(245, 158, 11, 0.58);
+}
+
+
+.packages-list__state--filtered-empty::before {
+  background:
+    radial-gradient(
+      circle,
+      rgba(245, 158, 11, 0.12),
+      transparent 70%
+    );
+}
+
+
+.packages-list__state--filtered-empty::after {
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(245, 158, 11, 0.62),
+      transparent
+    );
+}
+
+
+/* Icono de búsqueda */
+
+.packages-list__state-icon--search {
+  color:
+    var(--warning-dark);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface),
+      var(--warning-light)
+    );
+
+  border-color:
+    rgba(252, 211, 77, 0.82);
+
+  box-shadow:
+    0 1rem 2rem
+    rgba(245, 158, 11, 0.13);
+}
+
+
+/* ==========================================================
+   44. BOTÓN LIMPIAR DEL ESTADO VACÍO
+========================================================== */
+
+.packages-list__clear-filters-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 9rem;
+  min-height: 2.9rem;
+
+  margin-top: var(--space-12);
+
+  padding:
+    var(--space-12)
+    var(--space-20);
+
+  color: var(--text-white);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--warning),
+      #d97706
+    );
+
+  border:
+    1px solid
+    rgba(146, 64, 14, 0.22);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    0 0.75rem 1.5rem
+    rgba(245, 158, 11, 0.2);
+
+  font-size: 0.8125rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+
+.packages-list__clear-filters-button:hover {
+  box-shadow:
+    0 1rem 1.9rem
+    rgba(245, 158, 11, 0.27);
+
+  transform:
+    translateY(-0.125rem);
+}
+
+
+.packages-list__clear-filters-button:active {
+  transform:
+    scale(0.97);
+}
+
+
+.packages-list__clear-filters-button:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(245, 158, 11, 0.24);
+
+  outline-offset:
+    0.1875rem;
+}
+
+
+/* ==========================================================
+   45. CONTENIDO PRINCIPAL
+========================================================== */
+
+.packages-list__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+
+  width: 100%;
+  min-width: 0;
+
+  animation:
+    packages-content-enter
+    420ms
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+
+/* ==========================================================
+   46. CABECERA DEL CONTENIDO
+========================================================== */
+
+.packages-list__content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+
+  min-height: 4rem;
+
+  padding:
+    var(--space-12)
+    var(--space-20);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(248, 250, 252, 0.96)
+    );
+
+  border:
+    1px solid
+    rgba(226, 232, 240, 0.94);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+
+/* ==========================================================
+   47. RESUMEN
+========================================================== */
+
+.packages-list__summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+
+  min-width: 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+
+.packages-list__summary-label {
+  color:
+    var(--text-muted);
+
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+
+  text-transform: uppercase;
+}
+
+
+.packages-list__summary-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 2.15rem;
+  min-height: 2.15rem;
+
+  padding:
+    0.3rem
+    0.65rem;
+
+  color:
+    var(--color-primary-dark);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(219, 234, 254, 0.88),
+      rgba(224, 242, 254, 0.8)
+    );
+
+  border:
+    1px solid
+    rgba(147, 197, 253, 0.65);
+
+  border-radius:
+    var(--radius-pill);
+
+  font-size: 0.95rem;
+  font-weight: 900;
+  line-height: 1;
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+
+.packages-list__summary-text {
+  color:
+    var(--text-secondary);
+
+  font-weight: 600;
+}
+
+
+/* ==========================================================
+   48. INDICADOR DE VISTA FILTRADA
+========================================================== */
+
+.packages-list__filtered-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+
+  flex: 0 0 auto;
+
+  min-height: 2.15rem;
+
+  padding:
+    0.4rem
+    0.8rem;
+
+  color:
+    var(--accent-dark);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--accent-light),
+      rgba(255, 255, 255, 0.96)
+    );
+
+  border:
+    1px solid
+    rgba(124, 58, 237, 0.22);
+
+  border-radius:
+    var(--radius-pill);
+
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+
+.packages-list__filtered-indicator::before {
+  width: 0.48rem;
+  height: 0.48rem;
 
   content: "";
 
-  border:
-    1px dashed
-    rgba(96, 165, 250, 0.5);
+  background:
+    var(--accent);
 
-  border-radius:
-    1.7rem;
-}
+  border-radius: 50%;
 
-
-/* Hover visual del estado vacío */
-
-.packages-list__state--empty:hover
-.packages-list__state-icon {
   box-shadow:
-    0 1.2rem 2.2rem rgba(37, 99, 235, 0.16);
-
-  transform:
-    translateY(-0.15rem)
-    rotate(0deg);
+    0 0 0 0.2rem
+    rgba(124, 58, 237, 0.09);
 }
 
 
-/* Centrado del contenido vacío */
+/* ==========================================================
+   49. ANIMACIONES
+========================================================== */
 
-.packages-list__state--empty
-.packages-list__state-content {
-  align-items: center;
-}
-
-
-/*==========================================================
-  PROTECCIÓN CONTRA DESBORDAMIENTOS
-==========================================================*/
-
-.packages-list__alert,
-.packages-list__alert-message,
-.packages-list__state,
-.packages-list__state-content,
-.packages-list__state-title,
-.packages-list__state-description {
-  min-width: 0;
-}
-
-
-/*==========================================================
-  ANIMACIONES
-==========================================================*/
-
-@keyframes packagesAlertEnter {
+@keyframes packages-feedback-enter {
   from {
     opacity: 0;
 
@@ -1058,13 +2310,13 @@
 }
 
 
-@keyframes packagesStateEnter {
+@keyframes packages-state-enter {
   from {
     opacity: 0;
 
     transform:
-      translateY(0.65rem)
-      scale(0.985);
+      translateY(0.8rem)
+      scale(0.99);
   }
 
   to {
@@ -1077,526 +2329,12 @@
 }
 
 
-@keyframes packagesLoaderSpin {
-  from {
-    transform:
-      rotate(0deg);
-  }
-
-  to {
-    transform:
-      rotate(360deg);
-  }
-}
-
-/*==========================================================
-  HABITACONTROL
-  PACKAGES LIST
-  PARTE 3
-  CONTENT · SUMMARY · TABLE WRAPPER · TABLE BASE
-==========================================================*/
-
-
-/*==========================================================
-  CONTENIDO PRINCIPAL
-==========================================================*/
-
-.packages-list__content {
-  position: relative;
-  z-index: 2;
-
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  gap: 1rem;
-
-  min-width: 0;
-
-  animation:
-    packagesContentEnter
-    0.38s
-    cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-
-/*==========================================================
-  ENCABEZADO DEL CONTENIDO
-==========================================================*/
-
-.packages-list__content-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-
-  min-width: 0;
-
-  padding:
-    0.1rem
-    0.15rem;
-}
-
-
-/*==========================================================
-  RESUMEN
-==========================================================*/
-
-.packages-list__summary {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.48rem;
-
-  min-width: 0;
-
-  padding:
-    0.62rem
-    0.8rem;
-
-  color:
-    var(--packages-text-soft);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.98),
-      rgba(239, 246, 255, 0.85)
-    );
-
-  border:
-    1px solid
-    rgba(191, 219, 254, 0.82);
-
-  border-radius:
-    var(--packages-radius-pill);
-
-  box-shadow:
-    0 0.4rem 0.95rem rgba(37, 99, 235, 0.055);
-}
-
-
-/*==========================================================
-  ETIQUETA DEL RESUMEN
-==========================================================*/
-
-.packages-list__summary-label {
-  color:
-    var(--packages-text-muted);
-
-  font-size: 0.7rem;
-  font-weight: 750;
-  line-height: 1.2;
-
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-
-/* Separador */
-
-.packages-list__summary-label::after {
-  margin-left: 0.46rem;
-
-  color:
-    rgba(100, 116, 139, 0.55);
-
-  content: "·";
-}
-
-
-/*==========================================================
-  VALOR DEL RESUMEN
-==========================================================*/
-
-.packages-list__summary-value {
-  display: inline-grid;
-  place-items: center;
-
-  flex: 0 0 auto;
-
-  min-width: 1.7rem;
-  min-height: 1.7rem;
-
-  padding:
-    0.2rem
-    0.48rem;
-
-  color:
-    #ffffff;
-
-  font-size: 0.72rem;
-  font-weight: 900;
-  line-height: 1;
-
-  background:
-    linear-gradient(
-      145deg,
-      var(--packages-primary),
-      var(--packages-primary-dark)
-    );
-
-  border:
-    0.12rem solid
-    rgba(255, 255, 255, 0.82);
-
-  border-radius:
-    var(--packages-radius-pill);
-
-  box-shadow:
-    0 0.35rem 0.8rem rgba(37, 99, 235, 0.2);
-}
-
-
-/*==========================================================
-  TEXTO DEL RESUMEN
-==========================================================*/
-
-.packages-list__summary-text {
-  color:
-    var(--packages-text-soft);
-
-  font-size: 0.78rem;
-  font-weight: 650;
-  line-height: 1.3;
-}
-
-
-/*==========================================================
-  CONTENEDOR DE LA TABLA
-==========================================================*/
-
-.packages-list__table-wrapper {
-  position: relative;
-
-  width: 100%;
-  min-width: 0;
-
-  overflow-x: auto;
-  overflow-y: hidden;
-
-  background:
-    rgba(255, 255, 255, 0.98);
-
-  border:
-    1px solid
-    rgba(203, 213, 225, 0.84);
-
-  border-radius:
-    var(--packages-radius-md);
-
-  box-shadow:
-    0 0.8rem 1.9rem rgba(15, 23, 42, 0.065);
-
-  scrollbar-width:
-    thin;
-
-  scrollbar-color:
-    rgba(100, 116, 139, 0.55)
-    transparent;
-
-  -webkit-overflow-scrolling:
-    touch;
-}
-
-
-/* Línea superior de la tabla */
-
-.packages-list__table-wrapper::before {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-
-  z-index: 4;
-
-  height: 0.2rem;
-
-  content: "";
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--packages-primary),
-      var(--packages-cyan)
-    );
-
-  pointer-events: none;
-}
-
-
-/* Sombra visual para indicar desplazamiento horizontal */
-
-.packages-list__table-wrapper::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-
-  z-index: 5;
-
-  width: 2.5rem;
-
-  content: "";
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(15, 23, 42, 0.06)
-    );
-
-  opacity: 0.7;
-
-  pointer-events: none;
-}
-
-
-/*==========================================================
-  SCROLLBAR WEBKIT
-==========================================================*/
-
-.packages-list__table-wrapper::-webkit-scrollbar {
-  height: 0.65rem;
-}
-
-
-.packages-list__table-wrapper::-webkit-scrollbar-track {
-  background:
-    rgba(241, 245, 249, 0.92);
-
-  border-radius:
-    var(--packages-radius-pill);
-}
-
-
-.packages-list__table-wrapper::-webkit-scrollbar-thumb {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(100, 116, 139, 0.65),
-      rgba(37, 99, 235, 0.62)
-    );
-
-  border:
-    0.14rem solid
-    rgba(241, 245, 249, 0.92);
-
-  border-radius:
-    var(--packages-radius-pill);
-}
-
-
-.packages-list__table-wrapper::-webkit-scrollbar-thumb:hover {
-  background:
-    linear-gradient(
-      90deg,
-      var(--packages-text-muted),
-      var(--packages-primary)
-    );
-}
-
-
-/*==========================================================
-  TABLA BASE
-==========================================================*/
-
-.packages-list__table {
-  width: 100%;
-  min-width: 82rem;
-
-  margin: 0;
-
-  color:
-    var(--packages-text);
-
-  font-size: 0.82rem;
-  line-height: 1.45;
-
-  background:
-    transparent;
-
-  border-spacing: 0;
-  border-collapse: separate;
-
-  table-layout: auto;
-}
-
-
-/*==========================================================
-  CABECERA DE LA TABLA
-==========================================================*/
-
-.packages-list__table-head {
-  position: relative;
-  z-index: 3;
-
-  background:
-    linear-gradient(
-      180deg,
-      #f8fafc,
-      #f1f5f9
-    );
-}
-
-
-/*==========================================================
-  FILA BASE
-==========================================================*/
-
-.packages-list__table-row {
-  min-width: 0;
-}
-
-
-/*==========================================================
-  ENCABEZADOS
-==========================================================*/
-
-.packages-list__table-heading {
-  position: relative;
-
-  padding:
-    1rem
-    0.95rem;
-
-  color:
-    var(--packages-text-soft);
-
-  font-size: 0.68rem;
-  font-weight: 850;
-  line-height: 1.3;
-
-  letter-spacing: 0.075em;
-  text-align: left;
-  text-transform: uppercase;
-
-  white-space: nowrap;
-
-  background:
-    transparent;
-
-  border-bottom:
-    1px solid
-    rgba(203, 213, 225, 0.9);
-}
-
-
-/* Separador entre encabezados */
-
-.packages-list__table-heading:not(:last-child)::after {
-  position: absolute;
-  top: 30%;
-  right: 0;
-
-  width: 1px;
-  height: 40%;
-
-  content: "";
-
-  background:
-    linear-gradient(
-      180deg,
-      transparent,
-      rgba(148, 163, 184, 0.45),
-      transparent
-    );
-}
-
-
-/*==========================================================
-  ENCABEZADO DE DESCRIPCIÓN
-==========================================================*/
-
-.packages-list__table-heading--description {
-  min-width: 15rem;
-}
-
-
-/*==========================================================
-  ENCABEZADO DE ACCIONES
-==========================================================*/
-
-.packages-list__table-heading--actions {
-  min-width: 8.5rem;
-
-  text-align: center;
-}
-
-
-/*==========================================================
-  CUERPO DE LA TABLA
-==========================================================*/
-
-.packages-list__table-body {
-  background:
-    rgba(255, 255, 255, 0.98);
-}
-
-
-/*==========================================================
-  ANCHOS MÍNIMOS DE COLUMNAS
-==========================================================*/
-
-.packages-list__table-heading:nth-child(1) {
-  min-width: 16rem;
-}
-
-
-.packages-list__table-heading:nth-child(2),
-.packages-list__table-heading:nth-child(3) {
-  min-width: 7rem;
-}
-
-
-.packages-list__table-heading:nth-child(5),
-.packages-list__table-heading:nth-child(6) {
-  min-width: 10rem;
-}
-
-
-.packages-list__table-heading:nth-child(7) {
-  min-width: 8.5rem;
-}
-
-
-.packages-list__table-heading:nth-child(8),
-.packages-list__table-heading:nth-child(9) {
-  min-width: 10rem;
-}
-
-
-/*==========================================================
-  PROTECCIÓN CONTRA DESBORDAMIENTOS
-==========================================================*/
-
-.packages-list__content,
-.packages-list__content-header,
-.packages-list__summary,
-.packages-list__table-wrapper,
-.packages-list__table,
-.packages-list__table-head,
-.packages-list__table-body {
-  min-width: 0;
-}
-
-
-/* La tabla conserva su ancho mínimo para permitir scroll */
-
-.packages-list__table {
-  min-width: 82rem;
-}
-
-
-/*==========================================================
-  ANIMACIÓN
-==========================================================*/
-
-@keyframes packagesContentEnter {
+@keyframes packages-content-enter {
   from {
     opacity: 0;
 
     transform:
-      translateY(0.6rem);
+      translateY(0.65rem);
   }
 
   to {
@@ -1607,223 +2345,777 @@
   }
 }
 
-/*==========================================================
-  HABITACONTROL
-  PACKAGES LIST
-  PARTE 4
-  ROWS · CELLS · RECIPIENT · LOCATION · DESCRIPTION · DATES
-==========================================================*/
+
+@keyframes packages-loading-spin {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
 
 
-/*==========================================================
-  FILAS DE DATOS
-==========================================================*/
+@keyframes packages-loading-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.08);
+  }
+}
+
+
+@keyframes packages-empty-float {
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      rotate(-3deg);
+  }
+
+  50% {
+    transform:
+      translateY(-0.4rem)
+      rotate(2deg);
+  }
+}
+
+
+/* ==========================================================
+   50. RESPONSIVE
+========================================================== */
+
+@media (max-width: 768px) {
+  .packages-list__state {
+    flex-direction: column;
+
+    min-height: 15rem;
+
+    padding:
+      var(--space-40)
+      var(--space-20);
+  }
+
+  .packages-list__content-header {
+    align-items: flex-start;
+  }
+}
+
+
+@media (max-width: 520px) {
+  .packages-list__alert {
+    padding:
+      var(--space-12)
+      var(--space-16);
+
+    font-size: 0.81rem;
+
+    border-radius:
+      var(--radius-md);
+  }
+
+  .packages-list__alert-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .packages-list__state {
+    min-height: 14rem;
+
+    padding:
+      var(--space-32)
+      var(--space-16);
+  }
+
+  .packages-list__state-icon {
+    width: 4.2rem;
+    height: 4.2rem;
+
+    font-size: 1.8rem;
+  }
+
+  .packages-list__state-title {
+    font-size: 1.1rem;
+  }
+
+  .packages-list__state-description {
+    font-size: 0.81rem;
+  }
+
+  .packages-list__clear-filters-button {
+    width: 100%;
+  }
+
+  .packages-list__content-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .packages-list__filtered-indicator {
+    justify-content: center;
+  }
+}
+
+
+/* ==========================================================
+   51. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .packages-list__alert,
+  .packages-list__state,
+  .packages-list__state::before,
+  .packages-list__state-icon,
+  .packages-list__loader,
+  .packages-list__clear-filters-button,
+  .packages-list__content {
+    animation: none;
+    transition: none;
+  }
+
+  .packages-list__clear-filters-button:hover,
+  .packages-list__clear-filters-button:active {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================
+   HABITACONTROL — LISTA DE PAQUETES
+   PARTE 4: TABLA, COLUMNAS, FILAS Y DATOS PRINCIPALES
+========================================================== */
+
+
+/* ==========================================================
+   52. CONTENEDOR DE LA TABLA
+========================================================== */
+
+.packages-list__table-wrapper {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+  max-height: 40rem;
+
+  overflow: auto;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(248, 250, 252, 0.97)
+    );
+
+  border:
+    1px solid
+    rgba(203, 213, 225, 0.86);
+
+  border-radius:
+    var(--radius-xl);
+
+  box-shadow:
+    var(--shadow-lg);
+
+  outline: none;
+
+  overscroll-behavior:
+    contain;
+
+  scrollbar-gutter:
+    stable;
+
+  scroll-behavior:
+    smooth;
+}
+
+
+/* Línea superior corporativa */
+
+.packages-list__table-wrapper::before {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 12;
+
+  display: block;
+
+  width: 100%;
+  height: 0.22rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info),
+      var(--accent),
+      var(--success)
+    );
+
+  pointer-events: none;
+}
+
+
+/* Focus accesible */
+
+.packages-list__table-wrapper:focus-visible {
+  box-shadow:
+    var(--shadow-lg),
+    inset 0 0 0 0.2rem rgba(37, 99, 235, 0.18);
+}
+
+
+/* ==========================================================
+   53. SCROLLBAR
+========================================================== */
+
+.packages-list__table-wrapper {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    rgba(37, 99, 235, 0.42)
+    rgba(241, 245, 249, 0.88);
+}
+
+
+.packages-list__table-wrapper::-webkit-scrollbar {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+
+.packages-list__table-wrapper::-webkit-scrollbar-track {
+  background:
+    rgba(241, 245, 249, 0.88);
+}
+
+
+.packages-list__table-wrapper::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(96, 165, 250, 0.86),
+      rgba(37, 99, 235, 0.82)
+    );
+
+  border:
+    0.15rem solid
+    rgba(241, 245, 249, 0.96);
+
+  border-radius:
+    var(--radius-pill);
+}
+
+
+.packages-list__table-wrapper::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-primary),
+      var(--color-primary-dark)
+    );
+}
+
+
+/* ==========================================================
+   54. TABLA BASE
+========================================================== */
+
+.packages-list__table {
+  width: 100%;
+  min-width: 112rem;
+
+  color:
+    var(--text-primary);
+
+  font-size:
+    0.82rem;
+
+  background:
+    var(--surface);
+
+  border-collapse:
+    separate;
+
+  border-spacing:
+    0;
+
+  table-layout:
+    fixed;
+}
+
+
+/* ==========================================================
+   55. ENCABEZADO FIJO
+========================================================== */
+
+.packages-list__table-head {
+  position: sticky;
+  top: 0.22rem;
+  z-index: 10;
+}
+
+
+.packages-list__table-head
+.packages-list__table-row {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.99),
+      rgba(241, 245, 249, 0.99)
+    );
+}
+
+
+/* ==========================================================
+   56. ENCABEZADOS
+========================================================== */
+
+.packages-list__table-heading {
+  position: relative;
+
+  height: 3.65rem;
+
+  padding:
+    var(--space-16);
+
+  color:
+    var(--gray-600);
+
+  font-size:
+    0.67rem;
+
+  font-weight:
+    850;
+
+  line-height:
+    1.35;
+
+  letter-spacing:
+    0.075em;
+
+  text-align:
+    left;
+
+  text-transform:
+    uppercase;
+
+  white-space:
+    nowrap;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.99),
+      rgba(241, 245, 249, 0.99)
+    );
+
+  border-bottom:
+    1px solid
+    rgba(203, 213, 225, 0.96);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0.35rem 0.9rem rgba(15, 23, 42, 0.035);
+
+  backdrop-filter:
+    blur(0.75rem);
+
+  -webkit-backdrop-filter:
+    blur(0.75rem);
+}
+
+
+/* Separadores */
+
+.packages-list__table-heading:not(:last-child)::after {
+  position: absolute;
+  top: 28%;
+  right: 0;
+
+  width: 0.0625rem;
+  height: 44%;
+
+  content: "";
+
+  background:
+    rgba(203, 213, 225, 0.72);
+}
+
+
+/* Primera columna */
+
+.packages-list__table-heading:first-child {
+  padding-left:
+    var(--space-24);
+}
+
+
+/* Última columna */
+
+.packages-list__table-heading:last-child {
+  padding-right:
+    var(--space-24);
+}
+
+
+/* Acciones */
+
+.packages-list__table-heading--actions {
+  text-align:
+    center;
+}
+
+
+/* ==========================================================
+   57. ANCHOS DE COLUMNAS
+========================================================== */
+
+/* Destinatario */
+
+.packages-list__table th:nth-child(1),
+.packages-list__table td:nth-child(1) {
+  width: 18rem;
+}
+
+
+/* Torre */
+
+.packages-list__table th:nth-child(2),
+.packages-list__table td:nth-child(2) {
+  width: 6rem;
+
+  text-align:
+    center;
+}
+
+
+/* Apartamento */
+
+.packages-list__table th:nth-child(3),
+.packages-list__table td:nth-child(3) {
+  width: 8rem;
+
+  text-align:
+    center;
+}
+
+
+/* Descripción */
+
+.packages-list__table th:nth-child(4),
+.packages-list__table td:nth-child(4) {
+  width: 18rem;
+}
+
+
+/* Recepción */
+
+.packages-list__table th:nth-child(5),
+.packages-list__table td:nth-child(5) {
+  width: 11rem;
+}
+
+
+/* Entregado */
+
+.packages-list__table th:nth-child(6),
+.packages-list__table td:nth-child(6) {
+  width: 11rem;
+}
+
+
+/* Estado */
+
+.packages-list__table th:nth-child(7),
+.packages-list__table td:nth-child(7) {
+  width: 9rem;
+
+  text-align:
+    center;
+}
+
+
+/* Recoge */
+
+.packages-list__table th:nth-child(8),
+.packages-list__table td:nth-child(8) {
+  width: 12rem;
+}
+
+
+/* Entrega */
+
+.packages-list__table th:nth-child(9),
+.packages-list__table td:nth-child(9) {
+  width: 12rem;
+}
+
+
+/* Acciones */
+
+.packages-list__table th:nth-child(10),
+.packages-list__table td:nth-child(10) {
+  width: 10rem;
+
+  text-align:
+    center;
+}
+
+
+/* ==========================================================
+   58. CUERPO
+========================================================== */
+
+.packages-list__table-body {
+  background:
+    var(--surface);
+}
+
+
+/* ==========================================================
+   59. FILA DE DATOS
+========================================================== */
 
 .packages-list__table-row--data {
   position: relative;
 
-  transition:
-    background var(--packages-transition),
-    box-shadow var(--packages-transition),
-    transform var(--packages-transition);
-}
-
-
-/* Alternancia ligera entre filas */
-
-.packages-list__table-row--data:nth-child(even) {
   background:
-    rgba(248, 250, 252, 0.58);
+    linear-gradient(
+      90deg,
+      rgba(248, 250, 252, 0.34),
+      var(--surface) 18%
+    );
+
+  transition:
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 
-/* Hover de fila */
+/* Separación */
+
+.packages-list__table-row--data:not(:last-child)
+.packages-list__table-cell {
+  border-bottom:
+    1px solid
+    rgba(226, 232, 240, 0.88);
+}
+
+
+/* Hover */
 
 .packages-list__table-row--data:hover {
   background:
     linear-gradient(
       90deg,
-      rgba(239, 246, 255, 0.9),
-      rgba(255, 255, 255, 0.98)
+      rgba(219, 234, 254, 0.62),
+      var(--surface) 34%
     );
 
   box-shadow:
-    inset 0.22rem 0 0 var(--packages-primary);
+    inset 0.22rem 0 0 rgba(37, 99, 235, 0.18),
+    0 0.7rem 1.5rem rgba(37, 99, 235, 0.055);
 }
 
 
-/*==========================================================
-  CELDAS BASE
-==========================================================*/
+/* ==========================================================
+   60. CELDAS
+========================================================== */
 
 .packages-list__table-cell {
   position: relative;
 
-  min-width: 0;
-
   padding:
-    1rem
-    0.95rem;
+    1.05rem
+    var(--space-16);
 
   color:
-    var(--packages-text-soft);
+    var(--text-secondary);
 
-  font-size: 0.79rem;
-  font-weight: 550;
-  line-height: 1.5;
+  font-size:
+    0.8rem;
 
-  vertical-align: middle;
+  font-weight:
+    520;
 
-  background:
-    transparent;
+  line-height:
+    1.5;
 
-  border-bottom:
-    1px solid
-    rgba(226, 232, 240, 0.88);
+  vertical-align:
+    middle;
 
-  transition:
-    color var(--packages-transition),
-    background var(--packages-transition),
-    border-color var(--packages-transition);
+  overflow-wrap:
+    anywhere;
 }
 
 
-/* Última fila sin borde inferior fuerte */
+/* Primera celda */
 
-.packages-list__table-row--data:last-child
-.packages-list__table-cell {
-  border-bottom-color:
-    transparent;
+.packages-list__table-cell:first-child {
+  padding-left:
+    var(--space-24);
 }
 
 
-/* Separación vertical sutil entre columnas */
+/* Indicador lateral */
 
-.packages-list__table-cell:not(:last-child)::after {
+.packages-list__table-cell:first-child::before {
   position: absolute;
-  top: 22%;
-  right: 0;
+  top: 18%;
+  bottom: 18%;
+  left: 0;
 
-  width: 1px;
-  height: 56%;
+  width: 0.22rem;
 
   content: "";
 
   background:
     linear-gradient(
       180deg,
-      transparent,
-      rgba(226, 232, 240, 0.72),
-      transparent
+      var(--color-primary),
+      var(--info)
     );
 
-  pointer-events: none;
+  border-radius:
+    0
+    var(--radius-pill)
+    var(--radius-pill)
+    0;
+
+  opacity: 0;
+
+  transform:
+    scaleY(0.45);
+
+  transform-origin:
+    center;
+
+  transition:
+    opacity var(--transition-normal),
+    transform var(--transition-normal);
 }
 
-
-/* Refuerzo de texto durante hover */
 
 .packages-list__table-row--data:hover
-.packages-list__table-cell {
-  color:
-    var(--packages-text);
+.packages-list__table-cell:first-child::before {
+  opacity:
+    1;
+
+  transform:
+    scaleY(1);
 }
 
 
-/*==========================================================
-  CELDA DEL DESTINATARIO
-==========================================================*/
+/* Última celda */
 
-.packages-list__table-cell--recipient {
-  min-width: 16rem;
+.packages-list__table-cell:last-child {
+  padding-right:
+    var(--space-24);
 }
 
 
-/*==========================================================
-  CONTENEDOR DEL DESTINATARIO
-==========================================================*/
+/* ==========================================================
+   61. DESTINATARIO
+========================================================== */
 
 .packages-list__recipient {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: var(--space-12);
 
   min-width: 0;
 }
 
 
-/*==========================================================
-  AVATAR DEL DESTINATARIO
-==========================================================*/
+/* Avatar */
 
 .packages-list__recipient-avatar {
   position: relative;
 
-  display: inline-grid;
+  display: grid;
   place-items: center;
 
   flex: 0 0 auto;
 
-  width: 2.55rem;
-  height: 2.55rem;
+  width: 2.8rem;
+  height: 2.8rem;
 
   overflow: hidden;
 
   color:
-    #ffffff;
+    var(--text-white);
 
-  font-size: 0.88rem;
-  font-weight: 900;
-  line-height: 1;
-  text-transform: uppercase;
+  font-size:
+    0.92rem;
+
+  font-weight:
+    900;
+
+  line-height:
+    1;
 
   background:
     linear-gradient(
       145deg,
-      var(--packages-primary),
-      var(--packages-primary-dark)
+      var(--color-primary),
+      var(--color-primary-dark)
     );
 
   border:
-    0.14rem solid
-    rgba(255, 255, 255, 0.9);
+    0.18rem solid
+    rgba(219, 234, 254, 0.94);
 
   border-radius:
-    0.86rem;
+    0.9rem;
 
   box-shadow:
-    0 0.45rem 0.95rem rgba(37, 99, 235, 0.18);
-
-  transform:
-    rotate(-2deg);
+    0 0.55rem 1.15rem rgba(37, 99, 235, 0.2);
 
   transition:
-    border-radius var(--packages-transition),
-    box-shadow var(--packages-transition),
-    transform var(--packages-transition);
+    border-radius var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 
-/* Brillo del avatar */
+/* Brillo */
 
 .packages-list__recipient-avatar::before {
   position: absolute;
-  inset: 0;
+  top: -45%;
+  left: -38%;
+
+  width: 80%;
+  height: 160%;
 
   content: "";
 
   background:
     linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.28),
-      transparent 58%
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.35),
+      transparent
     );
 
-  pointer-events: none;
+  transform:
+    rotate(18deg);
+
+  pointer-events:
+    none;
 }
 
-
-/* Avatar reactivo al hover de fila */
 
 .packages-list__table-row--data:hover
 .packages-list__recipient-avatar {
@@ -1831,2209 +3123,1214 @@
     50%;
 
   box-shadow:
-    0 0.7rem 1.25rem rgba(37, 99, 235, 0.24);
+    0 0.75rem 1.45rem rgba(37, 99, 235, 0.25);
 
   transform:
-    translateY(-0.08rem)
-    rotate(0deg);
+    translateY(-0.1rem)
+    scale(1.03);
 }
 
 
-/*==========================================================
-  INFORMACIÓN DEL DESTINATARIO
-==========================================================*/
+/* Datos */
 
 .packages-list__recipient-info {
   display: flex;
-  flex: 1 1 auto;
   flex-direction: column;
-  gap: 0.18rem;
+  gap: var(--space-4);
 
   min-width: 0;
 }
 
 
-/*==========================================================
-  NOMBRE DEL DESTINATARIO
-==========================================================*/
+/* Nombre */
 
 .packages-list__recipient-name {
   display: block;
 
-  min-width: 0;
+  max-width: 100%;
 
   color:
-    var(--packages-text);
+    var(--text-primary);
 
-  font-size: 0.84rem;
-  font-weight: 800;
-  line-height: 1.35;
+  font-size:
+    0.88rem;
 
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-weight:
+    800;
+
+  line-height:
+    1.4;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
 }
 
 
-/*==========================================================
-  UBICACIÓN SECUNDARIA DEL DESTINATARIO
-==========================================================*/
+/* Ubicación */
 
 .packages-list__recipient-location {
   display: block;
 
-  min-width: 0;
+  max-width: 100%;
 
   color:
-    var(--packages-text-muted);
+    var(--text-muted);
 
-  font-size: 0.7rem;
-  font-weight: 600;
-  line-height: 1.35;
+  font-size:
+    0.72rem;
 
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-weight:
+    600;
+
+  line-height:
+    1.4;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
 }
 
 
-/*==========================================================
-  BADGE DE TORRE Y APARTAMENTO
-==========================================================*/
+/* ==========================================================
+   62. BADGES DE UBICACIÓN
+========================================================== */
 
 .packages-list__location-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  min-width: 2.25rem;
-  min-height: 1.8rem;
+  min-width: 2.75rem;
+  min-height: 2rem;
 
   padding:
-    0.3rem
-    0.58rem;
+    0.35rem
+    0.65rem;
 
   color:
-    #1e3a8a;
-
-  font-size: 0.72rem;
-  font-weight: 800;
-  line-height: 1;
-
-  white-space: nowrap;
+    var(--color-primary-dark);
 
   background:
     linear-gradient(
       145deg,
-      rgba(239, 246, 255, 0.98),
-      rgba(219, 234, 254, 0.88)
+      rgba(219, 234, 254, 0.84),
+      rgba(255, 255, 255, 0.96)
     );
 
   border:
     1px solid
-    rgba(147, 197, 253, 0.74);
+    rgba(147, 197, 253, 0.62);
 
   border-radius:
-    0.62rem;
+    var(--radius-pill);
 
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  font-size:
+    0.75rem;
 
-  transition:
-    color var(--packages-transition),
-    background var(--packages-transition),
-    border-color var(--packages-transition),
-    box-shadow var(--packages-transition),
-    transform var(--packages-transition);
+  font-weight:
+    850;
+
+  line-height:
+    1;
+
+  white-space:
+    nowrap;
 }
 
 
-/* Hover de ubicación */
-
-.packages-list__table-row--data:hover
-.packages-list__location-badge {
-  color:
-    #ffffff;
-
-  background:
-    linear-gradient(
-      145deg,
-      var(--packages-primary),
-      var(--packages-primary-dark)
-    );
-
-  border-color:
-    var(--packages-primary);
-
-  box-shadow:
-    0 0.4rem 0.85rem rgba(37, 99, 235, 0.18);
-
-  transform:
-    translateY(-0.05rem);
-}
-
-
-/*==========================================================
-  CELDA DE DESCRIPCIÓN
-==========================================================*/
-
-.packages-list__table-cell--description {
-  width: 19rem;
-  min-width: 15rem;
-  max-width: 22rem;
-}
-
-
-/*==========================================================
-  DESCRIPCIÓN DEL PAQUETE
-==========================================================*/
+/* ==========================================================
+   63. DESCRIPCIÓN
+========================================================== */
 
 .packages-list__package-description {
-  display:
-    -webkit-box;
+  display: -webkit-box;
 
-  max-width: 20rem;
-
-  margin: 0;
-
-  overflow: hidden;
+  max-width: 100%;
 
   color:
-    var(--packages-text-soft);
+    var(--text-secondary);
 
-  font-size: 0.76rem;
-  font-weight: 520;
-  line-height: 1.55;
+  font-size:
+    0.76rem;
 
-  overflow-wrap: anywhere;
+  font-weight:
+    500;
+
+  line-height:
+    1.55;
+
+  overflow:
+    hidden;
 
   -webkit-box-orient:
     vertical;
 
   -webkit-line-clamp:
-    2;
-
-  line-clamp:
-    2;
+    3;
 }
 
 
-/* Texto de descripción más fuerte en hover */
-
-.packages-list__table-row--data:hover
-.packages-list__package-description {
-  color:
-    var(--packages-text);
-}
-
-
-/*==========================================================
-  CONTENEDOR DE FECHA
-==========================================================*/
+/* ==========================================================
+   64. FECHAS
+========================================================== */
 
 .packages-list__date {
   display: inline-flex;
   align-items: center;
-  gap: 0.48rem;
+  gap: var(--space-8);
 
-  min-width: 0;
+  max-width: 100%;
 
   color:
-    var(--packages-text-soft);
+    var(--gray-700);
 
-  font-size: 0.72rem;
-  font-weight: 650;
-  line-height: 1.35;
+  font-size:
+    0.75rem;
 
-  white-space: nowrap;
+  font-weight:
+    650;
+
+  line-height:
+    1.45;
+
+  white-space:
+    nowrap;
 }
 
 
-/*==========================================================
-  ICONO DE FECHA
-==========================================================*/
+/* Icono */
 
 .packages-list__date-icon {
-  display: inline-grid;
+  display: grid;
   place-items: center;
 
   flex: 0 0 auto;
 
-  width: 1.62rem;
-  height: 1.62rem;
+  width: 1.55rem;
+  height: 1.55rem;
 
   color:
-    var(--packages-primary);
-
-  font-size: 0.68rem;
-  font-weight: 900;
-  line-height: 1;
+    var(--info-dark);
 
   background:
-    rgba(219, 234, 254, 0.72);
+    var(--info-light);
 
   border:
     1px solid
-    rgba(147, 197, 253, 0.68);
+    rgba(125, 211, 252, 0.76);
 
   border-radius:
-    0.52rem;
+    50%;
 
-  transition:
-    color var(--packages-transition),
-    background var(--packages-transition),
-    border-color var(--packages-transition),
-    transform var(--packages-transition);
+  font-size:
+    0.72rem;
+
+  font-weight:
+    900;
+
+  line-height:
+    1;
 }
 
 
-/*==========================================================
-  VALOR DE FECHA
-==========================================================*/
-
-.packages-list__date-value {
-  min-width: 0;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-
-/* Icono de fecha al hacer hover */
-
-.packages-list__table-row--data:hover
-.packages-list__date-icon {
-  color:
-    #ffffff;
-
-  background:
-    var(--packages-primary);
-
-  border-color:
-    var(--packages-primary);
-
-  transform:
-    translateY(-0.05rem);
-}
-
-
-/*==========================================================
-  FECHA PENDIENTE
-==========================================================*/
+/* Fecha pendiente */
 
 .packages-list__date--pending {
   color:
-    #92400e;
+    var(--warning-dark);
 }
 
-
-/* Icono de fecha pendiente */
 
 .packages-list__date--pending
 .packages-list__date-icon {
   color:
-    #b45309;
+    var(--warning-dark);
 
   background:
-    rgba(254, 243, 199, 0.88);
+    var(--warning-light);
 
   border-color:
-    rgba(252, 211, 77, 0.82);
+    rgba(252, 211, 77, 0.78);
 }
 
 
-/* Conserva color de advertencia durante hover */
+/* Valor */
 
-.packages-list__table-row--data:hover
-.packages-list__date--pending
-.packages-list__date-icon {
-  color:
-    #ffffff;
-
-  background:
-    linear-gradient(
-      145deg,
-      #f59e0b,
-      #d97706
-    );
-
-  border-color:
-    #f59e0b;
-}
-
-
-/*==========================================================
-  ALINEACIÓN DE COLUMNAS ESPECÍFICAS
-==========================================================*/
-
-.packages-list__table-cell:nth-child(2),
-.packages-list__table-cell:nth-child(3) {
-  text-align: center;
-}
-
-
-/*==========================================================
-  PROTECCIÓN CONTRA DESBORDAMIENTOS
-==========================================================*/
-
-.packages-list__table-row--data,
-.packages-list__table-cell,
-.packages-list__recipient,
-.packages-list__recipient-info,
-.packages-list__recipient-name,
-.packages-list__recipient-location,
-.packages-list__package-description,
-.packages-list__date,
 .packages-list__date-value {
-  min-width: 0;
+  max-width: 100%;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+  font-variant-numeric:
+    tabular-nums;
 }
 
-/*==========================================================
-  HABITACONTROL
-  PACKAGES LIST
-  PARTE 5
-  STATUS · PEOPLE · ACTIONS · DELIVERY BUTTON
-==========================================================*/
+
+/* ==========================================================
+   65. RESPONSIVE
+========================================================== */
+
+@media (min-width: 1500px) {
+  .packages-list__table-wrapper {
+    max-height:
+      45rem;
+  }
+}
 
 
-/*==========================================================
-  ESTADO DEL PAQUETE
-==========================================================*/
+@media (max-width: 768px) {
+  .packages-list__table-wrapper {
+    max-height:
+      35rem;
+
+    border-radius:
+      var(--radius-lg);
+  }
+
+  .packages-list__table {
+    min-width:
+      106rem;
+  }
+}
+
+
+@media (max-width: 520px) {
+  .packages-list__table-wrapper {
+    max-height:
+      32rem;
+  }
+
+  .packages-list__table {
+    min-width:
+      102rem;
+  }
+
+  .packages-list__table-heading,
+  .packages-list__table-cell {
+    padding-right:
+      var(--space-12);
+
+    padding-left:
+      var(--space-12);
+  }
+
+  .packages-list__table-heading:first-child,
+  .packages-list__table-cell:first-child {
+    padding-left:
+      var(--space-20);
+  }
+
+  .packages-list__table-heading:last-child,
+  .packages-list__table-cell:last-child {
+    padding-right:
+      var(--space-20);
+  }
+}
+
+
+/* ==========================================================
+   66. TÁCTIL
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .packages-list__table-wrapper {
+    scroll-behavior:
+      auto;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+  .packages-list__table-row--data:hover {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(248, 250, 252, 0.34),
+        var(--surface) 18%
+      );
+
+    box-shadow:
+      none;
+  }
+
+  .packages-list__table-row--data:hover
+  .packages-list__table-cell:first-child::before {
+    opacity:
+      0;
+
+    transform:
+      scaleY(0.45);
+  }
+
+  .packages-list__table-row--data:hover
+  .packages-list__recipient-avatar {
+    border-radius:
+      0.9rem;
+
+    box-shadow:
+      0 0.55rem 1.15rem rgba(37, 99, 235, 0.2);
+
+    transform:
+      none;
+  }
+}
+
+
+/* ==========================================================
+   67. ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .packages-list__table-wrapper {
+    border-width:
+      0.125rem;
+
+    border-color:
+      var(--gray-600);
+  }
+
+  .packages-list__table-heading,
+  .packages-list__table-cell {
+    border-color:
+      var(--gray-500);
+  }
+
+  .packages-list__location-badge,
+  .packages-list__date-icon {
+    border-width:
+      0.125rem;
+  }
+}
+
+
+/* ==========================================================
+   68. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .packages-list__table-wrapper,
+  .packages-list__table-row--data,
+  .packages-list__table-cell:first-child::before,
+  .packages-list__recipient-avatar {
+    animation:
+      none;
+
+    transition:
+      none;
+  }
+
+  .packages-list__table-wrapper {
+    scroll-behavior:
+      auto;
+  }
+}
+
+
+/* ==========================================================
+   HABITACONTROL — LISTA DE PAQUETES
+   PARTE 5: ESTADOS, PERSONAS, ACCIONES Y AJUSTES FINALES
+========================================================== */
+
+
+/* ==========================================================
+   69. ESTADO BASE
+========================================================== */
 
 .packages-list__status {
-  position: relative;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.42rem;
+  gap: var(--space-8);
 
-  min-width: 6.7rem;
-  min-height: 2rem;
+  min-width: 7.25rem;
+  min-height: 2.15rem;
 
   padding:
-    0.38rem
-    0.72rem;
-
-  overflow: hidden;
-
-  font-size: 0.7rem;
-  font-weight: 850;
-  line-height: 1.15;
-
-  white-space: nowrap;
+    0.45rem
+    0.95rem;
 
   border:
-    1px solid transparent;
+    1px solid
+    transparent;
 
   border-radius:
-    var(--packages-radius-pill);
+    var(--radius-pill);
 
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  font-size:
+    0.73rem;
+
+  font-weight:
+    850;
+
+  line-height:
+    1;
+
+  letter-spacing:
+    0.015em;
+
+  white-space:
+    nowrap;
 
   transition:
-    color var(--packages-transition),
-    background var(--packages-transition),
-    border-color var(--packages-transition),
-    box-shadow var(--packages-transition),
-    transform var(--packages-transition);
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 
-/* Brillo interno */
-
-.packages-list__status::before {
-  position: absolute;
-  inset: 0;
-
-  content: "";
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.32),
-      transparent 58%
-    );
-
-  pointer-events: none;
-}
-
-
-/* Contenido por encima del brillo */
-
-.packages-list__status > * {
-  position: relative;
-  z-index: 2;
-}
-
-
-/*==========================================================
-  INDICADOR DEL ESTADO
-==========================================================*/
+/* Indicador */
 
 .packages-list__status-indicator {
-  position: relative;
+  flex:
+    0 0 auto;
 
-  flex: 0 0 auto;
+  width:
+    0.48rem;
 
-  width: 0.48rem;
-  height: 0.48rem;
+  height:
+    0.48rem;
 
-  border-radius: 50%;
+  background:
+    var(--gray-400);
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0 0 0.2rem
+    rgba(148, 163, 184, 0.1);
 }
 
 
-/* Halo del indicador */
-
-.packages-list__status-indicator::before {
-  position: absolute;
-  inset: -0.22rem;
-
-  content: "";
-
-  border:
-    1px solid currentColor;
-
-  border-radius: 50%;
-
-  opacity: 0.28;
-}
-
-
-/*==========================================================
-  TEXTO DEL ESTADO
-==========================================================*/
+/* Texto */
 
 .packages-list__status-text {
-  min-width: 0;
+  line-height:
+    1;
 
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
 }
 
 
-/*==========================================================
-  ESTADO PENDIENTE
-==========================================================*/
+/* ==========================================================
+   70. ESTADO PENDIENTE
+========================================================== */
 
 .packages-list__status--pending {
   color:
-    #92400e;
+    var(--warning-dark);
 
   background:
     linear-gradient(
       145deg,
-      rgba(255, 251, 235, 0.98),
-      rgba(254, 243, 199, 0.92)
+      var(--warning-light),
+      rgba(255, 255, 255, 0.96)
     );
 
   border-color:
-    rgba(251, 191, 36, 0.72);
+    rgba(245, 158, 11, 0.3);
 
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 0.35rem 0.8rem rgba(245, 158, 11, 0.08);
+    0 0.5rem 1rem
+    rgba(245, 158, 11, 0.08);
 }
 
 
 .packages-list__status--pending
 .packages-list__status-indicator {
-  color:
-    #d97706;
-
   background:
-    #f59e0b;
+    var(--warning);
 
   box-shadow:
-    0 0 0.65rem rgba(245, 158, 11, 0.42);
-
-  animation:
-    packagesPendingPulse
-    1.8s ease-in-out infinite;
+    0 0 0 0.2rem
+    rgba(245, 158, 11, 0.12);
 }
 
 
-/*==========================================================
-  ESTADO ENTREGADO
-==========================================================*/
+/* ==========================================================
+   71. ESTADO ENTREGADO
+========================================================== */
 
 .packages-list__status--delivered {
   color:
-    #166534;
+    var(--success-dark);
 
   background:
     linear-gradient(
       145deg,
-      rgba(240, 253, 244, 0.98),
-      rgba(220, 252, 231, 0.92)
+      var(--success-light),
+      rgba(255, 255, 255, 0.96)
     );
 
   border-color:
-    rgba(134, 239, 172, 0.85);
+    rgba(22, 163, 74, 0.24);
 
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 0.35rem 0.8rem rgba(22, 163, 74, 0.08);
+    0 0.5rem 1rem
+    rgba(22, 163, 74, 0.08);
 }
 
 
 .packages-list__status--delivered
 .packages-list__status-indicator {
-  color:
-    #16a34a;
-
   background:
-    var(--packages-success);
+    var(--success);
 
   box-shadow:
-    0 0 0.55rem rgba(22, 163, 74, 0.34);
+    0 0 0 0.2rem
+    rgba(22, 163, 74, 0.11);
 }
 
 
-/* Hover de estados */
+/* Hover del estado */
 
 .packages-list__table-row--data:hover
 .packages-list__status {
   box-shadow:
-    0 0.5rem 1rem rgba(15, 23, 42, 0.1);
+    0 0.7rem 1.35rem
+    rgba(15, 23, 42, 0.09);
 
   transform:
-    translateY(-0.06rem);
+    translateY(-0.0625rem);
 }
 
 
-/*==========================================================
-  PERSONA QUE RECOGE / ENTREGA
-==========================================================*/
+/* ==========================================================
+   72. PERSONAS QUE RECOGEN Y ENTREGAN
+========================================================== */
 
 .packages-list__person-value {
-  display: inline-flex;
-  align-items: center;
+  display:
+    inline-flex;
 
-  max-width: 10rem;
+  align-items:
+    center;
+
+  max-width:
+    100%;
+
+  min-height:
+    2rem;
+
+  padding:
+    0.35rem
+    0.65rem;
 
   color:
-    var(--packages-text-soft);
-
-  font-size: 0.74rem;
-  font-weight: 650;
-  line-height: 1.45;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  transition:
-    color var(--packages-transition);
-}
-
-
-/* Punto identificador */
-
-.packages-list__person-value:not(
-  .packages-list__person-value--empty
-)::before {
-  flex: 0 0 auto;
-
-  width: 0.4rem;
-  height: 0.4rem;
-
-  margin-right: 0.42rem;
-
-  content: "";
+    var(--gray-700);
 
   background:
     linear-gradient(
       145deg,
-      var(--packages-primary),
-      var(--packages-cyan)
+      rgba(241, 245, 249, 0.94),
+      rgba(255, 255, 255, 0.98)
     );
 
-  border-radius: 50%;
+  border:
+    1px solid
+    rgba(203, 213, 225, 0.78);
 
-  box-shadow:
-    0 0 0 0.18rem rgba(37, 99, 235, 0.08);
+  border-radius:
+    var(--radius-md);
+
+  font-size:
+    0.75rem;
+
+  font-weight:
+    650;
+
+  line-height:
+    1.35;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
 }
 
 
-/*==========================================================
-  PERSONA SIN REGISTRO
-==========================================================*/
+/* Valor vacío */
 
 .packages-list__person-value--empty {
   color:
-    #94a3b8;
+    var(--text-muted);
 
-  font-size: 0.7rem;
-  font-style: italic;
-  font-weight: 550;
+  background:
+    rgba(248, 250, 252, 0.88);
+
+  border-style:
+    dashed;
+
+  font-weight:
+    550;
+
+  font-style:
+    italic;
 }
 
 
-/* Hover */
-
-.packages-list__table-row--data:hover
-.packages-list__person-value:not(
-  .packages-list__person-value--empty
-) {
-  color:
-    var(--packages-text);
-}
-
-
-/*==========================================================
-  CELDA DE ACCIONES
-==========================================================*/
+/* ==========================================================
+   73. CELDA DE ACCIONES
+========================================================== */
 
 .packages-list__table-cell--actions {
-  min-width: 8.5rem;
+  text-align:
+    center;
 
-  text-align: center;
+  vertical-align:
+    middle;
 }
 
 
-/*==========================================================
-  CONTENEDOR DE ACCIONES
-==========================================================*/
+/* Importante:
+   El flex se aplica al contenedor interno, no al <td>.
+   Así evitamos desalinear las columnas de la tabla.
+*/
 
 .packages-list__actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.55rem;
+  display:
+    flex;
 
-  min-width: 0;
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    var(--space-8);
+
+  width:
+    100%;
+
+  min-width:
+    0;
 }
 
 
-/*==========================================================
-  BOTÓN DE ACCIÓN BASE
-==========================================================*/
+/* ==========================================================
+   74. BOTÓN DE ACCIÓN BASE
+========================================================== */
 
 .packages-list__action-button {
-  position: relative;
+  position:
+    relative;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.48rem;
+  display:
+    inline-flex;
 
-  min-width: 6.8rem;
-  min-height: 2.45rem;
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    var(--space-8);
+
+  flex:
+    0 0 auto;
+
+  min-width:
+    7.25rem;
+
+  min-height:
+    2.6rem;
 
   padding:
-    0.62rem
-    0.9rem;
+    0.65rem
+    1rem;
 
-  overflow: hidden;
-
-  font: inherit;
-  font-size: 0.73rem;
-  font-weight: 850;
-  line-height: 1.15;
-
-  white-space: nowrap;
+  color:
+    var(--text-white);
 
   border:
-    1px solid transparent;
+    1px solid
+    transparent;
 
   border-radius:
-    0.78rem;
+    var(--radius-md);
 
-  cursor: pointer;
+  font-size:
+    0.75rem;
+
+  font-weight:
+    800;
+
+  line-height:
+    1;
+
+  white-space:
+    nowrap;
+
+  cursor:
+    pointer;
+
+  overflow:
+    hidden;
 
   transition:
-    color var(--packages-transition),
-    background var(--packages-transition),
-    border-color var(--packages-transition),
-    box-shadow var(--packages-transition),
-    opacity var(--packages-transition),
-    transform var(--packages-transition);
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    filter var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 
 /* Brillo interno */
 
 .packages-list__action-button::before {
-  position: absolute;
-  inset: 0;
+  position:
+    absolute;
 
-  content: "";
+  top:
+    -65%;
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.28),
-      transparent 60%
-    );
+  bottom:
+    -65%;
 
-  pointer-events: none;
-}
+  left:
+    -80%;
 
+  width:
+    45%;
 
-/* Elementos por encima del brillo */
-
-.packages-list__action-button > * {
-  position: relative;
-  z-index: 2;
-}
-
-
-/*==========================================================
-  BOTÓN ENTREGAR
-==========================================================*/
-
-.packages-list__action-button--primary {
-  color:
-    #ffffff;
+  content:
+    "";
 
   background:
     linear-gradient(
-      145deg,
-      var(--packages-primary),
-      var(--packages-primary-dark)
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.58),
+      transparent
     );
-
-  border-color:
-    rgba(29, 78, 216, 0.94);
-
-  box-shadow:
-    0 0.5rem 1rem rgba(37, 99, 235, 0.2);
-}
-
-
-/* Hover */
-
-.packages-list__action-button--primary:hover:not(:disabled) {
-  background:
-    linear-gradient(
-      145deg,
-      var(--packages-primary-dark),
-      #1e40af
-    );
-
-  border-color:
-    #1e40af;
-
-  box-shadow:
-    0 0.85rem 1.5rem rgba(37, 99, 235, 0.29);
 
   transform:
-    translateY(-0.12rem);
-}
-
-
-/* Active */
-
-.packages-list__action-button--primary:active:not(:disabled) {
-  box-shadow:
-    0 0.3rem 0.7rem rgba(37, 99, 235, 0.2);
-
-  transform:
-    scale(0.96);
-}
-
-
-/* Focus accesible */
-
-.packages-list__action-button:focus-visible {
-  outline:
-    0.18rem solid
-    rgba(37, 99, 235, 0.32);
-
-  outline-offset:
-    0.16rem;
-}
-
-
-/* Disabled futuro */
-
-.packages-list__action-button:disabled {
-  color:
-    #64748b;
-
-  background:
-    #e2e8f0;
-
-  border-color:
-    #cbd5e1;
-
-  opacity: 0.65;
-
-  cursor: not-allowed;
-
-  box-shadow: none;
-
-  transform: none;
-}
-
-
-/*==========================================================
-  ICONO DEL BOTÓN
-==========================================================*/
-
-.packages-list__action-icon {
-  display: inline-grid;
-  place-items: center;
-
-  flex: 0 0 auto;
-
-  width: 1.25rem;
-  height: 1.25rem;
-
-  color:
-    var(--packages-primary);
-
-  font-size: 0.65rem;
-  font-weight: 900;
-  line-height: 1;
-
-  background:
-    rgba(255, 255, 255, 0.94);
-
-  border-radius: 50%;
-
-  box-shadow:
-    0 0.22rem 0.5rem rgba(15, 23, 42, 0.16);
+    rotate(18deg);
 
   transition:
-    color var(--packages-transition),
-    background var(--packages-transition),
-    transform var(--packages-transition);
+    left
+    500ms
+    cubic-bezier(0.22, 1, 0.36, 1);
+
+  pointer-events:
+    none;
 }
 
 
-/* Movimiento del icono */
+/* ==========================================================
+   75. BOTÓN ENTREGAR
+========================================================== */
 
-.packages-list__action-button--primary:hover
-.packages-list__action-icon {
-  color:
-    var(--packages-primary-dark);
-
+.packages-list__action-button--primary {
   background:
-    #ffffff;
+    linear-gradient(
+      145deg,
+      var(--color-primary),
+      var(--color-primary-hover)
+    );
+
+  border-color:
+    rgba(147, 197, 253, 0.38);
+
+  box-shadow:
+    0 0.65rem 1.3rem
+    rgba(37, 99, 235, 0.22),
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.18);
+}
+
+
+.packages-list__action-button--primary:hover {
+  border-color:
+    rgba(191, 219, 254, 0.54);
+
+  box-shadow:
+    0 0.9rem 1.65rem
+    rgba(37, 99, 235, 0.3),
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.2);
 
   transform:
-    scale(1.08)
-    rotate(-5deg);
+    translateY(-0.125rem);
 }
 
 
-/*==========================================================
-  SIN ACCIONES DISPONIBLES
-==========================================================*/
+.packages-list__action-button--primary:hover::before {
+  left:
+    138%;
+}
 
-.packages-list__no-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
 
-  min-width: 5.8rem;
-  min-height: 2rem;
+.packages-list__action-button--primary:active {
+  transform:
+    scale(0.97);
+}
 
-  padding:
-    0.35rem
-    0.58rem;
+
+.packages-list__action-button--primary:focus-visible {
+  outline:
+    0.1875rem solid
+    rgba(37, 99, 235, 0.2);
+
+  outline-offset:
+    0.1875rem;
+}
+
+
+/* Deshabilitado */
+
+.packages-list__action-button:disabled {
+  opacity:
+    0.55;
+
+  cursor:
+    not-allowed;
+
+  box-shadow:
+    none;
+
+  transform:
+    none;
+}
+
+
+/* ==========================================================
+   76. ICONO DE ACCIÓN
+========================================================== */
+
+.packages-list__action-icon {
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  flex:
+    0 0 auto;
+
+  width:
+    1.25rem;
+
+  height:
+    1.25rem;
 
   color:
-    #94a3b8;
-
-  font-size: 0.7rem;
-  font-weight: 650;
-  line-height: 1.2;
+    var(--color-primary-dark);
 
   background:
-    rgba(241, 245, 249, 0.72);
+    rgba(255, 255, 255, 0.88);
+
+  border-radius:
+    50%;
+
+  font-size:
+    0.7rem;
+
+  font-weight:
+    950;
+
+  line-height:
+    1;
+}
+
+
+/* ==========================================================
+   77. SIN ACCIONES
+========================================================== */
+
+.packages-list__no-action {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    var(--space-8);
+
+  min-width:
+    7.25rem;
+
+  min-height:
+    2.25rem;
+
+  padding:
+    0.45rem
+    0.75rem;
+
+  color:
+    var(--text-muted);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(241, 245, 249, 0.82),
+      rgba(255, 255, 255, 0.95)
+    );
 
   border:
     1px dashed
-    rgba(203, 213, 225, 0.86);
+    rgba(148, 163, 184, 0.58);
 
   border-radius:
-    0.7rem;
+    var(--radius-md);
+
+  font-size:
+    0.72rem;
+
+  font-weight:
+    650;
+
+  line-height:
+    1;
+
+  white-space:
+    nowrap;
 }
 
 
-/*==========================================================
-  TEXTO AUXILIAR SIN ACCIONES
-==========================================================*/
+.packages-list__no-action > span:first-child {
+  display:
+    grid;
 
-.packages-list__no-action-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  place-items:
+    center;
+
+  width:
+    1.15rem;
+
+  height:
+    1.15rem;
+
+  color:
+    var(--gray-500);
+
+  background:
+    rgba(226, 232, 240, 0.82);
+
+  border-radius:
+    50%;
+
+  font-size:
+    0.72rem;
+
+  line-height:
+    1;
 }
 
 
-/*==========================================================
-  ALINEACIÓN DE COLUMNAS
-==========================================================*/
+/* ==========================================================
+   78. AJUSTES DE FILA SEGÚN ESTADO
+========================================================== */
 
-.packages-list__table-cell:nth-child(7),
-.packages-list__table-cell:nth-child(10) {
-  text-align: center;
+.packages-list__table-row--data:has(
+  .packages-list__status--pending
+) {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(254, 243, 199, 0.2),
+      var(--surface) 20%
+    );
 }
 
 
-/*==========================================================
-  PROTECCIÓN CONTRA DESBORDAMIENTOS
-==========================================================*/
-
-.packages-list__status,
-.packages-list__status-text,
-.packages-list__person-value,
-.packages-list__actions,
-.packages-list__action-button,
-.packages-list__no-action,
-.packages-list__no-action-text {
-  min-width: 0;
+.packages-list__table-row--data:has(
+  .packages-list__status--delivered
+) {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(220, 252, 231, 0.2),
+      var(--surface) 20%
+    );
 }
 
 
-/* Se conservan mínimos funcionales */
+/* Mantener hover corporativo */
 
-.packages-list__status {
-  min-width: 6.7rem;
+.packages-list__table-row--data:hover {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(219, 234, 254, 0.62),
+      var(--surface) 34%
+    );
 }
 
 
-.packages-list__action-button {
-  min-width: 6.8rem;
-}
-
-
-.packages-list__no-action {
-  min-width: 5.8rem;
-}
-
-
-/*==========================================================
-  ANIMACIÓN DE ESTADO PENDIENTE
-==========================================================*/
-
-@keyframes packagesPendingPulse {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0.45rem rgba(245, 158, 11, 0.28);
-
-    transform:
-      scale(1);
-  }
-
-  50% {
-    box-shadow:
-      0 0 0.85rem rgba(245, 158, 11, 0.5);
-
-    transform:
-      scale(1.08);
-  }
-}
-
-/*==========================================================
-  HABITACONTROL
-  PACKAGES LIST
-  PARTE 6
-  RESPONSIVE · MOBILE CARDS · ACCESSIBILITY · PRINT
-==========================================================*/
-
-
-/*==========================================================
-  DESKTOP MEDIO
-==========================================================*/
-
-@media (max-width: 75rem) {
-
-  .packages-list {
-    padding: 1.3rem;
-  }
-
-
-  .packages-list__header {
-    gap: 1.5rem;
-  }
-
-
-  .packages-list__table {
-    min-width: 78rem;
-  }
-
-
-  .packages-list__table-heading,
-  .packages-list__table-cell {
-    padding-right: 0.82rem;
-    padding-left: 0.82rem;
-  }
-
-
-  .packages-list__recipient-avatar {
-    width: 2.4rem;
-    height: 2.4rem;
-  }
-}
-
-
-/*==========================================================
-  TABLET
-==========================================================*/
-
-@media (max-width: 62rem) {
-
-  .packages-list {
-    gap: 1.15rem;
-
-    padding: 1.15rem;
-
-    border-radius: 1.2rem;
-  }
-
-
-  /* Header apilado */
-
-  .packages-list__header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-
-    padding-bottom: 1.15rem;
-  }
-
-
-  .packages-list__header-actions {
-    justify-content: flex-start;
-  }
-
-
-  .packages-list__refresh-button {
-    min-width: 9rem;
-  }
-
-
-  /* Estado */
-
-  .packages-list__state {
-    min-height: 14rem;
-
-    padding:
-      2rem
-      1.5rem;
-  }
-
-
-  /* Contenido */
-
-  .packages-list__content-header {
-    align-items: flex-start;
-  }
-
-
-  /* Tabla horizontal */
-
-  .packages-list__table {
-    min-width: 75rem;
-  }
-
-
-  .packages-list__table-heading {
-    padding:
-      0.9rem
-      0.75rem;
-  }
-
-
-  .packages-list__table-cell {
-    padding:
-      0.9rem
-      0.75rem;
-  }
-}
-
-
-/*==========================================================
-  MÓVIL
-  TRANSFORMACIÓN DE TABLA A TARJETAS
-==========================================================*/
-
-@media (max-width: 48rem) {
-
-  /*========================================================
-    CONTENEDOR
-  ========================================================*/
-
-  .packages-list {
-    gap: 1rem;
-
-    padding: 1rem;
-
-    overflow: visible;
-
-    border-radius: 1.05rem;
-
-    box-shadow:
-      0 0.75rem 1.8rem rgba(15, 23, 42, 0.07);
-  }
-
-
-  .packages-list::after {
-    top: -7rem;
-    right: -9rem;
-
-    width: 19rem;
-    height: 19rem;
-  }
-
-
-  /*========================================================
-    HEADER
-  ========================================================*/
-
-  .packages-list__header {
-    gap: 0.9rem;
-
-    padding:
-      0.35rem
-      0
-      1rem;
-  }
-
-
-  .packages-list__eyebrow {
-    font-size: 0.66rem;
-  }
-
-
-  .packages-list__title {
-    font-size:
-      clamp(
-        1.32rem,
-        7vw,
-        1.65rem
-      );
-  }
-
-
-  .packages-list__description {
-    font-size: 0.82rem;
-    line-height: 1.6;
-  }
-
-
-  .packages-list__header-actions {
-    width: 100%;
-  }
-
-
-  .packages-list__refresh-button {
-    width: 100%;
-    min-width: 0;
-    min-height: 2.9rem;
-  }
-
-
-  /*========================================================
-    ALERTAS
-  ========================================================*/
-
-  .packages-list__alert {
-    gap: 0.7rem;
-
-    padding:
-      0.88rem
-      0.9rem;
-  }
-
-
-  .packages-list__alert-icon {
-    width: 1.7rem;
-    height: 1.7rem;
-  }
-
-
-  .packages-list__alert-message {
-    font-size: 0.79rem;
-  }
-
-
-  /*========================================================
-    ESTADOS
-  ========================================================*/
-
-  .packages-list__state {
-    flex-direction: column;
-    gap: 0.95rem;
-
-    min-height: 13rem;
-
-    padding:
-      1.8rem
-      1rem;
-
-    text-align: center;
-  }
-
-
-  .packages-list__state-content {
-    align-items: center;
-  }
-
-
-  .packages-list__state-title {
-    font-size: 1rem;
-  }
-
-
-  .packages-list__state-description {
-    max-width: 24rem;
-
-    font-size: 0.8rem;
-  }
-
-
-  .packages-list__loader {
-    width: 3.2rem;
-    height: 3.2rem;
-  }
-
-
-  .packages-list__state-icon {
-    width: 4.6rem;
-    height: 4.6rem;
-
-    font-size: 1.95rem;
-  }
-
-
-  /*========================================================
-    RESUMEN
-  ========================================================*/
-
-  .packages-list__content-header {
-    align-items: stretch;
-  }
-
-
-  .packages-list__summary {
-    width: 100%;
-
-    justify-content: center;
-
-    padding:
-      0.68rem
-      0.8rem;
-
-    border-radius:
-      var(--packages-radius-md);
-  }
-
-
-  /*========================================================
-    CONTENEDOR DE TABLA
-  ========================================================*/
-
-  .packages-list__table-wrapper {
-    overflow: visible;
-
-    background:
-      transparent;
-
-    border: 0;
-
-    border-radius: 0;
-
-    box-shadow: none;
-  }
-
-
-  .packages-list__table-wrapper::before,
-  .packages-list__table-wrapper::after {
-    display: none;
-  }
-
-
-  /*========================================================
-    TABLA CONVERTIDA EN BLOQUES
-  ========================================================*/
-
-  .packages-list__table {
-    display: block;
-
-    width: 100%;
-    min-width: 0;
-
-    background:
-      transparent;
-  }
-
-
-  .packages-list__table-head {
-    position: absolute;
-
-    width: 1px;
-    height: 1px;
-
-    margin: -1px;
-    padding: 0;
-
-    overflow: hidden;
-
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-
-    white-space: nowrap;
-
-    border: 0;
-  }
-
-
-  .packages-list__table-body {
-    display: grid;
-    gap: 1rem;
-
-    width: 100%;
-
-    background:
-      transparent;
-  }
-
-
-  /*========================================================
-    TARJETA DE PAQUETE
-  ========================================================*/
-
-  .packages-list__table-row--data {
-    position: relative;
-
-    display: block;
-
-    width: 100%;
-
-    padding:
-      0.35rem
-      1rem
-      0.9rem;
-
-    overflow: hidden;
-
-    background:
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.99),
-        rgba(248, 250, 252, 0.96)
-      );
-
-    border:
-      1px solid
-      rgba(203, 213, 225, 0.85);
-
-    border-radius:
-      var(--packages-radius-md);
-
-    box-shadow:
-      0 0.65rem 1.35rem rgba(15, 23, 42, 0.07);
-
-    animation:
-      packagesMobileCardEnter
-      0.35s
-      cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-
-  /* Línea superior de la tarjeta */
-
-  .packages-list__table-row--data::before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-
-    height: 0.22rem;
-
-    content: "";
-
-    background:
-      linear-gradient(
-        90deg,
-        var(--packages-primary),
-        var(--packages-cyan)
-      );
-  }
-
-
-  .packages-list__table-row--data:nth-child(even) {
-    background:
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.99),
-        rgba(248, 250, 252, 0.96)
-      );
-  }
-
-
-  .packages-list__table-row--data:hover {
-    background:
-      linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.99),
-        rgba(239, 246, 255, 0.93)
-      );
-
-    box-shadow:
-      0 0.9rem 1.7rem rgba(37, 99, 235, 0.11);
-
-    transform:
-      translateY(-0.08rem);
-  }
-
-
-  /*========================================================
-    CELDAS MÓVILES
-  ========================================================*/
-
-  .packages-list__table-cell {
-    display: grid;
-    grid-template-columns:
-      minmax(6.8rem, 0.72fr)
-      minmax(0, 1fr);
-    align-items: center;
-    gap: 0.8rem;
-
-    width: 100%;
-    min-width: 0;
-    max-width: none;
-
-    padding:
-      0.72rem
-      0;
-
-    text-align: right;
-
-    border-bottom:
-      1px solid
-      rgba(226, 232, 240, 0.82);
-  }
-
-
-  /* Etiqueta generada mediante data-label */
-
-  .packages-list__table-cell::before {
-    align-self: center;
-
-    color:
-      var(--packages-text-muted);
-
-    content:
-      attr(data-label);
-
-    font-size: 0.64rem;
-    font-weight: 850;
-    line-height: 1.3;
-
-    letter-spacing: 0.07em;
-    text-align: left;
-    text-transform: uppercase;
-
-    overflow-wrap: anywhere;
-  }
-
-
-  /* Se desactiva el separador vertical de desktop */
-
-  .packages-list__table-cell:not(:last-child)::after {
-    display: none;
-  }
-
-
-  /* Última celda */
-
-  .packages-list__table-cell:last-child {
-    padding-bottom: 0;
-
-    border-bottom: 0;
-  }
-
-
-  /*========================================================
-    DESTINATARIO EN MÓVIL
-  ========================================================*/
-
-  .packages-list__table-cell--recipient {
-    grid-template-columns: 1fr;
-
-    min-width: 0;
-
-    padding:
-      1rem
-      0
-      0.85rem;
-
-    text-align: left;
-  }
-
-
-  .packages-list__table-cell--recipient::before {
-    display: none;
-  }
-
-
-  .packages-list__recipient {
-    width: 100%;
-  }
-
-
-  .packages-list__recipient-avatar {
-    width: 2.75rem;
-    height: 2.75rem;
-  }
-
-
-  .packages-list__recipient-name {
-    font-size: 0.9rem;
-  }
-
-
-  .packages-list__recipient-location {
-    font-size: 0.72rem;
-  }
-
-
-  /*========================================================
-    UBICACIÓN
-  ========================================================*/
-
-  .packages-list__location-badge {
-    justify-self: end;
-  }
-
-
-  /*========================================================
-    DESCRIPCIÓN
-  ========================================================*/
-
-  .packages-list__table-cell--description {
-    width: 100%;
-    min-width: 0;
-    max-width: none;
-  }
-
-
-  .packages-list__package-description {
-    justify-self: end;
-
-    max-width: 100%;
-
-    text-align: right;
-
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-  }
-
-
-  /*========================================================
-    FECHAS
-  ========================================================*/
-
-  .packages-list__date {
-    justify-self: end;
-
-    white-space: normal;
-  }
-
-
-  .packages-list__date-value {
-    text-align: right;
-    white-space: normal;
-  }
-
-
-  /*========================================================
-    ESTADO
-  ========================================================*/
-
-  .packages-list__status {
-    justify-self: end;
-  }
-
-
-  /*========================================================
-    PERSONAS
-  ========================================================*/
-
-  .packages-list__person-value {
-    justify-self: end;
-
-    max-width: 100%;
-
-    text-align: right;
-    white-space: normal;
-  }
-
-
-  /*========================================================
-    ACCIONES
-  ========================================================*/
-
-  .packages-list__table-cell--actions {
-    grid-template-columns: 1fr;
-
-    min-width: 0;
-
-    padding-top: 0.9rem;
-
-    text-align: center;
-  }
-
-
-  .packages-list__table-cell--actions::before {
-    display: none;
-  }
-
-
+/* ==========================================================
+   79. RESPONSIVE — TABLET
+========================================================== */
+
+@media (max-width: 900px) {
   .packages-list__actions {
-    width: 100%;
+    justify-content:
+      flex-start;
   }
 
-
-  .packages-list__action-button {
-    width: 100%;
-    min-width: 0;
-    min-height: 2.85rem;
-  }
-
-
+  .packages-list__action-button,
   .packages-list__no-action {
-    width: 100%;
-    min-width: 0;
-    min-height: 2.5rem;
+    min-width:
+      8rem;
   }
 }
 
 
-/*==========================================================
-  MÓVIL PEQUEÑO
-==========================================================*/
+/* ==========================================================
+   80. RESPONSIVE — CELULAR
+========================================================== */
 
-@media (max-width: 30rem) {
-
-  .packages-list {
-    padding: 0.82rem;
-
-    border-radius: 0.95rem;
-  }
-
-
-  .packages-list__title {
-    font-size: 1.35rem;
-  }
-
-
-  .packages-list__description {
-    font-size: 0.78rem;
-  }
-
-
-  .packages-list__summary {
-    gap: 0.38rem;
+@media (max-width: 520px) {
+  .packages-list__status {
+    min-width:
+      6.75rem;
 
     padding:
-      0.65rem
+      0.4rem
+      0.75rem;
+
+    font-size:
       0.7rem;
   }
 
-
-  .packages-list__summary-label {
-    font-size: 0.64rem;
+  .packages-list__person-value {
+    max-width:
+      10rem;
   }
 
-
-  .packages-list__summary-text {
-    font-size: 0.72rem;
-  }
-
-
-  .packages-list__table-row--data {
-    padding:
-      0.32rem
-      0.82rem
-      0.8rem;
-  }
-
-
-  .packages-list__table-cell {
-    grid-template-columns:
-      minmax(5.8rem, 0.68fr)
-      minmax(0, 1fr);
-
-    gap: 0.55rem;
-  }
-
-
-  .packages-list__table-cell::before {
-    font-size: 0.6rem;
-  }
-
-
-  .packages-list__recipient {
-    align-items: flex-start;
-  }
-
-
-  .packages-list__recipient-avatar {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-
-
-  .packages-list__status {
-    min-width: 6.1rem;
-
-    padding:
-      0.36rem
-      0.58rem;
-  }
-
-
-  .packages-list__date {
-    gap: 0.35rem;
-
-    font-size: 0.68rem;
-  }
-
-
-  .packages-list__date-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-}
-
-
-/*==========================================================
-  PANTALLAS BAJAS
-==========================================================*/
-
-@media (max-height: 42rem) and (min-width: 48.01rem) {
-
-  .packages-list {
-    gap: 1rem;
-
-    padding: 1.05rem;
-  }
-
-
-  .packages-list__header {
-    padding-bottom: 0.9rem;
-  }
-
-
-  .packages-list__state {
-    min-height: 11rem;
-
-    padding:
-      1.5rem
-      1.25rem;
-  }
-
-
-  .packages-list__table-heading,
-  .packages-list__table-cell {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-  }
-}
-
-
-/*==========================================================
-  DISPOSITIVOS SIN HOVER
-==========================================================*/
-
-@media (hover: none) {
-
-  .packages-list__refresh-button:hover:not(:disabled),
-  .packages-list__action-button--primary:hover:not(:disabled) {
-    transform: none;
-  }
-
-
-  .packages-list__table-row--data:hover {
-    background:
-      inherit;
-
-    box-shadow:
-      none;
-
-    transform:
-      none;
-  }
-
-
-  .packages-list__table-row--data:hover
-  .packages-list__recipient-avatar,
-  .packages-list__table-row--data:hover
-  .packages-list__location-badge,
-  .packages-list__table-row--data:hover
-  .packages-list__date-icon,
-  .packages-list__table-row--data:hover
-  .packages-list__status {
-    transform: none;
-  }
-}
-
-
-/*==========================================================
-  DISPOSITIVOS TÁCTILES
-==========================================================*/
-
-@media (pointer: coarse) {
-
-  .packages-list__refresh-button,
-  .packages-list__action-button {
-    min-height: 2.85rem;
-  }
-
-
-  .packages-list__action-button {
-    padding-right: 1rem;
-    padding-left: 1rem;
-  }
-}
-
-
-/*==========================================================
-  REDUCCIÓN DE MOVIMIENTO
-==========================================================*/
-
-@media (prefers-reduced-motion: reduce) {
-
-  .packages-list *,
-  .packages-list *::before,
-  .packages-list *::after {
-    scroll-behavior: auto !important;
-
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-
-    transition-duration: 0.01ms !important;
-  }
-
-
-  .packages-list__refresh-button:disabled
-  .packages-list__refresh-icon,
-  .packages-list__loader,
-  .packages-list__status--pending
-  .packages-list__status-indicator {
-    animation: none;
-  }
-}
-
-
-/*==========================================================
-  ALTO CONTRASTE DEL SISTEMA
-==========================================================*/
-
-@media (forced-colors: active) {
-
-  .packages-list,
-  .packages-list__alert,
-  .packages-list__state,
-  .packages-list__summary,
-  .packages-list__table-wrapper,
-  .packages-list__table-row--data,
-  .packages-list__status,
-  .packages-list__location-badge,
-  .packages-list__no-action {
-    border:
-      1px solid
-      CanvasText;
-
-    box-shadow: none;
-  }
-
-
-  .packages-list::before,
-  .packages-list::after,
-  .packages-list__alert::before,
-  .packages-list__alert::after,
-  .packages-list__state::before,
-  .packages-list__state::after,
-  .packages-list__table-wrapper::before,
-  .packages-list__table-wrapper::after,
-  .packages-list__table-row--data::before {
-    display: none;
-  }
-
-
-  .packages-list__refresh-button,
-  .packages-list__action-button {
-    border:
-      1px solid
-      ButtonText;
-  }
-
-
-  .packages-list__refresh-button:focus-visible,
-  .packages-list__action-button:focus-visible {
-    outline:
-      2px solid
-      Highlight;
-  }
-
-
-  .packages-list__status-indicator,
-  .packages-list__recipient-avatar,
-  .packages-list__date-icon,
-  .packages-list__action-icon {
-    forced-color-adjust: none;
-  }
-}
-
-
-/*==========================================================
-  IMPRESIÓN
-==========================================================*/
-
-@media print {
-
-  :host {
-    display: block;
-  }
-
-
-  .packages-list {
-    display: block;
-
-    padding: 0;
-
-    overflow: visible;
-
-    color: #000000;
-
-    background: #ffffff;
-
-    border: 0;
-
-    border-radius: 0;
-
-    box-shadow: none;
-  }
-
-
-  .packages-list::before,
-  .packages-list::after {
-    display: none;
-  }
-
-
-  .packages-list__header {
-    display: block;
-
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-
-    border-bottom:
-      1px solid
-      #000000;
-  }
-
-
-  .packages-list__eyebrow,
-  .packages-list__description {
-    color: #333333;
-  }
-
-
-  .packages-list__header-actions,
-  .packages-list__alert,
-  .packages-list__state,
   .packages-list__action-button,
   .packages-list__no-action {
-    display: none !important;
+    min-height:
+      2.5rem;
+
+    font-size:
+      0.72rem;
+  }
+}
+
+
+/* ==========================================================
+   81. TÁCTIL
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .packages-list__action-button--primary:hover {
+    border-color:
+      rgba(147, 197, 253, 0.38);
+
+    box-shadow:
+      0 0.65rem 1.3rem
+      rgba(37, 99, 235, 0.22),
+      inset 0 1px 0
+      rgba(255, 255, 255, 0.18);
+
+    transform:
+      none;
   }
 
-
-  .packages-list__summary {
-    margin-bottom: 0.75rem;
-
-    color: #000000;
-
-    background: #ffffff;
-
-    border:
-      1px solid
-      #000000;
-
-    box-shadow: none;
+  .packages-list__action-button--primary:hover::before {
+    left:
+      -80%;
   }
 
-
-  .packages-list__summary-value {
-    color: #000000;
-
-    background: #ffffff;
-
-    border:
-      1px solid
-      #000000;
-
-    box-shadow: none;
+  .packages-list__table-row--data:hover
+  .packages-list__status {
+    transform:
+      none;
   }
+}
 
 
-  .packages-list__table-wrapper {
-    overflow: visible;
+/* ==========================================================
+   82. ALTO CONTRASTE
+========================================================== */
 
-    border:
-      1px solid
-      #000000;
-
-    border-radius: 0;
-
-    box-shadow: none;
-  }
-
-
-  .packages-list__table-wrapper::before,
-  .packages-list__table-wrapper::after {
-    display: none;
-  }
-
-
-  .packages-list__table {
-    width: 100%;
-    min-width: 0;
-
-    color: #000000;
-
-    font-size: 8pt;
-
-    table-layout: fixed;
-  }
-
-
-  .packages-list__table-head {
-    display: table-header-group;
-
-    background: #eeeeee;
-  }
-
-
-  .packages-list__table-row--data {
-    break-inside: avoid;
-    page-break-inside: avoid;
-
-    background: #ffffff;
-
-    box-shadow: none;
-  }
-
-
-  .packages-list__table-heading,
-  .packages-list__table-cell {
-    padding:
-      0.35rem
-      0.3rem;
-
-    color: #000000;
-
-    border-right:
-      1px solid
-      #999999;
-
-    border-bottom:
-      1px solid
-      #999999;
-  }
-
-
-  .packages-list__table-heading:last-child,
-  .packages-list__table-cell:last-child {
-    border-right: 0;
-  }
-
-
-  .packages-list__table-heading::after,
-  .packages-list__table-cell::after {
-    display: none;
-  }
-
-
-  .packages-list__recipient-avatar,
-  .packages-list__date-icon,
-  .packages-list__action-icon {
-    display: none;
-  }
-
-
-  .packages-list__recipient-name,
-  .packages-list__recipient-location,
-  .packages-list__package-description,
-  .packages-list__date-value,
-  .packages-list__person-value {
-    color: #000000;
-
-    white-space: normal;
-  }
-
-
-  .packages-list__package-description {
-    display: block;
-
-    max-width: none;
-
-    overflow: visible;
-
-    -webkit-line-clamp: unset;
-    line-clamp: unset;
-  }
-
-
+@media (prefers-contrast: more) {
   .packages-list__status,
-  .packages-list__location-badge {
-    min-width: 0;
-
-    padding:
-      0.15rem
-      0.25rem;
-
-    color: #000000;
-
-    background: #ffffff;
-
-    border:
-      1px solid
-      #000000;
-
-    box-shadow: none;
+  .packages-list__person-value,
+  .packages-list__action-button,
+  .packages-list__no-action {
+    border-width:
+      0.125rem;
   }
 
+  .packages-list__status--pending {
+    border-color:
+      var(--warning-dark);
+  }
 
-  .packages-list__table-cell--actions,
-  .packages-list__table-heading--actions {
-    display: none;
+  .packages-list__status--delivered {
+    border-color:
+      var(--success-dark);
+  }
+
+  .packages-list__action-button--primary {
+    border-color:
+      var(--color-primary-dark);
   }
 }
 
 
-/*==========================================================
-  ANIMACIÓN DE TARJETAS MÓVILES
-==========================================================*/
+/* ==========================================================
+   83. MOVIMIENTO REDUCIDO
+========================================================== */
 
-@keyframes packagesMobileCardEnter {
-  from {
-    opacity: 0;
+@media (prefers-reduced-motion: reduce) {
+  .packages-list__status,
+  .packages-list__action-button,
+  .packages-list__action-button::before {
+    transition:
+      none;
 
-    transform:
-      translateY(0.55rem)
-      scale(0.985);
+    animation:
+      none;
   }
 
-  to {
-    opacity: 1;
-
+  .packages-list__table-row--data:hover
+  .packages-list__status,
+  .packages-list__action-button--primary:hover,
+  .packages-list__action-button--primary:active {
     transform:
-      translateY(0)
-      scale(1);
+      none;
   }
 }
+
+

@@ -46,17 +46,50 @@ export class ScannerQrVisitante implements OnDestroy {
   }
 
   onCamerasFound(devices: MediaDeviceInfo[]): void {
-    this.camaras = devices ?? [];
+    const dispositivos = devices ?? [];
 
-    if (this.camaras.length === 0) {
+    if (dispositivos.length === 0) {
+      this.camaras = [];
+      this.camaraSeleccionada = undefined;
+      this.scannerEnabled = false;
+
       this.errorMessage =
         'No se encontró una cámara disponible en este dispositivo.';
+
       return;
     }
 
-    this.errorMessage = '';
+    this.camaras = dispositivos;
+
+    /*
+    * Si ya existe una cámara seleccionada y sigue disponible,
+    * no volvemos a cambiarla.
+    */
+    if (
+      this.camaraSeleccionada &&
+      this.camaras.some(
+        camara =>
+          camara.deviceId ===
+          this.camaraSeleccionada?.deviceId
+      )
+    ) {
+      return;
+    }
+
+    const camaraFisica =
+      this.buscarCamaraFisica(this.camaras);
+
     this.camaraSeleccionada =
-      this.buscarCamaraTrasera(this.camaras) ?? this.camaras[0];
+      camaraFisica ?? this.camaras[0];
+
+    this.errorMessage = '';
+    this.qrLeido = false;
+    this.scannerEnabled = true;
+
+    console.log(
+      'Cámara seleccionada:',
+      this.camaraSeleccionada?.label
+    );
   }
 
   onPermissionResponse(hasPermission: boolean): void {
@@ -102,27 +135,55 @@ export class ScannerQrVisitante implements OnDestroy {
   }
 
   cambiarCamara(deviceId: string): void {
-    const camara = this.camaras.find(
-      dispositivo => dispositivo.deviceId === deviceId
+    const nuevaCamara = this.camaras.find(
+      camara => camara.deviceId === deviceId
     );
 
-    if (!camara) {
+    if (!nuevaCamara) {
+      this.errorMessage =
+        'No fue posible seleccionar la cámara indicada.';
+
       return;
     }
 
-    this.camaraSeleccionada = camara;
-    this.reintentar();
+    this.errorMessage = '';
+    this.qrLeido = false;
+
+    /*
+    * Detenemos el stream anterior antes de cambiar.
+    */
+    this.scannerEnabled = false;
+    this.camaraSeleccionada = undefined;
+
+    setTimeout(() => {
+      this.camaraSeleccionada = nuevaCamara;
+      this.scannerEnabled = true;
+    }, 200);
   }
 
   reintentar(): void {
     this.errorMessage = '';
     this.qrLeido = false;
 
+    const camaraActual =
+      this.camaraSeleccionada ??
+      this.buscarCamaraFisica(this.camaras) ??
+      this.camaras[0];
+
+    if (!camaraActual) {
+      this.errorMessage =
+        'No existe una cámara disponible para reintentar.';
+
+      return;
+    }
+
     this.scannerEnabled = false;
+    this.camaraSeleccionada = undefined;
 
     setTimeout(() => {
+      this.camaraSeleccionada = camaraActual;
       this.scannerEnabled = true;
-    });
+    }, 200);
   }
 
   cerrarScanner(): void {
@@ -164,6 +225,51 @@ export class ScannerQrVisitante implements OnDestroy {
     } catch {
       return this.esTokenValido(contenido) ? contenido : '';
     }
+  }
+
+  private buscarCamaraFisica(
+    devices: MediaDeviceInfo[]
+  ): MediaDeviceInfo | undefined {
+    /*
+    * Primero descartamos cámaras virtuales.
+    */
+    const camarasFisicas = devices.filter(device => {
+      const label = device.label
+        .trim()
+        .toLowerCase();
+
+      return (
+        !label.includes('virtual') &&
+        !label.includes('windows virtual camera') &&
+        !label.includes('obs') &&
+        !label.includes('droidcam') &&
+        !label.includes('manycam') &&
+        !label.includes('snap camera')
+      );
+    });
+
+    if (camarasFisicas.length === 0) {
+      return undefined;
+    }
+
+    /*
+    * Priorizamos cámaras integradas o físicas conocidas.
+    */
+    return (
+      camarasFisicas.find(device => {
+        const label = device.label.toLowerCase();
+
+        return (
+          label.includes('hp true vision') ||
+          label.includes('integrated') ||
+          label.includes('built-in') ||
+          label.includes('webcam') ||
+          label.includes('camera')
+        );
+      }) ??
+      this.buscarCamaraTrasera(camarasFisicas) ??
+      camarasFisicas[0]
+    );
   }
 
   private esTokenValido(token: string | null | undefined): boolean {

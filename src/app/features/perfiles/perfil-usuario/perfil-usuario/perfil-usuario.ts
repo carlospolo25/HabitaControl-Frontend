@@ -6,6 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { finalize } from 'rxjs';
 
@@ -47,6 +48,7 @@ export class PerfilUsuarioComponent implements OnInit {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
@@ -147,6 +149,11 @@ export class PerfilUsuarioComponent implements OnInit {
     }
 
     this.cerrar.emit();
+  }
+
+  irACambiarContrasena(): void {
+    this.router.navigate(['/solicitar-recuperacion',
+    ]);
   }
 
   /* =========================================================

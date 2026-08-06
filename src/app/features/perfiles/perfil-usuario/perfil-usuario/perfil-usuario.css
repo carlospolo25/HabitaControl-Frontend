@@ -3362,3 +3362,458 @@
     outline: 2px solid Highlight;
   }
 }
+
+/* ==========================================================
+   SEGURIDAD DE LA CUENTA
+========================================================== */
+
+.profile-security-card {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+
+  width: 100%;
+  min-width: 0;
+
+  padding: 1.75rem;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37, 99, 235, 0.1),
+      transparent 18rem
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(248, 250, 252, 0.97)
+    );
+
+  border:
+    1px solid
+    rgba(203, 213, 225, 0.88);
+
+  border-radius: 1.25rem;
+
+  box-shadow:
+    0 1rem 2.5rem rgba(15, 23, 42, 0.08),
+    0 0.25rem 0.75rem rgba(15, 23, 42, 0.04);
+
+  overflow: hidden;
+  isolation: isolate;
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+
+/* Línea lateral de seguridad */
+
+.profile-security-card::before {
+  position: absolute;
+  top: 1rem;
+  bottom: 1rem;
+  left: 0;
+
+  width: 0.28rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      #2563eb,
+      #0ea5e9,
+      #7c3aed
+    );
+
+  border-radius:
+    0
+    999px
+    999px
+    0;
+}
+
+
+/* Resplandor decorativo */
+
+.profile-security-card::after {
+  position: absolute;
+  top: -7rem;
+  right: -6rem;
+  z-index: -1;
+
+  width: 18rem;
+  height: 18rem;
+
+  content: "";
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.12),
+      transparent 70%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+.profile-security-card:hover {
+  border-color:
+    rgba(147, 197, 253, 0.92);
+
+  box-shadow:
+    0 1.35rem 3rem rgba(37, 99, 235, 0.11),
+    0 0.35rem 0.9rem rgba(15, 23, 42, 0.04);
+
+  transform: translateY(-0.125rem);
+}
+
+
+/* ==========================================================
+   CONTENIDO
+========================================================== */
+
+.profile-security-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+
+  max-width: 44rem;
+  min-width: 0;
+}
+
+
+/* Badge */
+
+.profile-security-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  min-height: 1.9rem;
+
+  padding:
+    0.35rem
+    0.75rem;
+
+  color: #1e40af;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(219, 234, 254, 0.92),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border:
+    1px solid
+    rgba(147, 197, 253, 0.72);
+
+  border-radius: 999px;
+
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+.profile-security-card__badge::before {
+  width: 0.48rem;
+  height: 0.48rem;
+
+  content: "";
+
+  background: #2563eb;
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 0.2rem rgba(37, 99, 235, 0.1);
+}
+
+
+/* Título */
+
+.profile-security-card__title {
+  margin: 0;
+
+  color: #111827;
+
+  font-size:
+    clamp(
+      1.2rem,
+      2vw,
+      1.5rem
+    );
+
+  font-weight: 850;
+  line-height: 1.25;
+
+  letter-spacing: -0.025em;
+}
+
+
+/* Descripción */
+
+.profile-security-card__description {
+  max-width: 42rem;
+
+  margin: 0;
+
+  color: #475569;
+
+  font-size: 0.875rem;
+  font-weight: 450;
+  line-height: 1.7;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================
+   ACCIONES
+========================================================== */
+
+.profile-security-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex: 0 0 auto;
+}
+
+
+/* Refinamiento del botón dentro de seguridad */
+
+.profile-security-card__actions
+.profile-button--primary {
+  position: relative;
+
+  min-width: 12.5rem;
+  min-height: 3.1rem;
+
+  padding:
+    0.75rem
+    1.35rem;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 0.8rem 1.7rem rgba(37, 99, 235, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
+  white-space: nowrap;
+}
+
+
+/* Brillo */
+
+.profile-security-card__actions
+.profile-button--primary::before {
+  position: absolute;
+  top: -70%;
+  bottom: -70%;
+  left: -75%;
+
+  width: 42%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.58),
+      transparent
+    );
+
+  transform: rotate(18deg);
+
+  transition:
+    left 520ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  pointer-events: none;
+}
+
+
+.profile-security-card__actions
+.profile-button--primary:hover::before {
+  left: 138%;
+}
+
+
+/* Icono */
+
+.profile-security-card__actions
+.profile-button__icon {
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 1.55rem;
+  height: 1.55rem;
+
+  color: #1e40af;
+
+  background:
+    rgba(255, 255, 255, 0.9);
+
+  border-radius: 50%;
+
+  font-size: 0.82rem;
+  line-height: 1;
+}
+
+
+/* ==========================================================
+   RESPONSIVE — TABLET
+========================================================== */
+
+@media (max-width: 900px) {
+  .profile-security-card {
+    align-items: stretch;
+
+    gap: 1.5rem;
+
+    padding: 1.5rem;
+  }
+
+  .profile-security-card__content {
+    max-width: none;
+  }
+
+  .profile-security-card__actions {
+    justify-content: flex-start;
+  }
+}
+
+
+/* ==========================================================
+   RESPONSIVE — MÓVIL
+========================================================== */
+
+@media (max-width: 640px) {
+  .profile-security-card {
+    flex-direction: column;
+
+    gap: 1.25rem;
+
+    padding:
+      1.35rem
+      1.15rem
+      1.25rem
+      1.35rem;
+
+    border-radius: 1rem;
+  }
+
+  .profile-security-card::before {
+    top: 0.85rem;
+    bottom: 0.85rem;
+  }
+
+  .profile-security-card__content {
+    gap: 0.55rem;
+  }
+
+  .profile-security-card__badge {
+    min-height: 1.8rem;
+
+    font-size: 0.66rem;
+  }
+
+  .profile-security-card__title {
+    font-size: 1.15rem;
+  }
+
+  .profile-security-card__description {
+    font-size: 0.82rem;
+    line-height: 1.62;
+  }
+
+  .profile-security-card__actions {
+    width: 100%;
+  }
+
+  .profile-security-card__actions
+  .profile-button--primary {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+
+/* ==========================================================
+   TÁCTIL
+========================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .profile-security-card:hover {
+    border-color:
+      rgba(203, 213, 225, 0.88);
+
+    box-shadow:
+      0 1rem 2.5rem rgba(15, 23, 42, 0.08),
+      0 0.25rem 0.75rem rgba(15, 23, 42, 0.04);
+
+    transform: none;
+  }
+
+  .profile-security-card__actions
+  .profile-button--primary:hover::before {
+    left: -75%;
+  }
+}
+
+
+/* ==========================================================
+   ALTO CONTRASTE
+========================================================== */
+
+@media (prefers-contrast: more) {
+  .profile-security-card {
+    border-width: 0.125rem;
+    border-color: #475569;
+  }
+
+  .profile-security-card__badge {
+    border-width: 0.125rem;
+    border-color: #1e40af;
+  }
+}
+
+
+/* ==========================================================
+   MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-security-card,
+  .profile-security-card__actions
+  .profile-button--primary::before {
+    transition: none;
+  }
+
+  .profile-security-card:hover {
+    transform: none;
+  }
+
+  .profile-security-card__actions
+  .profile-button--primary::before {
+    display: none;
+  }
+}

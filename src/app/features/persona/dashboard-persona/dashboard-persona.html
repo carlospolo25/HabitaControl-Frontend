@@ -18,6 +18,16 @@
         Inicio
       </button>
 
+      @if (puedeVerPersonas) {
+        <button
+          type="button"
+          class="dashboard-nav__button"
+          [class.active]="vistaActiva === 'personas'"
+          (click)="abrirPersonas()">
+          Personas
+        </button>
+      }
+
       @if (puedeRegistrarVisitantes) {
         <button
           type="button"
@@ -258,6 +268,10 @@
       ) {
         <app-mis-reservas>
         </app-mis-reservas>
+      }
+
+      @if (vistaActiva === 'personas') {
+        <app-persons></app-persons>
       }
 
     </section>

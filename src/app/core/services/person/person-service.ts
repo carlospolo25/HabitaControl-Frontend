@@ -142,6 +142,12 @@ export class PersonService {
     );
   }
 
+  getSecurityVisiblePeople(): Observable<PersonResponse[]> {
+    return this.http.get<PersonResponse[]>(
+      `${this.apiUrl}/security-visible`
+    );
+  }
+
   updateMyAccount(
     request: UpdatePersonRequest
   ): Observable<UpdateMyAccountResponse> {

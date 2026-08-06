@@ -1,18 +1,269 @@
-<div class="home-container">
+<section class="home-page">
 
-  <div class="hero">
-    <h1>Control Residencial</h1>
-    <p>Sistema de gestión para unidades residenciales</p>
+  <main class="home-hero">
 
-    <div class="actions">
-      <button class="btn-primary" (click)="goToLogin()">
-        Iniciar sesión
-      </button>
+    <!-- ======================================================
+         PRESENTACIÓN DE HABITACONTROL
+         ====================================================== -->
 
-      <button class="btn-secondary" (click)="goToRegister()">
-        Registrarse
-      </button>
-    </div>
-  </div>
+    <section
+      class="home-hero__content"
+      aria-labelledby="home-title">
 
-</div>
+      <div class="home-brand">
+
+        <img
+          class="home-brand__logo"
+          src="assets/brand/logo-habitacontrol.png"
+          alt="Logo de HabitaControl">
+
+        <span class="home-brand__badge">
+          Plataforma SaaS para conjuntos residenciales
+        </span>
+
+      </div>
+
+      <header class="home-hero__header">
+
+        <p class="home-hero__eyebrow">
+          Gestión residencial moderna
+        </p>
+
+        <h1
+          id="home-title"
+          class="home-hero__title">
+
+          <span class="home-hero__title-prefix">
+            Bienvenido a
+          </span>
+
+          <strong class="home-hero__title-brand">
+            HabitaControl
+          </strong>
+
+        </h1>
+
+        <p class="home-hero__description">
+          Administra residentes, visitantes, paquetes, reservas, vehículos,
+          mascotas, novedades y finanzas desde una plataforma moderna, segura
+          y diseñada para simplificar la operación diaria de tu conjunto
+          residencial.
+        </p>
+
+      </header>
+
+      <div
+        class="home-hero__actions"
+        aria-label="Opciones de acceso">
+
+        <button
+          type="button"
+          class="home-button home-button--primary"
+          (click)="goToLogin()">
+
+          <span class="home-button__text">
+            Iniciar sesión
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="home-button home-button--secondary"
+          (click)="goToRegister()">
+
+          <span class="home-button__text">
+            Crear cuenta
+          </span>
+
+        </button>
+
+      </div>
+
+      <div
+        class="home-hero__trust"
+        aria-label="Características principales">
+
+        <span class="home-hero__trust-item">
+          Gestión centralizada
+        </span>
+
+        <span class="home-hero__trust-item">
+          Seguridad por roles
+        </span>
+
+        <span class="home-hero__trust-item">
+          Información protegida
+        </span>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================
+         CARRUSEL DE FUNCIONALIDADES
+         ====================================================== -->
+
+    <section
+      class="home-showcase"
+      aria-labelledby="features-title"
+      tabindex="0"
+      (mouseenter)="pauseCarousel()"
+      (mouseleave)="resumeCarousel()"
+      (focusin)="handleCarouselFocusIn()"
+      (focusout)="handleCarouselFocusOut($event)"
+      (keydown)="handleCarouselKeydown($event)"
+      (touchstart)="handleTouchStart($event)"
+      (touchmove)="handleTouchMove($event)"
+      (touchend)="handleTouchEnd($event)">
+
+      <header class="home-showcase__header">
+
+        <div class="home-showcase__heading">
+
+          <span class="home-showcase__eyebrow">
+            Todo en un solo lugar
+          </span>
+
+          <h2
+            id="features-title"
+            class="home-showcase__title">
+            Conoce nuestras funcionalidades
+          </h2>
+
+        </div>
+
+        <span class="home-showcase__counter">
+          {{ currentFeatureIndex + 1 }}
+          de
+          {{ features.length }}
+        </span>
+
+      </header>
+
+      <div class="feature-carousel">
+
+        <div
+          class="feature-carousel__viewport"
+          aria-live="polite">
+
+          <button
+            type="button"
+            class="
+              feature-carousel__control
+              feature-carousel__control--previous
+            "
+            aria-label="Ver funcionalidad anterior"
+            (click)="previousFeature()">
+
+            <span aria-hidden="true">
+              &#10094;
+            </span>
+
+          </button>
+
+          <article
+            class="feature-card"
+            [class.feature-card--changing]="isChanging">
+
+            <figure class="feature-card__media">
+
+              <img
+                class="feature-card__image"
+                [src]="features[currentFeatureIndex].image"
+                [alt]="features[currentFeatureIndex].alt">
+
+              <div
+                class="feature-card__overlay"
+                aria-hidden="true">
+              </div>
+
+              <span class="feature-card__number">
+                {{ currentFeatureIndex + 1 }}
+                /
+                {{ features.length }}
+              </span>
+
+            </figure>
+
+            <div class="feature-card__body">
+
+              <span class="feature-card__label">
+                Módulo de HabitaControl
+              </span>
+
+              <h3 class="feature-card__title">
+                {{ features[currentFeatureIndex].title }}
+              </h3>
+
+              <p class="feature-card__description">
+                {{ features[currentFeatureIndex].description }}
+              </p>
+
+            </div>
+
+          </article>
+
+          <button
+            type="button"
+            class="
+              feature-carousel__control
+              feature-carousel__control--next
+            "
+            aria-label="Ver siguiente funcionalidad"
+            (click)="nextFeature()">
+
+            <span aria-hidden="true">
+              &#10095;
+            </span>
+
+          </button>
+
+        </div>
+
+        <nav
+          class="feature-carousel__navigation"
+          aria-label="Navegación de funcionalidades">
+
+          <div class="feature-carousel__indicators">
+
+            @for (
+              feature of features;
+              track feature.title;
+              let index = $index
+            ) {
+
+              <button
+                type="button"
+                class="feature-carousel__indicator"
+                [class.feature-carousel__indicator--active]="
+                  index === currentFeatureIndex
+                "
+                [attr.aria-label]="'Ver ' + feature.title"
+                [attr.aria-current]="
+                  index === currentFeatureIndex ? 'true' : null
+                "
+                (click)="selectFeature(index)">
+
+                <span class="feature-carousel__indicator-dot">
+                </span>
+
+              </button>
+
+            }
+
+          </div>
+
+          <p class="feature-carousel__current-name">
+            {{ features[currentFeatureIndex].title }}
+          </p>
+
+        </nav>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</section>

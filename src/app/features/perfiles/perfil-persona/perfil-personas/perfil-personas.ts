@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 
 import { finalize } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { API_CONFIG } from '../../../../core/config/api.config';
 
@@ -42,6 +43,7 @@ export class PerfilPersonasComponent implements OnInit {
 
   constructor(
     private readonly personService: PersonService,
+    private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
@@ -116,6 +118,12 @@ export class PerfilPersonasComponent implements OnInit {
 
   cerrarVista(): void {
     this.cerrar.emit();
+  }
+
+  irACambiarContrasena(): void {
+    this.router.navigate([
+      '/solicitar-recuperacion',
+    ]);
   }
 
   obtenerFotoPerfil(): string | null {

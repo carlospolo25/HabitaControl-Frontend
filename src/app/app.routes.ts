@@ -31,7 +31,6 @@ export const routes: Routes = [
   
   {
     path: 'solicitar-recuperacion',
-    canActivate: [noAuthGuard],
     loadComponent: () =>
       import('./features/recupera-contrasena/solicitar-recuperacion-contrasena/solicitar-recuperacion-contrasena')
         .then(m => m.SolicitarRecuperacionContrasena),
@@ -39,7 +38,6 @@ export const routes: Routes = [
 
   {
     path: 'restablecer-contrasena',
-    canActivate: [noAuthGuard],
     loadComponent: () =>
       import('./features/recupera-contrasena/restablecer-contrasena/restablecer-contrasena')
         .then(m => m.RestablecerContrasena),

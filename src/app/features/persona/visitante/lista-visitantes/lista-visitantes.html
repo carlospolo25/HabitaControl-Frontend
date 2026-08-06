@@ -306,13 +306,22 @@
                 </td>
 
                 <td>
-                  <span class="visitors-table__authorized-by">
-                    {{ visitante.autorizadoPorNombre || 'No disponible' }}
-                  </span>
+
+                  <div class="visitors-table__authorized">
+
+                    <span class="visitors-table__authorized-name">
+                      {{ visitante.autorizadoPorNombre || 'No disponible' }}
+                    </span>
+
+                  </div>
+
                 </td>
 
                 <td>
+
+                  <span class="visitors-table__date-dot"></span>
                   <time
+                    
                     class="visitors-table__date"
                     [attr.datetime]="visitante.fechaIngreso">
                     {{ visitante.fechaIngreso | date:'dd/MM/yyyy, h:mm a' }}
@@ -321,6 +330,7 @@
 
                 <td>
                   @if (visitante.fechaSalida) {
+                     <span class="visitors-table__date-dot"></span>
                     <time
                       class="visitors-table__date"
                       [attr.datetime]="visitante.fechaSalida">
@@ -407,6 +417,7 @@
 
                     <button
                       type="button"
+                      class="visitors-filters__clear-button"
                       (click)="limpiarFiltros()">
                       Limpiar filtros
                     </button>

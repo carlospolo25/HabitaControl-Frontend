@@ -1,10 +1,11 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectorRef,
   Component,
   OnInit,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 
 import {
@@ -17,11 +18,17 @@ import {
   FormEntregaPaqueteComponent,
 } from '../form-entrega-paquete/form-entrega-paquete';
 
+type PackageSortOption =
+  | 'recent'
+  | 'oldest'
+  | 'status';
+
 @Component({
   selector: 'app-lista-paquetes',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     FormEntregaPaqueteComponent,
   ],
   templateUrl: './lista-paquetes.html',
@@ -31,6 +38,13 @@ export class ListaPaquetesComponent implements OnInit {
   readonly EstadoPaquete = EstadoPaquete;
 
   paquetes: PaqueteResponse[] = [];
+  paquetesFiltrados: PaqueteResponse[] = [];
+
+  searchTerm = '';
+  selectedStatus = 'all';
+  selectedTower = '';
+  selectedApartment = '';
+  selectedSort: PackageSortOption = 'recent';
 
   isLoading = false;
   errorMessage = '';
@@ -48,6 +62,65 @@ export class ListaPaquetesComponent implements OnInit {
   ngOnInit(): void {
     this.cargarPermisos();
     this.cargar();
+  }
+
+  get torresDisponibles(): string[] {
+    return [
+      ...new Set(
+        this.paquetes
+          .map((paquete) => this.normalizarValor(paquete.torre))
+          .filter((torre): torre is string => Boolean(torre))
+      ),
+    ].sort((a, b) =>
+      a.localeCompare(b, 'es', {
+        numeric: true,
+        sensitivity: 'base',
+      })
+    );
+  }
+
+  get apartamentosDisponibles(): string[] {
+    return [
+      ...new Set(
+        this.paquetes
+          .filter((paquete) => {
+            if (!this.selectedTower) {
+              return true;
+            }
+
+            return (
+              this.normalizarValor(paquete.torre) ===
+              this.selectedTower
+            );
+          })
+          .map((paquete) =>
+            this.normalizarValor(paquete.apartamento)
+          )
+          .filter(
+            (apartamento): apartamento is string =>
+              Boolean(apartamento)
+          )
+      ),
+    ].sort((a, b) =>
+      a.localeCompare(b, 'es', {
+        numeric: true,
+        sensitivity: 'base',
+      })
+    );
+  }
+
+  get hayFiltrosActivos(): boolean {
+    return Boolean(
+      this.searchTerm.trim() ||
+      this.selectedStatus !== 'all' ||
+      this.selectedTower ||
+      this.selectedApartment ||
+      this.selectedSort !== 'recent'
+    );
+  }
+
+  get puedeEntregar(): boolean {
+    return this.isSecurity;
   }
 
   cargar(): void {
@@ -68,10 +141,15 @@ export class ListaPaquetesComponent implements OnInit {
       )
       .subscribe({
         next: (response: PaqueteResponse[]) => {
-          this.paquetes = response ?? [];
+          this.paquetes = Array.isArray(response)
+            ? response
+            : [];
+
+          this.aplicarFiltros();
         },
         error: (error: HttpErrorResponse) => {
           this.paquetes = [];
+          this.paquetesFiltrados = [];
 
           this.errorMessage = this.obtenerMensajeError(
             error,
@@ -79,6 +157,100 @@ export class ListaPaquetesComponent implements OnInit {
           );
         },
       });
+  }
+
+  aplicarFiltros(): void {
+    let resultado = [...this.paquetes];
+
+    const termino = this.normalizarBusqueda(
+      this.searchTerm
+    );
+
+    if (termino) {
+      resultado = resultado.filter((paquete) => {
+        const valores = [
+          paquete.nombreDestinatario,
+          paquete.descripcion,
+          paquete.torre,
+          paquete.apartamento,
+          paquete.entregadoA,
+          paquete.estado,
+        ];
+
+        return valores.some((valor) =>
+          this.normalizarBusqueda(valor).includes(termino)
+        );
+      });
+    }
+
+    if (this.selectedStatus !== 'all') {
+      resultado = resultado.filter(
+        (paquete) =>
+          String(paquete.estado) === this.selectedStatus
+      );
+    }
+
+    if (this.selectedTower) {
+      resultado = resultado.filter(
+        (paquete) =>
+          this.normalizarValor(paquete.torre) ===
+          this.selectedTower
+      );
+    }
+
+    if (this.selectedApartment) {
+      resultado = resultado.filter(
+        (paquete) =>
+          this.normalizarValor(paquete.apartamento) ===
+          this.selectedApartment
+      );
+    }
+
+    resultado.sort((a, b) => {
+      switch (this.selectedSort) {
+        case 'oldest':
+          return (
+            this.obtenerFecha(a.fechaRecepcion) -
+            this.obtenerFecha(b.fechaRecepcion)
+          );
+
+        case 'status':
+          return this.obtenerOrdenEstado(a.estado) -
+            this.obtenerOrdenEstado(b.estado);
+
+        case 'recent':
+        default:
+          return (
+            this.obtenerFecha(b.fechaRecepcion) -
+            this.obtenerFecha(a.fechaRecepcion)
+          );
+      }
+    });
+
+    this.paquetesFiltrados = resultado;
+  }
+
+  cambiarTorre(): void {
+    if (
+      this.selectedApartment &&
+      !this.apartamentosDisponibles.includes(
+        this.selectedApartment
+      )
+    ) {
+      this.selectedApartment = '';
+    }
+
+    this.aplicarFiltros();
+  }
+
+  limpiarFiltros(): void {
+    this.searchTerm = '';
+    this.selectedStatus = 'all';
+    this.selectedTower = '';
+    this.selectedApartment = '';
+    this.selectedSort = 'recent';
+
+    this.aplicarFiltros();
   }
 
   abrirEntrega(paqueteId: string): void {
@@ -111,104 +283,135 @@ export class ListaPaquetesComponent implements OnInit {
     return paquete.id;
   }
 
-  get puedeEntregar(): boolean {
-    return this.isSecurity;
+  private cargarPermisos(): void {
+    const token = localStorage.getItem(
+      'personaAccessToken'
+    );
+
+    this.isSecurity = false;
+
+    if (!token) {
+      return;
+    }
+
+    const claims = this.decodificarToken(token);
+
+    if (!claims) {
+      return;
+    }
+
+    const tipoClaim =
+      claims['Tipo'] ??
+      claims['tipo'] ??
+      claims['TipoPersona'] ??
+      claims['tipoPersona'] ??
+      claims['personType'] ??
+      claims['PersonType'];
+
+    if (typeof tipoClaim === 'string') {
+      const tipoNormalizado = tipoClaim
+        .trim()
+        .toLowerCase();
+
+      this.isSecurity =
+        tipoNormalizado === 'seguridad' ||
+        tipoNormalizado === '2';
+
+      return;
+    }
+
+    if (typeof tipoClaim === 'number') {
+      this.isSecurity = tipoClaim === 2;
+    }
   }
 
-private cargarPermisos(): void {
-  const token = localStorage.getItem('personaAccessToken');
+  private decodificarToken(
+    token: string
+  ): Record<string, unknown> | null {
+    try {
+      const partes = token.split('.');
 
-  this.isSecurity = false;
+      if (partes.length !== 3) {
+        return null;
+      }
 
-  console.log('TOKEN PERSONA EXISTE:', !!token);
+      const payload = partes[1]
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
 
-  if (!token) {
-    console.warn('No existe personaAccessToken en localStorage.');
-    return;
+      const payloadConPadding = payload.padEnd(
+        payload.length +
+          ((4 - (payload.length % 4)) % 4),
+        '='
+      );
+
+      return JSON.parse(
+        atob(payloadConPadding)
+      ) as Record<string, unknown>;
+    } catch {
+      return null;
+    }
   }
 
-  const claims = this.decodificarToken(token);
-
-  console.log('CLAIMS DECODIFICADOS:', claims);
-
-  if (!claims) {
-    console.warn('No fue posible decodificar el token.');
-    return;
-  }
-
-  console.log('CLAVES DISPONIBLES EN EL TOKEN:', Object.keys(claims));
-
-  const tipoClaim =
-    claims['Tipo'] ??
-    claims['tipo'] ??
-    claims['TipoPersona'] ??
-    claims['tipoPersona'] ??
-    claims['personType'] ??
-    claims['PersonType'];
-
-  console.log('TIPO CLAIM ENCONTRADO:', tipoClaim);
-  console.log('TIPO DE DATO DEL CLAIM:', typeof tipoClaim);
-
-  if (typeof tipoClaim === 'string') {
-    const tipoNormalizado = tipoClaim
+  private obtenerOrdenEstado(
+    estado: EstadoPaquete | string
+  ): number {
+    const estadoNormalizado = String(estado)
       .trim()
       .toLowerCase();
 
-    console.log('TIPO NORMALIZADO:', tipoNormalizado);
-
-    this.isSecurity =
-      tipoNormalizado === 'seguridad' ||
-      tipoNormalizado === '2';
-
-    console.log('ES SEGURIDAD:', this.isSecurity);
-    return;
-  }
-
-  if (typeof tipoClaim === 'number') {
-    this.isSecurity = tipoClaim === 2;
-
-    console.log('ES SEGURIDAD POR VALOR NUMÉRICO:', this.isSecurity);
-    return;
-  }
-
-  console.warn(
-    'No se encontró un claim reconocible para TipoPersona.',
-    claims
-  );
-}
-
-private decodificarToken(
-  token: string
-): Record<string, unknown> | null {
-  try {
-    const partes = token.split('.');
-
-    console.log('PARTES DEL TOKEN:', partes.length);
-
-    if (partes.length !== 3) {
-      console.error('El token no tiene tres partes.');
-      return null;
+    if (
+      estadoNormalizado ===
+      String(EstadoPaquete.Pendiente).toLowerCase()
+    ) {
+      return 0;
     }
 
-    const payload = partes[1]
-      .replace(/-/g, '+')
-      .replace(/_/g, '/');
+    if (
+      estadoNormalizado ===
+      String(EstadoPaquete.Entregado).toLowerCase()
+    ) {
+      return 2;
+    }
 
-    const payloadConPadding = payload.padEnd(
-      payload.length + ((4 - payload.length % 4) % 4),
-      '='
-    );
-
-    const claims = JSON.parse(
-      atob(payloadConPadding)
-    ) as Record<string, unknown>;
-
-    return claims;
-  } catch (error) {
-    console.error('ERROR DECODIFICANDO TOKEN:', error);
-    return null;
+    return 99;
   }
-}
+
+  private obtenerFecha(
+    fecha: string | Date | null | undefined
+  ): number {
+    if (!fecha) {
+      return 0;
+    }
+
+    const valor = new Date(fecha).getTime();
+
+    return Number.isNaN(valor)
+      ? 0
+      : valor;
+  }
+
+  private normalizarValor(
+    valor: unknown
+  ): string {
+    if (
+      valor === null ||
+      valor === undefined
+    ) {
+      return '';
+    }
+
+    return String(valor).trim();
+  }
+
+  private normalizarBusqueda(
+    valor: unknown
+  ): string {
+    return this.normalizarValor(valor)
+      .toLocaleLowerCase('es')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  }
 
   private obtenerMensajeError(
     error: HttpErrorResponse,
@@ -240,7 +443,9 @@ private decodificarToken(
     }
 
     if (error.error?.errors) {
-      const mensajes = Object.values(error.error.errors)
+      const mensajes = Object.values(
+        error.error.errors
+      )
         .flat()
         .filter(
           (mensaje): mensaje is string =>

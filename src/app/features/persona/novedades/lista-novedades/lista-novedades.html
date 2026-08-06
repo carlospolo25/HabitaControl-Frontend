@@ -16,6 +16,204 @@
     </button>
   </header>
 
+  <section
+    class="novedades-toolbar"
+    aria-labelledby="novedades-filters-title">
+
+    <header class="novedades-toolbar__header">
+
+      <div>
+        <span class="novedades-toolbar__eyebrow">
+          Búsqueda avanzada
+        </span>
+
+        <h3
+          id="novedades-filters-title"
+          class="novedades-toolbar__title">
+          Filtrar novedades
+        </h3>
+
+        <p class="novedades-toolbar__description">
+          Busca incidencias y limita los resultados por estado,
+          asignación u orden de actualización.
+        </p>
+      </div>
+
+      @if (
+        searchTerm ||
+        selectedStatus !== 'all' ||
+        selectedAssignment !== 'all' ||
+        selectedSort !== 'recent'
+      ) {
+        <button
+          type="button"
+          class="novedades-toolbar__clear-button"
+          (click)="clearFilters()">
+          Limpiar filtros
+        </button>
+      }
+
+    </header>
+
+    <div class="novedades-toolbar__grid">
+
+      <!-- BUSCADOR -->
+      <div class="novedades-toolbar__field novedades-toolbar__field--search">
+
+        <label
+          class="novedades-toolbar__label"
+          for="novedades-search">
+          Buscar
+        </label>
+
+        <div class="novedades-search">
+
+          <span
+            class="novedades-search__icon"
+            aria-hidden="true">
+            ⌕
+          </span>
+
+          <input
+            id="novedades-search"
+            type="search"
+            name="searchTerm"
+            class="novedades-search__input"
+            placeholder="Título, descripción, reportada por o responsable..."
+            autocomplete="off"
+            [(ngModel)]="searchTerm"
+            (input)="applyFilters()">
+
+        </div>
+
+      </div>
+
+      <!-- ESTADO -->
+      <div class="novedades-toolbar__field">
+
+        <label
+          class="novedades-toolbar__label"
+          for="novedades-status">
+          Estado
+        </label>
+
+        <select
+          id="novedades-status"
+          name="selectedStatus"
+          class="novedades-toolbar__select"
+          [(ngModel)]="selectedStatus"
+          (change)="applyFilters()">
+
+          <option value="all">
+            Todos los estados
+          </option>
+
+          <option value="Reportada">
+            Reportada
+          </option>
+
+          <option value="Asignada">
+            Asignada
+          </option>
+
+          <option value="EnCurso">
+            En curso
+          </option>
+
+          <option value="Finalizada">
+            Finalizada
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- ASIGNACIÓN -->
+      <div class="novedades-toolbar__field">
+
+        <label
+          class="novedades-toolbar__label"
+          for="novedades-assignment">
+          Asignación
+        </label>
+
+        <select
+          id="novedades-assignment"
+          name="selectedAssignment"
+          class="novedades-toolbar__select"
+          [(ngModel)]="selectedAssignment"
+          (change)="applyFilters()">
+
+          <option value="all">
+            Todas
+          </option>
+
+          <option value="assigned">
+            Con responsable
+          </option>
+
+          <option value="unassigned">
+            Sin asignar
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- ORDEN -->
+      <div class="novedades-toolbar__field">
+
+        <label
+          class="novedades-toolbar__label"
+          for="novedades-sort">
+          Ordenar por
+        </label>
+
+        <select
+          id="novedades-sort"
+          name="selectedSort"
+          class="novedades-toolbar__select"
+          [(ngModel)]="selectedSort"
+          (change)="applyFilters()">
+
+          <option value="recent">
+            Más recientes
+          </option>
+
+          <option value="oldest">
+            Más antiguas
+          </option>
+
+          <option value="events">
+            Mayor actividad
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <footer class="novedades-toolbar__summary">
+
+      <span>
+        Mostrando
+        <strong>{{ filteredNovedades.length }}</strong>
+        de
+        <strong>{{ novedades.length }}</strong>
+        novedades
+      </span>
+
+      @if (novedades.length > 0 && filteredNovedades.length === 0) {
+        <span class="novedades-toolbar__no-results">
+          No se encontraron coincidencias.
+        </span>
+      }
+
+    </footer>
+
+  </section>
+
   @if (errorMessage) {
     <div class="alert error">
       {{ errorMessage }}
@@ -23,120 +221,188 @@
   }
 
   @if (isLoading) {
-    <div class="loading-state">
-      Cargando novedades...
-    </div>
+
+  <div class="loading-state">
+    Cargando novedades...
+  </div>
+
   } @else if (novedades.length === 0) {
+
     <div class="empty-state">
       <span>📋</span>
-      <h3>No hay novedades registradas</h3>
-      <p>Cuando exista una novedad disponible aparecerá aquí.</p>
+
+      <h3>
+        No hay novedades registradas
+      </h3>
+
+      <p>
+        Cuando exista una novedad disponible aparecerá aquí.
+      </p>
     </div>
+
   } @else {
 
-    <section class="novedades-table-wrapper">
-      <table class="tabla-novedades">
+    @if (filteredNovedades.length === 0) {
 
-        <thead>
-          <tr>
-            <th>Novedad</th>
-            <th>Estado</th>
-            <th>Reportada por</th>
-            <th>Asignada a</th>
-            <th>Eventos</th>
-            <th>Última actualización</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
+      <section class="novedades-filter-empty">
 
-        <tbody>
-          @for (n of novedades; track n.id) {
+        <span
+          class="novedades-filter-empty__icon"
+          aria-hidden="true">
+          ⌕
+        </span>
+
+        <h3 class="novedades-filter-empty__title">
+          No hay novedades que coincidan
+        </h3>
+
+        <p class="novedades-filter-empty__description">
+          Modifica la búsqueda o selecciona otros filtros.
+        </p>
+
+        <button
+          type="button"
+          class="novedades-filter-empty__button"
+          (click)="clearFilters()">
+          Limpiar filtros
+        </button>
+
+      </section>
+
+    } @else {
+
+      <section class="novedades-table-wrapper">
+
+        <table class="tabla-novedades">
+
+          <thead>
             <tr>
-
-              <td data-label="Novedad">
-                <div class="novedad-main-cell">
-                  <strong>{{ n.titulo }}</strong>
-                  <p>{{ n.descripcion }}</p>
-                </div>
-              </td>
-
-              <td data-label="Estado">
-                <span
-                  class="estado"
-                  [class.reportada]="n.estado === 'Reportada'"
-                  [class.asignada]="n.estado === 'Asignada'"
-                  [class.enCurso]="n.estado === 'EnCurso'"
-                  [class.finalizada]="n.estado === 'Finalizada'">
-                  {{ n.estado }}
-                </span>
-              </td>
-
-              <td data-label="Reportada por">
-                {{ n.reportadaPor || '—' }}
-              </td>
-
-              <td data-label="Asignada a">
-                {{ n.asignadaA || 'Sin asignar' }}
-              </td>
-
-              <td data-label="Eventos">
-                {{ n.totalEventos ?? 0 }}
-              </td>
-
-              <td data-label="Última actualización">
-                {{ (n.ultimaActualizacion ?? n.fechaCreacion) | date:'short' }}
-              </td>
-
-              <td data-label="Acciones" class="acciones-cell">
-
-                @if (canViewHistory()) {
-                  <button
-                    type="button"
-                    class="btn-ver"
-                    [disabled]="isLoading"
-                    (click)="mostrarHistorial(n.id)">
-                    Ver
-                  </button>
-                }
-
-                @if (canAssignNews()) {
-                  <button
-                    type="button"
-                    class="btn-asignar"
-                    [disabled]="isLoading || n.estado === 'Finalizada'"
-                    (click)="abrirAsignacion(n.id)">
-                    {{ n.asignadaA ? 'Reasignar' : 'Asignar' }}
-                  </button>
-                }
-
-                @if (canStartTracking() && n.estado !== 'Finalizada') {
-                  <button
-                    type="button"
-                    class="btn-evento"
-                    [disabled]="isLoading"
-                    (click)="abrirSeguimiento(n.id)">
-                    Agregar evento
-                  </button>
-                }
-
-                @if (canFinishTracking() && n.estado !== 'Finalizada') {
-                  <button
-                    type="button"
-                    class="btn-finalizar"
-                    [disabled]="isLoading"
-                    (click)="abrirFinalizacion(n.id)">
-                    Cerrar
-                  </button>
-                }
-
-              </td>
-
+              <th>Novedad</th>
+              <th>Estado</th>
+              <th>Reportada por</th>
+              <th>Asignada a</th>
+              <th>Eventos</th>
+              <th>Última actualización</th>
+              <th>Acciones</th>
             </tr>
-          }
-        </tbody>
+          </thead>
 
-      </table>
-    </section>
+          <tbody>
+
+            @for (n of filteredNovedades; track n.id) {
+
+              <tr>
+
+                <td data-label="Novedad">
+                  <div class="novedad-main-cell">
+
+                    <strong>
+                      {{ n.titulo }}
+                    </strong>
+
+                    <p>
+                      {{ n.descripcion }}
+                    </p>
+
+                  </div>
+                </td>
+
+                <td data-label="Estado">
+
+                  <span
+                    class="estado"
+                    [class.reportada]="n.estado === 'Reportada'"
+                    [class.asignada]="n.estado === 'Asignada'"
+                    [class.enCurso]="n.estado === 'EnCurso'"
+                    [class.finalizada]="n.estado === 'Finalizada'">
+
+                    {{ n.estado }}
+
+                  </span>
+
+                </td>
+
+                <td data-label="Reportada por">
+                  {{ n.reportadaPor || '—' }}
+                </td>
+
+                <td data-label="Asignada a">
+                  {{ n.asignadaA || 'Sin asignar' }}
+                </td>
+
+                <td data-label="Eventos">
+                  {{ n.totalEventos ?? 0 }}
+                </td>
+
+                <td data-label="Última actualización">
+                  {{
+                    (n.ultimaActualizacion ?? n.fechaCreacion)
+                      | date:'short'
+                  }}
+                </td>
+
+                <td
+                  data-label="Acciones"
+                  class="acciones-cell">
+
+                  <div class="acciones-group">
+
+                    @if (canViewHistory()) {
+                      <button
+                        type="button"
+                        class="btn-ver"
+                        [disabled]="isLoading"
+                        (click)="mostrarHistorial(n.id)">
+                        Ver
+                      </button>
+                    }
+
+                    @if (canAssignNews()) {
+                      <button
+                        type="button"
+                        class="btn-asignar"
+                        [disabled]="isLoading || n.estado === 'Finalizada'"
+                        (click)="abrirAsignacion(n.id)">
+                        {{ n.asignadaA ? 'Reasignar' : 'Asignar' }}
+                      </button>
+                    }
+
+                    @if (canStartTracking() && n.estado !== 'Finalizada') {
+                      <button
+                        type="button"
+                        class="btn-evento"
+                        [disabled]="isLoading"
+                        (click)="abrirSeguimiento(n.id)">
+                        Agregar evento
+                      </button>
+                    }
+
+                    @if (canFinishTracking() && n.estado !== 'Finalizada') {
+                      <button
+                        type="button"
+                        class="btn-finalizar"
+                        [disabled]="isLoading"
+                        (click)="abrirFinalizacion(n.id)">
+                        Cerrar
+                      </button>
+                    }
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </section>
+
+    }
+
   }
 
 </section>

@@ -8,10 +8,9 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { finalize } from 'rxjs';
-
+import { finalize, firstValueFrom } from 'rxjs';
+import { API_CONFIG } from '../../../../core/config/api.config';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 
 import {
   EventoNovedad,
@@ -36,6 +35,7 @@ export class NovedadEventosDetalle implements OnChanges {
   errorMessage = '';
   expediente?: ExpedienteNovedadResponse;
   isGeneratingPdf = false;
+  private readonly imagenesConError = new Set<string>();
 
   constructor(
     private readonly novedadService: NovedadService,
@@ -102,48 +102,120 @@ export class NovedadEventosDetalle implements OnChanges {
       });
   }
 
-  exportarPdf(): void {
-    if (this.isGeneratingPdf || !this.novedadId) {
+  async exportarPdf(): Promise<void> {
+    if (
+      this.isGeneratingPdf ||
+      !this.novedadId
+    ) {
       return;
     }
 
     this.isGeneratingPdf = true;
     this.errorMessage = '';
+    this.cdr.detectChanges();
 
-    this.novedadService
-      .obtenerExpediente(this.novedadId)
-      .pipe(
-        finalize(() => {
-          this.isGeneratingPdf = false;
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe({
-        next: (response) => {
-          this.expediente = response;
-          this.generarPdf(response);
-        },
-        error: (err) => {
-          this.errorMessage =
-            err?.error?.message ??
-            err?.error?.mensaje ??
-            err?.message ??
-            'No fue posible obtener el expediente.';
-        },
-      });
+    try {
+      const expediente = await firstValueFrom(
+        this.novedadService.obtenerExpediente(
+          this.novedadId
+        )
+      );
+
+      this.expediente = expediente;
+
+      await this.generarPdf(expediente);
+    } catch (error: any) {
+      console.error(
+        'Error generando el expediente PDF:',
+        error
+      );
+
+      this.errorMessage =
+        error?.error?.message ??
+        error?.error?.mensaje ??
+        error?.message ??
+        'No fue posible generar el expediente.';
+    } finally {
+      this.isGeneratingPdf = false;
+      this.cdr.detectChanges();
+    }
   }
 
-  private generarPdf(expediente: ExpedienteNovedadResponse): void {
+  obtenerImagenUrl(
+    imagenUrl: string | null | undefined
+  ): string {
+    if (!imagenUrl) {
+      return '';
+    }
+
+    const ruta = imagenUrl.trim();
+
+    if (!ruta) {
+      return '';
+    }
+
+    if (
+      ruta.startsWith('http://') ||
+      ruta.startsWith('https://') ||
+      ruta.startsWith('data:') ||
+      ruta.startsWith('blob:')
+    ) {
+      return ruta;
+    }
+
+    const apiRoot = API_CONFIG.baseUrl.replace(
+      /\/api\/?$/i,
+      ''
+    );
+
+    const rutaNormalizada = ruta.startsWith('/')
+      ? ruta
+      : `/${ruta}`;
+
+    return `${apiRoot}${rutaNormalizada}`;
+  }
+
+  manejarErrorImagen(eventoId: string): void {
+    this.imagenesConError.add(eventoId);
+    this.cdr.detectChanges();
+  }
+
+  imagenConError(eventoId: string): boolean {
+    return this.imagenesConError.has(eventoId);
+  }
+
+  private async generarPdf(
+    expediente: ExpedienteNovedadResponse
+  ): Promise<void> {
     const doc = new jsPDF('p', 'mm', 'a4');
 
-    const numeroExpediente = this.obtenerNumeroExpediente(expediente);
+    const numeroExpediente =
+      this.obtenerNumeroExpediente(expediente);
+
     let currentY = 20;
 
-    currentY = this.dibujarEncabezadoPdf(doc, expediente, numeroExpediente, currentY);
-    currentY = this.dibujarInformacionGeneralPdf(doc, expediente, currentY);
-    currentY = this.dibujarBitacoraPdf(doc, expediente, currentY);
+    currentY = this.dibujarEncabezadoPdf(
+      doc,
+      expediente,
+      numeroExpediente,
+      currentY
+    );
+
+    currentY = this.dibujarInformacionGeneralPdf(
+      doc,
+      expediente,
+      currentY
+    );
+
+    // 👇 Aquí está la diferencia
+    currentY = await this.dibujarBitacoraPdf(
+      doc,
+      expediente,
+      currentY
+    );
 
     this.dibujarPiePaginaPdf(doc, expediente);
+
     this.guardarPdf(doc, numeroExpediente);
   }
 
@@ -268,81 +340,165 @@ export class NovedadEventosDetalle implements OnChanges {
     return currentY + 6;
   }
 
-  private dibujarBitacoraPdf(
+  private async dibujarBitacoraPdf(
     doc: jsPDF,
     expediente: ExpedienteNovedadResponse,
     currentY: number
-  ): number {
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const marginX = 18;
+  ): Promise<number> {
+    const pageWidth =
+      doc.internal.pageSize.getWidth();
 
-    doc.setFont('helvetica', 'bold');
+    const pageHeight =
+      doc.internal.pageSize.getHeight();
+
+    const marginX = 18;
+    const limiteInferior = pageHeight - 22;
+
+    doc.setFont(
+      'helvetica',
+      'bold'
+    );
+
     doc.setFontSize(12);
-    doc.text('BITÁCORA DE ACTUACIONES', marginX, currentY);
+
+    doc.text(
+      'BITÁCORA DE ACTUACIONES',
+      marginX,
+      currentY
+    );
 
     currentY += 8;
 
-    expediente.eventos.forEach((evento, index) => {
+    for (
+      let index = 0;
+      index < expediente.eventos.length;
+      index++
+    ) {
+      const evento =
+        expediente.eventos[index];
+
       if (currentY > pageHeight - 55) {
         doc.addPage();
         currentY = 20;
       }
 
       doc.setDrawColor(180);
-      doc.line(marginX, currentY, pageWidth - marginX, currentY);
+
+      doc.line(
+        marginX,
+        currentY,
+        pageWidth - marginX,
+        currentY
+      );
 
       currentY += 8;
 
-      doc.setFont('helvetica', 'bold');
+      doc.setFont(
+        'helvetica',
+        'bold'
+      );
+
       doc.setFontSize(10);
+
       doc.text(
-        `REGISTRO ${(index + 1).toString().padStart(3, '0')}`,
+        `REGISTRO ${(index + 1)
+          .toString()
+          .padStart(3, '0')}`,
         marginX,
         currentY
       );
 
-      doc.setFont('helvetica', 'normal');
-      doc.text(this.formatPdfDate(evento.fechaCreacion), pageWidth - marginX, currentY, {
-        align: 'right',
-      });
-
-      currentY += 8;
-
-      doc.setFont('helvetica', 'bold');
-      doc.text('Tipo:', marginX, currentY);
-
-      doc.setFont('helvetica', 'normal');
-      doc.text(evento.tipo || 'Actualización', marginX + 22, currentY);
-
-      currentY += 8;
-
-      const comentario = evento.comentario || 'Sin comentario registrado.';
-      const comentarioLines = doc.splitTextToSize(
-        comentario,
-        pageWidth - marginX * 2
+      doc.setFont(
+        'helvetica',
+        'normal'
       );
 
-      doc.text(comentarioLines, marginX, currentY);
-      currentY += comentarioLines.length * 5 + 6;
+      doc.text(
+        this.formatPdfDate(
+          evento.fechaCreacion
+        ),
+        pageWidth - marginX,
+        currentY,
+        {
+          align: 'right',
+        }
+      );
 
-      doc.setFont('helvetica', 'normal');
+      currentY += 8;
+
+      doc.setFont(
+        'helvetica',
+        'bold'
+      );
+
+      doc.text(
+        'Tipo:',
+        marginX,
+        currentY
+      );
+
+      doc.setFont(
+        'helvetica',
+        'normal'
+      );
+
+      doc.text(
+        evento.tipo || 'Actualización',
+        marginX + 22,
+        currentY
+      );
+
+      currentY += 8;
+
+      const comentario =
+        evento.comentario ||
+        'Sin comentario registrado.';
+
+      const comentarioLines =
+        doc.splitTextToSize(
+          comentario,
+          pageWidth - marginX * 2
+        );
+
+      doc.text(
+        comentarioLines,
+        marginX,
+        currentY
+      );
+
+      currentY +=
+        comentarioLines.length * 5 + 6;
+
+      doc.setFont(
+        'helvetica',
+        'normal'
+      );
+
       doc.setFontSize(9);
+
       doc.text(
-        `Registrado por: ${evento.registradoPor || '—'}`,
+        `Registrado por: ${
+          evento.registradoPor || '—'
+        }`,
         marginX,
         currentY
       );
 
-      currentY += 6;
+      currentY += 8;
 
       if (evento.imagenUrl) {
-        doc.text('Evidencia: imagen adjunta disponible', marginX, currentY);
-        currentY += 6;
+        currentY =
+          await this.agregarEvidenciaPdf(
+            doc,
+            evento.imagenUrl,
+            currentY,
+            marginX,
+            limiteInferior
+          );
       }
 
-      currentY += 4;
-    });
+      currentY += 5;
+    }
 
     return currentY;
   }
@@ -375,6 +531,361 @@ export class NovedadEventosDetalle implements OnChanges {
 
   private guardarPdf(doc: jsPDF, numeroExpediente: string): void {
     doc.save(`${numeroExpediente}.pdf`);
+  }
+
+  private async agregarEvidenciaPdf(
+    doc: jsPDF,
+    imagenUrl: string,
+    currentY: number,
+    marginX: number,
+    limiteInferior: number
+  ): Promise<number> {
+    const pageWidth =
+      doc.internal.pageSize.getWidth();
+
+    const anchoDisponible =
+      pageWidth - marginX * 2;
+
+    const altoMaximo = 95;
+
+    try {
+      const imagen =
+        await this.cargarImagenParaPdf(
+          this.obtenerImagenUrl(imagenUrl)
+        );
+
+      let anchoImagen =
+        anchoDisponible;
+
+      let altoImagen =
+        anchoImagen *
+        (imagen.height / imagen.width);
+
+      if (altoImagen > altoMaximo) {
+        altoImagen = altoMaximo;
+
+        anchoImagen =
+          altoImagen *
+          (imagen.width / imagen.height);
+      }
+
+      const espacioNecesario =
+        8 + altoImagen + 8;
+
+      if (
+        currentY + espacioNecesario >
+        limiteInferior
+      ) {
+        doc.addPage();
+        currentY = 20;
+      }
+
+      doc.setFont(
+        'helvetica',
+        'bold'
+      );
+
+      doc.setFontSize(9);
+
+      doc.text(
+        'EVIDENCIA FOTOGRÁFICA',
+        marginX,
+        currentY
+      );
+
+      currentY += 6;
+
+      const posicionX =
+        marginX +
+        (anchoDisponible - anchoImagen) / 2;
+
+      doc.setDrawColor(
+        203,
+        213,
+        225
+      );
+
+      doc.setFillColor(
+        248,
+        250,
+        252
+      );
+
+      doc.roundedRect(
+        posicionX - 1,
+        currentY - 1,
+        anchoImagen + 2,
+        altoImagen + 2,
+        1.5,
+        1.5,
+        'FD'
+      );
+
+      doc.addImage(
+        imagen.dataUrl,
+        'JPEG',
+        posicionX,
+        currentY,
+        anchoImagen,
+        altoImagen,
+        undefined,
+        'FAST'
+      );
+
+      currentY += altoImagen + 5;
+
+      doc.setFont(
+        'helvetica',
+        'italic'
+      );
+
+      doc.setFontSize(8);
+
+      doc.setTextColor(
+        100,
+        116,
+        139
+      );
+
+      doc.text(
+        'Evidencia incorporada al registro.',
+        marginX,
+        currentY
+      );
+
+      doc.setTextColor(
+        0,
+        0,
+        0
+      );
+
+      return currentY + 5;
+    } catch (error) {
+      console.error(
+        'No fue posible incorporar una evidencia:',
+        imagenUrl,
+        error
+      );
+
+      if (currentY + 14 > limiteInferior) {
+        doc.addPage();
+        currentY = 20;
+      }
+
+      doc.setFont(
+        'helvetica',
+        'italic'
+      );
+
+      doc.setFontSize(8);
+
+      doc.setTextColor(
+        153,
+        27,
+        27
+      );
+
+      doc.text(
+        'La evidencia fotográfica no pudo incorporarse al documento.',
+        marginX,
+        currentY
+      );
+
+      doc.setTextColor(
+        0,
+        0,
+        0
+      );
+
+      return currentY + 8;
+    }
+  }
+
+  private async cargarImagenParaPdf(
+    imagenUrl: string
+  ): Promise<{
+    dataUrl: string;
+    width: number;
+    height: number;
+  }> {
+
+    if (!imagenUrl) {
+      throw new Error(
+        'La URL de la evidencia está vacía.'
+      );
+    }
+
+    try {
+      const response = await fetch(imagenUrl, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-store',
+      });
+      if (!response.ok) {
+        throw new Error(
+          `No fue posible descargar la evidencia. Código ${response.status}.`
+        );
+      }
+
+      const blob = await response.blob();
+
+      if (!blob.type.startsWith('image/')) {
+        throw new Error(
+          `El servidor no devolvió una imagen. Content-Type: ${blob.type || 'desconocido'}.`
+        );
+      }
+
+      if (blob.size === 0) {
+        throw new Error(
+          'La evidencia descargada está vacía.'
+        );
+      }
+
+      const dataUrlOriginal =
+        await this.convertirBlobADataUrl(blob);
+
+      const imagen =
+        await this.cargarElementoImagen(
+          dataUrlOriginal
+        );
+
+      if (
+        imagen.naturalWidth <= 0 ||
+        imagen.naturalHeight <= 0
+      ) {
+        throw new Error(
+          'La evidencia no tiene dimensiones válidas.'
+        );
+      }
+
+      const maxWidth = 1600;
+      const maxHeight = 1600;
+
+      const escala = Math.min(
+        1,
+        maxWidth / imagen.naturalWidth,
+        maxHeight / imagen.naturalHeight
+      );
+
+      const width = Math.max(
+        1,
+        Math.round(
+          imagen.naturalWidth * escala
+        )
+      );
+
+      const height = Math.max(
+        1,
+        Math.round(
+          imagen.naturalHeight * escala
+        )
+      );
+
+      const canvas =
+        document.createElement('canvas');
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const context =
+        canvas.getContext('2d');
+
+      if (!context) {
+        throw new Error(
+          'No fue posible obtener el contexto del canvas.'
+        );
+      }
+
+      context.fillStyle = '#ffffff';
+      context.fillRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+      context.drawImage(
+        imagen,
+        0,
+        0,
+        width,
+        height
+      );
+
+      const dataUrl = canvas.toDataURL(
+        'image/jpeg',
+        0.82
+      );
+
+      console.groupEnd();
+
+      return {
+        dataUrl,
+        width,
+        height,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  private convertirBlobADataUrl(
+    blob: Blob
+  ): Promise<string> {
+    return new Promise(
+      (resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          if (
+            typeof reader.result === 'string'
+          ) {
+            resolve(reader.result);
+            return;
+          }
+
+          reject(
+            new Error(
+              'No fue posible leer la evidencia.'
+            )
+          );
+        };
+
+        reader.onerror = () => {
+          reject(
+            new Error(
+              'Ocurrió un error leyendo la evidencia.'
+            )
+          );
+        };
+
+        reader.readAsDataURL(blob);
+      }
+    );
+  }
+
+  private cargarElementoImagen(
+    dataUrl: string
+  ): Promise<HTMLImageElement> {
+    return new Promise(
+      (resolve, reject) => {
+        const imagen = new Image();
+
+        imagen.onload = () => {
+          resolve(imagen);
+        };
+
+        imagen.onerror = () => {
+          reject(
+            new Error(
+              'El archivo de evidencia no es una imagen válida.'
+            )
+          );
+        };
+
+        imagen.src = dataUrl;
+      }
+    );
   }
 
   volver(): void {

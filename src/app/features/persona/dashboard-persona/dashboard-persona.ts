@@ -23,6 +23,7 @@ import { CrearInvitacionVisitante } from '../visitante/crear-invitacion-visitant
 import { FormVisitanteComponent } from '../visitante/form-visitante/form-visitante';
 import { ListaVisitantesComponent } from '../visitante/lista-visitantes/lista-visitantes';
 import { PerfilPersonasComponent} from '../../perfiles/perfil-persona/perfil-personas/perfil-personas';
+import {PersonsComponent} from '../persons/persons.component'
 
 type TipoPersona =
   | 'Residente'
@@ -47,6 +48,7 @@ type VistaPersona =
   | 'mis-mascotas'
   | 'app-crear-invitacion-visitante'
   | 'mi-perfil'
+  | 'personas'
 
 @Component({
   selector: 'app-dashboard-persona',
@@ -72,7 +74,8 @@ type VistaPersona =
     MisVehiculosComponent,
     MisMascotasComponent,
 
-    PerfilPersonasComponent
+    PerfilPersonasComponent,
+    PersonsComponent
   ],
   templateUrl: './dashboard-persona.html',
   styleUrl: './dashboard-persona.css',
@@ -121,6 +124,10 @@ export class DashboardPersona implements OnInit {
     return this.tipo === 'Mantenimiento';
   }
 
+  get puedeVerPersonas(): boolean {
+    return this.tipo === 'Seguridad';
+  }
+
   obtenerTipoPersona(): TipoPersona {
     const token = localStorage.getItem(
       'personaAccessToken',
@@ -154,6 +161,14 @@ export class DashboardPersona implements OnInit {
     this.vistaActiva = vista;
     this.novedadSeleccionadaId = '';
     this.esFinalizacion = false;
+  }
+
+  abrirPersonas(): void {
+    if (!this.puedeVerPersonas) {
+      return;
+    }
+
+    this.cambiarVista('personas');
   }
 
   abrirInicio(): void {
