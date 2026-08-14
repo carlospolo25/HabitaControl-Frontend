@@ -1,0 +1,542 @@
+<form
+  class="norma-form"
+  (ngSubmit)="guardar()"
+  novalidate>
+
+  <!-- ===================================================== -->
+  <!-- MENSAJE DE ERROR -->
+  <!-- ===================================================== -->
+
+  @if (errorMessage) {
+    <div class="norma-form__alert norma-form__alert--error">
+
+      <div class="norma-form__alert-icon">
+        !
+      </div>
+
+      <div class="norma-form__alert-content">
+        <strong>No fue posible continuar</strong>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <button
+        type="button"
+        class="norma-form__alert-close"
+        (click)="errorMessage = ''"
+        aria-label="Cerrar mensaje">
+        ×
+      </button>
+
+    </div>
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- INFORMACIÓN PRINCIPAL -->
+  <!-- ===================================================== -->
+
+  <section class="norma-form__section">
+
+    <header class="norma-form__section-header">
+
+      <div class="norma-form__section-icon">
+        📘
+      </div>
+
+      <div class="norma-form__section-heading">
+
+        <h4 class="norma-form__section-title">
+          Información de la norma
+        </h4>
+
+        <p class="norma-form__section-description">
+          Define el título y el contenido que será publicado como parte
+          de las normas de convivencia de la copropiedad.
+        </p>
+
+      </div>
+
+    </header>
+
+
+    <div class="norma-form__fields">
+
+      <!-- ================================================= -->
+      <!-- TÍTULO -->
+      <!-- ================================================= -->
+
+      <div class="norma-form__field norma-form__field--full">
+
+        <div class="norma-form__label-row">
+
+          <label
+            for="norma-titulo"
+            class="norma-form__label">
+            Título
+            <span class="norma-form__required">*</span>
+          </label>
+
+          <span
+            class="norma-form__counter"
+            [class.norma-form__counter--limit]="titulo.length >= 150">
+            {{ titulo.length }} / 150
+          </span>
+
+        </div>
+
+        <input
+          id="norma-titulo"
+          name="titulo"
+          type="text"
+          class="norma-form__input"
+          placeholder="Ej. Uso adecuado de las zonas comunes"
+          [(ngModel)]="titulo"
+          maxlength="150"
+          [disabled]="isSubmitting"
+          autocomplete="off">
+
+        <span class="norma-form__hint">
+          Utiliza un título corto que permita identificar fácilmente la norma.
+        </span>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- CONTENIDO -->
+      <!-- ================================================= -->
+
+      <div class="norma-form__field norma-form__field--full">
+
+        <div class="norma-form__label-row">
+
+          <label
+            for="norma-contenido"
+            class="norma-form__label">
+            Contenido
+            <span class="norma-form__required">*</span>
+          </label>
+
+          <span
+            class="norma-form__counter"
+            [class.norma-form__counter--limit]="contenido.length >= 5000">
+            {{ contenido.length }} / 5000
+          </span>
+
+        </div>
+
+        <textarea
+          id="norma-contenido"
+          name="contenido"
+          class="norma-form__textarea"
+          placeholder="Escribe aquí el contenido completo de la norma..."
+          [(ngModel)]="contenido"
+          maxlength="5000"
+          [disabled]="isSubmitting"
+          rows="8">
+        </textarea>
+
+        <span class="norma-form__hint">
+          Describe claramente la regla, restricción o disposición que debe
+          conocer la comunidad.
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================== -->
+  <!-- CLASIFICACIÓN Y ORDEN -->
+  <!-- ===================================================== -->
+
+  <section class="norma-form__section">
+
+    <header class="norma-form__section-header">
+
+      <div class="norma-form__section-icon norma-form__section-icon--settings">
+        ⚙
+      </div>
+
+      <div class="norma-form__section-heading">
+
+        <h4 class="norma-form__section-title">
+          Clasificación y visualización
+        </h4>
+
+        <p class="norma-form__section-description">
+          Selecciona la categoría y define la posición en la que aparecerá
+          esta norma para los usuarios.
+        </p>
+
+      </div>
+
+    </header>
+
+
+    <div class="norma-form__grid">
+
+      <!-- ================================================= -->
+      <!-- CATEGORÍA -->
+      <!-- ================================================= -->
+
+      <div class="norma-form__field">
+
+        <label
+          for="norma-categoria"
+          class="norma-form__label">
+          Categoría
+          <span class="norma-form__required">*</span>
+        </label>
+
+        <select
+          id="norma-categoria"
+          name="categoria"
+          class="norma-form__select"
+          [(ngModel)]="categoria"
+          [disabled]="isSubmitting">
+
+          <option [ngValue]="CategoriaNormaConvivencia.General">
+            General
+          </option>
+
+          <option [ngValue]="CategoriaNormaConvivencia.Ruido">
+            Ruido
+          </option>
+
+          <option [ngValue]="CategoriaNormaConvivencia.Mascotas">
+            Mascotas
+          </option>
+
+          <option [ngValue]="CategoriaNormaConvivencia.Parqueaderos">
+            Parqueaderos
+          </option>
+
+          <option [ngValue]="CategoriaNormaConvivencia.ZonasComunes">
+            Zonas comunes
+          </option>
+
+          <option [ngValue]="CategoriaNormaConvivencia.Residuos">
+            Residuos
+          </option>
+
+          <option [ngValue]="CategoriaNormaConvivencia.Seguridad">
+            Seguridad
+          </option>
+
+          <option [ngValue]="CategoriaNormaConvivencia.Visitantes">
+            Visitantes
+          </option>
+
+          <option [ngValue]="CategoriaNormaConvivencia.Convivencia">
+            Convivencia
+          </option>
+
+          <option [ngValue]="CategoriaNormaConvivencia.Otro">
+            Otro
+          </option>
+
+        </select>
+
+        <span class="norma-form__hint">
+          La categoría facilita la consulta y organización de las normas.
+        </span>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- ORDEN -->
+      <!-- ================================================= -->
+
+      <div class="norma-form__field">
+
+        <label
+          for="norma-orden"
+          class="norma-form__label">
+          Orden de visualización
+          <span class="norma-form__required">*</span>
+        </label>
+
+        <input
+          id="norma-orden"
+          name="orden"
+          type="number"
+          class="norma-form__input"
+          [(ngModel)]="orden"
+          min="1"
+          step="1"
+          [disabled]="isSubmitting">
+
+        <span class="norma-form__hint">
+          Las normas con números menores aparecerán primero.
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================== -->
+  <!-- ARCHIVO ADJUNTO -->
+  <!-- ===================================================== -->
+
+  <section class="norma-form__section norma-form__section--attachment">
+
+    <header class="norma-form__section-header">
+
+      <div class="norma-form__section-icon norma-form__section-icon--file">
+        📎
+      </div>
+
+      <div class="norma-form__section-heading">
+
+        <div class="norma-form__section-title-row">
+
+          <h4 class="norma-form__section-title">
+            Documento adjunto
+          </h4>
+
+          <span class="norma-form__optional">
+            Opcional
+          </span>
+
+        </div>
+
+        <p class="norma-form__section-description">
+          Puedes complementar la norma con un PDF o una imagen.
+        </p>
+
+      </div>
+
+    </header>
+
+
+    <!-- =================================================== -->
+    <!-- ARCHIVO ACTUAL -->
+    <!-- =================================================== -->
+
+    @if (
+      esEdicion &&
+      norma?.archivoUrl &&
+      !archivo
+    ) {
+
+      <div class="norma-form__existing-file">
+
+        <div class="norma-form__existing-file-icon">
+          📄
+        </div>
+
+        <div class="norma-form__existing-file-info">
+
+          <span class="norma-form__existing-file-label">
+            Archivo publicado actualmente
+          </span>
+
+          <strong class="norma-form__existing-file-name">
+            {{ norma?.nombreArchivo || 'Documento adjunto' }}
+          </strong>
+
+        </div>
+
+        <a
+          class="norma-form__existing-file-link"
+          [href]="norma?.archivoUrl"
+          target="_blank"
+          rel="noopener noreferrer">
+          Ver archivo
+        </a>
+
+      </div>
+
+    }
+
+
+    <!-- =================================================== -->
+    <!-- SELECTOR DE ARCHIVO -->
+    <!-- =================================================== -->
+
+    <div class="norma-form__upload">
+
+      <input
+        #archivoInput
+        id="norma-archivo"
+        type="file"
+        class="norma-form__file-input"
+        accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+        (change)="seleccionarArchivo($event)"
+        [disabled]="isSubmitting">
+
+
+      @if (!archivo) {
+
+        <label
+          for="norma-archivo"
+          class="norma-form__upload-zone"
+          [class.norma-form__upload-zone--disabled]="isSubmitting">
+
+          <span class="norma-form__upload-icon">
+            ↑
+          </span>
+
+          <span class="norma-form__upload-content">
+
+            <strong class="norma-form__upload-title">
+              Seleccionar documento
+            </strong>
+
+            <span class="norma-form__upload-description">
+              Haz clic para buscar un archivo en tu dispositivo.
+            </span>
+
+            <span class="norma-form__upload-formats">
+              PDF, JPG, JPEG o PNG · Máximo 10 MB
+            </span>
+
+          </span>
+
+        </label>
+
+      } @else {
+
+        <!-- =============================================== -->
+        <!-- ARCHIVO SELECCIONADO -->
+        <!-- =============================================== -->
+
+        <div class="norma-form__selected-file">
+
+          <div class="norma-form__selected-file-icon">
+
+            @if (archivo.type === 'application/pdf') {
+              PDF
+            } @else {
+              IMG
+            }
+
+          </div>
+
+          <div class="norma-form__selected-file-info">
+
+            <span class="norma-form__selected-file-label">
+              Archivo seleccionado
+            </span>
+
+            <strong class="norma-form__selected-file-name">
+              {{ nombreArchivoSeleccionado }}
+            </strong>
+
+            <span class="norma-form__selected-file-size">
+              {{ (archivo.size / 1024 / 1024) | number:'1.2-2' }}
+              MB
+            </span>
+
+          </div>
+
+          <button
+            type="button"
+            class="norma-form__selected-file-remove"
+            (click)="quitarArchivo(); archivoInput.value = ''"
+            [disabled]="isSubmitting">
+            Quitar
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- =================================================== -->
+    <!-- NOTA DEL ADJUNTO -->
+    <!-- =================================================== -->
+
+    <div class="norma-form__attachment-note">
+
+      <span class="norma-form__attachment-note-icon">
+        i
+      </span>
+
+      <p>
+        El documento es complementario. El título y el contenido de la
+        norma seguirán siendo visibles aunque no adjuntes ningún archivo.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================== -->
+  <!-- ACCIONES -->
+  <!-- ===================================================== -->
+
+  <footer class="norma-form__actions">
+
+    <div class="norma-form__actions-info">
+
+      <span class="norma-form__required">
+        *
+      </span>
+
+      Campos obligatorios
+
+    </div>
+
+
+    <div class="norma-form__actions-buttons">
+
+      <button
+        type="button"
+        class="norma-form__button norma-form__button--secondary"
+        (click)="cancelar()"
+        [disabled]="isSubmitting">
+        Cancelar
+      </button>
+
+
+      <button
+        type="submit"
+        class="norma-form__button norma-form__button--primary"
+        [disabled]="isSubmitting">
+
+        @if (isSubmitting) {
+
+          <span class="norma-form__button-spinner"></span>
+
+          <span>
+            {{
+              esEdicion
+                ? 'Guardando cambios...'
+                : 'Creando norma...'
+            }}
+          </span>
+
+        } @else {
+
+          <span class="norma-form__button-icon">
+            {{ esEdicion ? '✓' : '+' }}
+          </span>
+
+          <span>
+            {{
+              esEdicion
+                ? 'Guardar cambios'
+                : 'Crear norma'
+            }}
+          </span>
+
+        }
+
+      </button>
+
+    </div>
+
+  </footer>
+
+</form>

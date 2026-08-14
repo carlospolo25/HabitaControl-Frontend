@@ -1,0 +1,564 @@
+<form
+  class="aviso-form"
+  (ngSubmit)="guardar()"
+  novalidate>
+
+  <!-- ===================================================== -->
+  <!-- MENSAJES -->
+  <!-- ===================================================== -->
+
+  @if (errorMessage) {
+    <div class="aviso-form__alert aviso-form__alert--error">
+      <div class="aviso-form__alert-icon">
+        !
+      </div>
+
+      <div class="aviso-form__alert-content">
+        <strong>No fue posible continuar</strong>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <button
+        type="button"
+        class="aviso-form__alert-close"
+        (click)="errorMessage = ''"
+        aria-label="Cerrar mensaje">
+        ×
+      </button>
+    </div>
+  }
+
+  @if (successMessage) {
+    <div class="aviso-form__alert aviso-form__alert--success">
+      <div class="aviso-form__alert-icon">
+        ✓
+      </div>
+
+      <div class="aviso-form__alert-content">
+        <strong>Operación completada</strong>
+        <span>{{ successMessage }}</span>
+      </div>
+    </div>
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- INFORMACIÓN PRINCIPAL -->
+  <!-- ===================================================== -->
+
+  <section class="aviso-form__section">
+
+    <header class="aviso-form__section-header">
+
+      <div class="aviso-form__section-icon">
+        📢
+      </div>
+
+      <div class="aviso-form__section-heading">
+        <h4 class="aviso-form__section-title">
+          Información del aviso
+        </h4>
+
+        <p class="aviso-form__section-description">
+          Escribe el comunicado que será publicado para los usuarios
+          seleccionados.
+        </p>
+      </div>
+
+    </header>
+
+
+    <div class="aviso-form__fields">
+
+      <!-- ================================================= -->
+      <!-- TÍTULO -->
+      <!-- ================================================= -->
+
+      <div class="aviso-form__field aviso-form__field--full">
+
+        <div class="aviso-form__label-row">
+          <label
+            for="aviso-titulo"
+            class="aviso-form__label">
+            Título
+            <span class="aviso-form__required">*</span>
+          </label>
+
+          <span
+            class="aviso-form__counter"
+            [class.aviso-form__counter--limit]="caracteresTitulo >= maxTitulo">
+            {{ caracteresTitulo }} / {{ maxTitulo }}
+          </span>
+        </div>
+
+        <input
+          id="aviso-titulo"
+          name="titulo"
+          type="text"
+          class="aviso-form__input"
+          placeholder="Ej. Suspensión temporal del servicio de agua"
+          [(ngModel)]="titulo"
+          [maxlength]="maxTitulo"
+          [disabled]="isSubmitting"
+          autocomplete="off">
+
+        <span class="aviso-form__hint">
+          Utiliza un título corto y fácil de identificar.
+        </span>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- MENSAJE -->
+      <!-- ================================================= -->
+
+      <div class="aviso-form__field aviso-form__field--full">
+
+        <div class="aviso-form__label-row">
+          <label
+            for="aviso-mensaje"
+            class="aviso-form__label">
+            Mensaje
+            <span class="aviso-form__required">*</span>
+          </label>
+
+          <span
+            class="aviso-form__counter"
+            [class.aviso-form__counter--limit]="caracteresMensaje >= maxMensaje">
+            {{ caracteresMensaje }} / {{ maxMensaje }}
+          </span>
+        </div>
+
+        <textarea
+          id="aviso-mensaje"
+          name="mensaje"
+          class="aviso-form__textarea"
+          placeholder="Escribe aquí la información que deseas comunicar..."
+          [(ngModel)]="mensaje"
+          [maxlength]="maxMensaje"
+          [disabled]="isSubmitting"
+          rows="7">
+        </textarea>
+
+        <span class="aviso-form__hint">
+          Incluye únicamente la información necesaria para que el aviso
+          sea claro y comprensible.
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================== -->
+  <!-- CONFIGURACIÓN -->
+  <!-- ===================================================== -->
+
+  <section class="aviso-form__section">
+
+    <header class="aviso-form__section-header">
+
+      <div class="aviso-form__section-icon aviso-form__section-icon--settings">
+        ⚙
+      </div>
+
+      <div class="aviso-form__section-heading">
+        <h4 class="aviso-form__section-title">
+          Configuración de publicación
+        </h4>
+
+        <p class="aviso-form__section-description">
+          Define la importancia, audiencia y vigencia del comunicado.
+        </p>
+      </div>
+
+    </header>
+
+
+    <div class="aviso-form__grid">
+
+      <!-- ================================================= -->
+      <!-- PRIORIDAD -->
+      <!-- ================================================= -->
+
+      <div class="aviso-form__field">
+
+        <label
+          for="aviso-prioridad"
+          class="aviso-form__label">
+          Prioridad
+          <span class="aviso-form__required">*</span>
+        </label>
+
+        <select
+          id="aviso-prioridad"
+          name="prioridad"
+          class="aviso-form__select"
+          [(ngModel)]="prioridad"
+          [disabled]="isSubmitting">
+
+          <option [ngValue]="PrioridadAviso.Informativo">
+            Informativo
+          </option>
+
+          <option [ngValue]="PrioridadAviso.Importante">
+            Importante
+          </option>
+
+          <option [ngValue]="PrioridadAviso.Urgente">
+            Urgente
+          </option>
+
+        </select>
+
+        <span class="aviso-form__hint">
+          Determina el nivel de atención del aviso.
+        </span>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- AUDIENCIA -->
+      <!-- ================================================= -->
+
+      <div class="aviso-form__field">
+
+        <label
+          for="aviso-audiencia"
+          class="aviso-form__label">
+          Audiencia
+          <span class="aviso-form__required">*</span>
+        </label>
+
+        <select
+          id="aviso-audiencia"
+          name="audiencia"
+          class="aviso-form__select"
+          [(ngModel)]="audiencia"
+          [disabled]="isSubmitting">
+
+          <option [ngValue]="AudienciaAviso.Todos">
+            Todos
+          </option>
+
+          <option [ngValue]="AudienciaAviso.Residentes">
+            Residentes
+          </option>
+
+          <option [ngValue]="AudienciaAviso.Seguridad">
+            Seguridad
+          </option>
+
+          <option [ngValue]="AudienciaAviso.Mantenimiento">
+            Mantenimiento
+          </option>
+
+        </select>
+
+        <span class="aviso-form__hint">
+          Selecciona quién podrá consultar este comunicado.
+        </span>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- FECHA PUBLICACIÓN -->
+      <!-- ================================================= -->
+
+      <div class="aviso-form__field">
+
+        <label
+          for="aviso-fecha-publicacion"
+          class="aviso-form__label">
+          Fecha de publicación
+          <span class="aviso-form__required">*</span>
+        </label>
+
+        <input
+          id="aviso-fecha-publicacion"
+          name="fechaPublicacion"
+          type="datetime-local"
+          class="aviso-form__input"
+          [(ngModel)]="fechaPublicacion"
+          [disabled]="isSubmitting">
+
+        <span class="aviso-form__hint">
+          Indica desde cuándo estará disponible el aviso.
+        </span>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- FECHA EXPIRACIÓN -->
+      <!-- ================================================= -->
+
+      <div class="aviso-form__field">
+
+        <div class="aviso-form__label-row">
+          <label
+            for="aviso-fecha-expiracion"
+            class="aviso-form__label">
+            Fecha de expiración
+          </label>
+
+          <span class="aviso-form__optional">
+            Opcional
+          </span>
+        </div>
+
+        <input
+          id="aviso-fecha-expiracion"
+          name="fechaExpiracion"
+          type="datetime-local"
+          class="aviso-form__input"
+          [(ngModel)]="fechaExpiracion"
+          [disabled]="isSubmitting">
+
+        <span class="aviso-form__hint">
+          Déjala vacía si el aviso no debe expirar automáticamente.
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================== -->
+  <!-- ARCHIVO ADJUNTO -->
+  <!-- ===================================================== -->
+
+  <section class="aviso-form__section aviso-form__section--attachment">
+
+    <header class="aviso-form__section-header">
+
+      <div class="aviso-form__section-icon aviso-form__section-icon--file">
+        📎
+      </div>
+
+      <div class="aviso-form__section-heading">
+        <div class="aviso-form__section-title-row">
+
+          <h4 class="aviso-form__section-title">
+            Documento adjunto
+          </h4>
+
+          <span class="aviso-form__optional">
+            Opcional
+          </span>
+
+        </div>
+
+        <p class="aviso-form__section-description">
+          Puedes complementar el comunicado con un PDF o una imagen.
+        </p>
+      </div>
+
+    </header>
+
+
+    <!-- =================================================== -->
+    <!-- ARCHIVO ACTUAL EN EDICIÓN -->
+    <!-- =================================================== -->
+
+    @if (
+      esEdicion &&
+      aviso?.archivoUrl &&
+      !archivoSeleccionado
+    ) {
+      <div class="aviso-form__existing-file">
+
+        <div class="aviso-form__existing-file-icon">
+          📄
+        </div>
+
+        <div class="aviso-form__existing-file-info">
+          <span class="aviso-form__existing-file-label">
+            Archivo publicado actualmente
+          </span>
+
+          <strong class="aviso-form__existing-file-name">
+            {{ aviso?.nombreArchivo || 'Documento adjunto' }}
+          </strong>
+        </div>
+
+        <a
+          class="aviso-form__existing-file-link"
+          [href]="aviso?.archivoUrl"
+          target="_blank"
+          rel="noopener noreferrer">
+          Ver archivo
+        </a>
+
+      </div>
+    }
+
+
+    <!-- =================================================== -->
+    <!-- SELECTOR DE ARCHIVO -->
+    <!-- =================================================== -->
+
+    <div class="aviso-form__upload">
+
+      <input
+        #archivoInput
+        id="aviso-archivo"
+        type="file"
+        class="aviso-form__file-input"
+        accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+        (change)="seleccionarArchivo($event)"
+        [disabled]="isSubmitting">
+
+      @if (!archivoSeleccionado) {
+
+        <label
+          for="aviso-archivo"
+          class="aviso-form__upload-zone"
+          [class.aviso-form__upload-zone--disabled]="isSubmitting">
+
+          <span class="aviso-form__upload-icon">
+            ↑
+          </span>
+
+          <span class="aviso-form__upload-content">
+
+            <strong class="aviso-form__upload-title">
+              Seleccionar documento
+            </strong>
+
+            <span class="aviso-form__upload-description">
+              Haz clic para buscar un archivo en tu dispositivo.
+            </span>
+
+            <span class="aviso-form__upload-formats">
+              PDF, JPG, JPEG o PNG · Máximo 10 MB
+            </span>
+
+          </span>
+
+        </label>
+
+      } @else {
+
+        <!-- =============================================== -->
+        <!-- ARCHIVO SELECCIONADO -->
+        <!-- =============================================== -->
+
+        <div class="aviso-form__selected-file">
+
+          <div class="aviso-form__selected-file-icon">
+            @if (archivoSeleccionado.type === 'application/pdf') {
+              PDF
+            } @else {
+              IMG
+            }
+          </div>
+
+          <div class="aviso-form__selected-file-info">
+
+            <span class="aviso-form__selected-file-label">
+              Archivo seleccionado
+            </span>
+
+            <strong class="aviso-form__selected-file-name">
+              {{ nombreArchivoSeleccionado }}
+            </strong>
+
+            <span class="aviso-form__selected-file-size">
+              {{ (archivoSeleccionado.size / 1024 / 1024) | number:'1.2-2' }}
+              MB
+            </span>
+
+          </div>
+
+          <button
+            type="button"
+            class="aviso-form__selected-file-remove"
+            (click)="quitarArchivo(); archivoInput.value = ''"
+            [disabled]="isSubmitting">
+            Quitar
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- =================================================== -->
+    <!-- NOTA DEL ADJUNTO -->
+    <!-- =================================================== -->
+
+    <div class="aviso-form__attachment-note">
+
+      <span class="aviso-form__attachment-note-icon">
+        i
+      </span>
+
+      <p>
+        El archivo es complementario. El título y el mensaje del aviso
+        seguirán siendo visibles aunque no adjuntes ningún documento.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================== -->
+  <!-- ACCIONES -->
+  <!-- ===================================================== -->
+
+  <footer class="aviso-form__actions">
+
+    <div class="aviso-form__actions-info">
+      <span class="aviso-form__required">*</span>
+      Campos obligatorios
+    </div>
+
+    <div class="aviso-form__actions-buttons">
+
+      <button
+        type="button"
+        class="aviso-form__button aviso-form__button--secondary"
+        (click)="cancelar()"
+        [disabled]="isSubmitting">
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="aviso-form__button aviso-form__button--primary"
+        [disabled]="isSubmitting">
+
+        @if (isSubmitting) {
+          <span class="aviso-form__button-spinner"></span>
+
+          <span>
+            {{ esEdicion ? 'Guardando cambios...' : 'Publicando...' }}
+          </span>
+        } @else {
+          <span class="aviso-form__button-icon">
+            {{ esEdicion ? '✓' : '+' }}
+          </span>
+
+          <span>
+            {{ esEdicion ? 'Guardar cambios' : 'Publicar aviso' }}
+          </span>
+        }
+
+      </button>
+
+    </div>
+
+  </footer>
+
+</form>

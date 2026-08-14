@@ -24,6 +24,7 @@ import { FormVisitanteComponent } from '../visitante/form-visitante/form-visitan
 import { ListaVisitantesComponent } from '../visitante/lista-visitantes/lista-visitantes';
 import { PerfilPersonasComponent} from '../../perfiles/perfil-persona/perfil-personas/perfil-personas';
 import {PersonsComponent} from '../persons/persons.component'
+import { AvisosConvivenciaPersonaComponent } from '../../normaAviso/avisos-convivencia-persona-component/avisos-convivencia-persona-component';
 
 type TipoPersona =
   | 'Residente'
@@ -49,6 +50,7 @@ type VistaPersona =
   | 'app-crear-invitacion-visitante'
   | 'mi-perfil'
   | 'personas'
+  | 'avisos-convivencia';
 
 @Component({
   selector: 'app-dashboard-persona',
@@ -75,7 +77,9 @@ type VistaPersona =
     MisMascotasComponent,
 
     PerfilPersonasComponent,
-    PersonsComponent
+    PersonsComponent,
+
+    AvisosConvivenciaPersonaComponent,
   ],
   templateUrl: './dashboard-persona.html',
   styleUrl: './dashboard-persona.css',
@@ -161,6 +165,12 @@ export class DashboardPersona implements OnInit {
     this.vistaActiva = vista;
     this.novedadSeleccionadaId = '';
     this.esFinalizacion = false;
+  }
+
+  abrirAvisosConvivencia(): void {
+    this.cambiarVista(
+      'avisos-convivencia'
+    );
   }
 
   abrirPersonas(): void {

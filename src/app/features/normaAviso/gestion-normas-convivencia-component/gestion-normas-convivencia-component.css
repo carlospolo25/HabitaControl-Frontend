@@ -1,0 +1,3008 @@
+/* =========================================================
+   GESTIÓN NORMAS DE CONVIVENCIA
+   PARTE 1
+   Página · Header · Botones · Alertas · Toolbar · Filtros
+   ========================================================= */
+
+
+/* =========================================================
+   1. CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.normas-page {
+  width: 100%;
+  min-width: 0;
+
+  padding: var(--space-24, 24px);
+
+  color: var(--text-primary);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37, 99, 235, 0.055),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      var(--background) 0%,
+      #FFFFFF 100%
+    );
+
+  box-sizing: border-box;
+}
+
+
+.normas-page,
+.normas-page *,
+.normas-page *::before,
+.normas-page *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   2. HEADER PRINCIPAL
+   ========================================================= */
+
+.normas-header {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: var(--space-24, 24px);
+
+  margin-bottom: var(--space-20, 20px);
+  padding: 24px 26px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface) 0%,
+      #F8FBFF 100%
+    );
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl, 18px);
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.06));
+}
+
+
+/* Línea corporativa superior */
+
+.normas-header::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info),
+      var(--accent)
+    );
+}
+
+
+/* Decoración sutil */
+
+.normas-header::after {
+  content: '';
+
+  position: absolute;
+  top: -95px;
+  right: -70px;
+
+  width: 240px;
+  height: 240px;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.08),
+      transparent 68%
+    );
+}
+
+
+/* =========================================================
+   3. CONTENIDO DEL HEADER
+   ========================================================= */
+
+.normas-header__content {
+  position: relative;
+  z-index: 1;
+
+  max-width: 720px;
+  min-width: 0;
+}
+
+
+/* =========================================================
+   4. EYEBROW
+   ========================================================= */
+
+.normas-header__eyebrow {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 25px;
+
+  margin-bottom: 7px;
+  padding: 4px 10px;
+
+  color: var(--color-primary-dark);
+
+  font-size: 0.68rem;
+  font-weight: 850;
+
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+
+  background: var(--color-primary-light);
+
+  border: 1px solid #BFDBFE;
+  border-radius: 999px;
+}
+
+
+/* =========================================================
+   5. TÍTULO PRINCIPAL
+   ========================================================= */
+
+.normas-header__title {
+  margin: 0;
+
+  color: var(--gray-950);
+
+  font-size: clamp(1.45rem, 2vw, 1.9rem);
+  font-weight: 850;
+  line-height: 1.15;
+
+  letter-spacing: -0.035em;
+}
+
+
+/* =========================================================
+   6. DESCRIPCIÓN
+   ========================================================= */
+
+.normas-header__description {
+  max-width: 670px;
+
+  margin: 8px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.88rem;
+  font-weight: 450;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   7. ACCIONES DEL HEADER
+   ========================================================= */
+
+.normas-header__actions {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex: 0 0 auto;
+
+  gap: var(--space-8, 8px);
+}
+
+
+/* =========================================================
+   8. BOTÓN BASE
+   ========================================================= */
+
+.normas-button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+
+  gap: 8px;
+
+  padding: 0 16px;
+
+  overflow: hidden;
+
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+
+  white-space: nowrap;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md, 10px);
+
+  cursor: pointer;
+
+  user-select: none;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease,
+    opacity 160ms ease;
+}
+
+
+/* =========================================================
+   9. BOTÓN PRIMARIO
+   ========================================================= */
+
+.normas-button--primary {
+  color: var(--text-white);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-primary-hover)
+    );
+
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 7px 16px rgba(37, 99, 235, 0.20);
+}
+
+
+/* Brillo */
+
+.normas-button--primary::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: -120%;
+
+  width: 70%;
+  height: 100%;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.18),
+      transparent
+    );
+
+  transform: skewX(-20deg);
+
+  transition: left 420ms ease;
+}
+
+
+.normas-button--primary:hover:not(:disabled)::before {
+  left: 140%;
+}
+
+
+.normas-button--primary:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-hover),
+      var(--color-primary-dark)
+    );
+
+  border-color: var(--color-primary-hover);
+
+  box-shadow:
+    0 10px 22px rgba(37, 99, 235, 0.25);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   10. ICONO BOTÓN
+   ========================================================= */
+
+.normas-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+
+  flex: 0 0 20px;
+
+  font-size: 0.9rem;
+  font-weight: 900;
+
+  background: rgba(255, 255, 255, 0.14);
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+}
+
+
+/* =========================================================
+   11. BOTÓN SECUNDARIO
+   ========================================================= */
+
+.normas-button--secondary {
+  color: var(--gray-700);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface),
+      var(--gray-50)
+    );
+
+  border-color: var(--border);
+}
+
+
+.normas-button--secondary:hover:not(:disabled) {
+  color: var(--color-primary-dark);
+
+  background: var(--color-primary-light);
+
+  border-color: #BFDBFE;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   12. BOTONES DESHABILITADOS
+   ========================================================= */
+
+.normas-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.55;
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   13. ALERTAS
+   ========================================================= */
+
+.normas-alert {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: var(--space-12, 12px);
+
+  margin-bottom: var(--space-16, 16px);
+  padding: 13px 15px 13px 17px;
+
+  overflow: hidden;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md, 10px);
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.05));
+
+  animation: normas-alert-enter 180ms ease-out;
+}
+
+
+@keyframes normas-alert-enter {
+
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* Línea lateral */
+
+.normas-alert::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 4px;
+  height: 100%;
+}
+
+
+/* =========================================================
+   14. ALERTA ERROR
+   ========================================================= */
+
+.normas-alert--error {
+  color: var(--danger-dark);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      #FFF9F9
+    );
+
+  border-color: var(--danger-border);
+}
+
+
+.normas-alert--error::before {
+  background: var(--danger);
+}
+
+
+/* =========================================================
+   15. ALERTA ÉXITO
+   ========================================================= */
+
+.normas-alert--success {
+  color: var(--success-dark);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--success-light),
+      #F8FFF9
+    );
+
+  border-color: var(--success-border);
+}
+
+
+.normas-alert--success::before {
+  background: var(--success);
+}
+
+
+/* =========================================================
+   16. CONTENIDO DE ALERTA
+   ========================================================= */
+
+.normas-alert__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 2px;
+}
+
+
+.normas-alert__content strong {
+  font-size: 0.8rem;
+  font-weight: 850;
+}
+
+
+.normas-alert__content span {
+  font-size: 0.76rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   17. CERRAR ALERTA
+   ========================================================= */
+
+.normas-alert__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  flex: 0 0 28px;
+
+  padding: 0;
+
+  color: currentColor;
+
+  font-family: inherit;
+  font-size: 1.1rem;
+
+  background: transparent;
+
+  border: 0;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  opacity: 0.7;
+
+  transition:
+    opacity 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+
+.normas-alert__close:hover {
+  opacity: 1;
+
+  background: rgba(15, 23, 42, 0.06);
+
+  transform: scale(1.05);
+}
+
+
+/* =========================================================
+   18. TOOLBAR
+   ========================================================= */
+
+.normas-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: var(--space-16, 16px);
+
+  margin-bottom: var(--space-16, 16px);
+  padding: 16px 18px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg, 14px);
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.045));
+}
+
+
+/* =========================================================
+   19. BUSCADOR
+   ========================================================= */
+
+.normas-search {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 220px;
+  max-width: 480px;
+
+  gap: 6px;
+}
+
+
+.normas-search__label,
+.normas-filter__label {
+  color: var(--gray-700);
+
+  font-size: 0.7rem;
+  font-weight: 800;
+
+  letter-spacing: 0.025em;
+}
+
+
+/* =========================================================
+   20. CONTROL DEL BUSCADOR
+   ========================================================= */
+
+.normas-search__control {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   21. ICONO DEL BUSCADOR
+   ========================================================= */
+
+.normas-search__icon {
+  position: absolute;
+  left: 13px;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+
+  font-size: 0.82rem;
+
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   22. INPUT DE BÚSQUEDA
+   ========================================================= */
+
+.normas-search__input {
+  width: 100%;
+  min-height: 42px;
+
+  padding: 0 13px 0 39px;
+
+  color: var(--text-primary);
+
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+
+  background: var(--gray-50);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 10px);
+
+  outline: none;
+
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+
+.normas-search__input::placeholder {
+  color: var(--gray-400);
+}
+
+
+.normas-search__input:hover {
+  background: var(--surface);
+
+  border-color: var(--border-dark);
+}
+
+
+.normas-search__input:focus {
+  background: var(--surface);
+
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================================================
+   23. FILTROS
+   ========================================================= */
+
+.normas-filters {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: var(--space-8, 8px);
+}
+
+
+/* =========================================================
+   24. FILTRO INDIVIDUAL
+   ========================================================= */
+
+.normas-filter {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 145px;
+
+  gap: 6px;
+}
+
+
+/* =========================================================
+   25. SELECT DE FILTRO
+   ========================================================= */
+
+.normas-filter__select {
+  min-width: 145px;
+  min-height: 42px;
+
+  padding: 0 35px 0 12px;
+
+  color: var(--gray-700);
+
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 650;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 10px);
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+
+.normas-filter__select:hover {
+  border-color: var(--border-dark);
+}
+
+
+.normas-filter__select:focus {
+  color: var(--gray-900);
+
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.09);
+}
+
+
+/* =========================================================
+   26. LIMPIAR FILTROS
+   ========================================================= */
+
+.normas-filter__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+
+  padding: 0 13px;
+
+  color: var(--text-muted);
+
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 750;
+
+  white-space: nowrap;
+
+  background: transparent;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md, 10px);
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+
+.normas-filter__clear:hover {
+  color: var(--color-primary-dark);
+
+  background: var(--color-primary-light);
+
+  border-color: #BFDBFE;
+}
+
+
+/* =========================================================
+   27. FOCUS ACCESIBLE
+   ========================================================= */
+
+.normas-button:focus-visible,
+.normas-alert__close:focus-visible,
+.normas-filter__clear:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.13);
+}
+
+
+/* =========================================================
+   28. RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 960px) {
+
+  .normas-header {
+    flex-direction: column;
+  }
+
+
+  .normas-header__actions {
+    width: 100%;
+
+    justify-content: flex-start;
+  }
+
+
+  .normas-toolbar {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+
+  .normas-search {
+    max-width: none;
+  }
+
+
+  .normas-filters {
+    justify-content: flex-start;
+  }
+
+}
+
+
+/* =========================================================
+   29. RESPONSIVE - MÓVIL
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .normas-page {
+    padding: var(--space-12, 12px);
+  }
+
+
+  .normas-header {
+    padding: 20px 18px;
+
+    border-radius: var(--radius-lg, 14px);
+  }
+
+
+  .normas-header__actions {
+    flex-direction: column;
+  }
+
+
+  .normas-header__actions
+  .normas-button {
+    width: 100%;
+  }
+
+
+  .normas-toolbar {
+    padding: 14px;
+  }
+
+
+  .normas-filters {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+
+  .normas-filter {
+    width: 100%;
+  }
+
+
+  .normas-filter__select {
+    width: 100%;
+  }
+
+
+  .normas-filter__clear {
+    width: 100%;
+  }
+
+}
+
+
+
+/* =========================================================
+   GESTIÓN NORMAS DE CONVIVENCIA
+   PARTE 2
+   Resumen · Estados · Loading · Empty · Spinner
+   ========================================================= */
+
+
+/* =========================================================
+   30. RESUMEN GENERAL
+   ========================================================= */
+
+.normas-summary {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: var(--space-12, 12px);
+
+  margin-bottom: var(--space-16, 16px);
+}
+
+
+/* =========================================================
+   31. TARJETA DE RESUMEN
+   ========================================================= */
+
+.normas-summary__item {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-width: 0;
+  min-height: 78px;
+
+  gap: var(--space-12, 12px);
+
+  padding: 16px 18px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      var(--gray-50) 100%
+    );
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg, 14px);
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.045));
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+
+/* Línea lateral */
+
+.normas-summary__item::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 4px;
+  height: 100%;
+
+  background: var(--color-primary);
+}
+
+
+/* Decoración de fondo */
+
+.normas-summary__item::after {
+  content: '';
+
+  position: absolute;
+  right: -28px;
+  bottom: -42px;
+
+  width: 100px;
+  height: 100px;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.07),
+      transparent 68%
+    );
+}
+
+
+.normas-summary__item:hover {
+  border-color: var(--border);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.07);
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   32. RESUMEN - TOTAL
+   ========================================================= */
+
+.normas-summary__item:not(
+  .normas-summary__item--active
+):not(
+  .normas-summary__item--inactive
+):not(
+  .normas-summary__item--filtered
+)::before {
+  background: var(--color-primary);
+}
+
+
+/* =========================================================
+   33. RESUMEN - ACTIVAS
+   ========================================================= */
+
+.normas-summary__item--active {
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      #F7FFF9 100%
+    );
+
+  border-color: #DCFCE7;
+}
+
+
+.normas-summary__item--active::before {
+  background: var(--success);
+}
+
+
+.normas-summary__item--active::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(22, 163, 74, 0.08),
+      transparent 68%
+    );
+}
+
+
+/* =========================================================
+   34. RESUMEN - INACTIVAS
+   ========================================================= */
+
+.normas-summary__item--inactive {
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      #FFF9F9 100%
+    );
+
+  border-color: #FEE2E2;
+}
+
+
+.normas-summary__item--inactive::before {
+  background: var(--danger);
+}
+
+
+.normas-summary__item--inactive::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(220, 38, 38, 0.065),
+      transparent 68%
+    );
+}
+
+
+/* =========================================================
+   35. RESUMEN - FILTRADAS
+   ========================================================= */
+
+.normas-summary__item--filtered {
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      #F7FCFF 100%
+    );
+
+  border-color: #E0F2FE;
+}
+
+
+.normas-summary__item--filtered::before {
+  background: var(--info);
+}
+
+
+.normas-summary__item--filtered::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(14, 165, 233, 0.08),
+      transparent 68%
+    );
+}
+
+
+/* =========================================================
+   36. LABEL DEL RESUMEN
+   ========================================================= */
+
+.normas-summary__label {
+  position: relative;
+  z-index: 1;
+
+  color: var(--text-secondary);
+
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.35;
+
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   37. VALOR DEL RESUMEN
+   ========================================================= */
+
+.normas-summary__value {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 42px;
+  min-height: 42px;
+
+  padding: 0 9px;
+
+  color: var(--color-primary-dark);
+
+  font-size: 1.25rem;
+  font-weight: 900;
+  line-height: 1;
+
+  letter-spacing: -0.035em;
+
+  background: var(--color-primary-light);
+
+  border: 1px solid #BFDBFE;
+  border-radius: 11px;
+}
+
+
+/* Activas */
+
+.normas-summary__item--active
+.normas-summary__value {
+  color: var(--success-dark);
+
+  background: var(--success-light);
+
+  border-color: var(--success-border);
+}
+
+
+/* Inactivas */
+
+.normas-summary__item--inactive
+.normas-summary__value {
+  color: var(--danger-dark);
+
+  background: var(--danger-light);
+
+  border-color: var(--danger-border);
+}
+
+
+/* Filtradas */
+
+.normas-summary__item--filtered
+.normas-summary__value {
+  color: var(--info-dark);
+
+  background: var(--info-light);
+
+  border-color: #BAE6FD;
+}
+
+
+/* =========================================================
+   38. ESTADO GENERAL
+   ========================================================= */
+
+.normas-state {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 330px;
+
+  padding: 42px 24px;
+
+  overflow: hidden;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      var(--surface-secondary) 100%
+    );
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl, 18px);
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.045));
+
+  animation:
+    normas-state-enter 220ms ease-out;
+}
+
+
+@keyframes normas-state-enter {
+
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* Decoración */
+
+.normas-state::before {
+  content: '';
+
+  position: absolute;
+  top: -120px;
+  left: 50%;
+
+  width: 300px;
+  height: 300px;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.055),
+      transparent 68%
+    );
+
+  transform: translateX(-50%);
+}
+
+
+/* =========================================================
+   39. TÍTULO DE ESTADO
+   ========================================================= */
+
+.normas-state__title {
+  position: relative;
+  z-index: 1;
+
+  margin: 14px 0 0;
+
+  color: var(--gray-900);
+
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.3;
+
+  letter-spacing: -0.015em;
+}
+
+
+/* =========================================================
+   40. DESCRIPCIÓN DE ESTADO
+   ========================================================= */
+
+.normas-state__description {
+  position: relative;
+  z-index: 1;
+
+  max-width: 430px;
+
+  margin: 7px auto 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+
+/* Botón dentro del empty state */
+
+.normas-state
+.normas-button {
+  position: relative;
+  z-index: 1;
+
+  margin-top: var(--space-16, 16px);
+}
+
+
+/* =========================================================
+   41. ESTADO DE CARGA
+   ========================================================= */
+
+.normas-state--loading {
+  min-height: 290px;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      #F8FBFF 100%
+    );
+}
+
+
+/* =========================================================
+   42. SPINNER
+   ========================================================= */
+
+.normas-spinner {
+  position: relative;
+  z-index: 1;
+
+  width: 42px;
+  height: 42px;
+
+  border: 4px solid var(--color-primary-light);
+  border-top-color: var(--color-primary);
+  border-right-color: var(--info);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 5px rgba(37, 99, 235, 0.035);
+
+  animation:
+    normas-spinner-rotate 720ms linear infinite;
+}
+
+
+@keyframes normas-spinner-rotate {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* Centro del spinner */
+
+.normas-spinner::after {
+  content: '';
+
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 8px;
+  height: 8px;
+
+  background: var(--color-primary);
+
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+
+/* =========================================================
+   43. ESTADO VACÍO
+   ========================================================= */
+
+.normas-state--empty {
+  min-height: 350px;
+}
+
+
+/* =========================================================
+   44. ICONO ESTADO VACÍO
+   ========================================================= */
+
+.normas-state__icon {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 68px;
+  height: 68px;
+
+  color: var(--color-primary-dark);
+
+  font-size: 1.7rem;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      #EFF6FF
+    );
+
+  border: 1px solid #BFDBFE;
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 24px rgba(37, 99, 235, 0.11);
+
+  transform: rotate(-2deg);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+
+.normas-state--empty:hover
+.normas-state__icon {
+  box-shadow:
+    0 14px 28px rgba(37, 99, 235, 0.15);
+
+  transform:
+    rotate(0deg)
+    translateY(-2px);
+}
+
+
+/* =========================================================
+   45. SEPARADOR VISUAL EN EMPTY
+   ========================================================= */
+
+.normas-state--empty
+.normas-state__description::after {
+  content: '';
+
+  display: block;
+
+  width: 42px;
+  height: 3px;
+
+  margin: 15px auto 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info)
+    );
+
+  border-radius: 999px;
+
+  opacity: 0.75;
+}
+
+
+/* =========================================================
+   46. RESPONSIVE - RESUMEN
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .normas-summary {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   47. RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .normas-summary__item {
+    min-height: 72px;
+
+    padding: 14px 16px;
+  }
+
+
+  .normas-summary__value {
+    min-width: 38px;
+    min-height: 38px;
+
+    font-size: 1.1rem;
+  }
+
+
+  .normas-state {
+    min-height: 300px;
+
+    padding: 36px 20px;
+  }
+
+}
+
+
+/* =========================================================
+   48. RESPONSIVE - MÓVIL
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .normas-summary {
+    grid-template-columns: 1fr;
+
+    gap: var(--space-8, 8px);
+  }
+
+
+  .normas-summary__item {
+    min-height: 64px;
+
+    padding: 12px 14px;
+
+    border-radius: var(--radius-md, 10px);
+  }
+
+
+  .normas-summary__label {
+    font-size: 0.68rem;
+  }
+
+
+  .normas-summary__value {
+    min-width: 36px;
+    min-height: 36px;
+
+    font-size: 1rem;
+
+    border-radius: 9px;
+  }
+
+
+  .normas-state {
+    min-height: 270px;
+
+    padding: 30px 16px;
+
+    border-radius: var(--radius-lg, 14px);
+  }
+
+
+  .normas-state__icon {
+    width: 58px;
+    height: 58px;
+
+    font-size: 1.45rem;
+
+    border-radius: 17px;
+  }
+
+
+  .normas-state__title {
+    font-size: 0.94rem;
+  }
+
+
+  .normas-state__description {
+    font-size: 0.75rem;
+  }
+
+
+  .normas-spinner {
+    width: 38px;
+    height: 38px;
+  }
+
+}
+
+
+/* =========================================================
+   49. MOVIMIENTO REDUCIDO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .normas-summary__item,
+  .normas-state,
+  .normas-state__icon {
+    transition: none;
+  }
+
+
+  .normas-state {
+    animation: none;
+  }
+
+
+  .normas-spinner {
+    animation-duration: 1.2s;
+  }
+
+}
+
+
+/* =========================================================
+   GESTIÓN NORMAS DE CONVIVENCIA
+   PARTE 3
+   Tabla · Sticky header · Orden · Categorías · Archivo
+   Estado · Acciones
+   ========================================================= */
+
+
+/* =========================================================
+   50. TARJETA DE TABLA
+   ========================================================= */
+
+.normas-table-card {
+  position: relative;
+
+  overflow: hidden;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg, 14px);
+
+  box-shadow:
+    var(--shadow-md, 0 8px 24px rgba(15, 23, 42, 0.08));
+}
+
+
+/* =========================================================
+   51. WRAPPER
+   ========================================================= */
+
+.normas-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: visible;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-300) transparent;
+}
+
+
+.normas-table-wrapper::-webkit-scrollbar {
+  height: 10px;
+}
+
+
+.normas-table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+.normas-table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+
+  border: 2px solid var(--surface);
+  border-radius: 999px;
+}
+
+
+.normas-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+}
+
+
+/* =========================================================
+   52. TABLA
+   ========================================================= */
+
+.normas-table {
+  width: 100%;
+  min-width: 1080px;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  font-size: 0.82rem;
+}
+
+
+/* =========================================================
+   53. ENCABEZADO STICKY
+   ========================================================= */
+
+.normas-table__head {
+  position: sticky;
+  top: 0;
+
+  z-index: 7;
+
+  background:
+    linear-gradient(
+      180deg,
+      #F8FAFC 0%,
+      #F1F5F9 100%
+    );
+
+  box-shadow:
+    0 1px 0 var(--border-light);
+}
+
+
+.normas-table__head th {
+  position: relative;
+
+  padding: 14px 15px;
+
+  color: var(--gray-700);
+
+  font-size: 0.69rem;
+  font-weight: 850;
+  line-height: 1.2;
+
+  letter-spacing: 0.055em;
+  text-align: left;
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  border-bottom: 1px solid var(--border-light);
+}
+
+
+/* Separadores */
+
+.normas-table__head th:not(:last-child)::after {
+  content: '';
+
+  position: absolute;
+  top: 30%;
+  right: 0;
+
+  width: 1px;
+  height: 40%;
+
+  background: var(--border-light);
+}
+
+
+/* =========================================================
+   54. CUERPO
+   ========================================================= */
+
+.normas-table__body {
+  background: var(--surface);
+}
+
+
+.normas-table__row {
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+
+.normas-table__row:hover {
+  background: #FBFDFF;
+
+  box-shadow:
+    inset 3px 0 0 var(--color-primary);
+}
+
+
+.normas-table__row:not(:last-child) td {
+  border-bottom: 1px solid var(--border-light);
+}
+
+
+.normas-table td {
+  padding: 15px;
+
+  color: var(--text-secondary);
+
+  vertical-align: middle;
+}
+
+
+/* =========================================================
+   55. ORDEN
+   ========================================================= */
+
+.normas-table__order-cell {
+  width: 78px;
+
+  text-align: center;
+}
+
+
+.normas-order {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  color: var(--color-primary-dark);
+
+  font-size: 0.78rem;
+  font-weight: 900;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      #EFF6FF
+    );
+
+  border: 1px solid #BFDBFE;
+  border-radius: 10px;
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================================
+   56. CELDA DE CONTENIDO
+   ========================================================= */
+
+.normas-table__content-cell {
+  min-width: 330px;
+  max-width: 430px;
+}
+
+
+.normas-content {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 5px;
+}
+
+
+.normas-content__title {
+  color: var(--gray-900);
+
+  font-size: 0.9rem;
+  font-weight: 850;
+  line-height: 1.35;
+
+  word-break: break-word;
+}
+
+
+.normas-content__description {
+  display: -webkit-box;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  color: var(--text-secondary);
+
+  font-size: 0.78rem;
+  line-height: 1.5;
+
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+
+.normas-content__created {
+  margin-top: 2px;
+
+  color: var(--text-muted);
+
+  font-size: 0.67rem;
+  font-weight: 650;
+}
+
+
+/* =========================================================
+   57. CATEGORÍA BASE
+   ========================================================= */
+
+.normas-category {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 27px;
+
+  padding: 5px 9px;
+
+  color: var(--gray-700);
+
+  font-size: 0.68rem;
+  font-weight: 800;
+
+  white-space: nowrap;
+
+  background: var(--gray-100);
+
+  border: 1px solid var(--gray-200);
+  border-radius: 999px;
+}
+
+
+/* =========================================================
+   58. CATEGORÍAS
+   ========================================================= */
+
+.normas-category--general {
+  color: var(--color-primary-dark);
+
+  background: var(--color-primary-light);
+
+  border-color: #BFDBFE;
+}
+
+
+.normas-category--noise {
+  color: var(--warning-dark);
+
+  background: var(--warning-light);
+
+  border-color: #FCD34D;
+}
+
+
+.normas-category--pets {
+  color: var(--accent);
+
+  background: var(--accent-light);
+
+  border-color: #DDD6FE;
+}
+
+
+.normas-category--parking {
+  color: var(--gray-700);
+
+  background: var(--gray-100);
+
+  border-color: var(--gray-300);
+}
+
+
+.normas-category--common {
+  color: var(--info-dark);
+
+  background: var(--info-light);
+
+  border-color: #BAE6FD;
+}
+
+
+.normas-category--security {
+  color: var(--danger-dark);
+
+  background: var(--danger-light);
+
+  border-color: var(--danger-border);
+}
+
+
+/* =========================================================
+   59. ARCHIVO
+   ========================================================= */
+
+.normas-file {
+  display: inline-flex;
+  align-items: center;
+
+  max-width: 180px;
+
+  gap: 7px;
+
+  padding: 7px 10px;
+
+  color: var(--color-primary-dark);
+
+  font-size: 0.72rem;
+  font-weight: 750;
+
+  text-decoration: none;
+
+  background: #F8FBFF;
+
+  border: 1px solid #BFDBFE;
+  border-radius: 9px;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+
+.normas-file:hover {
+  color: var(--text-white);
+
+  background: var(--color-primary);
+
+  border-color: var(--color-primary);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.14);
+}
+
+
+.normas-file__icon {
+  flex: 0 0 auto;
+
+  font-size: 0.85rem;
+}
+
+
+.normas-file__name {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.normas-table__no-file {
+  color: var(--gray-400);
+
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+
+/* =========================================================
+   60. ESTADO
+   ========================================================= */
+
+.normas-status {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 27px;
+
+  gap: 7px;
+
+  padding: 5px 9px;
+
+  font-size: 0.68rem;
+  font-weight: 800;
+
+  white-space: nowrap;
+
+  border: 1px solid transparent;
+  border-radius: 999px;
+}
+
+
+.normas-status__dot {
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+}
+
+
+/* Activa */
+
+.normas-status--active {
+  color: var(--success-dark);
+
+  background: var(--success-light);
+
+  border-color: var(--success-border);
+}
+
+
+.normas-status--active
+.normas-status__dot {
+  background: var(--success);
+
+  box-shadow:
+    0 0 0 3px rgba(22, 163, 74, 0.10);
+}
+
+
+/* Inactiva */
+
+.normas-status--inactive {
+  color: var(--gray-600);
+
+  background: var(--gray-100);
+
+  border-color: var(--gray-200);
+}
+
+
+.normas-status--inactive
+.normas-status__dot {
+  background: var(--gray-400);
+}
+
+
+/* =========================================================
+   61. FECHA DE ACTUALIZACIÓN
+   ========================================================= */
+
+.normas-table__date {
+  min-width: 145px;
+
+  color: var(--gray-600);
+
+  font-size: 0.74rem;
+  font-weight: 650;
+
+  white-space: nowrap;
+}
+
+
+.normas-table__no-update {
+  color: var(--gray-400);
+
+  font-size: 0.71rem;
+  font-weight: 650;
+}
+
+
+/* =========================================================
+   62. ACCIONES
+   ========================================================= */
+
+.normas-table__actions-heading {
+  text-align: right !important;
+}
+
+
+.normas-table__actions {
+  min-width: 250px;
+
+  text-align: right;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   63. BOTÓN DE ACCIÓN BASE
+   ========================================================= */
+
+.normas-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 33px;
+
+  margin-left: 5px;
+  padding: 0 10px;
+
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 800;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+
+
+.normas-action:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+
+.normas-action:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+
+.normas-action:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   64. EDITAR
+   ========================================================= */
+
+.normas-action--edit {
+  color: var(--color-primary-dark);
+
+  background: var(--color-primary-light);
+
+  border-color: #BFDBFE;
+}
+
+
+.normas-action--edit:hover:not(:disabled) {
+  color: var(--text-white);
+
+  background: var(--color-primary);
+
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.16);
+}
+
+
+/* =========================================================
+   65. DESACTIVAR
+   ========================================================= */
+
+.normas-action--disable {
+  color: var(--warning-dark);
+
+  background: var(--warning-light);
+
+  border-color: #FCD34D;
+}
+
+
+.normas-action--disable:hover:not(:disabled) {
+  background: #FDE68A;
+
+  border-color: var(--warning);
+}
+
+
+/* =========================================================
+   66. ACTIVAR
+   ========================================================= */
+
+.normas-action--enable {
+  color: var(--success-dark);
+
+  background: var(--success-light);
+
+  border-color: var(--success-border);
+}
+
+
+.normas-action--enable:hover:not(:disabled) {
+  color: var(--text-white);
+
+  background: var(--success);
+
+  border-color: var(--success);
+}
+
+
+/* =========================================================
+   67. ELIMINAR
+   ========================================================= */
+
+.normas-action--delete {
+  color: var(--danger-dark);
+
+  background: var(--danger-light);
+
+  border-color: var(--danger-border);
+}
+
+
+.normas-action--delete:hover:not(:disabled) {
+  color: var(--text-white);
+
+  background: var(--danger);
+
+  border-color: var(--danger);
+
+  box-shadow:
+    0 5px 12px rgba(220, 38, 38, 0.15);
+}
+
+
+/* =========================================================
+   68. FOCUS ACCESIBLE
+   ========================================================= */
+
+.normas-file:focus-visible,
+.normas-action:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.13);
+}
+
+
+/* =========================================================
+   69. RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .normas-table-card {
+    border-radius: var(--radius-md, 10px);
+  }
+
+
+  .normas-table {
+    min-width: 1020px;
+  }
+
+
+  .normas-table td,
+  .normas-table__head th {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .normas-table {
+    min-width: 960px;
+  }
+
+
+  .normas-table__content-cell {
+    min-width: 285px;
+    max-width: 320px;
+  }
+
+
+  .normas-content__title {
+    font-size: 0.84rem;
+  }
+
+
+  .normas-content__description {
+    font-size: 0.74rem;
+  }
+
+
+  .normas-action {
+    min-height: 31px;
+
+    padding: 0 8px;
+
+    font-size: 0.67rem;
+  }
+
+}
+
+
+/* =========================================================
+   GESTIÓN NORMAS DE CONVIVENCIA
+   PARTE 4
+   Modal · Backdrop · Header · Body · Placeholder · Responsive
+   ========================================================= */
+
+
+/* =========================================================
+   70. BACKDROP DEL MODAL
+   ========================================================= */
+
+.normas-modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--space-24, 24px);
+
+  background:
+    rgba(2, 6, 23, 0.52);
+
+  backdrop-filter: blur(7px);
+
+  animation:
+    normas-backdrop-in 180ms ease-out;
+}
+
+
+@keyframes normas-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   71. CONTENEDOR DEL MODAL
+   ========================================================= */
+
+.normas-modal {
+  position: relative;
+
+  width: min(780px, 100%);
+  max-height: calc(100vh - 48px);
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      #FCFDFF 100%
+    );
+
+  border: 1px solid rgba(203, 213, 225, 0.92);
+  border-radius: var(--radius-xl, 18px);
+
+  box-shadow:
+    0 30px 72px rgba(2, 6, 23, 0.28),
+    0 8px 24px rgba(15, 23, 42, 0.13);
+
+  animation:
+    normas-modal-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+@keyframes normas-modal-in {
+  from {
+    opacity: 0;
+    transform:
+      translateY(18px)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   72. LÍNEA SUPERIOR DECORATIVA
+   ========================================================= */
+
+.normas-modal::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info),
+      var(--accent)
+    );
+}
+
+
+/* =========================================================
+   73. HEADER DEL MODAL
+   ========================================================= */
+
+.normas-modal__header {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: var(--space-20, 20px);
+
+  padding: 24px 26px 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface) 0%,
+      #F8FBFF 100%
+    );
+
+  border-bottom: 1px solid var(--border-light);
+}
+
+
+/* =========================================================
+   74. EYEBROW
+   ========================================================= */
+
+.normas-modal__eyebrow {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 6px;
+
+  color: var(--color-primary-dark);
+
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1.2;
+
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+
+.normas-modal__eyebrow::before {
+  content: '';
+
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 7px;
+
+  background: var(--color-primary);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 4px var(--color-primary-light);
+}
+
+
+/* =========================================================
+   75. TÍTULO DEL MODAL
+   ========================================================= */
+
+.normas-modal__title {
+  margin: 0;
+
+  color: var(--gray-950);
+
+  font-size: 1.35rem;
+  font-weight: 850;
+  line-height: 1.2;
+
+  letter-spacing: -0.025em;
+}
+
+
+/* =========================================================
+   76. BOTÓN CERRAR
+   ========================================================= */
+
+.normas-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  padding: 0;
+
+  color: var(--gray-500);
+
+  font-family: inherit;
+  font-size: 1.45rem;
+  line-height: 1;
+
+  background: var(--gray-50);
+
+  border: 1px solid var(--border-light);
+  border-radius: 11px;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+
+.normas-modal__close:hover {
+  color: var(--danger-dark);
+
+  background: var(--danger-light);
+
+  border-color: var(--danger-border);
+
+  box-shadow:
+    0 5px 12px rgba(220, 38, 38, 0.1);
+
+  transform:
+    rotate(2deg)
+    scale(1.03);
+}
+
+
+.normas-modal__close:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.14);
+}
+
+
+/* =========================================================
+   77. CUERPO DEL MODAL
+   ========================================================= */
+
+.normas-modal__body {
+  max-height: calc(100vh - 170px);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 24px 26px 28px;
+
+  background: var(--surface);
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-300) transparent;
+}
+
+
+.normas-modal__body::-webkit-scrollbar {
+  width: 9px;
+}
+
+
+.normas-modal__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+.normas-modal__body::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+
+  border: 2px solid var(--surface);
+  border-radius: 999px;
+}
+
+
+.normas-modal__body::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+}
+
+
+/* =========================================================
+   78. PLACEHOLDER TEMPORAL
+   ========================================================= */
+
+.normas-modal__placeholder {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 230px;
+
+  gap: var(--space-12, 12px);
+
+  padding: var(--space-24, 24px);
+
+  overflow: hidden;
+
+  color: var(--text-muted);
+
+  font-size: 0.86rem;
+  font-weight: 650;
+  line-height: 1.5;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gray-50),
+      #F8FBFF
+    );
+
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg, 14px);
+}
+
+
+/* Decoración sutil */
+
+.normas-modal__placeholder::after {
+  content: '';
+
+  position: absolute;
+  right: -45px;
+  bottom: -55px;
+
+  width: 130px;
+  height: 130px;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.06),
+      transparent 68%
+    );
+}
+
+
+/* =========================================================
+   79. ICONO DEL PLACEHOLDER
+   ========================================================= */
+
+.normas-modal__placeholder::before {
+  content: '📘';
+
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  flex: 0 0 48px;
+
+  font-size: 1.25rem;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      var(--info-light)
+    );
+
+  border: 1px solid #BFDBFE;
+  border-radius: 14px;
+
+  box-shadow:
+    0 7px 16px rgba(37, 99, 235, 0.1);
+}
+
+
+/* =========================================================
+   80. ESTADO DEL MODAL CON FORMULARIO
+   ========================================================= */
+
+.normas-modal__body > * {
+  width: 100%;
+}
+
+
+/* =========================================================
+   81. RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .normas-modal-backdrop {
+    padding: var(--space-16, 16px);
+  }
+
+
+  .normas-modal {
+    max-height: calc(100vh - 32px);
+
+    border-radius: var(--radius-lg, 14px);
+  }
+
+
+  .normas-modal__header {
+    padding:
+      22px
+      20px
+      18px;
+  }
+
+
+  .normas-modal__body {
+    max-height: calc(100vh - 145px);
+
+    padding:
+      20px
+      20px
+      24px;
+  }
+
+
+  .normas-modal__title {
+    font-size: 1.2rem;
+  }
+
+}
+
+
+/* =========================================================
+   82. RESPONSIVE - MÓVIL
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+  .normas-modal-backdrop {
+    align-items: flex-end;
+
+    padding: 0;
+  }
+
+
+  .normas-modal {
+    width: 100%;
+    max-height: 94vh;
+
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+
+    border-radius:
+      var(--radius-xl, 18px)
+      var(--radius-xl, 18px)
+      0
+      0;
+  }
+
+
+  .normas-modal__header {
+    padding:
+      20px
+      18px
+      16px;
+  }
+
+
+  .normas-modal__body {
+    max-height: calc(94vh - 120px);
+
+    padding: 18px;
+  }
+
+
+  .normas-modal__title {
+    font-size: 1.08rem;
+  }
+
+
+  .normas-modal__close {
+    width: 36px;
+    height: 36px;
+
+    flex-basis: 36px;
+  }
+
+
+  .normas-modal__placeholder {
+    min-height: 190px;
+
+    flex-direction: column;
+
+    padding: 20px 16px;
+  }
+
+}
+
+
+/* =========================================================
+   83. RESPONSIVE EXTRA PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+  .normas-modal__header {
+    gap: var(--space-12, 12px);
+  }
+
+
+  .normas-modal__eyebrow {
+    font-size: 0.65rem;
+  }
+
+
+  .normas-modal__title {
+    font-size: 1rem;
+  }
+
+
+  .normas-modal__body {
+    padding: 15px;
+  }
+
+}
+
+
+/* =========================================================
+   84. MOVIMIENTO REDUCIDO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .normas-modal-backdrop,
+  .normas-modal {
+    animation: none;
+  }
+
+
+  .normas-modal__close {
+    transition: none;
+  }
+
+}
+

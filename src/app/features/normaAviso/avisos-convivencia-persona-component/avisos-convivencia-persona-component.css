@@ -1,0 +1,3204 @@
+/* =========================================================
+   AVISOS Y CONVIVENCIA - PERSONA
+   PARTE 1
+   Base · Header · Tabs · Secciones · Toolbar · Alertas
+   ========================================================= */
+
+
+/* =========================================================
+   1. CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.persona-info-page {
+  width: 100%;
+  min-width: 0;
+
+  padding: var(--space-24, 24px);
+
+  color: var(--text-primary);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37, 99, 235, 0.055),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      var(--background) 0%,
+      #FFFFFF 100%
+    );
+
+  font-family: inherit;
+}
+
+
+.persona-info-page,
+.persona-info-page *,
+.persona-info-page *::before,
+.persona-info-page *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   2. HEADER GENERAL
+   ========================================================= */
+
+.persona-info-header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: var(--space-24, 24px);
+
+  margin-bottom: var(--space-20, 20px);
+  padding: 26px 28px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface) 0%,
+      #F8FBFF 100%
+    );
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl, 18px);
+
+  box-shadow:
+    var(--shadow-md, 0 8px 24px rgba(15, 23, 42, 0.07));
+}
+
+
+/* Línea corporativa superior */
+
+.persona-info-header::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info),
+      var(--accent)
+    );
+}
+
+
+/* Decoración */
+
+.persona-info-header::after {
+  content: '';
+
+  position: absolute;
+  top: -100px;
+  right: -80px;
+
+  width: 260px;
+  height: 260px;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.09),
+      transparent 70%
+    );
+}
+
+
+/* =========================================================
+   3. CONTENIDO DEL HEADER
+   ========================================================= */
+
+.persona-info-header__content {
+  position: relative;
+  z-index: 1;
+
+  max-width: 620px;
+  min-width: 0;
+}
+
+
+/* =========================================================
+   4. EYEBROW DEL HEADER
+   ========================================================= */
+
+.persona-info-header__eyebrow {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 7px;
+
+  color: var(--color-primary-dark);
+
+  font-size: 0.68rem;
+  font-weight: 850;
+
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+
+.persona-info-header__eyebrow::before {
+  content: '';
+
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 7px;
+
+  background: var(--color-primary);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 4px var(--color-primary-light);
+}
+
+
+/* =========================================================
+   5. TÍTULO GENERAL
+   ========================================================= */
+
+.persona-info-header__title {
+  margin: 0;
+
+  color: var(--gray-950);
+
+  font-size: clamp(1.45rem, 2vw, 1.9rem);
+  font-weight: 850;
+  line-height: 1.15;
+
+  letter-spacing: -0.035em;
+}
+
+
+/* =========================================================
+   6. DESCRIPCIÓN GENERAL
+   ========================================================= */
+
+.persona-info-header__description {
+  max-width: 580px;
+
+  margin: 8px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.87rem;
+  font-weight: 450;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   7. NAVEGACIÓN AVISOS / NORMAS
+   ========================================================= */
+
+.persona-info-tabs {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: stretch;
+
+  min-width: 430px;
+
+  gap: 8px;
+
+  padding: 6px;
+
+  background:
+    rgba(255, 255, 255, 0.78);
+
+  border: 1px solid var(--border-light);
+  border-radius: 15px;
+
+  box-shadow:
+    0 7px 20px rgba(15, 23, 42, 0.07);
+
+  backdrop-filter: blur(10px);
+}
+
+
+/* =========================================================
+   8. BOTÓN DE TAB
+   ========================================================= */
+
+.persona-info-tabs__button {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  flex: 1;
+
+  min-width: 0;
+  min-height: 62px;
+
+  gap: 10px;
+
+  padding: 10px 12px;
+
+  color: var(--gray-600);
+
+  font-family: inherit;
+
+  text-align: left;
+
+  background: transparent;
+
+  border: 1px solid transparent;
+  border-radius: 11px;
+
+  cursor: pointer;
+
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+
+.persona-info-tabs__button:hover {
+  color: var(--color-primary-dark);
+
+  background: var(--surface);
+
+  border-color: var(--border-light);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   9. TAB ACTIVO
+   ========================================================= */
+
+.persona-info-tabs__button--active {
+  color: var(--color-primary-dark);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      #EFF6FF
+    );
+
+  border-color: #BFDBFE;
+
+  box-shadow:
+    0 5px 14px rgba(37, 99, 235, 0.11);
+}
+
+
+.persona-info-tabs__button--active::after {
+  content: '';
+
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  bottom: 5px;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info)
+    );
+
+  border-radius: 999px;
+}
+
+
+/* =========================================================
+   10. ICONO DEL TAB
+   ========================================================= */
+
+.persona-info-tabs__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  flex: 0 0 36px;
+
+  font-size: 1rem;
+
+  background: var(--gray-100);
+
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+
+.persona-info-tabs__button--active
+.persona-info-tabs__icon {
+  background: var(--surface);
+
+  border-color: #BFDBFE;
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.09);
+}
+
+
+/* =========================================================
+   11. TEXTO DEL TAB
+   ========================================================= */
+
+.persona-info-tabs__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 2px;
+}
+
+
+.persona-info-tabs__content strong {
+  overflow: hidden;
+
+  color: inherit;
+
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.25;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.persona-info-tabs__content small {
+  overflow: hidden;
+
+  color: var(--text-muted);
+
+  font-size: 0.65rem;
+  font-weight: 550;
+  line-height: 1.25;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   12. CONTADOR DEL TAB
+   ========================================================= */
+
+.persona-info-tabs__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 25px;
+  height: 25px;
+
+  flex: 0 0 auto;
+
+  padding: 0 7px;
+
+  color: var(--gray-600);
+
+  font-size: 0.68rem;
+  font-weight: 850;
+
+  background: var(--gray-100);
+
+  border: 1px solid var(--gray-200);
+  border-radius: 999px;
+}
+
+
+.persona-info-tabs__button--active
+.persona-info-tabs__count {
+  color: var(--color-primary-dark);
+
+  background: var(--surface);
+
+  border-color: #BFDBFE;
+}
+
+
+/* =========================================================
+   13. SECCIÓN DE CONTENIDO
+   ========================================================= */
+
+.persona-info-section {
+  position: relative;
+
+  width: 100%;
+
+  padding: 22px 24px 26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      #FCFDFF 100%
+    );
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl, 18px);
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.05));
+}
+
+
+/* =========================================================
+   14. HEADER INTERNO DE SECCIÓN
+   ========================================================= */
+
+.persona-info-section__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: var(--space-20, 20px);
+
+  margin-bottom: var(--space-18, 18px);
+  padding-bottom: var(--space-16, 16px);
+
+  border-bottom: 1px solid var(--border-light);
+}
+
+
+/* =========================================================
+   15. EYEBROW INTERNO
+   ========================================================= */
+
+.persona-info-section__eyebrow {
+  display: inline-flex;
+  align-items: center;
+
+  margin-bottom: 4px;
+
+  color: var(--color-primary);
+
+  font-size: 0.67rem;
+  font-weight: 850;
+
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   16. TÍTULO INTERNO
+   ========================================================= */
+
+.persona-info-section__title {
+  margin: 0;
+
+  color: var(--gray-900);
+
+  font-size: 1.15rem;
+  font-weight: 850;
+  line-height: 1.25;
+
+  letter-spacing: -0.02em;
+}
+
+
+/* =========================================================
+   17. DESCRIPCIÓN INTERNA
+   ========================================================= */
+
+.persona-info-section__description {
+  max-width: 680px;
+
+  margin: 5px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   18. BOTÓN ACTUALIZAR
+   ========================================================= */
+
+.persona-info-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+
+  flex: 0 0 auto;
+
+  padding: 0 13px;
+
+  color: var(--gray-700);
+
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface),
+      var(--gray-50)
+    );
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 10px);
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+
+.persona-info-refresh:hover:not(:disabled) {
+  color: var(--color-primary-dark);
+
+  background: var(--color-primary-light);
+
+  border-color: #BFDBFE;
+
+  box-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.08);
+
+  transform: translateY(-1px);
+}
+
+
+.persona-info-refresh:disabled {
+  color: var(--text-disabled);
+
+  cursor: not-allowed;
+
+  opacity: 0.55;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   19. TOOLBAR
+   ========================================================= */
+
+.persona-info-toolbar {
+  display: flex;
+  align-items: flex-end;
+
+  gap: var(--space-12, 12px);
+
+  margin-bottom: var(--space-20, 20px);
+  padding: 14px 16px;
+
+  background: var(--gray-50);
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg, 14px);
+}
+
+
+/* =========================================================
+   20. BUSCADOR
+   ========================================================= */
+
+.persona-info-search {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 220px;
+
+  gap: 6px;
+}
+
+
+.persona-info-search__label,
+.persona-info-filter__label {
+  color: var(--gray-700);
+
+  font-size: 0.68rem;
+  font-weight: 800;
+
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   21. CONTROL BUSCADOR
+   ========================================================= */
+
+.persona-info-search__control {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+}
+
+
+.persona-info-search__icon {
+  position: absolute;
+  left: 13px;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  font-size: 0.82rem;
+
+  opacity: 0.62;
+}
+
+
+/* =========================================================
+   22. INPUT BUSCADOR
+   ========================================================= */
+
+.persona-info-search__input {
+  width: 100%;
+  min-height: 42px;
+
+  padding: 0 13px 0 39px;
+
+  color: var(--text-primary);
+
+  font-family: inherit;
+  font-size: 0.79rem;
+  font-weight: 500;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 10px);
+
+  outline: none;
+
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+
+.persona-info-search__input::placeholder {
+  color: var(--gray-400);
+}
+
+
+.persona-info-search__input:hover {
+  border-color: var(--border-dark);
+}
+
+
+.persona-info-search__input:focus {
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.09);
+}
+
+
+/* =========================================================
+   23. FILTRO
+   ========================================================= */
+
+.persona-info-filter {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 190px;
+
+  gap: 6px;
+}
+
+
+.persona-info-filter__select {
+  min-width: 190px;
+  min-height: 42px;
+
+  padding: 0 36px 0 12px;
+
+  color: var(--gray-700);
+
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 650;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 10px);
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+
+.persona-info-filter__select:hover {
+  border-color: var(--border-dark);
+}
+
+
+.persona-info-filter__select:focus {
+  color: var(--gray-900);
+
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.09);
+}
+
+
+/* =========================================================
+   24. LIMPIAR FILTROS
+   ========================================================= */
+
+.persona-info-toolbar__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+
+  padding: 0 13px;
+
+  color: var(--text-muted);
+
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 750;
+
+  white-space: nowrap;
+
+  background: transparent;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md, 10px);
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+
+.persona-info-toolbar__clear:hover {
+  color: var(--color-primary-dark);
+
+  background: var(--color-primary-light);
+
+  border-color: #BFDBFE;
+}
+
+
+/* =========================================================
+   25. ALERTA
+   ========================================================= */
+
+.persona-info-alert {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: var(--space-12, 12px);
+
+  margin-bottom: var(--space-16, 16px);
+  padding: 13px 15px;
+
+  overflow: hidden;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md, 10px);
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.045));
+}
+
+
+.persona-info-alert::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 4px;
+  height: 100%;
+}
+
+
+/* =========================================================
+   26. ALERTA DE ERROR
+   ========================================================= */
+
+.persona-info-alert--error {
+  color: var(--danger-dark);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-light),
+      #FFF9F9
+    );
+
+  border-color: var(--danger-border);
+}
+
+
+.persona-info-alert--error::before {
+  background: var(--danger);
+}
+
+
+/* =========================================================
+   27. ICONO ALERTA
+   ========================================================= */
+
+.persona-info-alert__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  flex: 0 0 30px;
+
+  color: var(--danger-dark);
+
+  font-size: 0.8rem;
+  font-weight: 900;
+
+  background: rgba(255, 255, 255, 0.65);
+
+  border: 1px solid var(--danger-border);
+  border-radius: 9px;
+}
+
+
+/* =========================================================
+   28. CONTENIDO ALERTA
+   ========================================================= */
+
+.persona-info-alert__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 2px;
+}
+
+
+.persona-info-alert__content strong {
+  font-size: 0.8rem;
+  font-weight: 850;
+}
+
+
+.persona-info-alert__content span {
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   29. FOCUS ACCESIBLE
+   ========================================================= */
+
+.persona-info-tabs__button:focus-visible,
+.persona-info-refresh:focus-visible,
+.persona-info-toolbar__clear:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.13);
+}
+
+
+/* =========================================================
+   30. RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+  .persona-info-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+
+  .persona-info-tabs {
+    width: 100%;
+    min-width: 0;
+  }
+
+}
+
+
+@media (max-width: 760px) {
+
+  .persona-info-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+
+  .persona-info-filter {
+    width: 100%;
+  }
+
+
+  .persona-info-filter__select {
+    width: 100%;
+  }
+
+
+  .persona-info-toolbar__clear {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 620px) {
+
+  .persona-info-page {
+    padding: var(--space-12, 12px);
+  }
+
+
+  .persona-info-header {
+    padding: 20px 18px;
+
+    border-radius: var(--radius-lg, 14px);
+  }
+
+
+  .persona-info-tabs {
+    flex-direction: column;
+  }
+
+
+  .persona-info-tabs__button {
+    width: 100%;
+  }
+
+
+  .persona-info-tabs__content strong,
+  .persona-info-tabs__content small {
+    white-space: normal;
+  }
+
+
+  .persona-info-section {
+    padding: 18px;
+
+    border-radius: var(--radius-lg, 14px);
+  }
+
+
+  .persona-info-section__header {
+    flex-direction: column;
+  }
+
+
+  .persona-info-refresh {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   AVISOS Y CONVIVENCIA - PERSONA
+   PARTE 2
+   Estados · Grid Avisos · Tarjetas · Prioridad · Adjuntos
+   ========================================================= */
+
+
+/* =========================================================
+   31. ESTADO GENERAL
+   ========================================================= */
+
+.persona-info-state {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 280px;
+
+  padding: 36px 24px;
+
+  overflow: hidden;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      var(--surface-secondary) 100%
+    );
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg, 14px);
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.045));
+
+  animation:
+    persona-info-state-enter 220ms ease-out;
+}
+
+
+@keyframes persona-info-state-enter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Decoración superior */
+
+.persona-info-state::before {
+  content: '';
+
+  position: absolute;
+  top: -120px;
+  left: 50%;
+
+  width: 300px;
+  height: 300px;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.055),
+      transparent 68%
+    );
+
+  transform: translateX(-50%);
+}
+
+
+/* =========================================================
+   32. ESTADO - TÍTULO
+   ========================================================= */
+
+.persona-info-state__title {
+  position: relative;
+  z-index: 1;
+
+  margin: 14px 0 0;
+
+  color: var(--gray-900);
+
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+
+/* =========================================================
+   33. ESTADO - DESCRIPCIÓN
+   ========================================================= */
+
+.persona-info-state__description {
+  position: relative;
+  z-index: 1;
+
+  max-width: 430px;
+
+  margin: 7px auto 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   34. SPINNER
+   ========================================================= */
+
+.persona-info-spinner {
+  position: relative;
+  z-index: 1;
+
+  width: 42px;
+  height: 42px;
+
+  border: 4px solid var(--color-primary-light);
+  border-top-color: var(--color-primary);
+  border-right-color: var(--info);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 5px rgba(37, 99, 235, 0.035);
+
+  animation:
+    persona-info-spinner 720ms linear infinite;
+}
+
+
+@keyframes persona-info-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   35. EMPTY STATE
+   ========================================================= */
+
+.persona-info-state--empty {
+  min-height: 300px;
+}
+
+
+/* =========================================================
+   36. ICONO EMPTY
+   ========================================================= */
+
+.persona-info-state__icon {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  height: 64px;
+
+  font-size: 1.55rem;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      var(--info-light)
+    );
+
+  border: 1px solid #BFDBFE;
+  border-radius: 19px;
+
+  box-shadow:
+    0 10px 22px rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================================================
+   37. BOTÓN EMPTY
+   ========================================================= */
+
+.persona-info-state__button {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+
+  margin-top: 16px;
+  padding: 0 14px;
+
+  color: var(--color-primary-dark);
+
+  font-family: inherit;
+  font-size: 0.73rem;
+  font-weight: 800;
+
+  background: var(--color-primary-light);
+
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-md, 10px);
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+
+.persona-info-state__button:hover {
+  color: var(--text-white);
+
+  background: var(--color-primary);
+
+  border-color: var(--color-primary);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   38. GRID DE AVISOS
+   ========================================================= */
+
+.persona-avisos-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: var(--space-16, 16px);
+}
+
+
+/* =========================================================
+   39. TARJETA DE AVISO
+   ========================================================= */
+
+.persona-aviso-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 260px;
+
+  padding: 18px 18px 16px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      #FCFDFF 100%
+    );
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg, 14px);
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.05));
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+
+/* Línea lateral */
+
+.persona-aviso-card::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 4px;
+  height: 100%;
+
+  background: var(--info);
+}
+
+
+/* Decoración interna */
+
+.persona-aviso-card::after {
+  content: '';
+
+  position: absolute;
+  right: -45px;
+  bottom: -55px;
+
+  width: 140px;
+  height: 140px;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(14, 165, 233, 0.045),
+      transparent 70%
+    );
+}
+
+
+.persona-aviso-card:hover {
+  border-color: var(--border);
+
+  box-shadow:
+    0 12px 28px rgba(15, 23, 42, 0.09);
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   40. TARJETA - URGENTE
+   ========================================================= */
+
+.persona-aviso-card--urgent {
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      #FFF9F9 100%
+    );
+
+  border-color: #FEE2E2;
+}
+
+
+.persona-aviso-card--urgent::before {
+  background: var(--danger);
+}
+
+
+.persona-aviso-card--urgent::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(220, 38, 38, 0.055),
+      transparent 70%
+    );
+}
+
+
+/* =========================================================
+   41. TARJETA - IMPORTANTE
+   ========================================================= */
+
+.persona-aviso-card--important {
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      #FFFDF6 100%
+    );
+
+  border-color: #FDE68A;
+}
+
+
+.persona-aviso-card--important::before {
+  background: var(--warning);
+}
+
+
+.persona-aviso-card--important::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(245, 158, 11, 0.06),
+      transparent 70%
+    );
+}
+
+
+/* =========================================================
+   42. TARJETA - INFORMATIVO
+   ========================================================= */
+
+.persona-aviso-card--info {
+  border-color: #BAE6FD;
+}
+
+
+.persona-aviso-card--info::before {
+  background: var(--info);
+}
+
+
+/* =========================================================
+   43. HEADER TARJETA
+   ========================================================= */
+
+.persona-aviso-card__header {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: var(--space-12, 12px);
+
+  margin-bottom: 14px;
+}
+
+
+/* =========================================================
+   44. BADGE PRIORIDAD
+   ========================================================= */
+
+.persona-aviso-card__priority {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 27px;
+
+  padding: 5px 9px;
+
+  font-size: 0.67rem;
+  font-weight: 850;
+
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+
+  border: 1px solid transparent;
+  border-radius: 999px;
+}
+
+
+/* Urgente */
+
+.persona-aviso-card__priority--urgent {
+  color: var(--danger-dark);
+
+  background: var(--danger-light);
+
+  border-color: var(--danger-border);
+}
+
+
+/* Importante */
+
+.persona-aviso-card__priority--important {
+  color: var(--warning-dark);
+
+  background: var(--warning-light);
+
+  border-color: #FCD34D;
+}
+
+
+/* Informativo */
+
+.persona-aviso-card__priority--info {
+  color: var(--info-dark);
+
+  background: var(--info-light);
+
+  border-color: #BAE6FD;
+}
+
+
+/* =========================================================
+   45. FECHA
+   ========================================================= */
+
+.persona-aviso-card__date {
+  color: var(--text-muted);
+
+  font-size: 0.68rem;
+  font-weight: 650;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   46. CONTENIDO TARJETA
+   ========================================================= */
+
+.persona-aviso-card__content {
+  position: relative;
+  z-index: 1;
+
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   47. TÍTULO AVISO
+   ========================================================= */
+
+.persona-aviso-card__title {
+  margin: 0;
+
+  color: var(--gray-900);
+
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.35;
+
+  letter-spacing: -0.015em;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   48. MENSAJE
+   ========================================================= */
+
+.persona-aviso-card__message {
+  margin: 8px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.78rem;
+  line-height: 1.55;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   49. ADJUNTO
+   ========================================================= */
+
+.persona-aviso-card__attachment {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+
+  gap: 7px;
+
+  margin-top: 14px;
+  padding: 9px 10px;
+
+  color: var(--gray-700);
+
+  background: var(--gray-50);
+
+  border: 1px solid var(--border-light);
+  border-radius: 9px;
+}
+
+
+/* =========================================================
+   50. ICONO ADJUNTO
+   ========================================================= */
+
+.persona-aviso-card__attachment-icon {
+  flex: 0 0 auto;
+
+  font-size: 0.82rem;
+}
+
+
+/* =========================================================
+   51. NOMBRE ADJUNTO
+   ========================================================= */
+
+.persona-aviso-card__attachment-name {
+  overflow: hidden;
+
+  color: var(--text-secondary);
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   52. FOOTER DE TARJETA
+   ========================================================= */
+
+.persona-aviso-card__footer {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: var(--space-8, 8px);
+
+  margin-top: 16px;
+  padding-top: 14px;
+
+  border-top: 1px solid var(--border-light);
+}
+
+
+/* =========================================================
+   53. ACCIÓN BASE
+   ========================================================= */
+
+.persona-aviso-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 35px;
+
+  padding: 0 11px;
+
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 800;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+
+.persona-aviso-card__action:hover {
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   54. VER DETALLE
+   ========================================================= */
+
+.persona-aviso-card__action--detail {
+  color: var(--color-primary-dark);
+
+  background: var(--color-primary-light);
+
+  border-color: #BFDBFE;
+}
+
+
+.persona-aviso-card__action--detail:hover {
+  color: var(--text-white);
+
+  background: var(--color-primary);
+
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.14);
+}
+
+
+/* =========================================================
+   55. ABRIR DOCUMENTO
+   ========================================================= */
+
+.persona-aviso-card__action--file {
+  color: var(--gray-700);
+
+  background: var(--surface);
+
+  border-color: var(--border);
+}
+
+
+.persona-aviso-card__action--file:hover {
+  color: var(--info-dark);
+
+  background: var(--info-light);
+
+  border-color: #BAE6FD;
+}
+
+
+/* =========================================================
+   56. FOCUS ACCESIBLE
+   ========================================================= */
+
+.persona-aviso-card__action:focus-visible,
+.persona-info-state__button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.13);
+}
+
+
+/* =========================================================
+   57. RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+  .persona-avisos-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 620px) {
+
+  .persona-aviso-card {
+    min-height: 0;
+
+    padding: 16px;
+  }
+
+
+  .persona-aviso-card__header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 7px;
+  }
+
+
+  .persona-aviso-card__date {
+    white-space: normal;
+  }
+
+
+  .persona-aviso-card__footer {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+
+  .persona-aviso-card__action {
+    width: 100%;
+
+    min-height: 40px;
+  }
+
+
+  .persona-info-state {
+    min-height: 250px;
+
+    padding: 30px 16px;
+  }
+
+}
+
+
+/* =========================================================
+   58. MOVIMIENTO REDUCIDO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .persona-info-state {
+    animation: none;
+  }
+
+
+  .persona-info-spinner {
+    animation-duration: 1.2s;
+  }
+
+
+  .persona-aviso-card,
+  .persona-aviso-card__action,
+  .persona-info-state__button {
+    transition: none;
+  }
+
+}
+
+
+/* =========================================================
+   AVISOS Y CONVIVENCIA - PERSONA
+   PARTE 3
+   Normas · Reglamento digital · Orden · Categoría · Acciones
+   ========================================================= */
+
+
+/* =========================================================
+   59. SECCIÓN DE NORMAS
+   ========================================================= */
+
+.persona-info-section--normas {
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      #FBFCFF 100%
+    );
+}
+
+
+/* =========================================================
+   60. LISTADO DE NORMAS
+   ========================================================= */
+
+.persona-normas-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-12, 12px);
+}
+
+
+/* =========================================================
+   61. TARJETA DE NORMA
+   ========================================================= */
+
+.persona-norma-card {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    76px minmax(0, 1fr);
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--surface) 0%,
+      #FCFDFF 100%
+    );
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg, 14px);
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.045));
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+
+.persona-norma-card:hover {
+  border-color: #BFDBFE;
+
+  box-shadow:
+    0 10px 26px rgba(37, 99, 235, 0.08);
+
+  transform: translateY(-1px);
+}
+
+
+/* Línea superior sutil */
+
+.persona-norma-card::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info),
+      transparent 70%
+    );
+
+  opacity: 0.7;
+}
+
+
+/* =========================================================
+   62. ORDEN DE LA NORMA
+   ========================================================= */
+
+.persona-norma-card__order {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 150px;
+
+  color: var(--color-primary-dark);
+
+  font-size: 1.45rem;
+  font-weight: 900;
+  line-height: 1;
+
+  letter-spacing: -0.04em;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-primary-light) 0%,
+      #EFF6FF 100%
+    );
+
+  border-right: 1px solid #BFDBFE;
+}
+
+
+/* Decoración del orden */
+
+.persona-norma-card__order::after {
+  content: '';
+
+  position: absolute;
+  bottom: 18px;
+
+  width: 22px;
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info)
+    );
+
+  border-radius: 999px;
+}
+
+
+/* =========================================================
+   63. CUERPO DE LA NORMA
+   ========================================================= */
+
+.persona-norma-card__body {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  padding: 18px 20px;
+}
+
+
+/* =========================================================
+   64. META
+   ========================================================= */
+
+.persona-norma-card__meta {
+  display: flex;
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: var(--space-8, 8px);
+
+  margin-bottom: 9px;
+}
+
+
+/* =========================================================
+   65. CATEGORÍA
+   ========================================================= */
+
+.persona-norma-card__category {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 26px;
+
+  padding: 4px 9px;
+
+  color: var(--color-primary-dark);
+
+  font-size: 0.66rem;
+  font-weight: 850;
+
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+
+  background: var(--color-primary-light);
+
+  border: 1px solid #BFDBFE;
+  border-radius: 999px;
+}
+
+
+/* =========================================================
+   66. DOCUMENTO DISPONIBLE
+   ========================================================= */
+
+.persona-norma-card__has-file {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: var(--info-dark);
+
+  font-size: 0.67rem;
+  font-weight: 750;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   67. TÍTULO DE NORMA
+   ========================================================= */
+
+.persona-norma-card__title {
+  margin: 0;
+
+  color: var(--gray-900);
+
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.35;
+
+  letter-spacing: -0.015em;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   68. DESCRIPCIÓN DE NORMA
+   ========================================================= */
+
+.persona-norma-card__description {
+  margin: 8px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.78rem;
+  line-height: 1.58;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   69. FOOTER DE NORMA
+   ========================================================= */
+
+.persona-norma-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: var(--space-8, 8px);
+
+  margin-top: 16px;
+  padding-top: 14px;
+
+  border-top: 1px solid var(--border-light);
+}
+
+
+/* =========================================================
+   70. ACCIÓN BASE NORMA
+   ========================================================= */
+
+.persona-norma-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 35px;
+
+  padding: 0 11px;
+
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 800;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+
+.persona-norma-card__action:hover {
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   71. VER NORMA
+   ========================================================= */
+
+.persona-norma-card__action--detail {
+  color: var(--color-primary-dark);
+
+  background: var(--color-primary-light);
+
+  border-color: #BFDBFE;
+}
+
+
+.persona-norma-card__action--detail:hover {
+  color: var(--text-white);
+
+  background: var(--color-primary);
+
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.14);
+}
+
+
+/* =========================================================
+   72. ABRIR DOCUMENTO
+   ========================================================= */
+
+.persona-norma-card__action--file {
+  color: var(--info-dark);
+
+  background: var(--info-light);
+
+  border-color: #BAE6FD;
+}
+
+
+.persona-norma-card__action--file:hover {
+  color: var(--text-white);
+
+  background: var(--info);
+
+  border-color: var(--info);
+
+  box-shadow:
+    0 5px 12px rgba(14, 165, 233, 0.14);
+}
+
+
+/* =========================================================
+   73. FOCUS ACCESIBLE
+   ========================================================= */
+
+.persona-norma-card__action:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.13);
+}
+
+
+/* =========================================================
+   74. NORMA DESTACADA EN HOVER
+   ========================================================= */
+
+.persona-norma-card:hover
+.persona-norma-card__order {
+  background:
+    linear-gradient(
+      180deg,
+      #EFF6FF 0%,
+      var(--color-primary-light) 100%
+    );
+}
+
+
+/* =========================================================
+   75. TEXTO LARGO
+   ========================================================= */
+
+.persona-norma-card__body,
+.persona-norma-card__title,
+.persona-norma-card__description {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   76. RESPONSIVE TABLET
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .persona-norma-card {
+    grid-template-columns:
+      64px minmax(0, 1fr);
+  }
+
+
+  .persona-norma-card__order {
+    min-height: 140px;
+
+    font-size: 1.25rem;
+  }
+
+
+  .persona-norma-card__body {
+    padding: 16px 18px;
+  }
+
+}
+
+
+/* =========================================================
+   77. RESPONSIVE MÓVIL
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  .persona-norma-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .persona-norma-card__order {
+    justify-content: flex-start;
+
+    min-height: 0;
+
+    padding: 13px 16px;
+
+    font-size: 1rem;
+
+    border-right: 0;
+    border-bottom: 1px solid #BFDBFE;
+  }
+
+
+  .persona-norma-card__order::after {
+    right: 16px;
+    bottom: 50%;
+
+    width: 26px;
+
+    transform: translateY(50%);
+  }
+
+
+  .persona-norma-card__body {
+    padding: 16px;
+  }
+
+
+  .persona-norma-card__footer {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+
+  .persona-norma-card__action {
+    width: 100%;
+
+    min-height: 40px;
+  }
+
+}
+
+
+/* =========================================================
+   78. RESPONSIVE EXTRA PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+  .persona-norma-card__meta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+
+  .persona-norma-card__category,
+  .persona-norma-card__has-file {
+    white-space: normal;
+  }
+
+
+  .persona-norma-card__title {
+    font-size: 0.94rem;
+  }
+
+
+  .persona-norma-card__description {
+    font-size: 0.75rem;
+  }
+
+}
+
+
+/* =========================================================
+   79. MOVIMIENTO REDUCIDO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .persona-norma-card,
+  .persona-norma-card__action {
+    transition: none;
+  }
+
+}
+
+
+/* =========================================================
+   AVISOS Y CONVIVENCIA - PERSONA
+   PARTE 4
+   Modales · Detalle aviso · Detalle norma · Documento
+   ========================================================= */
+
+
+/* =========================================================
+   80. BACKDROP
+   ========================================================= */
+
+.persona-info-modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1200;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--space-24, 24px);
+
+  background: rgba(15, 23, 42, 0.28);
+
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  animation:
+    persona-info-backdrop-in 180ms ease-out;
+}
+
+
+@keyframes persona-info-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   81. MODAL
+   ========================================================= */
+
+.persona-info-modal {
+  position: relative;
+
+  width: min(720px, 100%);
+  max-height: calc(100vh - 48px);
+
+  overflow: hidden;
+
+  background: #FFFFFF;
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl, 18px);
+
+  box-shadow:
+    0 28px 70px rgba(2, 6, 23, 0.24),
+    0 8px 24px rgba(15, 23, 42, 0.12);
+
+  animation:
+    persona-info-modal-in 220ms
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+@keyframes persona-info-modal-in {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(16px)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* Línea superior */
+
+.persona-info-modal::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--info),
+      var(--accent)
+    );
+}
+
+
+/* =========================================================
+   82. MODAL NORMA
+   ========================================================= */
+
+.persona-info-modal--norma::before {
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--accent),
+      var(--info)
+    );
+}
+
+
+/* =========================================================
+   83. HEADER MODAL
+   ========================================================= */
+
+.persona-info-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: var(--space-20, 20px);
+
+  padding: 24px 26px 20px;
+
+  background: #FFFFFF;
+
+  border-bottom: 1px solid var(--border-light);
+}
+
+
+/* =========================================================
+   84. HEADING
+   ========================================================= */
+
+.persona-info-modal__heading {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 7px;
+}
+
+
+/* =========================================================
+   85. BADGE
+   ========================================================= */
+
+.persona-info-modal__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+  min-height: 27px;
+
+  padding: 5px 9px;
+
+  font-size: 0.67rem;
+  font-weight: 850;
+
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+
+  border: 1px solid transparent;
+  border-radius: 999px;
+}
+
+
+/* Urgente */
+
+.persona-info-modal__badge--urgent {
+  color: var(--danger-dark);
+
+  background: var(--danger-light);
+
+  border-color: var(--danger-border);
+}
+
+
+/* Importante */
+
+.persona-info-modal__badge--important {
+  color: var(--warning-dark);
+
+  background: var(--warning-light);
+
+  border-color: #FCD34D;
+}
+
+
+/* Informativo */
+
+.persona-info-modal__badge--info {
+  color: var(--info-dark);
+
+  background: var(--info-light);
+
+  border-color: #BAE6FD;
+}
+
+
+/* Norma */
+
+.persona-info-modal__badge--norma {
+  color: var(--color-primary-dark);
+
+  background: var(--color-primary-light);
+
+  border-color: #BFDBFE;
+}
+
+
+/* =========================================================
+   86. TÍTULO MODAL
+   ========================================================= */
+
+.persona-info-modal__title {
+  margin: 0;
+
+  color: var(--gray-950);
+
+  font-size: 1.28rem;
+  font-weight: 850;
+  line-height: 1.25;
+
+  letter-spacing: -0.025em;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   87. BOTÓN CERRAR
+   ========================================================= */
+
+.persona-info-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  padding: 0;
+
+  color: var(--gray-500);
+
+  font-family: inherit;
+  font-size: 1.45rem;
+  line-height: 1;
+
+  background: var(--gray-50);
+
+  border: 1px solid var(--border-light);
+  border-radius: 11px;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+
+.persona-info-modal__close:hover {
+  color: var(--danger-dark);
+
+  background: var(--danger-light);
+
+  border-color: var(--danger-border);
+
+  box-shadow:
+    0 5px 12px rgba(220, 38, 38, 0.1);
+
+  transform: scale(1.03);
+}
+
+
+/* =========================================================
+   88. BODY MODAL
+   ========================================================= */
+
+.persona-info-modal__body {
+  max-height: calc(100vh - 175px);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 24px 26px 28px;
+
+  background: #FFFFFF;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-300) var(--gray-100);
+}
+
+.persona-info-modal__body::-webkit-scrollbar {
+  width: 9px;
+}
+
+
+.persona-info-modal__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+.persona-info-modal__body::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+
+  border: 2px solid var(--surface);
+  border-radius: 999px;
+}
+
+
+.persona-info-modal__body::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+}
+
+
+/* =========================================================
+   89. FECHA DEL AVISO
+   ========================================================= */
+
+.persona-info-modal__date {
+  display: inline-flex;
+  align-items: center;
+
+  margin-bottom: var(--space-16, 16px);
+  padding: 7px 10px;
+
+  color: var(--gray-600);
+
+  font-size: 0.7rem;
+  font-weight: 750;
+
+  background: var(--gray-100);
+
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+}
+
+
+/* =========================================================
+   90. CONTENIDO DEL MODAL
+   ========================================================= */
+
+.persona-info-modal__content {
+  padding: 18px 20px;
+
+  color: var(--gray-700);
+
+  font-size: 0.9rem;
+  line-height: 1.75;
+
+  background: var(--gray-50);
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md, 10px);
+}
+
+
+.persona-info-modal__content p {
+  margin: 0;
+
+  color: var(--gray-700);
+
+  white-space: pre-line;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   91. CONTENIDO DE NORMA
+   ========================================================= */
+
+.persona-info-modal__content--norma {
+  padding: 18px 20px;
+
+  color: var(--gray-700);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--gray-50),
+      #FCFDFF
+    );
+
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md, 10px);
+}
+
+
+/* =========================================================
+   92. ORDEN DE LA NORMA
+   ========================================================= */
+
+.persona-info-modal__order {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: var(--space-12, 12px);
+
+  margin-bottom: var(--space-16, 16px);
+  padding: 12px 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-light),
+      #EFF6FF
+    );
+
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-md, 10px);
+}
+
+
+.persona-info-modal__order span {
+  color: var(--color-primary-dark);
+
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+
+.persona-info-modal__order strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 38px;
+  height: 38px;
+
+  color: var(--color-primary-dark);
+
+  font-size: 1rem;
+  font-weight: 900;
+
+  background: var(--surface);
+
+  border: 1px solid #BFDBFE;
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   93. DOCUMENTO ADJUNTO
+   ========================================================= */
+
+.persona-info-modal__document {
+  display: flex;
+  align-items: center;
+
+  gap: var(--space-12, 12px);
+
+  margin-top: var(--space-20, 20px);
+  padding: 13px 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--info-light),
+      #F8FCFF
+    );
+
+  border: 1px solid #BAE6FD;
+  border-radius: var(--radius-md, 10px);
+}
+
+
+/* =========================================================
+   94. ICONO DOCUMENTO
+   ========================================================= */
+
+.persona-info-modal__document-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  font-size: 1.05rem;
+
+  background: var(--surface);
+
+  border: 1px solid #BAE6FD;
+  border-radius: 11px;
+
+  box-shadow:
+    var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.05));
+}
+
+
+/* =========================================================
+   95. INFO DOCUMENTO
+   ========================================================= */
+
+.persona-info-modal__document-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 2px;
+}
+
+
+.persona-info-modal__document-info span {
+  color: var(--info-dark);
+
+  font-size: 0.66rem;
+  font-weight: 800;
+
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+
+.persona-info-modal__document-info strong {
+  overflow: hidden;
+
+  color: var(--gray-800);
+
+  font-size: 0.8rem;
+  font-weight: 800;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   96. BOTÓN ABRIR DOCUMENTO
+   ========================================================= */
+
+.persona-info-modal__document-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 35px;
+
+  flex: 0 0 auto;
+
+  padding: 0 12px;
+
+  color: var(--color-primary-dark);
+
+  font-family: inherit;
+  font-size: 0.71rem;
+  font-weight: 800;
+
+  background: var(--surface);
+
+  border: 1px solid #BFDBFE;
+  border-radius: 9px;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+
+.persona-info-modal__document-action:hover {
+  color: var(--text-white);
+
+  background: var(--color-primary);
+
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.14);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   97. FOCUS
+   ========================================================= */
+
+.persona-info-modal__close:focus-visible,
+.persona-info-modal__document-action:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.13);
+}
+
+
+/* =========================================================
+   98. RESPONSIVE TABLET
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .persona-info-modal-backdrop {
+    padding: var(--space-16, 16px);
+  }
+
+
+  .persona-info-modal {
+    max-height: calc(100vh - 32px);
+
+    border-radius: var(--radius-lg, 14px);
+  }
+
+
+  .persona-info-modal__header {
+    padding: 22px 20px 18px;
+  }
+
+
+  .persona-info-modal__body {
+    max-height: calc(100vh - 150px);
+
+    padding: 20px;
+  }
+
+
+  .persona-info-modal__title {
+    font-size: 1.15rem;
+  }
+
+}
+
+
+/* =========================================================
+   99. RESPONSIVE MÓVIL
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+  .persona-info-modal-backdrop {
+    align-items: flex-end;
+
+    padding: 0;
+  }
+
+
+  .persona-info-modal {
+    width: 100%;
+    max-height: 94vh;
+
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+
+    border-radius:
+      var(--radius-xl, 18px)
+      var(--radius-xl, 18px)
+      0
+      0;
+  }
+
+
+  .persona-info-modal__header {
+    gap: var(--space-12, 12px);
+
+    padding: 20px 18px 16px;
+  }
+
+
+  .persona-info-modal__body {
+    max-height: calc(94vh - 118px);
+
+    padding: 18px;
+  }
+
+
+  .persona-info-modal__title {
+    font-size: 1.05rem;
+  }
+
+
+  .persona-info-modal__close {
+    width: 36px;
+    height: 36px;
+
+    flex-basis: 36px;
+  }
+
+
+  .persona-info-modal__document {
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+  }
+
+
+  .persona-info-modal__document-info {
+    min-width: calc(100% - 60px);
+  }
+
+
+  .persona-info-modal__document-action {
+    width: 100%;
+
+    margin-top: 3px;
+  }
+
+
+  .persona-info-modal__content--norma {
+    padding: 15px 16px;
+  }
+
+}
+
+
+/* =========================================================
+   100. EXTRA PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+  .persona-info-modal__badge {
+    font-size: 0.62rem;
+  }
+
+
+  .persona-info-modal__title {
+    font-size: 0.98rem;
+  }
+
+
+  .persona-info-modal__body {
+    padding: 15px;
+  }
+
+
+  .persona-info-modal__order {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}
+
+
+/* =========================================================
+   101. MOVIMIENTO REDUCIDO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .persona-info-modal-backdrop,
+  .persona-info-modal {
+    animation: none;
+  }
+
+
+  .persona-info-modal__close,
+  .persona-info-modal__document-action {
+    transition: none;
+  }
+
+}

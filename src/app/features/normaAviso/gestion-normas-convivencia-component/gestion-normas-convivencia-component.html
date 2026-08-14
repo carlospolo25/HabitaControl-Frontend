@@ -1,0 +1,672 @@
+<section class="normas-page">
+
+  <!-- ===================================================== -->
+  <!-- HEADER -->
+  <!-- ===================================================== -->
+
+  <header class="normas-header">
+
+    <div class="normas-header__content">
+
+      <span class="normas-header__eyebrow">
+        Convivencia y administración
+      </span>
+
+      <h2 class="normas-header__title">
+        Normas de convivencia
+      </h2>
+
+      <p class="normas-header__description">
+        Administra las normas internas de la copropiedad, su categoría,
+        orden de visualización, estado y documentos adjuntos.
+      </p>
+
+    </div>
+
+    <div class="normas-header__actions">
+
+      <button
+        type="button"
+        class="normas-button normas-button--secondary"
+        (click)="cargarNormas()"
+        [disabled]="isLoading || isProcessing">
+        Actualizar
+      </button>
+
+      <button
+        type="button"
+        class="normas-button normas-button--primary"
+        (click)="abrirCrear()"
+        [disabled]="isProcessing">
+
+        <span class="normas-button__icon">
+          +
+        </span>
+
+        Nueva norma
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- ===================================================== -->
+  <!-- MENSAJES -->
+  <!-- ===================================================== -->
+
+  @if (errorMessage) {
+    <div class="normas-alert normas-alert--error">
+
+      <div class="normas-alert__content">
+        <strong>Error</strong>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <button
+        type="button"
+        class="normas-alert__close"
+        (click)="errorMessage = ''"
+        aria-label="Cerrar mensaje">
+        ×
+      </button>
+
+    </div>
+  }
+
+
+  @if (successMessage) {
+    <div class="normas-alert normas-alert--success">
+
+      <div class="normas-alert__content">
+        <strong>Correcto</strong>
+        <span>{{ successMessage }}</span>
+      </div>
+
+      <button
+        type="button"
+        class="normas-alert__close"
+        (click)="successMessage = ''"
+        aria-label="Cerrar mensaje">
+        ×
+      </button>
+
+    </div>
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- TOOLBAR -->
+  <!-- ===================================================== -->
+
+  <section class="normas-toolbar">
+
+    <!-- =================================================== -->
+    <!-- BUSCADOR -->
+    <!-- =================================================== -->
+
+    <div class="normas-search">
+
+      <label
+        for="normas-search-input"
+        class="normas-search__label">
+        Buscar normas
+      </label>
+
+      <div class="normas-search__control">
+
+        <span class="normas-search__icon">
+          🔎
+        </span>
+
+        <input
+          id="normas-search-input"
+          type="search"
+          class="normas-search__input"
+          placeholder="Buscar por título, contenido o archivo..."
+          [(ngModel)]="searchTerm"
+          (input)="filtrarNormas()">
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================== -->
+    <!-- FILTROS -->
+    <!-- =================================================== -->
+
+    <div class="normas-filters">
+
+      <!-- CATEGORÍA -->
+
+      <div class="normas-filter">
+
+        <label
+          for="normas-filter-category"
+          class="normas-filter__label">
+          Categoría
+        </label>
+
+        <select
+          id="normas-filter-category"
+          class="normas-filter__select"
+          [(ngModel)]="selectedCategory"
+          (change)="filtrarNormas()">
+
+          <option value="all">
+            Todas
+          </option>
+
+          <option [value]="CategoriaNormaConvivencia.General">
+            General
+          </option>
+
+          <option [value]="CategoriaNormaConvivencia.Ruido">
+            Ruido
+          </option>
+
+          <option [value]="CategoriaNormaConvivencia.Mascotas">
+            Mascotas
+          </option>
+
+          <option [value]="CategoriaNormaConvivencia.Parqueaderos">
+            Parqueaderos
+          </option>
+
+          <option [value]="CategoriaNormaConvivencia.ZonasComunes">
+            Zonas comunes
+          </option>
+
+          <option [value]="CategoriaNormaConvivencia.Residuos">
+            Residuos
+          </option>
+
+          <option [value]="CategoriaNormaConvivencia.Seguridad">
+            Seguridad
+          </option>
+
+          <option [value]="CategoriaNormaConvivencia.Visitantes">
+            Visitantes
+          </option>
+
+          <option [value]="CategoriaNormaConvivencia.Convivencia">
+            Convivencia
+          </option>
+
+          <option [value]="CategoriaNormaConvivencia.Otro">
+            Otro
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- ESTADO -->
+
+      <div class="normas-filter">
+
+        <label
+          for="normas-filter-status"
+          class="normas-filter__label">
+          Estado
+        </label>
+
+        <select
+          id="normas-filter-status"
+          class="normas-filter__select"
+          [(ngModel)]="selectedStatus"
+          (change)="filtrarNormas()">
+
+          <option value="all">
+            Todos
+          </option>
+
+          <option value="active">
+            Activas
+          </option>
+
+          <option value="inactive">
+            Inactivas
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- LIMPIAR -->
+
+      <button
+        type="button"
+        class="normas-filter__clear"
+        (click)="limpiarFiltros()">
+        Limpiar filtros
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================== -->
+  <!-- RESUMEN -->
+  <!-- ===================================================== -->
+
+  <section class="normas-summary">
+
+    <article class="normas-summary__item">
+      <span class="normas-summary__label">
+        Total
+      </span>
+
+      <strong class="normas-summary__value">
+        {{ totalNormas }}
+      </strong>
+    </article>
+
+
+    <article class="normas-summary__item normas-summary__item--active">
+      <span class="normas-summary__label">
+        Activas
+      </span>
+
+      <strong class="normas-summary__value">
+        {{ totalActivas }}
+      </strong>
+    </article>
+
+
+    <article class="normas-summary__item normas-summary__item--inactive">
+      <span class="normas-summary__label">
+        Inactivas
+      </span>
+
+      <strong class="normas-summary__value">
+        {{ totalInactivas }}
+      </strong>
+    </article>
+
+
+    <article class="normas-summary__item normas-summary__item--filtered">
+      <span class="normas-summary__label">
+        Mostrando
+      </span>
+
+      <strong class="normas-summary__value">
+        {{ normasFiltradas.length }}
+      </strong>
+    </article>
+
+  </section>
+
+
+  <!-- ===================================================== -->
+  <!-- LOADING -->
+  <!-- ===================================================== -->
+
+  @if (isLoading) {
+
+    <section class="normas-state normas-state--loading">
+
+      <div class="normas-spinner"></div>
+
+      <h3 class="normas-state__title">
+        Cargando normas
+      </h3>
+
+      <p class="normas-state__description">
+        Estamos consultando las normas de convivencia registradas.
+      </p>
+
+    </section>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- EMPTY -->
+  <!-- ===================================================== -->
+
+  @else if (normasFiltradas.length === 0) {
+
+    <section class="normas-state normas-state--empty">
+
+      <div class="normas-state__icon">
+        📘
+      </div>
+
+      <h3 class="normas-state__title">
+        No hay normas para mostrar
+      </h3>
+
+      @if (normas.length === 0) {
+
+        <p class="normas-state__description">
+          Todavía no se han registrado normas de convivencia.
+        </p>
+
+        <button
+          type="button"
+          class="normas-button normas-button--primary"
+          (click)="abrirCrear()">
+          Crear primera norma
+        </button>
+
+      } @else {
+
+        <p class="normas-state__description">
+          No encontramos resultados con los filtros seleccionados.
+        </p>
+
+        <button
+          type="button"
+          class="normas-button normas-button--secondary"
+          (click)="limpiarFiltros()">
+          Limpiar filtros
+        </button>
+
+      }
+
+    </section>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- TABLA -->
+  <!-- ===================================================== -->
+
+  @else {
+
+    <section class="normas-table-card">
+
+      <div class="normas-table-wrapper">
+
+        <table class="normas-table">
+
+          <thead class="normas-table__head">
+
+            <tr>
+              <th>Orden</th>
+              <th>Norma</th>
+              <th>Categoría</th>
+              <th>Adjunto</th>
+              <th>Estado</th>
+              <th>Actualización</th>
+
+              <th class="normas-table__actions-heading">
+                Acciones
+              </th>
+            </tr>
+
+          </thead>
+
+
+          <tbody class="normas-table__body">
+
+            @for (
+              norma of normasFiltradas;
+              track norma.id
+            ) {
+
+              <tr class="normas-table__row">
+
+                <!-- ======================================= -->
+                <!-- ORDEN -->
+                <!-- ======================================= -->
+
+                <td class="normas-table__order-cell">
+
+                  <span class="normas-order">
+                    {{ norma.orden }}
+                  </span>
+
+                </td>
+
+
+                <!-- ======================================= -->
+                <!-- NORMA -->
+                <!-- ======================================= -->
+
+                <td class="normas-table__content-cell">
+
+                  <div class="normas-content">
+
+                    <strong class="normas-content__title">
+                      {{ norma.titulo }}
+                    </strong>
+
+                    <p class="normas-content__description">
+                      {{ norma.contenido }}
+                    </p>
+
+                    <span class="normas-content__created">
+                      Creada:
+                      {{ norma.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <!-- ======================================= -->
+                <!-- CATEGORÍA -->
+                <!-- ======================================= -->
+
+                <td>
+
+                  <span
+                    class="normas-category"
+                    [class.normas-category--general]="norma.categoria === CategoriaNormaConvivencia.General"
+                    [class.normas-category--noise]="norma.categoria === CategoriaNormaConvivencia.Ruido"
+                    [class.normas-category--pets]="norma.categoria === CategoriaNormaConvivencia.Mascotas"
+                    [class.normas-category--parking]="norma.categoria === CategoriaNormaConvivencia.Parqueaderos"
+                    [class.normas-category--common]="norma.categoria === CategoriaNormaConvivencia.ZonasComunes"
+                    [class.normas-category--security]="norma.categoria === CategoriaNormaConvivencia.Seguridad">
+
+                    {{ obtenerNombreCategoria(norma.categoria) }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- ======================================= -->
+                <!-- ARCHIVO -->
+                <!-- ======================================= -->
+
+                <td>
+
+                  @if (norma.archivoUrl) {
+
+                    <a
+                      class="normas-file"
+                      [href]="norma.archivoUrl"
+                      target="_blank"
+                      rel="noopener noreferrer">
+
+                      <span class="normas-file__icon">
+                        📎
+                      </span>
+
+                      <span class="normas-file__name">
+                        {{ norma.nombreArchivo || 'Ver documento' }}
+                      </span>
+
+                    </a>
+
+                  } @else {
+
+                    <span class="normas-table__no-file">
+                      Sin adjunto
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- ======================================= -->
+                <!-- ESTADO -->
+                <!-- ======================================= -->
+
+                <td>
+
+                  <span
+                    class="normas-status"
+                    [class.normas-status--active]="norma.activo"
+                    [class.normas-status--inactive]="!norma.activo">
+
+                    <span class="normas-status__dot"></span>
+
+                    {{ norma.activo ? 'Activa' : 'Inactiva' }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- ======================================= -->
+                <!-- ACTUALIZACIÓN -->
+                <!-- ======================================= -->
+
+                <td class="normas-table__date">
+
+                  @if (norma.fechaActualizacion) {
+
+                    {{ norma.fechaActualizacion | date:'dd/MM/yyyy HH:mm' }}
+
+                  } @else {
+
+                    <span class="normas-table__no-update">
+                      Sin modificaciones
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- ======================================= -->
+                <!-- ACCIONES -->
+                <!-- ======================================= -->
+
+                <td class="normas-table__actions">
+
+                  <button
+                    type="button"
+                    class="normas-action normas-action--edit"
+                    (click)="abrirEditar(norma)"
+                    [disabled]="isProcessing"
+                    title="Editar norma">
+                    Editar
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="normas-action"
+                    [class.normas-action--disable]="norma.activo"
+                    [class.normas-action--enable]="!norma.activo"
+                    (click)="cambiarEstado(norma)"
+                    [disabled]="isProcessing">
+
+                    {{ norma.activo ? 'Desactivar' : 'Activar' }}
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="normas-action normas-action--delete"
+                    (click)="eliminar(norma)"
+                    [disabled]="isProcessing || norma.activo"
+                    title="Eliminar norma">
+                    Eliminar
+                  </button>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- FORMULARIO -->
+  <!-- ===================================================== -->
+
+  @if (mostrarFormulario) {
+
+    <div class="normas-modal-backdrop">
+
+      <section
+        class="normas-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="normas-modal-title">
+
+        <header class="normas-modal__header">
+
+          <div>
+
+            <span class="normas-modal__eyebrow">
+              Administración
+            </span>
+
+            <h3
+              id="normas-modal-title"
+              class="normas-modal__title">
+
+              {{
+                normaSeleccionada
+                  ? 'Editar norma de convivencia'
+                  : 'Nueva norma de convivencia'
+              }}
+
+            </h3>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="normas-modal__close"
+            (click)="cerrarFormulario()"
+            aria-label="Cerrar formulario">
+            ×
+          </button>
+
+        </header>
+
+
+        <div class="normas-modal__body">
+
+        <app-form-norma-convivencia
+          [norma]="normaSeleccionada"
+          (cerrar)="cerrarFormulario()"
+          (guardado)="normaGuardada()">
+        </app-form-norma-convivencia>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  }
+
+</section>

@@ -182,6 +182,24 @@
 
         </button>
 
+        <button
+          type="button"
+          class="sidebar-navigation__item"
+          [class.sidebar-navigation__item--active]="mostrarGestionAviso"
+          (click)="verGestionavisos()">
+
+          <span
+            class="sidebar-navigation__icon"
+            aria-hidden="true">
+            🏢
+          </span>
+
+          <span class="sidebar-navigation__label">
+            Avisos
+          </span>
+
+        </button>
+
       </div>
 
     </nav>
@@ -309,6 +327,10 @@
           *ngIf="mostrarPerfilUsuario"
           (cerrar)="verResumen()">
         </app-perfil-usuario>
+
+        <app-gestion-avisos
+          *ngIf="mostrarGestionAviso">
+        </app-gestion-avisos>
 
       </div>
 

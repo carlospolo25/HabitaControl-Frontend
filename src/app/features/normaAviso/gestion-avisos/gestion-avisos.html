@@ -1,0 +1,606 @@
+<section class="avisos-page">
+
+  <!-- ===================================================== -->
+  <!-- HEADER -->
+  <!-- ===================================================== -->
+
+  <header class="avisos-header">
+    <div class="avisos-header__content">
+      <span class="avisos-header__eyebrow">
+        Comunicaciones administrativas
+      </span>
+
+      <h2 class="avisos-header__title">
+        Avisos de administración
+      </h2>
+
+      <p class="avisos-header__description">
+        Publica, administra y consulta los avisos dirigidos a residentes,
+        seguridad y personal de la copropiedad.
+      </p>
+    </div>
+
+    <div class="avisos-header__right">
+
+      <!-- ===================================================== -->
+      <!-- NAVEGACIÓN DEL MÓDULO -->
+      <!-- ===================================================== -->
+
+      <nav
+        class="avisos-module-tabs"
+        aria-label="Administración de avisos y normas">
+
+        <button
+          type="button"
+          class="avisos-module-tabs__button"
+          [class.avisos-module-tabs__button--active]="vistaActiva === 'avisos'"
+          (click)="mostrarAvisos()">
+
+          <span class="avisos-module-tabs__icon">
+            📢
+          </span>
+
+          <span class="avisos-module-tabs__content">
+            <strong>Avisos</strong>
+            <small>Comunicaciones administrativas</small>
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="avisos-module-tabs__button"
+          [class.avisos-module-tabs__button--active]="vistaActiva === 'normas'"
+          (click)="mostrarNormas()">
+
+          <span class="avisos-module-tabs__icon">
+            📘
+          </span>
+
+          <span class="avisos-module-tabs__content">
+            <strong>Normas de convivencia</strong>
+            <small>Reglamentos y disposiciones</small>
+          </span>
+
+        </button>
+
+      </nav>
+
+
+      <!-- ===================================================== -->
+      <!-- ACCIONES DE AVISOS -->
+      <!-- ===================================================== -->
+
+      @if (vistaActiva === 'avisos') {
+
+        <div class="avisos-header__actions">
+
+          <button
+            type="button"
+            class="avisos-button avisos-button--secondary"
+            (click)="cargarAvisos()"
+            [disabled]="isLoading || isProcessing">
+            Actualizar
+          </button>
+
+          <button
+            type="button"
+            class="avisos-button avisos-button--primary"
+            (click)="abrirCrear()"
+            [disabled]="isProcessing">
+
+            <span class="avisos-button__icon">
+              +
+            </span>
+
+            Nuevo aviso
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+    
+  </header>
+@if (vistaActiva === 'avisos') {
+
+  <!-- ===================================================== -->
+  <!-- MENSAJES -->
+  <!-- ===================================================== -->
+
+  @if (errorMessage) {
+    <div class="avisos-alert avisos-alert--error">
+      <div class="avisos-alert__content">
+        <strong>Error</strong>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <button
+        type="button"
+        class="avisos-alert__close"
+        (click)="errorMessage = ''"
+        aria-label="Cerrar mensaje">
+        ×
+      </button>
+    </div>
+  }
+
+  @if (successMessage) {
+    <div class="avisos-alert avisos-alert--success">
+      <div class="avisos-alert__content">
+        <strong>Correcto</strong>
+        <span>{{ successMessage }}</span>
+      </div>
+
+      <button
+        type="button"
+        class="avisos-alert__close"
+        (click)="successMessage = ''"
+        aria-label="Cerrar mensaje">
+        ×
+      </button>
+    </div>
+  }
+
+  <!-- ===================================================== -->
+  <!-- TOOLBAR -->
+  <!-- ===================================================== -->
+
+  <section class="avisos-toolbar">
+
+    <div class="avisos-search">
+      <label
+        for="avisos-search-input"
+        class="avisos-search__label">
+        Buscar avisos
+      </label>
+
+      <div class="avisos-search__control">
+        <span class="avisos-search__icon">
+          🔎
+        </span>
+
+        <input
+          id="avisos-search-input"
+          type="search"
+          class="avisos-search__input"
+          placeholder="Buscar por título o contenido..."
+          [(ngModel)]="searchTerm"
+          (input)="filtrarAvisos()">
+      </div>
+    </div>
+
+    <div class="avisos-filters">
+
+      <div class="avisos-filter">
+        <label
+          for="avisos-filter-priority"
+          class="avisos-filter__label">
+          Prioridad
+        </label>
+
+        <select
+          id="avisos-filter-priority"
+          class="avisos-filter__select"
+          [(ngModel)]="selectedPriority"
+          (change)="filtrarAvisos()">
+
+          <option value="todos">
+            Todas
+          </option>
+
+          <option [value]="PrioridadAviso.Informativo">
+            Informativo
+          </option>
+
+          <option [value]="PrioridadAviso.Importante">
+            Importante
+          </option>
+
+          <option [value]="PrioridadAviso.Urgente">
+            Urgente
+          </option>
+
+        </select>
+      </div>
+
+      <div class="avisos-filter">
+        <label
+          for="avisos-filter-audience"
+          class="avisos-filter__label">
+          Audiencia
+        </label>
+
+        <select
+          id="avisos-filter-audience"
+          class="avisos-filter__select"
+          [(ngModel)]="selectedAudience"
+          (change)="filtrarAvisos()">
+
+          <option value="todos">
+            Todas
+          </option>
+
+          <option [value]="AudienciaAviso.Todos">
+            Todos
+          </option>
+
+          <option [value]="AudienciaAviso.Residentes">
+            Residentes
+          </option>
+
+          <option [value]="AudienciaAviso.Seguridad">
+            Seguridad
+          </option>
+
+          <option [value]="AudienciaAviso.Mantenimiento">
+            Mantenimiento
+          </option>
+
+        </select>
+      </div>
+
+      <div class="avisos-filter">
+        <label
+          for="avisos-filter-status"
+          class="avisos-filter__label">
+          Estado
+        </label>
+
+        <select
+          id="avisos-filter-status"
+          class="avisos-filter__select"
+          [(ngModel)]="selectedStatus"
+          (change)="filtrarAvisos()">
+
+          <option value="todos">
+            Todos
+          </option>
+
+          <option value="activo">
+            Activos
+          </option>
+
+          <option value="inactivo">
+            Inactivos
+          </option>
+
+        </select>
+      </div>
+
+      <button
+        type="button"
+        class="avisos-filter__clear"
+        (click)="limpiarFiltros()">
+        Limpiar filtros
+      </button>
+
+    </div>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- RESUMEN -->
+  <!-- ===================================================== -->
+
+  <div class="avisos-summary">
+
+    <div class="avisos-summary__item">
+      <span class="avisos-summary__label">
+        Total
+      </span>
+
+      <strong class="avisos-summary__value">
+        {{ avisos.length }}
+      </strong>
+    </div>
+
+    <div class="avisos-summary__item">
+      <span class="avisos-summary__label">
+        Mostrando
+      </span>
+
+      <strong class="avisos-summary__value">
+        {{ avisosFiltrados.length }}
+      </strong>
+    </div>
+
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- LOADING -->
+  <!-- ===================================================== -->
+
+  @if (isLoading) {
+    <section class="avisos-state avisos-state--loading">
+      <div class="avisos-spinner"></div>
+
+      <h3 class="avisos-state__title">
+        Cargando avisos
+      </h3>
+
+      <p class="avisos-state__description">
+        Estamos consultando los avisos registrados.
+      </p>
+    </section>
+  }
+
+  <!-- ===================================================== -->
+  <!-- EMPTY -->
+  <!-- ===================================================== -->
+
+  @else if (avisosFiltrados.length === 0) {
+    <section class="avisos-state avisos-state--empty">
+
+      <div class="avisos-state__icon">
+        📢
+      </div>
+
+      <h3 class="avisos-state__title">
+        No hay avisos para mostrar
+      </h3>
+
+      @if (avisos.length === 0) {
+        <p class="avisos-state__description">
+          Todavía no se han publicado avisos administrativos.
+        </p>
+
+        <button
+          type="button"
+          class="avisos-button avisos-button--primary"
+          (click)="abrirCrear()">
+          Crear primer aviso
+        </button>
+      } @else {
+        <p class="avisos-state__description">
+          No encontramos resultados con los filtros seleccionados.
+        </p>
+
+        <button
+          type="button"
+          class="avisos-button avisos-button--secondary"
+          (click)="limpiarFiltros()">
+          Limpiar filtros
+        </button>
+      }
+
+    </section>
+  }
+
+  <!-- ===================================================== -->
+  <!-- TABLA -->
+  <!-- ===================================================== -->
+
+  @else {
+    <section class="avisos-table-card">
+
+      <div class="avisos-table-wrapper">
+        <table class="avisos-table">
+
+          <thead class="avisos-table__head">
+            <tr>
+              <th>Aviso</th>
+              <th>Prioridad</th>
+              <th>Audiencia</th>
+              <th>Publicación</th>
+              <th>Expiración</th>
+              <th>Adjunto</th>
+              <th>Estado</th>
+              <th class="avisos-table__actions-heading">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+
+          <tbody class="avisos-table__body">
+
+            @for (
+              aviso of avisosFiltrados;
+              track aviso.id
+            ) {
+              <tr class="avisos-table__row">
+
+                <!-- AVISO -->
+
+                <td class="avisos-table__notice-cell">
+                  <div class="avisos-notice">
+                    <strong class="avisos-notice__title">
+                      {{ aviso.titulo }}
+                    </strong>
+
+                    <p class="avisos-notice__message">
+                      {{ aviso.mensaje }}
+                    </p>
+
+                    <span class="avisos-notice__created">
+                      Creado:
+                      {{ aviso.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- PRIORIDAD -->
+
+                <td>
+                  <span
+                    class="avisos-badge"
+                    [class.avisos-badge--info]="aviso.prioridad === PrioridadAviso.Informativo"
+                    [class.avisos-badge--important]="aviso.prioridad === PrioridadAviso.Importante"
+                    [class.avisos-badge--urgent]="aviso.prioridad === PrioridadAviso.Urgente">
+                    {{ obtenerPrioridad(aviso.prioridad) }}
+                  </span>
+                </td>
+
+                <!-- AUDIENCIA -->
+
+                <td>
+                  <span class="avisos-audience">
+                    {{ obtenerAudiencia(aviso.audiencia) }}
+                  </span>
+                </td>
+
+                <!-- PUBLICACIÓN -->
+
+                <td class="avisos-table__date">
+                  {{ aviso.fechaPublicacion | date:'dd/MM/yyyy HH:mm' }}
+                </td>
+
+                <!-- EXPIRACIÓN -->
+
+                <td class="avisos-table__date">
+                  @if (aviso.fechaExpiracion) {
+                    {{ aviso.fechaExpiracion | date:'dd/MM/yyyy HH:mm' }}
+                  } @else {
+                    <span class="avisos-table__no-expiration">
+                      Sin expiración
+                    </span>
+                  }
+                </td>
+
+                <!-- ARCHIVO -->
+
+                <td>
+                  @if (aviso.archivoUrl) {
+                    <button
+                      type="button"
+                      class="avisos-file-button"
+                      (click)="abrirArchivo(aviso)">
+                      <span class="avisos-file-button__icon">
+                        📎
+                      </span>
+
+                      <span class="avisos-file-button__text">
+                        {{ aviso.nombreArchivo || 'Ver archivo' }}
+                      </span>
+                    </button>
+                  } @else {
+                    <span class="avisos-table__no-file">
+                      Sin adjunto
+                    </span>
+                  }
+                </td>
+
+                <!-- ESTADO -->
+
+                <td>
+                  <span
+                    class="avisos-status"
+                    [class.avisos-status--active]="aviso.activo"
+                    [class.avisos-status--inactive]="!aviso.activo">
+
+                    <span class="avisos-status__dot"></span>
+
+                    {{ aviso.activo ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+
+                <!-- ACCIONES -->
+
+                <td class="avisos-table__actions">
+
+                  <button
+                    type="button"
+                    class="avisos-action avisos-action--edit"
+                    title="Editar aviso"
+                    (click)="abrirEditar(aviso)"
+                    [disabled]="isProcessing">
+                    Editar
+                  </button>
+
+                  <button
+                    type="button"
+                    class="avisos-action"
+                    [class.avisos-action--disable]="aviso.activo"
+                    [class.avisos-action--enable]="!aviso.activo"
+                    (click)="cambiarEstado(aviso)"
+                    [disabled]="isProcessing">
+
+                    {{ aviso.activo ? 'Desactivar' : 'Activar' }}
+                  </button>
+
+                  <button
+                    type="button"
+                    class="avisos-action avisos-action--delete"
+                    title="Eliminar aviso"
+                    (click)="eliminar(aviso)"
+                    [disabled]="isProcessing || aviso.activo">
+                    Eliminar
+                  </button>
+
+                </td>
+
+              </tr>
+            }
+
+          </tbody>
+
+        </table>
+      </div>
+
+    </section>
+  }
+
+<!-- ===================================================== -->
+<!-- FORMULARIO -->
+<!-- ===================================================== -->
+
+    @if (mostrarFormulario) {
+      <div class="avisos-modal-backdrop">
+
+        <section
+          class="avisos-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="avisos-modal-title">
+
+          <header class="avisos-modal__header">
+
+            <div>
+              <span class="avisos-modal__eyebrow">
+                Administración
+              </span>
+
+              <h3
+                id="avisos-modal-title"
+                class="avisos-modal__title">
+                {{ avisoSeleccionado ? 'Editar aviso' : 'Nuevo aviso' }}
+              </h3>
+            </div>
+
+            <button
+              type="button"
+              class="avisos-modal__close"
+              (click)="cerrarFormulario()"
+              aria-label="Cerrar formulario">
+              ×
+            </button>
+
+          </header>
+
+          <div class="avisos-modal__body">
+
+            <app-form-aviso-component
+              [aviso]="avisoSeleccionado"
+              (cerrar)="cerrarFormulario()"
+              (guardado)="avisoGuardado()">
+            </app-form-aviso-component>
+
+          </div>
+
+        </section>
+
+      </div>
+    }
+
+  } @else {
+
+    <!-- ===================================================== -->
+    <!-- NORMAS DE CONVIVENCIA -->
+    <!-- ===================================================== -->
+
+    <app-gestion-normas-convivencia>
+    </app-gestion-normas-convivencia>
+
+  }
+
+</section>

@@ -12,7 +12,7 @@ import {DashboardOverview} from '../resumen/dashboard-overview/dashboard-overvie
 import { ZonasComunesComponent } from '../persona/reservas/zonas-comunes/zonas-comunes';
 import {GestionReservasComponent} from '../persona/reservas/gestion-zonas-comunes/gestion-reservas'
 import {PerfilUsuarioComponent} from '../perfiles/perfil-usuario/perfil-usuario/perfil-usuario'
-
+import {GestionAvisosComponent} from '../normaAviso/gestion-avisos/gestion-avisos'
 
 @Component({
   selector: 'app-dashboard-page',
@@ -28,7 +28,8 @@ import {PerfilUsuarioComponent} from '../perfiles/perfil-usuario/perfil-usuario/
     ZonasComunesComponent,
     GestionReservasComponent,
     GestionFinanzas,
-    PerfilUsuarioComponent
+    PerfilUsuarioComponent,
+    GestionAvisosComponent
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
@@ -48,12 +49,19 @@ export class DashboardPage {
   mostrarZonasComunes = false;
   mostrarFinanzas = false;
   mostrarPerfilUsuario = false;
+  mostrarGestionAviso = false;
 
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
+
+  verGestionavisos(): void{
+    this.resetVistas();
+
+    this.mostrarGestionAviso = true;
+  }
 
   verPerfilUsuario():void{
     this.resetVistas();
@@ -124,6 +132,7 @@ export class DashboardPage {
     this.mostrarFinanzas = false;
     this.mostrarResumen = false;
     this.mostrarPerfilUsuario = false;
+    this.mostrarGestionAviso = false;
 
   }
 

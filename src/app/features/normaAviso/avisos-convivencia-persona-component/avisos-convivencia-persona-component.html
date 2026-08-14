@@ -1,0 +1,999 @@
+<section class="persona-info-page">
+
+  <!-- ===================================================== -->
+  <!-- HEADER GENERAL -->
+  <!-- ===================================================== -->
+
+  <header class="persona-info-header">
+
+    <div class="persona-info-header__content">
+
+      <span class="persona-info-header__eyebrow">
+        Información de la copropiedad
+      </span>
+
+      <h2 class="persona-info-header__title">
+        Avisos y convivencia
+      </h2>
+
+      <p class="persona-info-header__description">
+        Consulta las comunicaciones administrativas y las normas de
+        convivencia publicadas para tu comunidad.
+      </p>
+
+    </div>
+
+
+    <!-- =================================================== -->
+    <!-- NAVEGACIÓN -->
+    <!-- =================================================== -->
+
+    <nav
+      class="persona-info-tabs"
+      aria-label="Avisos y normas de convivencia">
+
+      <button
+        type="button"
+        class="persona-info-tabs__button"
+        [class.persona-info-tabs__button--active]="vistaActiva === 'avisos'"
+        (click)="mostrarAvisos()">
+
+        <span class="persona-info-tabs__icon">
+          📢
+        </span>
+
+        <span class="persona-info-tabs__content">
+          <strong>Avisos</strong>
+          <small>Comunicaciones importantes</small>
+        </span>
+
+        <span class="persona-info-tabs__count">
+          {{ avisos.length }}
+        </span>
+
+      </button>
+
+
+      <button
+        type="button"
+        class="persona-info-tabs__button"
+        [class.persona-info-tabs__button--active]="vistaActiva === 'normas'"
+        (click)="mostrarNormas()">
+
+        <span class="persona-info-tabs__icon">
+          📘
+        </span>
+
+        <span class="persona-info-tabs__content">
+          <strong>Normas de convivencia</strong>
+          <small>Reglamentos y disposiciones</small>
+        </span>
+
+        <span class="persona-info-tabs__count">
+          {{ normas.length }}
+        </span>
+
+      </button>
+
+    </nav>
+
+  </header>
+
+
+  <!-- ===================================================== -->
+  <!-- AVISOS -->
+  <!-- ===================================================== -->
+
+  @if (vistaActiva === 'avisos') {
+
+    <section class="persona-info-section">
+
+      <!-- ================================================= -->
+      <!-- CABECERA DE AVISOS -->
+      <!-- ================================================= -->
+
+      <div class="persona-info-section__header">
+
+        <div>
+
+          <span class="persona-info-section__eyebrow">
+            Comunicaciones
+          </span>
+
+          <h3 class="persona-info-section__title">
+            Avisos recientes
+          </h3>
+
+          <p class="persona-info-section__description">
+            Mantente informado sobre novedades, mantenimientos y
+            comunicaciones importantes de la copropiedad.
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="persona-info-refresh"
+          (click)="cargarAvisos()"
+          [disabled]="isLoadingAvisos">
+          Actualizar
+        </button>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- ERROR AVISOS -->
+      <!-- ================================================= -->
+
+      @if (avisosError) {
+
+        <div class="persona-info-alert persona-info-alert--error">
+
+          <div class="persona-info-alert__icon">
+            !
+          </div>
+
+          <div class="persona-info-alert__content">
+
+            <strong>
+              No fue posible cargar los avisos
+            </strong>
+
+            <span>
+              {{ avisosError }}
+            </span>
+
+          </div>
+
+        </div>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- FILTROS AVISOS -->
+      <!-- ================================================= -->
+
+      <div class="persona-info-toolbar">
+
+        <div class="persona-info-search">
+
+          <label
+            for="persona-aviso-search"
+            class="persona-info-search__label">
+            Buscar aviso
+          </label>
+
+          <div class="persona-info-search__control">
+
+            <span class="persona-info-search__icon">
+              🔎
+            </span>
+
+            <input
+              id="persona-aviso-search"
+              type="search"
+              class="persona-info-search__input"
+              placeholder="Buscar por título o contenido..."
+              [(ngModel)]="searchAvisos"
+              (input)="filtrarAvisos()">
+
+          </div>
+
+        </div>
+
+
+        <div class="persona-info-filter">
+
+          <label
+            for="persona-aviso-priority"
+            class="persona-info-filter__label">
+            Prioridad
+          </label>
+
+          <select
+            id="persona-aviso-priority"
+            class="persona-info-filter__select"
+            [(ngModel)]="selectedPriority"
+            (change)="filtrarAvisos()">
+
+            <option value="todos">
+              Todas
+            </option>
+
+            <option [value]="PrioridadAviso.Informativo">
+              Informativo
+            </option>
+
+            <option [value]="PrioridadAviso.Importante">
+              Importante
+            </option>
+
+            <option [value]="PrioridadAviso.Urgente">
+              Urgente
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="persona-info-toolbar__clear"
+          (click)="limpiarFiltrosAvisos()">
+          Limpiar
+        </button>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- LOADING AVISOS -->
+      <!-- ================================================= -->
+
+      @if (isLoadingAvisos) {
+
+        <div class="persona-info-state persona-info-state--loading">
+
+          <div class="persona-info-spinner"></div>
+
+          <h4 class="persona-info-state__title">
+            Cargando avisos
+          </h4>
+
+          <p class="persona-info-state__description">
+            Estamos consultando las comunicaciones disponibles.
+          </p>
+
+        </div>
+
+      }
+
+      <!-- ================================================= -->
+      <!-- EMPTY AVISOS -->
+      <!-- ================================================= -->
+
+      @else if (avisosFiltrados.length === 0) {
+
+        <div class="persona-info-state persona-info-state--empty">
+
+          <div class="persona-info-state__icon">
+            📢
+          </div>
+
+          <h4 class="persona-info-state__title">
+            No hay avisos para mostrar
+          </h4>
+
+          @if (avisos.length === 0) {
+
+            <p class="persona-info-state__description">
+              Actualmente no hay comunicaciones administrativas
+              disponibles para ti.
+            </p>
+
+          } @else {
+
+            <p class="persona-info-state__description">
+              No encontramos avisos que coincidan con tu búsqueda
+              o filtro de prioridad.
+            </p>
+
+            <button
+              type="button"
+              class="persona-info-state__button"
+              (click)="limpiarFiltrosAvisos()">
+              Limpiar filtros
+            </button>
+
+          }
+
+        </div>
+
+      }
+
+      <!-- ================================================= -->
+      <!-- TARJETAS DE AVISOS -->
+      <!-- ================================================= -->
+
+      @else {
+
+        <div class="persona-avisos-grid">
+
+          @for (
+            aviso of avisosFiltrados;
+            track aviso.id
+          ) {
+
+            <article
+              class="persona-aviso-card"
+              [class.persona-aviso-card--urgent]="obtenerClasePrioridad(aviso.prioridad) === 'urgente'"
+              [class.persona-aviso-card--important]="obtenerClasePrioridad(aviso.prioridad) === 'importante'"
+              [class.persona-aviso-card--info]="obtenerClasePrioridad(aviso.prioridad) === 'informativo'">
+
+              <!-- ========================================= -->
+              <!-- CABECERA TARJETA -->
+              <!-- ========================================= -->
+
+              <div class="persona-aviso-card__header">
+
+                <span
+                  class="persona-aviso-card__priority"
+                  [class.persona-aviso-card__priority--urgent]="obtenerClasePrioridad(aviso.prioridad) === 'urgente'"
+                  [class.persona-aviso-card__priority--important]="obtenerClasePrioridad(aviso.prioridad) === 'importante'"
+                  [class.persona-aviso-card__priority--info]="obtenerClasePrioridad(aviso.prioridad) === 'informativo'">
+
+                  {{ obtenerPrioridad(aviso.prioridad) }}
+
+                </span>
+
+                <time
+                  class="persona-aviso-card__date"
+                  [attr.datetime]="aviso.fechaPublicacion">
+
+                  {{
+                    aviso.fechaPublicacion
+                      | date:'dd/MM/yyyy'
+                  }}
+
+                </time>
+
+              </div>
+
+
+              <!-- ========================================= -->
+              <!-- CONTENIDO -->
+              <!-- ========================================= -->
+
+              <div class="persona-aviso-card__content">
+
+                <h4 class="persona-aviso-card__title">
+                  {{ aviso.titulo }}
+                </h4>
+
+                <p class="persona-aviso-card__message">
+                  {{ obtenerResumen(aviso.mensaje, 190) }}
+                </p>
+
+              </div>
+
+
+              <!-- ========================================= -->
+              <!-- ADJUNTO -->
+              <!-- ========================================= -->
+
+              @if (aviso.archivoUrl) {
+
+                <div class="persona-aviso-card__attachment">
+
+                  <span class="persona-aviso-card__attachment-icon">
+                    📎
+                  </span>
+
+                  <span class="persona-aviso-card__attachment-name">
+                    {{ aviso.nombreArchivo || 'Documento adjunto' }}
+                  </span>
+
+                </div>
+
+              }
+
+
+              <!-- ========================================= -->
+              <!-- FOOTER -->
+              <!-- ========================================= -->
+
+              <footer class="persona-aviso-card__footer">
+
+                <button
+                  type="button"
+                  class="persona-aviso-card__action persona-aviso-card__action--detail"
+                  (click)="abrirAviso(aviso)">
+                  Ver detalle
+                </button>
+
+
+                @if (aviso.archivoUrl) {
+
+                  <button
+                    type="button"
+                    class="persona-aviso-card__action persona-aviso-card__action--file"
+                    (click)="abrirArchivo(aviso.archivoUrl)">
+                    Abrir documento
+                  </button>
+
+                }
+
+              </footer>
+
+            </article>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- NORMAS DE CONVIVENCIA -->
+  <!-- ===================================================== -->
+
+  @else {
+
+    <section class="persona-info-section persona-info-section--normas">
+
+      <!-- ================================================= -->
+      <!-- CABECERA -->
+      <!-- ================================================= -->
+
+      <div class="persona-info-section__header">
+
+        <div>
+
+          <span class="persona-info-section__eyebrow">
+            Reglamento
+          </span>
+
+          <h3 class="persona-info-section__title">
+            Normas de convivencia
+          </h3>
+
+          <p class="persona-info-section__description">
+            Consulta las reglas, disposiciones y recomendaciones
+            establecidas para una convivencia adecuada en la copropiedad.
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="persona-info-refresh"
+          (click)="cargarNormas()"
+          [disabled]="isLoadingNormas">
+          Actualizar
+        </button>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- ERROR NORMAS -->
+      <!-- ================================================= -->
+
+      @if (normasError) {
+
+        <div class="persona-info-alert persona-info-alert--error">
+
+          <div class="persona-info-alert__icon">
+            !
+          </div>
+
+          <div class="persona-info-alert__content">
+
+            <strong>
+              No fue posible cargar las normas
+            </strong>
+
+            <span>
+              {{ normasError }}
+            </span>
+
+          </div>
+
+        </div>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- FILTROS NORMAS -->
+      <!-- ================================================= -->
+
+      <div class="persona-info-toolbar">
+
+        <div class="persona-info-search">
+
+          <label
+            for="persona-norma-search"
+            class="persona-info-search__label">
+            Buscar norma
+          </label>
+
+          <div class="persona-info-search__control">
+
+            <span class="persona-info-search__icon">
+              🔎
+            </span>
+
+            <input
+              id="persona-norma-search"
+              type="search"
+              class="persona-info-search__input"
+              placeholder="Buscar por título o contenido..."
+              [(ngModel)]="searchNormas"
+              (input)="filtrarNormas()">
+
+          </div>
+
+        </div>
+
+
+        <div class="persona-info-filter">
+
+          <label
+            for="persona-norma-category"
+            class="persona-info-filter__label">
+            Categoría
+          </label>
+
+          <select
+            id="persona-norma-category"
+            class="persona-info-filter__select"
+            [(ngModel)]="selectedCategory"
+            (change)="filtrarNormas()">
+
+            <option value="todos">
+              Todas las categorías
+            </option>
+
+            <option [value]="CategoriaNormaConvivencia.General">
+              General
+            </option>
+
+            <option [value]="CategoriaNormaConvivencia.Ruido">
+              Ruido
+            </option>
+
+            <option [value]="CategoriaNormaConvivencia.Mascotas">
+              Mascotas
+            </option>
+
+            <option [value]="CategoriaNormaConvivencia.Parqueaderos">
+              Parqueaderos
+            </option>
+
+            <option [value]="CategoriaNormaConvivencia.ZonasComunes">
+              Zonas comunes
+            </option>
+
+            <option [value]="CategoriaNormaConvivencia.Residuos">
+              Residuos
+            </option>
+
+            <option [value]="CategoriaNormaConvivencia.Seguridad">
+              Seguridad
+            </option>
+
+            <option [value]="CategoriaNormaConvivencia.Visitantes">
+              Visitantes
+            </option>
+
+            <option [value]="CategoriaNormaConvivencia.Convivencia">
+              Convivencia
+            </option>
+
+            <option [value]="CategoriaNormaConvivencia.Otro">
+              Otro
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="persona-info-toolbar__clear"
+          (click)="limpiarFiltrosNormas()">
+          Limpiar
+        </button>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- LOADING NORMAS -->
+      <!-- ================================================= -->
+
+      @if (isLoadingNormas) {
+
+        <div class="persona-info-state persona-info-state--loading">
+
+          <div class="persona-info-spinner"></div>
+
+          <h4 class="persona-info-state__title">
+            Cargando normas
+          </h4>
+
+          <p class="persona-info-state__description">
+            Estamos consultando el reglamento disponible.
+          </p>
+
+        </div>
+
+      }
+
+      <!-- ================================================= -->
+      <!-- EMPTY NORMAS -->
+      <!-- ================================================= -->
+
+      @else if (normasFiltradas.length === 0) {
+
+        <div class="persona-info-state persona-info-state--empty">
+
+          <div class="persona-info-state__icon">
+            📘
+          </div>
+
+          <h4 class="persona-info-state__title">
+            No hay normas para mostrar
+          </h4>
+
+          @if (normas.length === 0) {
+
+            <p class="persona-info-state__description">
+              Actualmente no hay normas de convivencia publicadas.
+            </p>
+
+          } @else {
+
+            <p class="persona-info-state__description">
+              No encontramos normas que coincidan con los filtros
+              seleccionados.
+            </p>
+
+            <button
+              type="button"
+              class="persona-info-state__button"
+              (click)="limpiarFiltrosNormas()">
+              Limpiar filtros
+            </button>
+
+          }
+
+        </div>
+
+      }
+
+      <!-- ================================================= -->
+      <!-- LISTADO DE NORMAS -->
+      <!-- ================================================= -->
+
+      @else {
+
+        <div class="persona-normas-list">
+
+          @for (
+            norma of normasFiltradas;
+            track norma.id
+          ) {
+
+            <article class="persona-norma-card">
+
+              <!-- ========================================= -->
+              <!-- ORDEN -->
+              <!-- ========================================= -->
+
+              <div class="persona-norma-card__order">
+
+                {{
+                  norma.orden < 10
+                    ? '0' + norma.orden
+                    : norma.orden
+                }}
+
+              </div>
+
+
+              <!-- ========================================= -->
+              <!-- CONTENIDO -->
+              <!-- ========================================= -->
+
+              <div class="persona-norma-card__body">
+
+                <div class="persona-norma-card__meta">
+
+                  <span class="persona-norma-card__category">
+                    {{ obtenerCategoria(norma.categoria) }}
+                  </span>
+
+                  @if (norma.archivoUrl) {
+
+                    <span class="persona-norma-card__has-file">
+                      📎 Documento disponible
+                    </span>
+
+                  }
+
+                </div>
+
+
+                <h4 class="persona-norma-card__title">
+                  {{ norma.titulo }}
+                </h4>
+
+
+                <p class="persona-norma-card__description">
+                  {{ obtenerResumen(norma.contenido, 220) }}
+                </p>
+
+
+                <!-- ======================================= -->
+                <!-- ACCIONES -->
+                <!-- ======================================= -->
+
+                <footer class="persona-norma-card__footer">
+
+                  <button
+                    type="button"
+                    class="persona-norma-card__action persona-norma-card__action--detail"
+                    (click)="abrirNorma(norma)">
+                    Ver norma
+                  </button>
+
+
+                  @if (norma.archivoUrl) {
+
+                    <button
+                      type="button"
+                      class="persona-norma-card__action persona-norma-card__action--file"
+                      (click)="abrirArchivo(norma.archivoUrl)">
+                      Abrir documento
+                    </button>
+
+                  }
+
+                </footer>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- DETALLE DE AVISO -->
+  <!-- ===================================================== -->
+
+  @if (avisoSeleccionado) {
+
+    <div class="persona-info-modal-backdrop">
+
+      <section
+        class="persona-info-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="persona-aviso-modal-title">
+
+        <header class="persona-info-modal__header">
+
+          <div class="persona-info-modal__heading">
+
+            <span
+              class="persona-info-modal__badge"
+              [class.persona-info-modal__badge--urgent]="obtenerClasePrioridad(avisoSeleccionado.prioridad) === 'urgente'"
+              [class.persona-info-modal__badge--important]="obtenerClasePrioridad(avisoSeleccionado.prioridad) === 'importante'"
+              [class.persona-info-modal__badge--info]="obtenerClasePrioridad(avisoSeleccionado.prioridad) === 'informativo'">
+
+              {{ obtenerPrioridad(avisoSeleccionado.prioridad) }}
+
+            </span>
+
+            <h3
+              id="persona-aviso-modal-title"
+              class="persona-info-modal__title">
+              {{ avisoSeleccionado.titulo }}
+            </h3>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="persona-info-modal__close"
+            (click)="cerrarAviso()"
+            aria-label="Cerrar detalle del aviso">
+            ×
+          </button>
+
+        </header>
+
+
+        <div class="persona-info-modal__body">
+
+          <div class="persona-info-modal__date">
+
+            Publicado el
+            {{
+              avisoSeleccionado.fechaPublicacion
+                | date:'dd/MM/yyyy HH:mm'
+            }}
+
+          </div>
+
+
+          <div class="persona-info-modal__content">
+
+            <p>
+              {{ avisoSeleccionado.mensaje }}
+            </p>
+
+          </div>
+
+
+          @if (avisoSeleccionado.archivoUrl) {
+
+            <div class="persona-info-modal__document">
+
+              <div class="persona-info-modal__document-icon">
+                📄
+              </div>
+
+              <div class="persona-info-modal__document-info">
+
+                <span>
+                  Documento adjunto
+                </span>
+
+                <strong>
+                  {{
+                    avisoSeleccionado.nombreArchivo ||
+                    'Documento relacionado'
+                  }}
+                </strong>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="persona-info-modal__document-action"
+                (click)="abrirArchivo(avisoSeleccionado.archivoUrl)">
+                Abrir
+              </button>
+
+            </div>
+
+          }
+
+        </div>
+
+      </section>
+
+    </div>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- DETALLE DE NORMA -->
+  <!-- ===================================================== -->
+
+  @if (normaSeleccionada) {
+
+    <div class="persona-info-modal-backdrop">
+
+      <section
+        class="persona-info-modal persona-info-modal--norma"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="persona-norma-modal-title">
+
+        <header class="persona-info-modal__header">
+
+          <div class="persona-info-modal__heading">
+
+            <span class="persona-info-modal__badge persona-info-modal__badge--norma">
+              {{ obtenerCategoria(normaSeleccionada.categoria) }}
+            </span>
+
+            <h3
+              id="persona-norma-modal-title"
+              class="persona-info-modal__title">
+              {{ normaSeleccionada.titulo }}
+            </h3>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="persona-info-modal__close"
+            (click)="cerrarNorma()"
+            aria-label="Cerrar norma">
+            ×
+          </button>
+
+        </header>
+
+
+        <div class="persona-info-modal__body">
+
+          <div class="persona-info-modal__order">
+
+            <span>
+              Orden dentro del reglamento
+            </span>
+
+            <strong>
+              {{
+                normaSeleccionada.orden < 10
+                  ? '0' + normaSeleccionada.orden
+                  : normaSeleccionada.orden
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="persona-info-modal__content persona-info-modal__content--norma">
+
+            <p>
+              {{ normaSeleccionada.contenido }}
+            </p>
+
+          </div>
+
+
+          @if (normaSeleccionada.archivoUrl) {
+
+            <div class="persona-info-modal__document">
+
+              <div class="persona-info-modal__document-icon">
+                📄
+              </div>
+
+              <div class="persona-info-modal__document-info">
+
+                <span>
+                  Documento relacionado
+                </span>
+
+                <strong>
+                  {{
+                    normaSeleccionada.nombreArchivo ||
+                    'Documento de convivencia'
+                  }}
+                </strong>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="persona-info-modal__document-action"
+                (click)="abrirArchivo(normaSeleccionada.archivoUrl)">
+                Abrir
+              </button>
+
+            </div>
+
+          }
+
+        </div>
+
+      </section>
+
+    </div>
+
+  }
+
+</section>
