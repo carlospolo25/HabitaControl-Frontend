@@ -500,6 +500,12 @@
 
               <th
                 scope="col"
+                class="packages-list__table-heading packages-list__table-heading--photo">
+                Foto
+              </th>
+
+              <th
+                scope="col"
                 class="packages-list__table-heading">
                 Recepción
               </th>
@@ -615,6 +621,59 @@
                   <p class="packages-list__package-description">
                     {{ paquete.descripcion || 'Sin descripción' }}
                   </p>
+
+                </td>
+
+                <!-- FOTOGRAFÍA -->
+
+                <td
+                  class="packages-list__table-cell packages-list__table-cell--photo"
+                  data-label="Foto">
+
+                  @if (tieneFoto(paquete)) {
+
+                    <button
+                      type="button"
+                      class="packages-list__photo"
+                      (click)="abrirFoto(paquete)"
+                      [attr.aria-label]="
+                        'Ver fotografía del paquete de ' +
+                        paquete.nombreDestinatario
+                      ">
+
+                      <img
+                        class="packages-list__photo-image"
+                        [src]="obtenerFotoUrl(paquete.fotoUrl)"
+                        [alt]="'Fotografía del paquete de ' + paquete.nombreDestinatario"
+                        loading="lazy">
+
+                      <span
+                        class="packages-list__photo-indicator"
+                        aria-hidden="true">
+                        ✓
+                      </span>
+
+                    </button>
+
+                  } @else {
+
+                    <div
+                      class="packages-list__photo-empty"
+                      aria-label="Sin fotografía">
+
+                      <span
+                        class="packages-list__photo-empty-icon"
+                        aria-hidden="true">
+                        📷
+                      </span>
+
+                      <span class="packages-list__photo-empty-text">
+                        Sin foto
+                      </span>
+
+                    </div>
+
+                  }
 
                 </td>
 
@@ -823,5 +882,104 @@
     (cerrar)="cerrarEntrega()"
     (entregaCompletada)="entregaCompletada()">
   </app-form-entrega-paquete>
+
+}
+
+<!-- ========================================================
+     VISOR DE EVIDENCIA FOTOGRÁFICA
+========================================================= -->
+
+@if (
+  fotoModalAbierta &&
+  fotoSeleccionadaUrl
+) {
+
+  <div
+    class="packages-photo-viewer__backdrop"
+    role="presentation"
+    (click)="cerrarFoto()">
+
+    <section
+      class="packages-photo-viewer__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="packages-photo-viewer-title"
+      (click)="$event.stopPropagation()">
+
+      <header class="packages-photo-viewer__header">
+
+        <div class="packages-photo-viewer__heading">
+
+          <span class="packages-photo-viewer__eyebrow">
+            Evidencia fotográfica
+          </span>
+
+          <h3
+            id="packages-photo-viewer-title"
+            class="packages-photo-viewer__title">
+            Fotografía del paquete
+          </h3>
+
+          <p class="packages-photo-viewer__description">
+            Evidencia registrada durante la recepción del paquete.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="packages-photo-viewer__close"
+          aria-label="Cerrar fotografía"
+          (click)="cerrarFoto()">
+
+          <span aria-hidden="true">
+            ×
+          </span>
+
+        </button>
+
+      </header>
+
+      <div class="packages-photo-viewer__content">
+
+        <div class="packages-photo-viewer__image-frame">
+
+          <img
+            class="packages-photo-viewer__image"
+            [src]="fotoSeleccionadaUrl"
+            [alt]="fotoSeleccionadaAlt">
+
+        </div>
+
+      </div>
+
+      <footer class="packages-photo-viewer__footer">
+
+        <div class="packages-photo-viewer__status">
+
+          <span
+            class="packages-photo-viewer__status-icon"
+            aria-hidden="true">
+            ✓
+          </span>
+
+          <span class="packages-photo-viewer__status-text">
+            Evidencia disponible
+          </span>
+
+        </div>
+
+        <button
+          type="button"
+          class="packages-photo-viewer__button"
+          (click)="cerrarFoto()">
+          Cerrar
+        </button>
+
+      </footer>
+
+    </section>
+
+  </div>
 
 }

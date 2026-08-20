@@ -4334,3 +4334,827 @@ button {
 }
 
 
+/* =========================================================
+   LISTA DE PAQUETES
+   FOTOGRAFÍA EN TABLA — PARTE 1
+   ========================================================= */
+
+/* =========================================================
+   ENCABEZADO DE COLUMNA
+   ========================================================= */
+
+.packages-list__table-heading--photo {
+  width: 92px;
+  min-width: 92px;
+
+  text-align: center;
+}
+
+/* =========================================================
+   CELDA DE FOTOGRAFÍA
+   ========================================================= */
+
+.packages-list__table-cell--photo {
+  width: 92px;
+  min-width: 92px;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* =========================================================
+   CONTENEDOR DE MINIATURA
+   ========================================================= */
+
+.packages-list__photo {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  height: 64px;
+
+  overflow: hidden;
+
+  border: 1px solid #CBD5E1;
+  border-radius: 12px;
+
+  background: #F8FAFC;
+
+  box-shadow:
+    0 4px 10px rgba(15, 23, 42, 0.06);
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+
+.packages-list__photo-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
+}
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.packages-list__photo:hover {
+  border-color: #2563EB;
+
+  box-shadow:
+    0 8px 18px rgba(37, 99, 235, 0.16);
+
+  transform: translateY(-1px);
+}
+
+.packages-list__photo:hover
+.packages-list__photo-image {
+  transform: scale(1.08);
+
+  filter: saturate(1.04);
+}
+
+/* =========================================================
+   INDICADOR DE EVIDENCIA
+   ========================================================= */
+
+.packages-list__photo-indicator {
+  position: absolute;
+
+  right: 4px;
+  bottom: 4px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+
+  background: #16A34A;
+
+  color: #FFFFFF;
+
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+
+  box-shadow:
+    0 2px 6px rgba(22, 163, 74, 0.28);
+}
+
+/* =========================================================
+   ESTADO SIN FOTO
+   ========================================================= */
+
+.packages-list__photo-empty {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  min-height: 64px;
+
+  gap: 4px;
+
+  padding: 6px;
+
+  border: 1px dashed #CBD5E1;
+  border-radius: 12px;
+
+  background: #F8FAFC;
+
+  color: #64748B;
+}
+
+/* =========================================================
+   ÍCONO SIN FOTO
+   ========================================================= */
+
+.packages-list__photo-empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 26px;
+  height: 26px;
+
+  border-radius: 8px;
+
+  background: #F1F5F9;
+
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* =========================================================
+   TEXTO SIN FOTO
+   ========================================================= */
+
+.packages-list__photo-empty-text {
+  color: #64748B;
+
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.2;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   MEJORA VISUAL DE FILA
+   ========================================================= */
+
+.packages-list__table-row--data:hover
+.packages-list__photo {
+  border-color: #94A3B8;
+}
+
+.packages-list__table-row--data:hover
+.packages-list__photo-empty {
+  border-color: #94A3B8;
+
+  background: #F1F5F9;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .packages-list__table-heading--photo,
+  .packages-list__table-cell--photo {
+    width: 82px;
+    min-width: 82px;
+  }
+
+  .packages-list__photo,
+  .packages-list__photo-empty {
+    width: 58px;
+    height: 58px;
+    min-height: 58px;
+  }
+}
+
+@media (max-width: 640px) {
+  .packages-list__table-cell--photo {
+    text-align: right;
+  }
+
+  .packages-list__photo,
+  .packages-list__photo-empty {
+    width: 54px;
+    height: 54px;
+    min-height: 54px;
+
+    border-radius: 10px;
+  }
+
+  .packages-list__photo-indicator {
+    width: 17px;
+    height: 17px;
+
+    font-size: 9px;
+  }
+
+  .packages-list__photo-empty-text {
+    font-size: 8px;
+  }
+}
+
+
+/* =========================================================
+   LISTA DE PAQUETES
+   FOTOGRAFÍA EN TABLA — PARTE 2
+   HOVER AVANZADO + OVERLAY + ESTADO VISUAL
+   ========================================================= */
+
+/* =========================================================
+   PREPARACIÓN DEL CONTENEDOR
+   ========================================================= */
+
+.packages-list__photo {
+  isolation: isolate;
+}
+
+/* =========================================================
+   CAPA SUPERIOR SOBRE LA FOTO
+   ========================================================= */
+
+.packages-list__photo::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0) 45%,
+      rgba(15, 23, 42, 0.52) 100%
+    );
+
+  opacity: 0;
+
+  transition:
+    opacity 180ms ease;
+}
+
+.packages-list__photo:hover::before {
+  opacity: 1;
+}
+
+/* =========================================================
+   ETIQUETA DE EVIDENCIA
+   ========================================================= */
+
+.packages-list__photo::after {
+  content: 'Ver evidencia';
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 7px;
+
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  max-width: calc(100% - 12px);
+
+  padding: 4px 7px;
+
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+
+  background:
+    rgba(15, 23, 42, 0.70);
+
+  color: #FFFFFF;
+
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 1;
+
+  letter-spacing: 0.02em;
+
+  white-space: nowrap;
+
+  opacity: 0;
+
+  transform:
+    translate(-50%, 5px);
+
+  backdrop-filter: blur(4px);
+
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.packages-list__photo:hover::after {
+  opacity: 1;
+
+  transform:
+    translate(-50%, 0);
+}
+
+/* =========================================================
+   INDICADOR VERDE
+   ========================================================= */
+
+.packages-list__photo-indicator {
+  z-index: 3;
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.packages-list__photo:hover
+.packages-list__photo-indicator {
+  transform: scale(1.08);
+
+  box-shadow:
+    0 3px 8px rgba(22, 163, 74, 0.34);
+}
+
+/* =========================================================
+   FOTO — MEJORA DE PROFUNDIDAD
+   ========================================================= */
+
+.packages-list__photo:hover {
+  border-color: #2563EB;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.08),
+    0 10px 22px rgba(15, 23, 42, 0.14);
+
+  transform:
+    translateY(-2px)
+    scale(1.02);
+}
+
+.packages-list__photo:hover
+.packages-list__photo-image {
+  transform: scale(1.12);
+
+  filter:
+    saturate(1.05)
+    contrast(1.02);
+}
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.packages-list__photo:focus-within {
+  border-color: #2563EB;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+/* =========================================================
+   ESTADO SIN FOTO — MEJORA
+   ========================================================= */
+
+.packages-list__photo-empty {
+  position: relative;
+
+  overflow: hidden;
+
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+/* Fondo decorativo */
+.packages-list__photo-empty::before {
+  content: '';
+
+  position: absolute;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(148, 163, 184, 0.08);
+
+  transform: scale(1);
+
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+}
+
+.packages-list__photo-empty:hover {
+  border-color: #94A3B8;
+
+  background: #F1F5F9;
+
+  transform: translateY(-1px);
+}
+
+.packages-list__photo-empty:hover::before {
+  background:
+    rgba(37, 99, 235, 0.07);
+
+  transform: scale(1.15);
+}
+
+/* =========================================================
+   ÍCONO SIN FOTO
+   ========================================================= */
+
+.packages-list__photo-empty-icon {
+  position: relative;
+
+  z-index: 1;
+
+  color: #64748B;
+
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.packages-list__photo-empty:hover
+.packages-list__photo-empty-icon {
+  color: #2563EB;
+
+  transform: scale(1.06);
+}
+
+/* =========================================================
+   TEXTO SIN FOTO
+   ========================================================= */
+
+.packages-list__photo-empty-text {
+  position: relative;
+
+  z-index: 1;
+
+  transition:
+    color 180ms ease;
+}
+
+.packages-list__photo-empty:hover
+.packages-list__photo-empty-text {
+  color: #475569;
+}
+
+/* =========================================================
+   REDUCCIÓN DE MOVIMIENTO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .packages-list__photo,
+  .packages-list__photo-image,
+  .packages-list__photo-indicator,
+  .packages-list__photo-empty,
+  .packages-list__photo-empty-icon,
+  .packages-list__photo-empty-text,
+  .packages-list__photo::before,
+  .packages-list__photo::after {
+    transition: none;
+  }
+}
+
+/* =========================================================
+   VISOR DE EVIDENCIA
+   MODAL SOBRE LA PANTALLA
+   ========================================================= */
+
+.packages-photo-viewer__backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    rgba(2, 6, 23, 0.72);
+
+  backdrop-filter: blur(6px);
+
+  overflow-y: auto;
+}
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.packages-photo-viewer__dialog {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: min(820px, 100%);
+  max-height: calc(100vh - 48px);
+
+  overflow: hidden;
+
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+
+  background: #FFFFFF;
+
+  box-shadow:
+    0 30px 80px rgba(2, 6, 23, 0.35);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.packages-photo-viewer__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 20px 22px;
+
+  border-bottom: 1px solid #E2E8F0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #FFFFFF 0%,
+      #F8FAFC 100%
+    );
+}
+
+.packages-photo-viewer__heading {
+  min-width: 0;
+}
+
+.packages-photo-viewer__eyebrow {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #2563EB;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.packages-photo-viewer__title {
+  margin: 0;
+
+  color: #0F172A;
+
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.packages-photo-viewer__description {
+  margin: 5px 0 0;
+
+  color: #64748B;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   BOTÓN CERRAR
+   ========================================================= */
+
+.packages-photo-viewer__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  width: 38px;
+  height: 38px;
+
+  padding: 0;
+
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+
+  background: #FFFFFF;
+
+  color: #475569;
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.packages-photo-viewer__close:hover {
+  border-color: #FCA5A5;
+
+  background: #FEE2E2;
+
+  color: #DC2626;
+}
+
+/* =========================================================
+   ÁREA DE LA IMAGEN
+   ========================================================= */
+
+.packages-photo-viewer__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 0;
+
+  padding: 20px;
+
+  overflow: auto;
+
+  background: #0F172A;
+}
+
+.packages-photo-viewer__image-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  border-radius: 14px;
+
+  background: #020617;
+}
+
+.packages-photo-viewer__image {
+  display: block;
+
+  max-width: 100%;
+  max-height: 60vh;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.packages-photo-viewer__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 15px 22px;
+
+  border-top: 1px solid #E2E8F0;
+
+  background: #FFFFFF;
+}
+
+.packages-photo-viewer__status {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: #166534;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.packages-photo-viewer__status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+
+  border-radius: 50%;
+
+  background: #DCFCE7;
+
+  color: #16A34A;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.packages-photo-viewer__button {
+  min-height: 38px;
+
+  padding: 0 18px;
+
+  border: 1px solid #2563EB;
+  border-radius: 10px;
+
+  background: #2563EB;
+
+  color: #FFFFFF;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.packages-photo-viewer__button:hover {
+  border-color: #1D4ED8;
+
+  background: #1D4ED8;
+
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .packages-photo-viewer__backdrop {
+    padding: 12px;
+  }
+
+  .packages-photo-viewer__dialog {
+    max-height: calc(100vh - 24px);
+
+    border-radius: 16px;
+  }
+
+  .packages-photo-viewer__header {
+    padding: 16px;
+  }
+
+  .packages-photo-viewer__content {
+    padding: 12px;
+  }
+
+  .packages-photo-viewer__image {
+    max-height: 55vh;
+  }
+
+  .packages-photo-viewer__footer {
+    padding: 13px 16px;
+  }
+}

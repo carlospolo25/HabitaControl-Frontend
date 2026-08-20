@@ -334,6 +334,174 @@
 
       </div>
 
+      <!-- Fotografía del visitante -->
+
+      <section
+        class="validated-visitor-photo"
+        aria-labelledby="validated-visitor-photo-title">
+
+        <header class="validated-visitor-photo__header">
+
+          <div class="validated-visitor-photo__heading">
+
+            <span class="validated-visitor-photo__eyebrow">
+              Evidencia de ingreso
+            </span>
+
+            <h4
+              id="validated-visitor-photo-title"
+              class="validated-visitor-photo__title">
+              Fotografía del visitante
+            </h4>
+
+            <p class="validated-visitor-photo__description">
+              Toma o selecciona una fotografía antes de registrar el ingreso.
+            </p>
+
+          </div>
+
+        </header>
+
+        @if (!fotoPreview) {
+
+          <label
+            for="fotoVisitanteQr"
+            class="validated-visitor-photo__selector">
+
+            <span
+              class="validated-visitor-photo__icon"
+              aria-hidden="true">
+              📷
+            </span>
+
+            <span class="validated-visitor-photo__selector-content">
+
+              <strong class="validated-visitor-photo__selector-title">
+                Tomar o seleccionar fotografía
+              </strong>
+
+              <span class="validated-visitor-photo__selector-description">
+                JPG, JPEG, PNG o WEBP. Máximo 5 MB.
+              </span>
+
+            </span>
+
+            <span
+              class="validated-visitor-photo__selector-action"
+              aria-hidden="true">
+              Seleccionar
+            </span>
+
+          </label>
+
+          <input
+            id="fotoVisitanteQr"
+            name="fotoVisitanteQr"
+            class="validated-visitor-photo__input"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            capture="environment"
+            [disabled]="estaProcesando"
+            (change)="onFotoSeleccionada($event)">
+
+        } @else {
+
+          <div class="validated-visitor-photo__preview">
+
+            <div class="validated-visitor-photo__preview-frame">
+
+              <img
+                class="validated-visitor-photo__preview-image"
+                [src]="fotoPreview"
+                [alt]="'Vista previa de la fotografía de ' + visitante.nombre">
+
+              <span class="validated-visitor-photo__preview-badge">
+                ✓ Evidencia lista
+              </span>
+
+            </div>
+
+            <div class="validated-visitor-photo__preview-info">
+
+              <div class="validated-visitor-photo__preview-heading">
+
+                <span
+                  class="validated-visitor-photo__status"
+                  aria-hidden="true">
+                  ✓
+                </span>
+
+                <div class="validated-visitor-photo__preview-content">
+
+                  <strong class="validated-visitor-photo__preview-title">
+                    Fotografía lista para registrar
+                  </strong>
+
+                  @if (foto) {
+                    <p class="validated-visitor-photo__preview-name">
+                      {{ foto.name }}
+                    </p>
+                  }
+
+                </div>
+
+              </div>
+
+              <div class="validated-visitor-photo__actions">
+
+                <label
+                  for="fotoVisitanteQrReemplazo"
+                  class="
+                    validated-visitor-photo__button
+                    validated-visitor-photo__button--replace
+                  ">
+                  Cambiar fotografía
+                </label>
+
+                <input
+                  id="fotoVisitanteQrReemplazo"
+                  class="validated-visitor-photo__input"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  capture="environment"
+                  [disabled]="estaProcesando"
+                  (change)="onFotoSeleccionada($event)">
+
+                <button
+                  type="button"
+                  class="
+                    validated-visitor-photo__button
+                    validated-visitor-photo__button--remove
+                  "
+                  [disabled]="estaProcesando"
+                  (click)="eliminarFoto()">
+                  Quitar fotografía
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+        <aside class="validated-visitor-photo__note">
+
+          <span
+            class="validated-visitor-photo__note-icon"
+            aria-hidden="true">
+            i
+          </span>
+
+          <p class="validated-visitor-photo__note-text">
+            Los datos provienen de la invitación QR. La fotografía se captura
+            en portería como evidencia del ingreso.
+          </p>
+
+        </aside>
+
+      </section>
 
       <!-- Acción de ingreso -->
 
@@ -368,6 +536,8 @@
   }
 
 </section>
+
+
 
 
 <!-- =======================================================

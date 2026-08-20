@@ -271,6 +271,161 @@
 
         </section>
 
+        <section
+          class="package-form__card package-form__card--photo"
+          aria-labelledby="package-photo-title">
+
+          <header class="package-form__card-header">
+
+            <span
+              class="package-form__step"
+              aria-hidden="true">
+              3
+            </span>
+
+            <div class="package-form__card-heading">
+
+              <h4
+                id="package-photo-title"
+                class="package-form__card-title">
+                Fotografía del paquete
+              </h4>
+
+              <p class="package-form__card-description">
+                Agrega una fotografía como evidencia visual del paquete recibido.
+              </p>
+
+            </div>
+
+          </header>
+
+          <div class="package-form__photo-section">
+
+            @if (!fotoPreview) {
+
+              <label
+                for="fotoPaquete"
+                class="package-form__photo-selector">
+
+                <span
+                  class="package-form__photo-icon"
+                  aria-hidden="true">
+                  📷
+                </span>
+
+                <span class="package-form__photo-selector-content">
+
+                  <strong class="package-form__photo-selector-title">
+                    Tomar o seleccionar fotografía
+                  </strong>
+
+                  <span class="package-form__photo-selector-description">
+                    JPG, JPEG, PNG o WEBP. Máximo 5 MB.
+                  </span>
+
+                </span>
+
+                <span
+                  class="package-form__photo-selector-action"
+                  aria-hidden="true">
+                  Seleccionar
+                </span>
+
+              </label>
+
+              <input
+                id="fotoPaquete"
+                name="fotoPaquete"
+                class="package-form__photo-input"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                capture="environment"
+                [disabled]="isSubmitting"
+                (change)="onFotoSeleccionada($event)">
+
+            } @else {
+
+              <div class="package-form__photo-preview">
+
+                <div class="package-form__photo-preview-frame">
+
+                  <img
+                    class="package-form__photo-preview-image"
+                    [src]="fotoPreview"
+                    alt="Vista previa de la fotografía del paquete">
+
+                </div>
+
+                <div class="package-form__photo-preview-info">
+
+                  <div class="package-form__photo-preview-heading">
+
+                    <span
+                      class="package-form__photo-status"
+                      aria-hidden="true">
+                      ✓
+                    </span>
+
+                    <div>
+
+                      <strong class="package-form__photo-preview-title">
+                        Fotografía lista
+                      </strong>
+
+                      @if (foto) {
+                        <p class="package-form__photo-preview-name">
+                          {{ foto.name }}
+                        </p>
+                      }
+
+                    </div>
+
+                  </div>
+
+                  <div class="package-form__photo-actions">
+
+                    <label
+                      for="fotoPaqueteReemplazo"
+                      class="package-form__photo-button package-form__photo-button--replace">
+
+                      Cambiar fotografía
+
+                    </label>
+
+                    <input
+                      id="fotoPaqueteReemplazo"
+                      class="package-form__photo-input"
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      capture="environment"
+                      [disabled]="isSubmitting"
+                      (change)="onFotoSeleccionada($event)">
+
+                    <button
+                      type="button"
+                      class="package-form__photo-button package-form__photo-button--remove"
+                      [disabled]="isSubmitting"
+                      (click)="eliminarFoto()">
+                      Quitar fotografía
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            }
+
+            <p class="package-form__photo-note">
+              La fotografía es opcional y se utilizará como evidencia del estado
+              del paquete al momento de su recepción.
+            </p>
+
+          </div>
+
+        </section>
+
       </div>
 
       <footer class="package-form__footer">

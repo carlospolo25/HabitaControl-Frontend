@@ -8,6 +8,11 @@ export interface RegistrarVisitanteRequest {
   torre: string;
   apartamento: string;
   autorizadoPorNombre: string;
+
+  emailVisitante?: string;
+  telefonoVisitante?: string;
+
+  foto?: File | null;
 }
 
 export interface VisitanteResponse {
@@ -20,6 +25,7 @@ export interface VisitanteResponse {
   estado: string;
   fechaIngreso: string;
   fechaSalida?: string | null;
+  fotoUrl?: string | null;
 }
 
 export interface CrearInvitacionVisitanteRequest {
@@ -47,47 +53,117 @@ export interface ValidarInvitacionVisitanteResponse {
   visitante: RegistrarVisitanteRequest | null;
 }
 
-export interface ApiMessageResponse{
-    message:string;
+export interface ApiMessageResponse {
+  mensaje: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class VisitanteService {
-  private readonly baseUrl = 'https://localhost:7232/api/Visitante';
+  private readonly baseUrl =
+    'https://localhost:7232/api/Visitante';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient
+  ) {}
 
-  crearVisitante(data: RegistrarVisitanteRequest): Observable<ApiMessageResponse> {
-    return this.http.post<ApiMessageResponse>(`${this.baseUrl}/registrar`, data);
-  }
+  crearVisitante(
+    data: RegistrarVisitanteRequest
+  ): Observable<ApiMessageResponse> {
+    const formData = new FormData();
 
-  obtener(): Observable<VisitanteResponse[]> {
-    return this.http.get<VisitanteResponse[]>(`${this.baseUrl}/obtener`);
-  }
+    formData.append(
+      'Nombre',
+      data.nombre
+    );
 
-  darSalida(id: string): Observable<ApiMessageResponse> {
-    return this.http.put<ApiMessageResponse>(`${this.baseUrl}/salida/${id}`, {});
-  }
+    formData.append(
+      'Documento',
+      data.documento
+    );
 
-  crearInvitacion(request: CrearInvitacionVisitanteRequest): Observable<InvitacionVisitanteResponse> {
-    return this.http.post<InvitacionVisitanteResponse>(
-        `${this.baseUrl}/crear-invitacion`,
-        request
+    formData.append(
+      'Torre',
+      data.torre
+    );
+
+    formData.append(
+      'Apartamento',
+      data.apartamento
+    );
+
+    formData.append(
+      'AutorizadoPorNombre',
+      data.autorizadoPorNombre
+    );
+
+    if (data.emailVisitante) {
+      formData.append(
+        'EmailVisitante',
+        data.emailVisitante
+      );
+    }
+
+    if (data.telefonoVisitante) {
+      formData.append(
+        'TelefonoVisitante',
+        data.telefonoVisitante
+      );
+    }
+
+    if (data.foto) {
+      formData.append(
+        'Foto',
+        data.foto,
+        data.foto.name
+      );
+    }
+
+    return this.http.post<ApiMessageResponse>(
+      `${this.baseUrl}/registrar`,
+      formData
     );
   }
 
-  validarInvitacion(token: string): Observable<ValidarInvitacionVisitanteResponse> {
+  obtener(): Observable<VisitanteResponse[]> {
+    return this.http.get<VisitanteResponse[]>(
+      `${this.baseUrl}/obtener`
+    );
+  }
+
+  darSalida(
+    id: string
+  ): Observable<ApiMessageResponse> {
+    return this.http.put<ApiMessageResponse>(
+      `${this.baseUrl}/salida/${id}`,
+      {}
+    );
+  }
+
+  crearInvitacion(
+    request: CrearInvitacionVisitanteRequest
+  ): Observable<InvitacionVisitanteResponse> {
+    return this.http.post<InvitacionVisitanteResponse>(
+      `${this.baseUrl}/crear-invitacion`,
+      request
+    );
+  }
+
+  validarInvitacion(
+    token: string
+  ): Observable<ValidarInvitacionVisitanteResponse> {
     return this.http.get<ValidarInvitacionVisitanteResponse>(
       `${this.baseUrl}/validar-invitacion/${token}`
     );
   }
 
-  marcarInvitacionComoUsada(token: string): Observable<ApiMessageResponse> {
+  marcarInvitacionComoUsada(
+    token: string
+  ): Observable<ApiMessageResponse> {
     return this.http.put<ApiMessageResponse>(
-        `${this.baseUrl}/marcar-invitacion-usada/${token}`,
-        {}
+      `${this.baseUrl}/marcar-invitacion-usada/${token}`,
+      {}
     );
   }
 }

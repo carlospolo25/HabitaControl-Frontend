@@ -253,6 +253,11 @@
           <thead class="visitors-table__head">
             <tr>
               <th scope="col">Visitante</th>
+              <th
+                scope="col"
+                class="visitors-table__photo-heading">
+                Foto
+              </th>
               <th scope="col">Ubicación</th>
               <th scope="col">Autorizado por</th>
               <th scope="col">Ingreso</th>
@@ -291,6 +296,54 @@
                       </span>
                     </div>
                   </div>
+                </td>
+
+                <td
+                  class="visitors-table__photo-cell"
+                  data-label="Foto">
+
+                  @if (tieneFoto(visitante)) {
+
+                  <button
+                    type="button"
+                    class="visitors-table__photo"
+                    [attr.aria-label]="'Ver fotografía de ' + visitante.nombre"
+                    (click)="abrirFotoVisitante(visitante)">
+
+                    <img
+                      class="visitors-table__photo-image"
+                      [src]="obtenerFotoUrl(visitante.fotoUrl)"
+                      [alt]="'Fotografía de ' + visitante.nombre"
+                      loading="lazy">
+
+                    <span
+                      class="visitors-table__photo-indicator"
+                      aria-hidden="true">
+                      ✓
+                    </span>
+
+                  </button>
+
+                  } @else {
+
+                    <div
+                      class="visitors-table__photo-empty"
+                      aria-label="Sin fotografía">
+
+                      <span
+                        class="visitors-table__photo-empty-icon"
+                        aria-hidden="true">
+                        📷
+                      </span>
+
+                      <span class="visitors-table__photo-empty-text">
+                        Sin foto
+                      </span>
+
+                    </div>
+
+                  }
+
                 </td>
 
                 <td>
@@ -401,7 +454,7 @@
             @if (visitantesFiltrados.length === 0) {
               <tr>
                 <td
-                  colspan="7"
+                  colspan="8"
                   class="visitors-table__no-results">
 
                   <div class="visitors-table__no-results-content">
@@ -503,6 +556,47 @@
         </span>
       </div>
 
+      @if (tieneFoto(visitanteDetalle)) {
+
+        <section class="visitor-detail__photo-section">
+
+          <div class="visitor-detail__photo-frame">
+
+            <img
+              class="visitor-detail__photo-image"
+              [src]="obtenerFotoUrl(visitanteDetalle.fotoUrl)"
+              [alt]="'Fotografía de ' + visitanteDetalle.nombre">
+
+            <span class="visitor-detail__photo-badge">
+              <span aria-hidden="true">
+                ✓
+              </span>
+
+              Evidencia de ingreso
+            </span>
+
+          </div>
+
+          <div class="visitor-detail__photo-info">
+
+            <span class="visitor-detail__photo-eyebrow">
+              Identificación visual
+            </span>
+
+            <strong class="visitor-detail__photo-title">
+              Fotografía del visitante
+            </strong>
+
+            <p class="visitor-detail__photo-description">
+              Imagen registrada durante el ingreso a la residencia.
+            </p>
+
+          </div>
+
+        </section>
+
+      }
+
       <div class="visitor-detail__grid">
         <article class="visitor-detail__item">
           <span class="visitor-detail__label">
@@ -585,4 +679,100 @@
       </footer>
     </section>
   </div>
+}
+
+@if (
+  mostrarFotoVisitante &&
+  fotoVisitanteSeleccionada
+) {
+
+  <div
+    class="visitor-photo-viewer"
+    role="presentation"
+    (click)="cerrarFotoVisitante()">
+
+    <section
+      class="visitor-photo-viewer__modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="visitor-photo-viewer-title"
+      (click)="$event.stopPropagation()">
+
+      <header class="visitor-photo-viewer__header">
+
+        <div class="visitor-photo-viewer__heading">
+
+          <span class="visitor-photo-viewer__eyebrow">
+            Evidencia de ingreso
+          </span>
+
+          <h3
+            id="visitor-photo-viewer-title"
+            class="visitor-photo-viewer__title">
+            {{ fotoVisitanteSeleccionada.nombre }}
+          </h3>
+
+          <p class="visitor-photo-viewer__description">
+            Fotografía registrada durante el ingreso del visitante.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="visitor-photo-viewer__close"
+          aria-label="Cerrar fotografía"
+          (click)="cerrarFotoVisitante()">
+          ✕
+        </button>
+
+      </header>
+
+      <div class="visitor-photo-viewer__image-container">
+
+        <img
+          class="visitor-photo-viewer__image"
+          [src]="obtenerFotoUrl(
+            fotoVisitanteSeleccionada.fotoUrl
+          )"
+          [alt]="
+            'Fotografía de ' +
+            fotoVisitanteSeleccionada.nombre
+          ">
+
+      </div>
+
+      <footer class="visitor-photo-viewer__footer">
+
+        <div class="visitor-photo-viewer__info">
+
+          <span>
+            Torre
+            <strong>
+              {{ fotoVisitanteSeleccionada.torre }}
+            </strong>
+          </span>
+
+          <span>
+            Apartamento
+            <strong>
+              {{ fotoVisitanteSeleccionada.apartamento }}
+            </strong>
+          </span>
+
+        </div>
+
+        <button
+          type="button"
+          class="visitor-photo-viewer__button"
+          (click)="cerrarFotoVisitante()">
+          Cerrar
+        </button>
+
+      </footer>
+
+    </section>
+
+  </div>
+
 }

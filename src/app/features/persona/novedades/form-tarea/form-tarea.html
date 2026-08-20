@@ -1,0 +1,413 @@
+<div class="tarea-modal">
+
+  <section class="tarea-card">
+
+    <header class="tarea-header">
+
+      <div class="tarea-header__content">
+
+        <span class="tarea-eyebrow">
+          Nueva tarea
+        </span>
+
+        <h2>
+          Crear tarea
+        </h2>
+
+        <p>
+          Registra una tarea, define su prioridad y establece una fecha límite
+          cuando sea necesario.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="tarea-close-button"
+        (click)="cerrar()"
+        [disabled]="isLoading"
+        aria-label="Cerrar formulario">
+        ×
+      </button>
+
+    </header>
+
+
+    @if (errorMessage) {
+
+      <div
+        class="tarea-alert tarea-alert--error"
+        role="alert">
+
+        {{ errorMessage }}
+
+      </div>
+
+    }
+
+
+    @if (successMessage) {
+
+      <div
+        class="tarea-alert tarea-alert--success"
+        role="status">
+
+        {{ successMessage }}
+
+      </div>
+
+    }
+
+
+    <form
+      class="tarea-form"
+      (ngSubmit)="guardar()">
+
+
+      <!-- INFORMACIÓN PRINCIPAL -->
+      <section class="tarea-form__section">
+
+        <header class="tarea-form__section-header">
+
+          <div>
+
+            <span class="tarea-form__section-eyebrow">
+              Información principal
+            </span>
+
+            <h3 class="tarea-form__section-title">
+              Datos de la tarea
+            </h3>
+
+          </div>
+
+        </header>
+
+
+        <div class="tarea-form__grid">
+
+
+          <!-- TÍTULO -->
+          <div class="tarea-form__group tarea-form__group--full">
+
+            <label
+              class="tarea-form__label"
+              for="tarea-titulo">
+
+              Título
+
+              <span class="tarea-form__required">
+                *
+              </span>
+
+            </label>
+
+            <input
+              id="tarea-titulo"
+              name="titulo"
+              type="text"
+              class="tarea-form__input"
+              [(ngModel)]="titulo"
+              placeholder="Ej: Revisar luminarias del parqueadero"
+              autocomplete="off"
+              maxlength="150"
+              required
+              [disabled]="isLoading"
+            />
+
+            <small class="tarea-form__hint">
+              Usa un título corto que permita identificar rápidamente la tarea.
+            </small>
+
+          </div>
+
+
+          <!-- TIPO -->
+          <div class="tarea-form__group">
+
+            <label
+              class="tarea-form__label"
+              for="tarea-tipo">
+
+              Tipo
+
+              <span class="tarea-form__required">
+                *
+              </span>
+
+            </label>
+
+            <select
+              id="tarea-tipo"
+              name="tipo"
+              class="tarea-form__select"
+              [(ngModel)]="tipo"
+              required
+              [disabled]="isLoading">
+
+              <option value="Operativa">
+                Operativa
+              </option>
+
+              <option value="Gestion">
+                Gestión
+              </option>
+
+            </select>
+
+            <small class="tarea-form__hint">
+              Clasifica la tarea según su naturaleza.
+            </small>
+
+          </div>
+
+
+          <!-- PRIORIDAD -->
+          <div class="tarea-form__group">
+
+            <label
+              class="tarea-form__label"
+              for="tarea-prioridad">
+
+              Prioridad
+
+              <span class="tarea-form__required">
+                *
+              </span>
+
+            </label>
+
+            <select
+              id="tarea-prioridad"
+              name="prioridad"
+              class="tarea-form__select"
+              [(ngModel)]="prioridad"
+              required
+              [disabled]="isLoading">
+
+              @for (
+                prioridadItem of prioridades;
+                track prioridadItem.value
+              ) {
+
+                <option [ngValue]="prioridadItem.value">
+                  {{ prioridadItem.label }}
+                </option>
+
+              }
+
+            </select>
+
+            <small class="tarea-form__hint">
+              Define el nivel de atención requerido.
+            </small>
+
+          </div>
+
+
+          <!-- FECHA LÍMITE -->
+          <div class="tarea-form__group">
+
+            <label
+              class="tarea-form__label"
+              for="tarea-fecha-limite">
+
+              Fecha límite
+            </label>
+
+            <input
+              id="tarea-fecha-limite"
+              name="fechaLimite"
+              type="date"
+              class="tarea-form__input"
+              [(ngModel)]="fechaLimite"
+              [disabled]="isLoading"
+            />
+
+            <small class="tarea-form__hint">
+              Opcional. Déjala vacía si la tarea no tiene vencimiento.
+            </small>
+
+          </div>
+
+
+          <!-- DESCRIPCIÓN -->
+          <div class="tarea-form__group tarea-form__group--full">
+
+            <label
+              class="tarea-form__label"
+              for="tarea-descripcion">
+
+              Descripción
+
+              <span class="tarea-form__required">
+                *
+              </span>
+
+            </label>
+
+            <textarea
+              id="tarea-descripcion"
+              name="descripcion"
+              class="tarea-form__textarea"
+              [(ngModel)]="descripcion"
+              placeholder="Describe qué debe realizarse, dónde y cualquier información importante..."
+              maxlength="3000"
+              required
+              [disabled]="isLoading">
+            </textarea>
+
+            <small class="tarea-form__hint">
+              Incluye instrucciones suficientes para que el responsable pueda ejecutar la tarea.
+            </small>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- EVIDENCIA -->
+      <section class="tarea-form__section">
+
+        <header class="tarea-form__section-header">
+
+          <div>
+
+            <span class="tarea-form__section-eyebrow">
+              Evidencia inicial
+            </span>
+
+            <h3 class="tarea-form__section-title">
+              Imagen de referencia
+            </h3>
+
+          </div>
+
+        </header>
+
+
+        <div class="tarea-form__group tarea-form__group--full">
+
+          @if (!imagenBase64) {
+
+            <label class="tarea-upload-box">
+
+              <input
+                class="tarea-upload-box__input"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                (change)="onFileSelected($event)"
+                [disabled]="isLoading"
+              />
+
+              <span
+                class="tarea-upload-box__icon"
+                aria-hidden="true">
+                📷
+              </span>
+
+              <strong class="tarea-upload-box__title">
+                Agregar imagen
+              </strong>
+
+              <span class="tarea-upload-box__description">
+                Adjunta una evidencia o imagen de referencia para la tarea.
+              </span>
+
+              <small class="tarea-upload-box__hint">
+                PNG, JPG o WEBP. Máximo 2 MB.
+              </small>
+
+            </label>
+
+          }
+
+
+          @if (imagenBase64) {
+
+            <div class="tarea-preview">
+
+              <div class="tarea-preview__media">
+
+                <img
+                  class="tarea-preview__image"
+                  [src]="imagenBase64"
+                  alt="Vista previa de la evidencia de la tarea"
+                />
+
+              </div>
+
+              <div class="tarea-preview__footer">
+
+                <div class="tarea-preview__info">
+
+                  <span class="tarea-preview__eyebrow">
+                    Evidencia cargada
+                  </span>
+
+                  <strong>
+                    Imagen lista para adjuntar
+                  </strong>
+
+                </div>
+
+                <button
+                  type="button"
+                  class="tarea-preview__remove-button"
+                  (click)="quitarImagen()"
+                  [disabled]="isLoading">
+
+                  Quitar imagen
+
+                </button>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      </section>
+
+
+      <!-- ACCIONES -->
+      <footer class="tarea-form__actions">
+
+        <button
+          type="button"
+          class="tarea-button tarea-button--secondary"
+          (click)="cerrar()"
+          [disabled]="isLoading">
+
+          Cancelar
+
+        </button>
+
+        <button
+          type="submit"
+          class="tarea-button tarea-button--primary"
+          [disabled]="isLoading">
+
+          @if (isLoading) {
+
+            Creando tarea...
+
+          } @else {
+
+            Crear tarea
+
+          }
+
+        </button>
+
+      </footer>
+
+    </form>
+
+  </section>
+
+</div>

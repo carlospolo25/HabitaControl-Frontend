@@ -34,13 +34,92 @@ export class FormPaqueteComponent {
   torre = '';
   descripcion = '';
 
+  foto: File | null = null;
+  fotoPreview: string | null = null;
+
   isSubmitting = false;
   errorMessage = '';
+
+  private readonly maxFotoBytes =
+    5 * 1024 * 1024;
+
+  private readonly tiposFotoPermitidos = [
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+  ];
 
   constructor(
     private readonly paqueteService: PaqueteService,
     private readonly cdr: ChangeDetectorRef
   ) {}
+
+  onFotoSeleccionada(event: Event): void {
+    this.errorMessage = '';
+
+    const input =
+      event.target as HTMLInputElement;
+
+    const archivo =
+      input.files?.[0];
+
+    if (!archivo) {
+      this.limpiarFoto();
+      return;
+    }
+
+    if (
+      !this.tiposFotoPermitidos.includes(
+        archivo.type
+      )
+    ) {
+      this.errorMessage =
+        'Solo se permiten imágenes JPG, JPEG, PNG o WEBP.';
+
+      input.value = '';
+      this.limpiarFoto();
+      return;
+    }
+
+    if (archivo.size > this.maxFotoBytes) {
+      this.errorMessage =
+        'La imagen no puede superar los 5 MB.';
+
+      input.value = '';
+      this.limpiarFoto();
+      return;
+    }
+
+    this.foto = archivo;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.fotoPreview =
+        reader.result as string;
+
+      this.cdr.detectChanges();
+    };
+
+    reader.onerror = () => {
+      this.errorMessage =
+        'No fue posible cargar la vista previa de la imagen.';
+
+      this.limpiarFoto();
+      this.cdr.detectChanges();
+    };
+
+    reader.readAsDataURL(archivo);
+  }
+
+  eliminarFoto(): void {
+    this.limpiarFoto();
+  }
+
+  private limpiarFoto(): void {
+    this.foto = null;
+    this.fotoPreview = null;
+  }
 
   guardar(): void {
     if (this.isSubmitting) {
@@ -73,9 +152,21 @@ export class FormPaqueteComponent {
       return;
     }
 
+    if (!torre) {
+      this.errorMessage =
+        'La torre es obligatoria.';
+      return;
+    }
+
     if (torre.length > 20) {
       this.errorMessage =
         'La torre no puede superar los 20 caracteres.';
+      return;
+    }
+
+    if (!apartamento) {
+      this.errorMessage =
+        'El apartamento es obligatorio.';
       return;
     }
 
@@ -85,9 +176,18 @@ export class FormPaqueteComponent {
       return;
     }
 
-    if (descripcion.length > 300) {
+    if (!descripcion) {
       this.errorMessage =
-        'La descripción no puede superar los 300 caracteres.';
+        'La descripción del paquete es obligatoria.';
+      return;
+    }
+
+    if (
+      descripcion.length < 3 ||
+      descripcion.length > 300
+    ) {
+      this.errorMessage =
+        'La descripción debe tener entre 3 y 300 caracteres.';
       return;
     }
 
@@ -96,8 +196,9 @@ export class FormPaqueteComponent {
       torre,
       apartamento,
       descripcion,
+      foto: this.foto,
     };
-    
+
     this.isSubmitting = true;
 
     this.paqueteService
@@ -112,11 +213,13 @@ export class FormPaqueteComponent {
         next: () => {
           this.paqueteRegistrado.emit();
         },
+
         error: (error: HttpErrorResponse) => {
-          this.errorMessage = this.obtenerMensajeError(
-            error,
-            'No fue posible registrar el paquete.'
-          );
+          this.errorMessage =
+            this.obtenerMensajeError(
+              error,
+              'No fue posible registrar el paquete.'
+            );
         },
       });
   }
@@ -171,7 +274,9 @@ export class FormPaqueteComponent {
     }
 
     if (error.error?.errors) {
-      const mensajes = Object.values(error.error.errors)
+      const mensajes = Object.values(
+        error.error.errors
+      )
         .flat()
         .filter(
           (mensaje): mensaje is string =>

@@ -1,9 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
+import { ChangeDetectorRef, Component, HostListener, OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
@@ -37,6 +34,9 @@ type PackageSortOption =
 export class ListaPaquetesComponent implements OnInit {
   readonly EstadoPaquete = EstadoPaquete;
 
+  private readonly backendUrl =
+  'https://localhost:7232';
+
   paquetes: PaqueteResponse[] = [];
   paquetesFiltrados: PaqueteResponse[] = [];
 
@@ -53,6 +53,10 @@ export class ListaPaquetesComponent implements OnInit {
   paqueteSeleccionadoId = '';
 
   isSecurity = false;
+
+  fotoModalAbierta = false;
+  fotoSeleccionadaUrl: string | null = null;
+  fotoSeleccionadaAlt = '';
 
   constructor(
     private readonly paqueteService: PaqueteService,
@@ -230,6 +234,78 @@ export class ListaPaquetesComponent implements OnInit {
     this.paquetesFiltrados = resultado;
   }
 
+  trackByPaquete(
+    index: number,
+    paquete: PaqueteResponse
+  ): string {
+    return paquete.id;
+  }
+
+  abrirFoto(paquete: PaqueteResponse): void {
+    const url = this.obtenerFotoUrl(
+      paquete.fotoUrl
+    );
+
+    if (!url) {
+      return;
+    }
+
+    this.fotoSeleccionadaUrl = url;
+
+    this.fotoSeleccionadaAlt =
+      `Fotografía del paquete de ${paquete.nombreDestinatario}`;
+
+    this.fotoModalAbierta = true;
+  }
+
+  cerrarFoto(): void {
+    this.fotoModalAbierta = false;
+    this.fotoSeleccionadaUrl = null;
+    this.fotoSeleccionadaAlt = '';
+  }
+
+  @HostListener('document:keydown.escape')
+  cerrarFotoConEscape(): void {
+    if (!this.fotoModalAbierta) {
+      return;
+    }
+
+    this.cerrarFoto();
+  }
+
+  tieneFoto(
+    paquete: PaqueteResponse
+  ): boolean {
+    return Boolean(
+      paquete.fotoUrl?.trim()
+    );
+  }
+
+  obtenerFotoUrl(
+    fotoUrl: string | null | undefined
+  ): string | null {
+    if (!fotoUrl) {
+      return null;
+    }
+
+    const url = fotoUrl.trim();
+
+    if (!url) {
+      return null;
+    }
+
+    if (
+      url.startsWith('http://') ||
+      url.startsWith('https://')
+    ) {
+      return url;
+    }
+
+    return `${this.backendUrl}${
+      url.startsWith('/') ? '' : '/'
+    }${url}`;
+  }
+
   cambiarTorre(): void {
     if (
       this.selectedApartment &&
@@ -274,13 +350,6 @@ export class ListaPaquetesComponent implements OnInit {
   entregaCompletada(): void {
     this.cerrarEntrega();
     this.cargar();
-  }
-
-  trackByPaquete(
-    index: number,
-    paquete: PaqueteResponse
-  ): string {
-    return paquete.id;
   }
 
   private cargarPermisos(): void {

@@ -1,19 +1,43 @@
 <section class="novedades-container">
 
   <header class="novedades-header">
+
     <div>
-      <span class="eyebrow">Gestión de novedades</span>
-      <h2>Novedades registradas</h2>
-      <p>Consulta el estado, responsable e historial de cada incidencia.</p>
+      <span class="eyebrow">
+        Gestión de novedades y tareas
+      </span>
+
+      <h2>
+        Novedades y tareas registradas
+      </h2>
+
+      <p>
+        Consulta el estado, responsable, prioridad e historial de cada registro.
+      </p>
     </div>
 
-    <button
-      type="button"
-      class="refresh-button"
-      (click)="cargar()"
-      [disabled]="isLoading">
-      Actualizar
-    </button>
+    <div class="novedades-header__actions">
+
+      @if (isAdmin) {
+        <button
+          type="button"
+          class="create-task-button"
+          (click)="abrirFormTarea()"
+          [disabled]="isLoading">
+          + Crear tarea
+        </button>
+      }
+
+      <button
+        type="button"
+        class="refresh-button"
+        (click)="cargar()"
+        [disabled]="isLoading">
+        Actualizar
+      </button>
+
+    </div>
+
   </header>
 
   <section
@@ -30,19 +54,22 @@
         <h3
           id="novedades-filters-title"
           class="novedades-toolbar__title">
-          Filtrar novedades
+          Filtrar novedades y tareas
         </h3>
 
         <p class="novedades-toolbar__description">
-          Busca incidencias y limita los resultados por estado,
-          asignación u orden de actualización.
+          Busca registros y limita los resultados por clase, estado,
+          asignación, prioridad o fecha límite.
         </p>
       </div>
 
       @if (
         searchTerm ||
+        selectedClass !== 'all' ||
         selectedStatus !== 'all' ||
         selectedAssignment !== 'all' ||
+        selectedPriority !== 'all' ||
+        selectedDeadline !== 'all' ||
         selectedSort !== 'recent'
       ) {
         <button
@@ -85,6 +112,114 @@
             (input)="applyFilters()">
 
         </div>
+
+      </div>
+
+      <!-- CLASE -->
+      <div class="novedades-toolbar__field">
+
+        <label
+          class="novedades-toolbar__label"
+          for="novedades-class">
+          Clase
+        </label>
+
+        <select
+          id="novedades-class"
+          name="selectedClass"
+          class="novedades-toolbar__select"
+          [(ngModel)]="selectedClass"
+          (change)="applyFilters()">
+
+          <option value="all">
+            Todas
+          </option>
+
+          <option value="novedad">
+            Novedades
+          </option>
+
+          <option value="tarea">
+            Tareas
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- PRIORIDAD -->
+      <div class="novedades-toolbar__field">
+
+        <label
+          class="novedades-toolbar__label"
+          for="novedades-priority">
+          Prioridad
+        </label>
+
+        <select
+          id="novedades-priority"
+          name="selectedPriority"
+          class="novedades-toolbar__select"
+          [(ngModel)]="selectedPriority"
+          (change)="applyFilters()">
+
+          <option value="all">
+            Todas las prioridades
+          </option>
+
+          <option value="low">
+            Baja
+          </option>
+
+          <option value="medium">
+            Media
+          </option>
+
+          <option value="high">
+            Alta
+          </option>
+
+          <option value="critical">
+            Crítica
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- FECHA LÍMITE -->
+      <div class="novedades-toolbar__field">
+
+        <label
+          class="novedades-toolbar__label"
+          for="novedades-deadline">
+          Fecha límite
+        </label>
+
+        <select
+          id="novedades-deadline"
+          name="selectedDeadline"
+          class="novedades-toolbar__select"
+          [(ngModel)]="selectedDeadline"
+          (change)="applyFilters()">
+
+          <option value="all">
+            Todas
+          </option>
+
+          <option value="pending">
+            Vigentes
+          </option>
+
+          <option value="overdue">
+            Vencidas
+          </option>
+
+          <option value="no-deadline">
+            Sin fecha límite
+          </option>
+
+        </select>
 
       </div>
 
@@ -188,6 +323,10 @@
             Mayor actividad
           </option>
 
+          <option value="deadline">
+            Fecha límite más próxima
+          </option>
+
         </select>
 
       </div>
@@ -201,7 +340,7 @@
         <strong>{{ filteredNovedades.length }}</strong>
         de
         <strong>{{ novedades.length }}</strong>
-        novedades
+        registros
       </span>
 
       @if (novedades.length > 0 && filteredNovedades.length === 0) {
@@ -223,7 +362,7 @@
   @if (isLoading) {
 
   <div class="loading-state">
-    Cargando novedades...
+    Cargando novedades y tareas...
   </div>
 
   } @else if (novedades.length === 0) {
@@ -232,11 +371,11 @@
       <span>📋</span>
 
       <h3>
-        No hay novedades registradas
+        No hay novedades ni tareas registradas
       </h3>
 
       <p>
-        Cuando exista una novedad disponible aparecerá aquí.
+        Cuando exista un registro disponible aparecerá aquí.
       </p>
     </div>
 
@@ -253,7 +392,7 @@
         </span>
 
         <h3 class="novedades-filter-empty__title">
-          No hay novedades que coincidan
+          No hay registros que coincidan
         </h3>
 
         <p class="novedades-filter-empty__description">
@@ -275,17 +414,20 @@
 
         <table class="tabla-novedades">
 
-          <thead>
-            <tr>
-              <th>Novedad</th>
-              <th>Estado</th>
-              <th>Reportada por</th>
-              <th>Asignada a</th>
-              <th>Eventos</th>
-              <th>Última actualización</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
+        <thead>
+          <tr>
+            <th>Registro</th>
+            <th>Clase</th>
+            <th>Estado</th>
+            <th>Prioridad</th>
+            <th>Fecha límite</th>
+            <th>Reportada por</th>
+            <th>Asignada a</th>
+            <th>Eventos</th>
+            <th>Última actualización</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
 
           <tbody>
 
@@ -293,9 +435,9 @@
 
               <tr>
 
-                <td data-label="Novedad">
+                <!-- REGISTRO -->
+                <td data-label="Registro">
                   <div class="novedad-main-cell">
-
                     <strong>
                       {{ n.titulo }}
                     </strong>
@@ -303,12 +445,16 @@
                     <p>
                       {{ n.descripcion }}
                     </p>
-
                   </div>
                 </td>
 
-                <td data-label="Estado">
+                <!-- CLASE -->
+                <td data-label="Clase">
+                  {{ getClassLabel(n.clase) }}
+                </td>
 
+                <!-- ESTADO -->
+                <td data-label="Estado">
                   <span
                     class="estado"
                     [class.reportada]="n.estado === 'Reportada'"
@@ -319,7 +465,41 @@
                     {{ n.estado }}
 
                   </span>
+                </td>
 
+                <!-- PRIORIDAD -->
+                <td data-label="Prioridad">
+                  @if (isTask(n)) {
+                    {{ getPriorityLabel(n.prioridad) }}
+                  } @else {
+                    —
+                  }
+                </td>
+
+                <!-- FECHA LÍMITE -->
+                <td data-label="Fecha límite">
+                  @if (isTask(n)) {
+
+                    @if (n.fechaLimite) {
+                      <span>
+                        {{ n.fechaLimite | date:'shortDate' }}
+                      </span>
+
+                      @if (isOverdue(n)) {
+                        <strong>
+                          Vencida
+                        </strong>
+                      }
+
+                    } @else {
+                      <span>
+                        Sin fecha límite
+                      </span>
+                    }
+
+                  } @else {
+                    —
+                  }
                 </td>
 
                 <td data-label="Reportada por">
@@ -331,7 +511,7 @@
                 </td>
 
                 <td data-label="Eventos">
-                  {{ n.totalEventos ?? 0 }}
+                  {{ n.totalEventos  }}
                 </td>
 
                 <td data-label="Última actualización">
@@ -361,9 +541,13 @@
                       <button
                         type="button"
                         class="btn-asignar"
-                        [disabled]="isLoading || n.estado === 'Finalizada'"
+                        [disabled]="
+                          isLoading ||
+                          n.estado === 'Finalizada' ||
+                          !!n.asignadaAId
+                        "
                         (click)="abrirAsignacion(n.id)">
-                        {{ n.asignadaA ? 'Reasignar' : 'Asignar' }}
+                        {{ n.asignadaAId ? 'Asignada' : 'Asignar' }}
                       </button>
                     }
 
@@ -408,11 +592,21 @@
 </section>
 
 @if (asignacionNovedad) {
-  <app-novedad-asignar
-    [novedadId]="novedadSeleccionadaId"
-    (cancelar)="cerrarAsignacion(false)"
-    (asignacionCompletada)="cerrarAsignacion(true)">
-  </app-novedad-asignar>
+
+  <section class="asignacion-modal-backdrop">
+
+    <div class="asignacion-modal-panel">
+
+      <app-novedad-asignar
+        [novedadId]="novedadSeleccionadaId"
+        (cancelar)="cerrarAsignacion(false)"
+        (asignacionCompletada)="cerrarAsignacion(true)">
+      </app-novedad-asignar>
+
+    </div>
+
+  </section>
+
 }
 
 @if (mostrarDetalles) {
@@ -424,4 +618,11 @@
       </app-novedad-eventos-detalle>
     </div>
   </section>
+}
+
+@if (mostrarFormTarea) {
+  <app-form-tarea
+    (onClose)="cerrarFormTarea(false)"
+    (tareaCreada)="cerrarFormTarea(true)">
+  </app-form-tarea>
 }

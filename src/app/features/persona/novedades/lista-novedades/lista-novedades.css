@@ -3,6 +3,286 @@
    PARTE 1: VARIABLES, BASE, CONTENEDOR Y HEADER
 ========================================================== */
 
+/* ==========================================================
+   ACCIONES DEL HEADER
+   ========================================================== */
+
+.novedades-header__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: var(--space-12);
+
+  flex-shrink: 0;
+}
+
+
+/* ==========================================================
+   BOTÓN CREAR TAREA
+   ========================================================== */
+
+.create-task-button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: var(--space-8);
+
+  min-height: 2.75rem;
+
+  padding:
+    0.72rem
+    1.15rem;
+
+  overflow: hidden;
+
+  color: var(--text-white);
+
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1;
+
+  letter-spacing: 0.01em;
+
+  white-space: nowrap;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-primary-hover)
+    );
+
+  border:
+    1px solid
+    rgba(29, 78, 216, 0.78);
+
+  border-radius:
+    var(--radius-md);
+
+  box-shadow:
+    0 0.35rem 0.9rem
+    rgba(37, 99, 235, 0.18),
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.18);
+
+  cursor: pointer;
+
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+
+/* ==========================================================
+   BRILLO DECORATIVO
+   ========================================================== */
+
+.create-task-button::before {
+  position: absolute;
+
+  top: -60%;
+  left: -40%;
+
+  width: 2.8rem;
+  height: 220%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.28),
+      transparent
+    );
+
+  transform:
+    rotate(18deg);
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   HOVER
+   ========================================================== */
+
+.create-task-button:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-hover),
+      var(--color-primary-dark)
+    );
+
+  border-color:
+    var(--color-primary-dark);
+
+  box-shadow:
+    0 0.55rem 1.2rem
+    rgba(37, 99, 235, 0.25),
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.2);
+
+  transform:
+    translateY(-2px);
+}
+
+
+.create-task-button:hover:not(:disabled)::before {
+  opacity: 1;
+
+  animation:
+    create-task-button-shine
+    650ms
+    ease-out;
+}
+
+
+/* ==========================================================
+   ACTIVE
+   ========================================================== */
+
+.create-task-button:active:not(:disabled) {
+  transform:
+    translateY(0)
+    scale(0.98);
+
+  box-shadow:
+    0 0.25rem 0.6rem
+    rgba(37, 99, 235, 0.2);
+}
+
+
+/* ==========================================================
+   FOCUS
+   ========================================================== */
+
+.create-task-button:focus-visible {
+  outline:
+    3px solid
+    rgba(37, 99, 235, 0.2);
+
+  outline-offset:
+    3px;
+}
+
+
+/* ==========================================================
+   DISABLED
+   ========================================================== */
+
+.create-task-button:disabled {
+  color:
+    rgba(255, 255, 255, 0.82);
+
+  background:
+    var(--gray-400);
+
+  border-color:
+    var(--gray-400);
+
+  box-shadow:
+    none;
+
+  cursor:
+    not-allowed;
+
+  opacity:
+    0.72;
+
+  transform:
+    none;
+}
+
+
+/* ==========================================================
+   ANIMACIÓN DEL BRILLO
+   ========================================================== */
+
+@keyframes create-task-button-shine {
+
+  from {
+    left: -40%;
+  }
+
+  to {
+    left: 120%;
+  }
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 720px) {
+
+  .novedades-header__actions {
+    width: 100%;
+
+    justify-content: stretch;
+  }
+
+
+  .create-task-button,
+  .novedades-header__actions .refresh-button {
+    flex: 1;
+
+    min-width: 0;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .novedades-header__actions {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+
+  .create-task-button,
+  .novedades-header__actions .refresh-button {
+    width: 100%;
+  }
+
+}
+
+
+/* ==========================================================
+   MOVIMIENTO REDUCIDO
+   ========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .create-task-button {
+    transition: none;
+  }
+
+
+  .create-task-button:hover:not(:disabled) {
+    transform: none;
+  }
+
+
+  .create-task-button:hover:not(:disabled)::before {
+    animation: none;
+  }
+
+}
+
 
 /* ==========================================================
    1. VARIABLES VISUALES
@@ -862,6 +1142,8 @@ button {
 .novedades-toolbar__field--search{
   grid-column:span 1;
 }
+
+
 
 
 /* ==========================================================
@@ -2316,14 +2598,14 @@ button {
 
 
 /* ==========================================================
-   HABITACONTROL — LISTA DE NOVEDADES
+   HABITACONTROL — LISTA DE NOVEDADES Y TAREAS
    PARTE 5: TABLA, ENCABEZADOS, FILAS Y SCROLL
-========================================================== */
+   ========================================================== */
 
 
 /* ==========================================================
    42. CONTENEDOR DE LA TABLA
-========================================================== */
+   ========================================================== */
 
 .novedades-table-wrapper {
   position: relative;
@@ -2331,7 +2613,8 @@ button {
 
   width: 100%;
   min-width: 0;
-  max-height: 39rem;
+
+  max-height: 38rem;
 
   overflow: auto;
 
@@ -2348,7 +2631,8 @@ button {
 
   border-radius: var(--radius-xl);
 
-  box-shadow: var(--shadow-lg);
+  box-shadow:
+    var(--shadow-lg);
 
   scrollbar-width: thin;
 
@@ -2370,8 +2654,10 @@ button {
 
 .novedades-table-wrapper::before {
   position: sticky;
+
   top: 0;
   left: 0;
+
   z-index: 12;
 
   display: block;
@@ -2396,11 +2682,11 @@ button {
 
 /* ==========================================================
    43. SCROLLBAR
-========================================================== */
+   ========================================================== */
 
 .novedades-table-wrapper::-webkit-scrollbar {
-  width: 0.7rem;
-  height: 0.7rem;
+  width: 0.62rem;
+  height: 0.62rem;
 }
 
 
@@ -2414,12 +2700,12 @@ button {
   background:
     linear-gradient(
       180deg,
-      rgba(96, 165, 250, 0.86),
-      rgba(37, 99, 235, 0.82)
+      rgba(96, 165, 250, 0.82),
+      rgba(37, 99, 235, 0.78)
     );
 
   border:
-    0.15rem solid
+    0.14rem solid
     rgba(241, 245, 249, 0.96);
 
   border-radius:
@@ -2439,33 +2725,51 @@ button {
 
 /* ==========================================================
    44. TABLA BASE
-========================================================== */
+   ========================================================== */
 
 .tabla-novedades {
   width: 100%;
-  min-width: 86rem;
 
-  color: var(--text-primary);
+  /*
+   * La tabla ahora tiene 10 columnas.
+   * Este ancho permite trabajar cómodamente sin crear
+   * el espacio exagerado de la versión anterior.
+   */
+  min-width: 76rem;
 
-  font-size: 0.83rem;
+  color:
+    var(--text-primary);
 
-  background: var(--surface);
+  font-size:
+    0.8rem;
 
-  border-collapse: separate;
-  border-spacing: 0;
+  background:
+    var(--surface);
 
-  table-layout: fixed;
+  border-collapse:
+    separate;
+
+  border-spacing:
+    0;
+
+  table-layout:
+    fixed;
 }
 
 
 /* ==========================================================
    45. ENCABEZADO FIJO
-========================================================== */
+   ========================================================== */
 
 .tabla-novedades thead {
-  position: sticky;
-  top: 0.22rem;
-  z-index: 10;
+  position:
+    sticky;
+
+  top:
+    0.22rem;
+
+  z-index:
+    10;
 }
 
 
@@ -2482,25 +2786,39 @@ button {
 /* Celdas del encabezado */
 
 .tabla-novedades th {
-  position: relative;
+  position:
+    relative;
 
-  height: 3.5rem;
+  height:
+    3.2rem;
 
   padding:
-    var(--space-16)
-    var(--space-16);
+    0.85rem
+    0.8rem;
 
-  color: var(--gray-600);
+  color:
+    var(--gray-600);
 
-  font-size: 0.68rem;
-  font-weight: 850;
-  line-height: 1.35;
+  font-size:
+    0.64rem;
 
-  letter-spacing: 0.075em;
+  font-weight:
+    850;
 
-  text-align: left;
-  text-transform: uppercase;
-  white-space: nowrap;
+  line-height:
+    1.25;
+
+  letter-spacing:
+    0.065em;
+
+  text-align:
+    left;
+
+  text-transform:
+    uppercase;
+
+  white-space:
+    nowrap;
 
   background:
     linear-gradient(
@@ -2514,133 +2832,193 @@ button {
     rgba(203, 213, 225, 0.96);
 
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 0.35rem 0.9rem rgba(15, 23, 42, 0.035);
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.9),
+    0 0.25rem 0.7rem
+    rgba(15, 23, 42, 0.03);
 
-  backdrop-filter: blur(0.75rem);
-  -webkit-backdrop-filter: blur(0.75rem);
+  backdrop-filter:
+    blur(0.7rem);
+
+  -webkit-backdrop-filter:
+    blur(0.7rem);
 }
 
 
-/* Separador vertical */
+/* Separadores verticales */
 
 .tabla-novedades th:not(:last-child)::after {
-  position: absolute;
-  top: 28%;
-  right: 0;
+  position:
+    absolute;
 
-  width: 0.0625rem;
-  height: 44%;
+  top:
+    28%;
 
-  content: "";
+  right:
+    0;
+
+  width:
+    0.0625rem;
+
+  height:
+    44%;
+
+  content:
+    "";
 
   background:
-    rgba(203, 213, 225, 0.72);
+    rgba(203, 213, 225, 0.66);
 }
 
 
 /* Primera columna */
 
 .tabla-novedades th:first-child {
-  padding-left: var(--space-24);
+  padding-left:
+    var(--space-20);
 }
 
 
 /* Última columna */
 
 .tabla-novedades th:last-child {
-  text-align: center;
+  text-align:
+    center;
 }
 
 
 /* ==========================================================
-   46. ANCHOS DE LAS COLUMNAS
-========================================================== */
+   46. ANCHOS DE LAS 10 COLUMNAS ACTUALES
+   ========================================================== */
 
-/* Novedad */
+
+/* 1. REGISTRO */
 
 .tabla-novedades th:nth-child(1),
 .tabla-novedades td:nth-child(1) {
-  width: 25%;
+  width:
+    22%;
 }
 
 
-/* Estado */
+/* 2. CLASE */
 
 .tabla-novedades th:nth-child(2),
 .tabla-novedades td:nth-child(2) {
-  width: 10%;
+  width:
+    7%;
 }
 
 
-/* Reportada por */
+/* 3. ESTADO */
 
 .tabla-novedades th:nth-child(3),
 .tabla-novedades td:nth-child(3) {
-  width: 12%;
+  width:
+    9%;
 }
 
 
-/* Asignada a */
+/* 4. PRIORIDAD */
 
 .tabla-novedades th:nth-child(4),
 .tabla-novedades td:nth-child(4) {
-  width: 12%;
+  width:
+    8%;
+
+  text-align:
+    center;
 }
 
 
-/* Eventos */
+/* 5. FECHA LÍMITE */
 
 .tabla-novedades th:nth-child(5),
 .tabla-novedades td:nth-child(5) {
-  width: 7%;
-  text-align: center;
+  width:
+    9%;
+
+  text-align:
+    center;
 }
 
 
-/* Última actualización */
+/* 6. REPORTADA POR */
 
 .tabla-novedades th:nth-child(6),
 .tabla-novedades td:nth-child(6) {
-  width: 13%;
+  width:
+    10%;
 }
 
 
-/* Acciones */
+/* 7. ASIGNADA A */
 
 .tabla-novedades th:nth-child(7),
 .tabla-novedades td:nth-child(7) {
-  width: 21%;
+  width:
+    10%;
+}
+
+
+/* 8. EVENTOS */
+
+.tabla-novedades th:nth-child(8),
+.tabla-novedades td:nth-child(8) {
+  width:
+    6%;
+
+  text-align:
+    center;
+}
+
+
+/* 9. ÚLTIMA ACTUALIZACIÓN */
+
+.tabla-novedades th:nth-child(9),
+.tabla-novedades td:nth-child(9) {
+  width:
+    10%;
+}
+
+
+/* 10. ACCIONES */
+
+.tabla-novedades th:nth-child(10),
+.tabla-novedades td:nth-child(10) {
+  width:
+    9%;
 }
 
 
 /* ==========================================================
    47. CUERPO
-========================================================== */
+   ========================================================== */
 
 .tabla-novedades tbody {
-  background: var(--surface);
+  background:
+    var(--surface);
 }
 
 
 /* ==========================================================
    48. FILAS
-========================================================== */
+   ========================================================== */
 
 .tabla-novedades tbody tr {
-  position: relative;
+  position:
+    relative;
 
   background:
     linear-gradient(
       90deg,
-      rgba(248, 250, 252, 0.32),
-      var(--surface) 18%
+      rgba(248, 250, 252, 0.28),
+      var(--surface) 16%
     );
 
   transition:
     background-color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    transform var(--transition-fast);
+    box-shadow var(--transition-fast);
 }
 
 
@@ -2649,69 +3027,101 @@ button {
 .tabla-novedades tbody tr:not(:last-child) td {
   border-bottom:
     1px solid
-    rgba(226, 232, 240, 0.88);
+    rgba(226, 232, 240, 0.86);
 }
 
 
 /* Hover */
 
 .tabla-novedades tbody tr:hover {
-  z-index: 1;
+  z-index:
+    1;
 
   background:
     linear-gradient(
       90deg,
-      rgba(219, 234, 254, 0.62),
-      rgba(255, 255, 255, 1) 34%
+      rgba(219, 234, 254, 0.42),
+      rgba(255, 255, 255, 1) 28%
     );
 
   box-shadow:
-    inset 0.22rem 0 0 rgba(37, 99, 235, 0.18),
-    0 0.7rem 1.5rem rgba(37, 99, 235, 0.06);
+    inset 0.2rem 0 0
+    rgba(37, 99, 235, 0.18);
 }
 
 
 /* ==========================================================
    49. CELDAS
-========================================================== */
+   ========================================================== */
 
 .tabla-novedades td {
-  position: relative;
+  position:
+    relative;
 
+  /*
+   * Este cambio es clave:
+   * reduce enormemente la altura de las filas.
+   */
   padding:
-    1.05rem
-    var(--space-16);
+    0.85rem
+    0.8rem;
 
-  color: var(--text-secondary);
+  color:
+    var(--text-secondary);
 
-  font-size: 0.81rem;
-  font-weight: 520;
-  line-height: 1.5;
+  font-size:
+    0.78rem;
 
-  vertical-align: middle;
+  font-weight:
+    520;
 
-  overflow-wrap: anywhere;
+  line-height:
+    1.4;
+
+  vertical-align:
+    middle;
+
+  overflow-wrap:
+    anywhere;
 }
 
 
 /* Primera celda */
 
 .tabla-novedades td:first-child {
-  padding-left: var(--space-24);
+  padding-left:
+    var(--space-20);
 }
 
 
-/* Indicador lateral dentro de la primera celda */
+/* Última celda */
+
+.tabla-novedades td:last-child {
+  padding-right:
+    var(--space-16);
+}
+
+
+/* Indicador lateral */
 
 .tabla-novedades td:first-child::before {
-  position: absolute;
-  top: 18%;
-  bottom: 18%;
-  left: 0;
+  position:
+    absolute;
 
-  width: 0.22rem;
+  top:
+    20%;
 
-  content: "";
+  bottom:
+    20%;
+
+  left:
+    0;
+
+  width:
+    0.2rem;
+
+  content:
+    "";
 
   background:
     linear-gradient(
@@ -2726,10 +3136,14 @@ button {
     var(--radius-pill)
     0;
 
-  opacity: 0;
+  opacity:
+    0;
 
-  transform: scaleY(0.45);
-  transform-origin: center;
+  transform:
+    scaleY(0.45);
+
+  transform-origin:
+    center;
 
   transition:
     opacity var(--transition-normal),
@@ -2739,227 +3153,394 @@ button {
 
 .tabla-novedades tbody tr:hover
 td:first-child::before {
-  opacity: 1;
-  transform: scaleY(1);
-}
+  opacity:
+    1;
 
-
-/* Última celda */
-
-.tabla-novedades td:last-child {
-  padding-right: var(--space-24);
+  transform:
+    scaleY(1);
 }
 
 
 /* ==========================================================
-   50. CELDA PRINCIPAL DE NOVEDAD
-========================================================== */
+   50. CELDA PRINCIPAL
+   ========================================================== */
 
 .novedad-main-cell {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
+  display:
+    flex;
 
-  min-width: 0;
+  flex-direction:
+    column;
+
+  gap:
+    0.32rem;
+
+  min-width:
+    0;
 }
 
 
 /* Título */
 
 .novedad-main-cell strong {
-  display: block;
+  display:
+    block;
 
-  color: var(--text-primary);
+  color:
+    var(--text-primary);
 
-  font-size: 0.9rem;
-  font-weight: 800;
-  line-height: 1.4;
+  font-size:
+    0.84rem;
 
-  letter-spacing: -0.012em;
+  font-weight:
+    800;
 
-  overflow-wrap: anywhere;
+  line-height:
+    1.35;
+
+  letter-spacing:
+    -0.01em;
+
+  overflow-wrap:
+    anywhere;
 }
 
 
 /* Descripción */
 
 .novedad-main-cell p {
-  display: -webkit-box;
+  display:
+    -webkit-box;
 
-  max-width: 34rem;
+  max-width:
+    30rem;
 
-  color: var(--text-muted);
+  color:
+    var(--text-muted);
 
-  font-size: 0.76rem;
-  font-weight: 450;
-  line-height: 1.55;
+  font-size:
+    0.72rem;
 
-  overflow: hidden;
+  font-weight:
+    450;
 
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  line-height:
+    1.45;
+
+  overflow:
+    hidden;
+
+  -webkit-box-orient:
+    vertical;
+
+  -webkit-line-clamp:
+    2;
 }
 
 
 /* ==========================================================
-   51. PERSONAS Y RESPONSABLES
-========================================================== */
+   51. CLASE
+   ========================================================== */
 
-.tabla-novedades td:nth-child(3),
-.tabla-novedades td:nth-child(4) {
-  color: var(--gray-700);
+.tabla-novedades td:nth-child(2) {
+  color:
+    var(--color-primary-dark);
 
-  font-weight: 650;
-}
+  font-size:
+    0.75rem;
 
-
-/* Asignación vacía */
-
-.tabla-novedades td:nth-child(4) {
-  font-style: normal;
+  font-weight:
+    750;
 }
 
 
 /* ==========================================================
-   52. CONTADOR DE EVENTOS
-========================================================== */
+   52. PERSONAS Y RESPONSABLES
+   ========================================================== */
+
+.tabla-novedades td:nth-child(6),
+.tabla-novedades td:nth-child(7) {
+  color:
+    var(--gray-700);
+
+  font-weight:
+    620;
+}
+
+
+/* ==========================================================
+   53. PRIORIDAD
+   ========================================================== */
+
+.tabla-novedades td:nth-child(4) {
+  color:
+    var(--gray-700);
+
+  font-size:
+    0.75rem;
+
+  font-weight:
+    750;
+}
+
+
+/* ==========================================================
+   54. FECHA LÍMITE
+   ========================================================== */
 
 .tabla-novedades td:nth-child(5) {
-  color: var(--color-primary-dark);
+  color:
+    var(--text-muted);
 
-  font-size: 0.875rem;
-  font-weight: 850;
+  font-size:
+    0.73rem;
 
-  font-variant-numeric: tabular-nums;
+  font-weight:
+    650;
 }
 
 
-/* Círculo del contador */
+/* Vencida */
 
-.tabla-novedades td:nth-child(5)::before {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+.tabla-novedades td:nth-child(5) strong {
+  display:
+    block;
 
-  width: 2.25rem;
-  height: 2.25rem;
+  width:
+    fit-content;
 
-  content: "";
+  margin:
+    0.25rem auto 0;
+
+  padding:
+    0.2rem
+    0.45rem;
+
+  color:
+    var(--danger-dark);
+
+  background:
+    var(--danger-light);
+
+  border:
+    1px solid
+    var(--danger-border);
+
+  border-radius:
+    var(--radius-pill);
+
+  font-size:
+    0.61rem;
+
+  font-weight:
+    850;
+
+  line-height:
+    1;
+}
+
+
+/* ==========================================================
+   55. CONTADOR DE EVENTOS
+   ========================================================== */
+
+.tabla-novedades td:nth-child(8) {
+  color:
+    var(--color-primary-dark);
+
+  font-size:
+    0.82rem;
+
+  font-weight:
+    850;
+
+  font-variant-numeric:
+    tabular-nums;
+
+  isolation:
+    isolate;
+}
+
+
+/* Círculo correcto: ahora está en Eventos */
+
+.tabla-novedades td:nth-child(8)::before {
+  position:
+    absolute;
+
+  top:
+    50%;
+
+  left:
+    50%;
+
+  z-index:
+    -1;
+
+  width:
+    2rem;
+
+  height:
+    2rem;
+
+  content:
+    "";
 
   background:
     linear-gradient(
       145deg,
-      rgba(219, 234, 254, 0.78),
-      rgba(224, 242, 254, 0.78)
+      rgba(219, 234, 254, 0.74),
+      rgba(224, 242, 254, 0.72)
     );
 
   border:
     1px solid
-    rgba(147, 197, 253, 0.58);
+    rgba(147, 197, 253, 0.52);
 
-  border-radius: 50%;
+  border-radius:
+    50%;
 
   transform:
     translate(-50%, -50%);
-
-  z-index: -1;
-}
-
-
-/* Asegura el nivel visual */
-
-.tabla-novedades td:nth-child(5) {
-  isolation: isolate;
 }
 
 
 /* ==========================================================
-   53. FECHA
-========================================================== */
+   56. ÚLTIMA ACTUALIZACIÓN
+   ========================================================== */
 
-.tabla-novedades td:nth-child(6) {
-  color: var(--text-muted);
+.tabla-novedades td:nth-child(9) {
+  color:
+    var(--text-muted);
 
-  font-size: 0.76rem;
-  font-weight: 600;
+  font-size:
+    0.7rem;
 
-  white-space: nowrap;
+  font-weight:
+    600;
+
+  white-space:
+    nowrap;
 }
 
 
-/* Punto de fecha */
+/* Punto informativo */
 
-.tabla-novedades td:nth-child(6)::before {
-  display: inline-block;
+.tabla-novedades td:nth-child(9)::before {
+  display:
+    inline-block;
 
-  width: 0.42rem;
-  height: 0.42rem;
+  width:
+    0.38rem;
 
-  margin-right: var(--space-8);
+  height:
+    0.38rem;
 
-  content: "";
+  margin-right:
+    0.42rem;
 
-  background: var(--info);
+  content:
+    "";
 
-  border-radius: 50%;
+  background:
+    var(--info);
+
+  border-radius:
+    50%;
 
   box-shadow:
-    0 0 0 0.2rem rgba(14, 165, 233, 0.09);
+    0 0 0
+    0.17rem
+    rgba(14, 165, 233, 0.08);
 
-  vertical-align: middle;
+  vertical-align:
+    middle;
 }
 
 
 /* ==========================================================
-   54. CELDA DE ACCIONES
-========================================================== */
+   57. CELDA DE ACCIONES
+   ========================================================== */
 
 .acciones-cell {
-  width: 11rem;
-  min-width: 11rem;
+  min-width:
+    8.25rem;
 
   padding:
-    1rem
-    1.25rem;
+    0.75rem
+    0.8rem;
 
-  text-align: center;
-  vertical-align: middle;
+  text-align:
+    center;
+
+  vertical-align:
+    middle;
 }
+
 
 .acciones-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display:
+    flex;
 
-  gap: 0.55rem;
+  flex-direction:
+    column;
 
-  width: 100%;
-  min-width: 0;
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    0.38rem;
+
+  width:
+    100%;
 }
 
-.acciones-group button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 
-  width: 7.5rem;
-  min-width: 7.5rem;
-  min-height: 2.35rem;
+/* Botones */
+
+.acciones-group button {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    6.7rem;
+
+  min-width:
+    6.7rem;
+
+  min-height:
+    2rem;
 
   padding:
-    0.55rem
-    0.85rem;
+    0.42rem
+    0.65rem;
 
-  white-space: nowrap;
+  white-space:
+    nowrap;
 
-  border-radius: var(--radius-md);
+  border-radius:
+    var(--radius-sm);
 
-  font-size: 0.74rem;
-  font-weight: 750;
-  line-height: 1;
+  font-size:
+    0.67rem;
 
-  cursor: pointer;
+  font-weight:
+    750;
+
+  line-height:
+    1;
+
+  cursor:
+    pointer;
 
   transition:
     transform var(--transition-fast),
@@ -2967,163 +3548,241 @@ td:first-child::before {
     filter var(--transition-fast);
 }
 
+
+.acciones-group button:hover:not(:disabled) {
+  transform:
+    translateY(-1px);
+}
+
+
+.acciones-group button:active:not(:disabled) {
+  transform:
+    scale(0.97);
+}
+
+
 /* ==========================================================
-   55. ANIMACIÓN DE ENTRADA
-========================================================== */
+   58. ANIMACIÓN
+   ========================================================== */
 
 @keyframes novedades-table-enter {
+
   from {
-    opacity: 0;
+    opacity:
+      0;
 
     transform:
-      translateY(0.8rem)
-      scale(0.995);
+      translateY(0.6rem)
+      scale(0.996);
   }
 
   to {
-    opacity: 1;
+    opacity:
+      1;
 
     transform:
       translateY(0)
       scale(1);
   }
+
 }
 
 
 /* ==========================================================
-   56. PANTALLAS GRANDES
-========================================================== */
+   59. PANTALLAS GRANDES
+   ========================================================== */
 
 @media (min-width: 1500px) {
+
   .novedades-table-wrapper {
-    max-height: 44rem;
+    max-height:
+      42rem;
   }
 
+
   .tabla-novedades {
-    min-width: 92rem;
+    min-width:
+      78rem;
   }
+
 }
 
 
 /* ==========================================================
-   57. PANTALLAS MEDIANAS
-========================================================== */
+   60. PANTALLAS MEDIANAS
+   ========================================================== */
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
+
   .tabla-novedades {
-    min-width: 82rem;
+    min-width:
+      74rem;
   }
+
 }
 
 
 /* ==========================================================
-   58. TABLET
-========================================================== */
+   61. TABLET
+   ========================================================== */
 
 @media (max-width: 768px) {
-  .novedades-table-wrapper {
-    max-height: 35rem;
 
-    border-radius: var(--radius-lg);
+  .novedades-table-wrapper {
+    max-height:
+      34rem;
+
+    border-radius:
+      var(--radius-lg);
   }
+
 
   .tabla-novedades {
-    min-width: 78rem;
-  }
-}
-
-
-/* ==========================================================
-   59. CELULAR
-========================================================== */
-
-@media (max-width: 520px) {
-  .novedades-table-wrapper {
-    max-height: 32rem;
+    min-width:
+      72rem;
   }
 
-  .tabla-novedades {
-    min-width: 74rem;
-  }
 
   .tabla-novedades th,
   .tabla-novedades td {
-    padding-right: var(--space-12);
-    padding-left: var(--space-12);
+    padding-right:
+      0.7rem;
+
+    padding-left:
+      0.7rem;
   }
 
-  .tabla-novedades th:first-child,
-  .tabla-novedades td:first-child {
-    padding-left: var(--space-20);
-  }
-
-  .tabla-novedades th:last-child,
-  .tabla-novedades td:last-child {
-    padding-right: var(--space-20);
-  }
 }
 
 
 /* ==========================================================
-   60. DISPOSITIVOS TÁCTILES
-========================================================== */
+   62. CELULAR
+   ========================================================== */
+
+@media (max-width: 520px) {
+
+  .novedades-table-wrapper {
+    max-height:
+      31rem;
+  }
+
+
+  .tabla-novedades {
+    min-width:
+      70rem;
+  }
+
+
+  .tabla-novedades th,
+  .tabla-novedades td {
+    padding-right:
+      0.6rem;
+
+    padding-left:
+      0.6rem;
+  }
+
+
+  .tabla-novedades th:first-child,
+  .tabla-novedades td:first-child {
+    padding-left:
+      var(--space-16);
+  }
+
+
+  .acciones-group button {
+    width:
+      6.2rem;
+
+    min-width:
+      6.2rem;
+  }
+
+}
+
+
+/* ==========================================================
+   63. DISPOSITIVOS TÁCTILES
+   ========================================================== */
 
 @media (hover: none) and (pointer: coarse) {
-  .novedades-table-wrapper {
-    scroll-behavior: auto;
 
-    -webkit-overflow-scrolling: touch;
+  .novedades-table-wrapper {
+    scroll-behavior:
+      auto;
+
+    -webkit-overflow-scrolling:
+      touch;
   }
+
 
   .tabla-novedades tbody tr:hover {
     background:
       linear-gradient(
         90deg,
-        rgba(248, 250, 252, 0.32),
-        var(--surface) 18%
+        rgba(248, 250, 252, 0.28),
+        var(--surface) 16%
       );
 
-    box-shadow: none;
+    box-shadow:
+      none;
   }
+
 
   .tabla-novedades tbody tr:hover
   td:first-child::before {
-    opacity: 0;
-    transform: scaleY(0.45);
+    opacity:
+      0;
+
+    transform:
+      scaleY(0.45);
   }
+
 }
 
 
 /* ==========================================================
-   61. ALTO CONTRASTE
-========================================================== */
+   64. ALTO CONTRASTE
+   ========================================================== */
 
 @media (prefers-contrast: more) {
+
   .novedades-table-wrapper {
-    border-width: 0.125rem;
-    border-color: var(--gray-600);
+    border-width:
+      0.125rem;
+
+    border-color:
+      var(--gray-600);
   }
+
 
   .tabla-novedades th,
   .tabla-novedades td {
-    border-color: var(--gray-500);
+    border-color:
+      var(--gray-500);
   }
+
 }
 
 
 /* ==========================================================
-   62. MOVIMIENTO REDUCIDO
-========================================================== */
+   65. MOVIMIENTO REDUCIDO
+   ========================================================== */
 
 @media (prefers-reduced-motion: reduce) {
+
   .novedades-table-wrapper,
   .tabla-novedades tbody tr,
-  .tabla-novedades td:first-child::before {
-    animation: none;
-    transition: none;
-  }
-}
+  .tabla-novedades td:first-child::before,
+  .acciones-group button {
+    animation:
+      none;
 
+    transition:
+      none;
+  }
+
+}
 
 /* ==========================================================
    HABITACONTROL — LISTA DE NOVEDADES
@@ -3603,6 +4262,101 @@ td:first-child::before {
   .acciones-cell button:hover{
 
     transform:none;
+  }
+
+}
+
+
+/* ==========================================================
+   MODAL DE ASIGNACIÓN
+   ========================================================== */
+
+.asignacion-modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1400;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1.5rem;
+
+  background:
+    rgba(2, 6, 23, 0.58);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  overflow-y: auto;
+}
+
+
+.asignacion-modal-panel {
+  width: min(760px, 100%);
+
+  max-height: calc(100vh - 3rem);
+
+  overflow-y: auto;
+
+  background: var(--surface);
+
+  border:
+    1px solid
+    var(--border-light);
+
+  border-radius:
+    var(--radius-xl);
+
+  box-shadow:
+    0 24px 70px
+    rgba(2, 6, 23, 0.28);
+
+  animation:
+    asignacion-modal-enter
+    220ms
+    ease-out;
+}
+
+
+@keyframes asignacion-modal-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(16px)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+@media (max-width: 640px) {
+
+  .asignacion-modal-backdrop {
+    align-items: flex-start;
+
+    padding:
+      0.75rem;
+  }
+
+
+  .asignacion-modal-panel {
+    width: 100%;
+
+    max-height:
+      calc(100vh - 1.5rem);
+
+    border-radius:
+      var(--radius-lg);
   }
 
 }

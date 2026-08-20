@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { PersonResponse, PersonService} from '../../../core/services/person/person-service';
 import { DetallePersona } from '../detalle-persona/detalle-persona';
 import { PersonInvitation } from '../person-invitation/person-invitation';
+import { AuthService } from '../../../core/services/auth/auth';
 
 @Component({
   selector: 'app-persons',
@@ -34,6 +35,7 @@ export class PersonsComponent implements OnInit {
 
   constructor(
     private readonly personService: PersonService,
+    private readonly authService: AuthService,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
@@ -44,22 +46,18 @@ export class PersonsComponent implements OnInit {
 
   private loadUserPermissions(): void {
     const adminToken =
-      localStorage.getItem('accessToken');
+      this.authService.getAccessToken();
 
     const personaToken =
       localStorage.getItem('personaAccessToken');
 
     const token =
-      personaToken ?? adminToken;
+      adminToken ?? personaToken;
 
     this.isAdmin = false;
     this.isSecurity = false;
 
     if (!token) {
-      console.warn(
-        'No existe un token disponible para consultar personas.'
-      );
-
       return;
     }
 
@@ -67,7 +65,9 @@ export class PersonsComponent implements OnInit {
       const partes = token.split('.');
 
       if (partes.length !== 3) {
-        throw new Error('El token no tiene un formato válido.');
+        throw new Error(
+          'El token no tiene un formato válido.'
+        );
       }
 
       const payloadBase64 = partes[1]
@@ -122,20 +122,6 @@ export class PersonsComponent implements OnInit {
         tipoNormalizado === '2' ||
         roleNormalizado === 'seguridad';
 
-      console.log(
-        '===== PERSONS PERMISSIONS ====='
-      );
-
-      console.log('TOKEN UTILIZADO:', {
-        esPersona: !!personaToken,
-        esAdmin: !personaToken && !!adminToken,
-      });
-
-      console.log('PAYLOAD:', payload);
-      console.log('ROLE:', role);
-      console.log('PERSON TYPE:', personType);
-      console.log('isAdmin:', this.isAdmin);
-      console.log('isSecurity:', this.isSecurity);
     } catch (error) {
       console.error(
         'Error leyendo permisos de personas:',

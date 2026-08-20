@@ -660,6 +660,101 @@
 
           }
 
+          <!--================================================
+            FOTOGRAFÍA DEL PAQUETE
+          =================================================-->
+
+          @if (tieneFoto()) {
+
+            <section
+              class="
+                package-detail-card
+                package-detail-card--photo
+              ">
+
+              <header class="package-detail-card__header">
+
+                <div
+                  class="
+                    package-detail-card__icon
+                    package-detail-card__icon--photo
+                  "
+                  aria-hidden="true">
+                  📷
+                </div>
+
+                <div class="package-detail-card__heading">
+
+                  <span class="package-detail-card__eyebrow">
+                    Evidencia
+                  </span>
+
+                  <h3 class="package-detail-card__title">
+                    Fotografía del paquete
+                  </h3>
+
+                  <p class="package-detail-card__description">
+                    Evidencia visual registrada durante la recepción
+                    del paquete en portería.
+                  </p>
+
+                </div>
+
+              </header>
+
+              <figure class="package-detail-photo">
+
+                <div class="package-detail-photo__frame">
+
+                  <img
+                    class="package-detail-photo__image"
+                    [src]="obtenerFotoUrl(paqueteDetalle.fotoUrl)"
+                    [alt]="
+                      'Fotografía del paquete de ' +
+                      paqueteDetalle.nombreDestinatario
+                    ">
+
+                  <span
+                    class="package-detail-photo__badge"
+                    aria-label="Evidencia fotográfica disponible">
+                    <span aria-hidden="true">
+                      ✓
+                    </span>
+
+                    Evidencia disponible
+                  </span>
+
+                </div>
+
+                <figcaption class="package-detail-photo__caption">
+
+                  <span
+                    class="package-detail-photo__caption-icon"
+                    aria-hidden="true">
+                    ✓
+                  </span>
+
+                  <div class="package-detail-photo__caption-content">
+
+                    <strong class="package-detail-photo__caption-title">
+                      Fotografía de recepción
+                    </strong>
+
+                    <span class="package-detail-photo__caption-text">
+                      Imagen almacenada como evidencia del estado del paquete
+                      al momento de ser recibido.
+                    </span>
+
+                  </div>
+
+                </figcaption>
+
+              </figure>
+
+            </section>
+
+          }
+
 
           <!--================================================
             FIRMA

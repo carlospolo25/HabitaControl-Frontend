@@ -3285,3 +3285,1122 @@ span{
   min-height:
     max-content;
 }
+
+
+/* =========================================================
+   FOTOGRAFÍA DEL PAQUETE
+   PARTE 1 — ESTRUCTURA + SELECTOR
+   ========================================================= */
+
+.package-form__card--photo {
+  position: relative;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #FFFFFF 0%,
+      #F8FAFC 100%
+    );
+
+  border: 1px solid #CBD5E1;
+}
+
+/* Línea decorativa superior exclusiva de fotografía */
+.package-form__card--photo::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 32px;
+  right: 32px;
+
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563EB 0%,
+      #0EA5E9 55%,
+      #16A34A 100%
+    );
+
+  border-radius: 0 0 999px 999px;
+
+  opacity: 0.9;
+}
+
+/* =========================================================
+   CONTENEDOR DE FOTOGRAFÍA
+   ========================================================= */
+
+.package-form__photo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  width: 100%;
+}
+
+/* =========================================================
+   INPUT NATIVO
+   ========================================================= */
+
+/*
+  El input sigue existiendo y siendo funcional,
+  pero deja de mostrarse visualmente.
+
+  El <label for="fotoPaquete"> actúa como botón.
+*/
+.package-form__photo-input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+
+  border: 0;
+}
+
+/* =========================================================
+   SELECTOR PRINCIPAL
+   ========================================================= */
+
+.package-form__photo-selector {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+
+  gap: 16px;
+
+  width: 100%;
+  min-height: 108px;
+
+  padding: 20px;
+
+  border: 1.5px dashed #94A3B8;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #FFFFFF 0%,
+      #F8FAFC 55%,
+      #EFF6FF 100%
+    );
+
+  cursor: pointer;
+
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+/* Hover */
+.package-form__photo-selector:hover {
+  border-color: #2563EB;
+
+  background:
+    linear-gradient(
+      135deg,
+      #FFFFFF 0%,
+      #EFF6FF 55%,
+      #DBEAFE 100%
+    );
+
+  box-shadow:
+    0 12px 28px rgba(37, 99, 235, 0.10);
+
+  transform: translateY(-1px);
+}
+
+/* Focus del input sobre su label */
+.package-form__photo-input:focus-visible
+  + .package-form__photo-selector {
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   ÍCONO
+   ========================================================= */
+
+.package-form__photo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 52px;
+  height: 52px;
+
+  border: 1px solid #BFDBFE;
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #DBEAFE 0%,
+      #EFF6FF 100%
+    );
+
+  color: #1D4ED8;
+
+  font-size: 23px;
+  line-height: 1;
+
+  box-shadow:
+    0 6px 16px rgba(37, 99, 235, 0.12);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.package-form__photo-selector:hover
+.package-form__photo-icon {
+  transform: scale(1.05);
+
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.18);
+}
+
+/* =========================================================
+   TEXTO PRINCIPAL
+   ========================================================= */
+
+.package-form__photo-selector-content {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 5px;
+}
+
+.package-form__photo-selector-title {
+  display: block;
+
+  color: #0F172A;
+
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.package-form__photo-selector-description {
+  display: block;
+
+  color: #64748B;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   ACCIÓN "SELECCIONAR"
+   ========================================================= */
+
+.package-form__photo-selector-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+
+  padding: 0 15px;
+
+  border: 1px solid #BFDBFE;
+  border-radius: 10px;
+
+  background: #DBEAFE;
+
+  color: #1D4ED8;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.package-form__photo-selector:hover
+.package-form__photo-selector-action {
+  background: #2563EB;
+  border-color: #2563EB;
+
+  color: #FFFFFF;
+
+  transform: translateX(2px);
+}
+
+/* =========================================================
+   NOTA INFERIOR
+   ========================================================= */
+
+.package-form__photo-note {
+  position: relative;
+
+  margin: 0;
+  padding: 11px 14px 11px 38px;
+
+  border: 1px solid #E2E8F0;
+  border-radius: 11px;
+
+  background: #F8FAFC;
+
+  color: #64748B;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.package-form__photo-note::before {
+  content: 'i';
+
+  position: absolute;
+
+  top: 50%;
+  left: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 17px;
+  height: 17px;
+
+  border-radius: 50%;
+
+  background: #E0F2FE;
+
+  color: #075985;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  transform: translateY(-50%);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .package-form__photo-selector {
+    grid-template-columns: auto minmax(0, 1fr);
+
+    padding: 16px;
+  }
+
+  .package-form__photo-selector-action {
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    margin-top: 2px;
+  }
+
+  .package-form__photo-icon {
+    width: 46px;
+    height: 46px;
+
+    border-radius: 13px;
+
+    font-size: 20px;
+  }
+}
+
+
+/* =========================================================
+   FOTOGRAFÍA DEL PAQUETE
+   PARTE 2 — PREVIEW + ESTADO + ACCIONES
+   ========================================================= */
+
+.package-form__photo-preview {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.1fr);
+
+  gap: 18px;
+
+  width: 100%;
+
+  padding: 16px;
+
+  border: 1px solid #CBD5E1;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #FFFFFF 0%,
+      #F8FAFC 100%
+    );
+
+  box-shadow:
+    0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+/* =========================================================
+   MARCO DE LA IMAGEN
+   ========================================================= */
+
+.package-form__photo-preview-frame {
+  position: relative;
+
+  width: 100%;
+  min-height: 190px;
+  max-height: 250px;
+
+  overflow: hidden;
+
+  border: 1px solid #CBD5E1;
+  border-radius: 14px;
+
+  background: #F1F5F9;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+}
+
+/* Brillo decorativo */
+.package-form__photo-preview-frame::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.10) 0%,
+      transparent 38%,
+      rgba(15, 23, 42, 0.04) 100%
+    );
+}
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+
+.package-form__photo-preview-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  min-height: 190px;
+  max-height: 250px;
+
+  object-fit: cover;
+
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
+}
+
+.package-form__photo-preview:hover
+.package-form__photo-preview-image {
+  transform: scale(1.015);
+
+  filter: saturate(1.03);
+}
+
+/* =========================================================
+   INFORMACIÓN DEL ARCHIVO
+   ========================================================= */
+
+.package-form__photo-preview-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  min-width: 0;
+
+  gap: 18px;
+
+  padding: 4px 2px;
+}
+
+.package-form__photo-preview-heading {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+}
+
+/* =========================================================
+   ESTADO DE ÉXITO
+   ========================================================= */
+
+.package-form__photo-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid #86EFAC;
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #DCFCE7 0%,
+      #F0FDF4 100%
+    );
+
+  color: #166534;
+
+  font-size: 17px;
+  font-weight: 900;
+
+  box-shadow:
+    0 6px 16px rgba(22, 163, 74, 0.12);
+}
+
+.package-form__photo-preview-title {
+  display: block;
+
+  margin: 1px 0 0;
+
+  color: #0F172A;
+
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+/* =========================================================
+   NOMBRE DEL ARCHIVO
+   ========================================================= */
+
+.package-form__photo-preview-name {
+  display: block;
+
+  max-width: 100%;
+
+  margin: 5px 0 0;
+
+  overflow: hidden;
+
+  color: #64748B;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+
+.package-form__photo-actions {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+/* Base compartida */
+.package-form__photo-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 40px;
+
+  padding: 0 15px;
+
+  border: 1px solid transparent;
+  border-radius: 10px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1;
+
+  cursor: pointer;
+
+  user-select: none;
+
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+/* =========================================================
+   CAMBIAR FOTOGRAFÍA
+   ========================================================= */
+
+.package-form__photo-button--replace {
+  border-color: #BFDBFE;
+
+  background: #EFF6FF;
+
+  color: #1D4ED8;
+}
+
+.package-form__photo-button--replace:hover {
+  border-color: #2563EB;
+
+  background: #DBEAFE;
+
+  color: #1E40AF;
+
+  box-shadow:
+    0 6px 16px rgba(37, 99, 235, 0.12);
+
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   QUITAR FOTOGRAFÍA
+   ========================================================= */
+
+.package-form__photo-button--remove {
+  border-color: #FCA5A5;
+
+  background: #FEF2F2;
+
+  color: #991B1B;
+}
+
+.package-form__photo-button--remove:hover:not(:disabled) {
+  border-color: #DC2626;
+
+  background: #FEE2E2;
+
+  color: #991B1B;
+
+  box-shadow:
+    0 6px 16px rgba(220, 38, 38, 0.10);
+
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   ESTADO DISABLED
+   ========================================================= */
+
+.package-form__photo-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.55;
+
+  transform: none;
+  box-shadow: none;
+}
+
+/* =========================================================
+   ACCESIBILIDAD / FOCUS
+   ========================================================= */
+
+.package-form__photo-button:focus-visible,
+.package-form__photo-button--replace:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+  outline-offset: 2px;
+}
+
+.package-form__photo-button--remove:focus-visible {
+  outline: 3px solid rgba(220, 38, 38, 0.16);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 760px) {
+  .package-form__photo-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .package-form__photo-preview-frame {
+    max-height: 280px;
+  }
+
+  .package-form__photo-preview-image {
+    max-height: 280px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — MÓVIL
+   ========================================================= */
+
+@media (max-width: 520px) {
+  .package-form__photo-preview {
+    gap: 14px;
+
+    padding: 12px;
+
+    border-radius: 14px;
+  }
+
+  .package-form__photo-preview-frame {
+    min-height: 175px;
+  }
+
+  .package-form__photo-preview-image {
+    min-height: 175px;
+  }
+
+  .package-form__photo-preview-info {
+    gap: 14px;
+  }
+
+  .package-form__photo-actions {
+    flex-direction: column;
+  }
+
+  .package-form__photo-button {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   FOTOGRAFÍA DEL PAQUETE
+   PARTE 3 — MICROINTERACCIONES + ESTADOS + RESPONSIVE FINO
+   ========================================================= */
+
+/* =========================================================
+   ANIMACIÓN DE ENTRADA DEL PREVIEW
+   ========================================================= */
+
+@keyframes packagePhotoReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.package-form__photo-preview {
+  animation:
+    packagePhotoReveal 220ms ease-out;
+}
+
+/* =========================================================
+   EFECTO SUAVE AL APARECER EL SELECTOR
+   ========================================================= */
+
+@keyframes packagePhotoSelectorReveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.package-form__photo-selector {
+  animation:
+    packagePhotoSelectorReveal 180ms ease-out;
+}
+
+/* =========================================================
+   ESTADO ACTIVO / CLICK
+   ========================================================= */
+
+.package-form__photo-selector:active {
+  transform: translateY(0) scale(0.995);
+
+  box-shadow:
+    0 4px 12px rgba(37, 99, 235, 0.08);
+}
+
+.package-form__photo-button:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+/* =========================================================
+   FEEDBACK VISUAL DEL SELECTOR
+   ========================================================= */
+
+.package-form__photo-selector::after {
+  content: '';
+
+  position: absolute;
+  inset: -1px;
+
+  pointer-events: none;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 0 0 0 rgba(37, 99, 235, 0);
+
+  transition:
+    box-shadow 180ms ease;
+}
+
+.package-form__photo-selector:hover::after {
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.06);
+}
+
+/* =========================================================
+   ESTADO DESHABILITADO DURANTE EL ENVÍO
+   ========================================================= */
+
+.package-form__photo-selector:has(
+  + .package-form__photo-input:disabled
+) {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+/*
+  Algunos navegadores pueden no aplicar :has().
+  Por eso el input sigue teniendo [disabled] y esta regla
+  funciona como mejora progresiva.
+*/
+
+/* =========================================================
+   ESTADO DE FOTO SELECCIONADA
+   ========================================================= */
+
+.package-form__photo-preview {
+  position: relative;
+}
+
+.package-form__photo-preview::before {
+  content: '';
+
+  position: absolute;
+
+  top: -1px;
+  left: 18px;
+  right: 18px;
+
+  height: 3px;
+
+  border-radius: 0 0 999px 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #16A34A 0%,
+      #22C55E 45%,
+      #2563EB 100%
+    );
+
+  opacity: 0.9;
+}
+
+/* =========================================================
+   INDICADOR VISUAL EN LA IMAGEN
+   ========================================================= */
+
+.package-form__photo-preview-frame::before {
+  content: 'Evidencia';
+
+  position: absolute;
+
+  top: 12px;
+  left: 12px;
+
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 27px;
+
+  padding: 0 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+
+  background:
+    rgba(15, 23, 42, 0.76);
+
+  color: #FFFFFF;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+
+  backdrop-filter: blur(6px);
+}
+
+/* =========================================================
+   MEJORA DEL ESTADO DE ÉXITO
+   ========================================================= */
+
+.package-form__photo-status {
+  position: relative;
+}
+
+.package-form__photo-status::after {
+  content: '';
+
+  position: absolute;
+
+  inset: -5px;
+
+  z-index: -1;
+
+  border-radius: 14px;
+
+  background:
+    rgba(22, 163, 74, 0.08);
+}
+
+/* =========================================================
+   NOMBRE DEL ARCHIVO
+   ========================================================= */
+
+.package-form__photo-preview-name {
+  padding-right: 6px;
+}
+
+/* =========================================================
+   BOTONES — AJUSTE DE JERARQUÍA
+   ========================================================= */
+
+.package-form__photo-button--replace {
+  min-width: 138px;
+}
+
+.package-form__photo-button--remove {
+  min-width: 130px;
+}
+
+/* =========================================================
+   HOVER DEL PREVIEW COMPLETO
+   ========================================================= */
+
+.package-form__photo-preview {
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.package-form__photo-preview:hover {
+  border-color: #94A3B8;
+
+  box-shadow:
+    0 14px 32px rgba(15, 23, 42, 0.08);
+}
+
+/* =========================================================
+   FOCUS GLOBAL DE LA ZONA DE FOTO
+   ========================================================= */
+
+.package-form__photo-selector:focus-within,
+.package-form__photo-preview:focus-within {
+  border-color: #2563EB;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.10),
+    0 12px 28px rgba(15, 23, 42, 0.06);
+}
+
+/* =========================================================
+   NOTA — HOVER INFORMATIVO
+   ========================================================= */
+
+.package-form__photo-note {
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.package-form__photo-note:hover {
+  border-color: #BAE6FD;
+
+  background: #F0F9FF;
+}
+
+/* =========================================================
+   REDUCCIÓN DE MOVIMIENTO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .package-form__photo-selector,
+  .package-form__photo-preview,
+  .package-form__photo-preview-image,
+  .package-form__photo-button,
+  .package-form__photo-icon,
+  .package-form__photo-note {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* =========================================================
+   TABLET / PORTERÍA
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .package-form__photo-selector {
+    min-height: 100px;
+  }
+
+  .package-form__photo-preview {
+    gap: 16px;
+  }
+
+  .package-form__photo-preview-frame {
+    min-height: 180px;
+  }
+
+  .package-form__photo-preview-image {
+    min-height: 180px;
+  }
+}
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .package-form__card--photo::before {
+    left: 20px;
+    right: 20px;
+  }
+
+  .package-form__photo-section {
+    gap: 12px;
+  }
+
+  .package-form__photo-selector {
+    min-height: auto;
+
+    gap: 12px;
+
+    padding: 15px;
+
+    border-radius: 14px;
+  }
+
+  .package-form__photo-selector-title {
+    font-size: 13px;
+  }
+
+  .package-form__photo-selector-description {
+    font-size: 11px;
+  }
+
+  .package-form__photo-note {
+    padding:
+      10px
+      12px
+      10px
+      36px;
+
+    font-size: 11px;
+  }
+
+  .package-form__photo-preview {
+    border-radius: 14px;
+  }
+
+  .package-form__photo-preview-frame {
+    min-height: 165px;
+    max-height: 230px;
+  }
+
+  .package-form__photo-preview-image {
+    min-height: 165px;
+    max-height: 230px;
+  }
+
+  .package-form__photo-status {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 10px;
+  }
+
+  .package-form__photo-preview-title {
+    font-size: 14px;
+  }
+}
+
+/* =========================================================
+   PANTALLAS MUY PEQUEÑAS
+   ========================================================= */
+
+@media (max-width: 420px) {
+  .package-form__photo-selector {
+    grid-template-columns: 1fr;
+
+    text-align: center;
+  }
+
+  .package-form__photo-icon {
+    margin: 0 auto;
+  }
+
+  .package-form__photo-selector-content {
+    align-items: center;
+  }
+
+  .package-form__photo-selector-action {
+    grid-column: auto;
+
+    width: 100%;
+  }
+
+  .package-form__photo-preview-heading {
+    align-items: center;
+  }
+
+  .package-form__photo-actions {
+    width: 100%;
+  }
+
+  .package-form__photo-button {
+    width: 100%;
+    min-width: 0;
+  }
+}

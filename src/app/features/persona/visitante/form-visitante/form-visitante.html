@@ -184,6 +184,162 @@
       </div>
 
       <!-- ========================================= -->
+      <!-- FOTOGRAFÍA                               -->
+      <!-- ========================================= -->
+
+      <section class="visitor-photo">
+
+        <header class="visitor-photo__header">
+
+          <div class="visitor-photo__heading">
+
+            <span class="visitor-photo__eyebrow">
+              Evidencia de ingreso
+            </span>
+
+            <h3 class="visitor-photo__title">
+              Fotografía del visitante
+            </h3>
+
+            <p class="visitor-photo__description">
+              Toma o selecciona una fotografía del visitante al momento de su ingreso.
+            </p>
+
+          </div>
+
+        </header>
+
+        @if (!fotoPreview) {
+
+          <label
+            for="fotoVisitante"
+            class="visitor-photo__selector">
+
+            <span
+              class="visitor-photo__icon"
+              aria-hidden="true">
+              📷
+            </span>
+
+            <span class="visitor-photo__selector-content">
+
+              <strong class="visitor-photo__selector-title">
+                Tomar o seleccionar fotografía
+              </strong>
+
+              <span class="visitor-photo__selector-description">
+                JPG, JPEG, PNG o WEBP. Máximo 5 MB.
+              </span>
+
+            </span>
+
+            <span
+              class="visitor-photo__selector-action"
+              aria-hidden="true">
+              Seleccionar
+            </span>
+
+          </label>
+
+          <input
+            id="fotoVisitante"
+            name="fotoVisitante"
+            class="visitor-photo__input"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            capture="environment"
+            [disabled]="isSaving"
+            (change)="onFotoSeleccionada($event)">
+
+        } @else {
+
+          <div class="visitor-photo__preview">
+
+            <div class="visitor-photo__preview-frame">
+
+              <img
+                class="visitor-photo__preview-image"
+                [src]="fotoPreview"
+                alt="Vista previa de la fotografía del visitante">
+
+            </div>
+
+            <div class="visitor-photo__preview-info">
+
+              <div class="visitor-photo__preview-heading">
+
+                <span
+                  class="visitor-photo__status"
+                  aria-hidden="true">
+                  ✓
+                </span>
+
+                <div class="visitor-photo__preview-content">
+
+                  <strong class="visitor-photo__preview-title">
+                    Fotografía lista
+                  </strong>
+
+                  @if (foto) {
+                    <p class="visitor-photo__preview-name">
+                      {{ foto.name }}
+                    </p>
+                  }
+
+                </div>
+
+              </div>
+
+              <div class="visitor-photo__actions">
+
+                <label
+                  for="fotoVisitanteReemplazo"
+                  class="
+                    visitor-photo__button
+                    visitor-photo__button--replace
+                  ">
+
+                  Cambiar fotografía
+
+                </label>
+
+                <input
+                  id="fotoVisitanteReemplazo"
+                  class="visitor-photo__input"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  capture="environment"
+                  [disabled]="isSaving"
+                  (change)="onFotoSeleccionada($event)">
+
+                <button
+                  type="button"
+                  class="
+                    visitor-photo__button
+                    visitor-photo__button--remove
+                  "
+                  [disabled]="isSaving"
+                  (click)="eliminarFoto()">
+
+                  Quitar fotografía
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+        <p class="visitor-photo__note">
+          La fotografía es opcional y se utilizará como evidencia visual del ingreso.
+        </p>
+
+      </section>
+
+      <!-- ========================================= -->
       <!-- ACCIONES                                 -->
       <!-- ========================================= -->
 

@@ -12,17 +12,25 @@ import { finalize } from 'rxjs';
 
 import { NovedadAsignar } from '../novedad-asignar/novedad-asignar';
 import { NovedadEventosDetalle } from '../novedad-eventos-detalle/novedad-eventos-detalle';
-import { NovedadService } from '../../../../core/services/novedad/novedad';
+import { FormTarea } from '../form-tarea/form-tarea';
+
+import {
+  ClaseNovedad,
+  NovedadResponse,
+  NovedadService,
+  PrioridadTarea,
+} from '../../../../core/services/novedad/novedad';
 
 @Component({
   selector: 'app-lista-novedades',
   standalone: true,
- imports: [
-  CommonModule,
-  FormsModule,
-  NovedadAsignar,
-  NovedadEventosDetalle,
-],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NovedadAsignar,
+    NovedadEventosDetalle,
+    FormTarea,
+  ],
   templateUrl: './lista-novedades.html',
   styleUrl: './lista-novedades.css',
 })
@@ -33,15 +41,16 @@ export class ListaNovedadesComponent implements OnInit {
   @Output() finalizarSeguimiento = new EventEmitter<string>();
   @Output() verHistorial = new EventEmitter<string>();
 
-  novedades: any[] = [];
-  filteredNovedades: any[] = [];
+  novedades: NovedadResponse[] = [];
+  filteredNovedades: NovedadResponse[] = [];
 
   searchTerm = '';
 
+  selectedClass = 'all';
   selectedStatus = 'all';
-
   selectedAssignment = 'all';
-
+  selectedPriority = 'all';
+  selectedDeadline = 'all';
   selectedSort = 'recent';
 
   isLoading = false;
@@ -58,6 +67,9 @@ export class ListaNovedadesComponent implements OnInit {
   mostrarDetalles = false;
   novedadSeleccionadaId = '';
 
+  mostrarFormTarea = false;
+
+
   private accionEnProceso = false;
 
   constructor(
@@ -68,6 +80,22 @@ export class ListaNovedadesComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserPermissions();
     this.cargar();
+  }
+
+  abrirFormTarea(): void {
+    if (!this.isAdmin || this.isBusy()) {
+      return;
+    }
+
+    this.mostrarFormTarea = true;
+  }
+
+  cerrarFormTarea(recargar = false): void {
+    this.mostrarFormTarea = false;
+
+    if (recargar) {
+      this.cargar();
+    }
   }
 
   cargar(): void {
@@ -96,14 +124,16 @@ export class ListaNovedadesComponent implements OnInit {
 
           this.applyFilters();
         },
+
         error: (err) => {
           this.novedades = [];
           this.filteredNovedades = [];
+
           this.errorMessage =
             err?.error?.message ??
             err?.error?.mensaje ??
             err?.message ??
-            'No fue posible cargar las novedades.';
+            'No fue posible cargar las novedades y tareas.';
         },
       });
   }
@@ -139,17 +169,24 @@ export class ListaNovedadesComponent implements OnInit {
   abrirSeguimiento(id: string): void {
     if (!this.canStartTracking() || this.isBusy()) return;
 
-    this.ejecutarAccion(() => this.iniciarSeguimiento.emit(id));
+    this.ejecutarAccion(() =>
+      this.iniciarSeguimiento.emit(id)
+    );
   }
 
   abrirFinalizacion(id: string): void {
     if (!this.canFinishTracking() || this.isBusy()) return;
 
-    this.ejecutarAccion(() => this.finalizarSeguimiento.emit(id));
+    this.ejecutarAccion(() =>
+      this.finalizarSeguimiento.emit(id)
+    );
   }
 
   shouldLoadAssignedNews(): boolean {
-    return !this.isAdmin && (this.isSecurity || this.isMaintenance);
+    return (
+      !this.isAdmin &&
+      (this.isSecurity || this.isMaintenance)
+    );
   }
 
   canAssignNews(): boolean {
@@ -165,7 +202,11 @@ export class ListaNovedadesComponent implements OnInit {
   }
 
   canViewHistory(): boolean {
-    return this.isAdmin || this.isSecurity || this.isMaintenance;
+    return (
+      this.isAdmin ||
+      this.isSecurity ||
+      this.isMaintenance
+    );
   }
 
   applyFilters(): void {
@@ -195,23 +236,96 @@ export class ListaNovedadesComponent implements OnInit {
       );
     }
 
+    // =====================================================
+    // CLASE: NOVEDAD / TAREA
+    // =====================================================
+
+    if (this.selectedClass !== 'all') {
+      const clase =
+        this.selectedClass === 'novedad'
+          ? ClaseNovedad.Novedad
+          : ClaseNovedad.Tarea;
+
+      data = data.filter(
+        (n) => n.clase === clase
+      );
+    }
+
+    // =====================================================
+    // ESTADO
+    // =====================================================
+
     if (this.selectedStatus !== 'all') {
       data = data.filter(
         (n) => n.estado === this.selectedStatus
       );
     }
 
+    // =====================================================
+    // ASIGNACIÓN
+    // =====================================================
+
     if (this.selectedAssignment === 'assigned') {
       data = data.filter(
-        (n) => !!n.asignadaA
+        (n) => !!n.asignadaAId
       );
     }
 
     if (this.selectedAssignment === 'unassigned') {
       data = data.filter(
-        (n) => !n.asignadaA
+        (n) => !n.asignadaAId
       );
     }
+
+    // =====================================================
+    // PRIORIDAD
+    // Solo aplica a tareas.
+    // =====================================================
+
+    if (this.selectedPriority !== 'all') {
+      const prioridad = this.getPriorityValue(
+        this.selectedPriority
+      );
+
+      data = data.filter(
+        (n) =>
+          n.clase === ClaseNovedad.Tarea &&
+          n.prioridad === prioridad
+      );
+    }
+
+    // =====================================================
+    // FECHA LÍMITE
+    // Solo aplica a tareas.
+    // =====================================================
+
+    if (this.selectedDeadline === 'overdue') {
+      data = data.filter(
+        (n) => this.isOverdue(n)
+      );
+    }
+
+    if (this.selectedDeadline === 'pending') {
+      data = data.filter(
+        (n) =>
+          n.clase === ClaseNovedad.Tarea &&
+          !!n.fechaLimite &&
+          !this.isOverdue(n) &&
+          n.estado !== 'Finalizada'
+      );
+    }
+
+    if (this.selectedDeadline === 'no-deadline') {
+      data = data.filter(
+        (n) =>
+          n.clase === ClaseNovedad.Tarea &&
+          !n.fechaLimite
+      );
+    }
+
+    // =====================================================
+    // ORDEN
+    // =====================================================
 
     switch (this.selectedSort) {
       case 'oldest':
@@ -222,12 +336,26 @@ export class ListaNovedadesComponent implements OnInit {
         );
         break;
 
-      case 'events':
-        data.sort(
-          (a, b) =>
-            (b.totalEventos ?? 0) -
-            (a.totalEventos ?? 0)
-        );
+        case 'events':
+          data.sort(
+            (a, b) =>
+              b.totalEventos -
+              a.totalEventos
+          );
+          break;
+
+      case 'deadline':
+        data.sort((a, b) => {
+          const fechaA = a.fechaLimite
+            ? new Date(a.fechaLimite).getTime()
+            : Number.MAX_SAFE_INTEGER;
+
+          const fechaB = b.fechaLimite
+            ? new Date(b.fechaLimite).getTime()
+            : Number.MAX_SAFE_INTEGER;
+
+          return fechaA - fechaB;
+        });
         break;
 
       default:
@@ -246,6 +374,84 @@ export class ListaNovedadesComponent implements OnInit {
     }
 
     this.filteredNovedades = data;
+  }
+
+  isTask(novedad: NovedadResponse): boolean {
+    return novedad.clase === ClaseNovedad.Tarea;
+  }
+
+  isNews(novedad: NovedadResponse): boolean {
+    return novedad.clase === ClaseNovedad.Novedad;
+  }
+
+  isOverdue(novedad: NovedadResponse): boolean {
+    if (
+      novedad.clase !== ClaseNovedad.Tarea ||
+      !novedad.fechaLimite ||
+      novedad.estado === 'Finalizada'
+    ) {
+      return false;
+    }
+
+    const fechaLimite = new Date(
+      novedad.fechaLimite
+    );
+
+    const hoy = new Date();
+
+    fechaLimite.setHours(23, 59, 59, 999);
+
+    return fechaLimite.getTime() < hoy.getTime();
+  }
+
+  getClassLabel(
+    clase: ClaseNovedad
+  ): string {
+    return clase === ClaseNovedad.Tarea
+      ? 'Tarea'
+      : 'Novedad';
+  }
+
+  getPriorityLabel(
+    prioridad?: PrioridadTarea | null
+  ): string {
+    switch (prioridad) {
+      case PrioridadTarea.Baja:
+        return 'Baja';
+
+      case PrioridadTarea.Media:
+        return 'Media';
+
+      case PrioridadTarea.Alta:
+        return 'Alta';
+
+      case PrioridadTarea.Critica:
+        return 'Crítica';
+
+      default:
+        return '—';
+    }
+  }
+
+  private getPriorityValue(
+    value: string
+  ): PrioridadTarea | null {
+    switch (value) {
+      case 'low':
+        return PrioridadTarea.Baja;
+
+      case 'medium':
+        return PrioridadTarea.Media;
+
+      case 'high':
+        return PrioridadTarea.Alta;
+
+      case 'critical':
+        return PrioridadTarea.Critica;
+
+      default:
+        return null;
+    }
   }
 
   private loadUserPermissions(): void {
@@ -278,8 +484,14 @@ export class ListaNovedadesComponent implements OnInit {
         'Tipo',
       ]);
 
-      this.isAdmin = this.esAdmin || this.role === 'Admin';
-      this.isSecurity = this.personType === 'Seguridad' || this.role === 'Seguridad';
+      this.isAdmin =
+        this.esAdmin ||
+        this.role === 'Admin';
+
+      this.isSecurity =
+        this.personType === 'Seguridad' ||
+        this.role === 'Seguridad';
+
       this.isMaintenance =
         this.personType === 'Mantenimiento' ||
         this.personType === 'Personal' ||
@@ -308,11 +520,19 @@ export class ListaNovedadesComponent implements OnInit {
       throw new Error('Token inválido');
     }
 
-    const normalizedPayload = payload.replace(/-/g, '+').replace(/_/g, '/');
-    return JSON.parse(atob(normalizedPayload));
+    const normalizedPayload = payload
+      .replace(/-/g, '+')
+      .replace(/_/g, '/');
+
+    return JSON.parse(
+      atob(normalizedPayload)
+    );
   }
 
-  private getClaim(payload: any, keys: string[]): string {
+  private getClaim(
+    payload: any,
+    keys: string[]
+  ): string {
     for (const key of keys) {
       if (payload[key]) {
         return payload[key];
@@ -333,17 +553,24 @@ export class ListaNovedadesComponent implements OnInit {
 
   clearFilters(): void {
     this.searchTerm = '';
+
+    this.selectedClass = 'all';
     this.selectedStatus = 'all';
     this.selectedAssignment = 'all';
+    this.selectedPriority = 'all';
+    this.selectedDeadline = 'all';
     this.selectedSort = 'recent';
 
     this.applyFilters();
   }
 
-  private ejecutarAccion(action: () => void): void {
+  private ejecutarAccion(
+    action: () => void
+  ): void {
     if (this.isBusy()) return;
 
     this.accionEnProceso = true;
+
     action();
 
     setTimeout(() => {
@@ -352,6 +579,9 @@ export class ListaNovedadesComponent implements OnInit {
   }
 
   private isBusy(): boolean {
-    return this.accionEnProceso || this.isLoading;
+    return (
+      this.accionEnProceso ||
+      this.isLoading
+    );
   }
 }

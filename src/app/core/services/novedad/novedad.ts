@@ -2,10 +2,36 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+// ======================================================
+// ENUMS
+// ======================================================
+
+export enum ClaseNovedad {
+  Novedad = 1,
+  Tarea = 2,
+}
+
+export enum PrioridadTarea {
+  Baja = 1,
+  Media = 2,
+  Alta = 3,
+  Critica = 4,
+}
+
+// ======================================================
+// REQUESTS
+// ======================================================
+
 export interface CrearNovedadRequest {
   titulo: string;
   tipo: string;
   descripcion: string;
+
+  clase: ClaseNovedad;
+
+  prioridad?: PrioridadTarea | null;
+  fechaLimite?: string | null;
+
   imagenBase64?: string;
 }
 
@@ -26,36 +52,48 @@ export interface CerrarNovedadRequest {
   imagenBase64?: string;
 }
 
+// ======================================================
+// RESPONSES
+// ======================================================
+
 export interface EventoNovedad {
   id: string;
   novedadId: string;
+
   tipo: string;
   comentario: string;
-  imagenUrl?: string;
+
+  imagenUrl?: string | null;
+
   registradoPor: string;
   fechaCreacion: string;
 }
 
 export interface NovedadResponse {
   id: string;
+
   titulo: string;
   descripcion: string;
+
   tipo: string;
   estado: string;
+
+  clase: ClaseNovedad;
+
+  prioridad?: PrioridadTarea | null;
+  fechaLimite?: string | null;
+
   fechaCreacion: string;
 
   reportadaPorId: string;
   reportadaPor: string;
 
-  asignadaAId?: string;
-  asignadaA?: string;
+  asignadaAId?: string | null;
+  asignadaA?: string | null;
 
   totalEventos: number;
-  ultimaActualizacion?: string;
-}
 
-export interface ApiResponse {
-  message: string;
+  ultimaActualizacion?: string | null;
 }
 
 export interface ExpedienteNovedadResponse {
@@ -65,81 +103,155 @@ export interface ExpedienteNovedadResponse {
 
   titulo: string;
   descripcion: string;
+
   tipo: string;
   estado: string;
+
+  clase: ClaseNovedad;
+
+  prioridad?: PrioridadTarea | null;
+  fechaLimite?: string | null;
 
   reportadaPor: string;
   responsable: string;
 
   fechaApertura: string;
   fechaCierre?: string | null;
+
   fechaGeneracion: string;
 
   eventos: EventoNovedad[];
 }
 
+// ======================================================
+// RESPUESTAS SIMPLES API
+// ======================================================
+
+export interface ApiMensajeResponse {
+  mensaje: string;
+}
+
+export interface ApiMessageResponse {
+  message: string;
+}
+
+// ======================================================
+// SERVICE
+// ======================================================
+
 @Injectable({
   providedIn: 'root',
 })
-
 export class NovedadService {
 
-  private readonly baseUrl = 'https://localhost:7232/api/novedad';
+  private readonly baseUrl =
+    'https://localhost:7232/api/novedad';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient
+  ) {}
 
-  crearNovedad(request: CrearNovedadRequest): Observable<void> {
-    return this.http.post<void>(
+  // ====================================================
+  // CREAR NOVEDAD / TAREA
+  // ====================================================
+
+  crearNovedad(
+    request: CrearNovedadRequest
+  ): Observable<ApiMensajeResponse> {
+
+    return this.http.post<ApiMensajeResponse>(
       `${this.baseUrl}/crear`,
       request
     );
   }
 
+  // ====================================================
+  // OBTENER
+  // ====================================================
+
   obtener(): Observable<NovedadResponse[]> {
+
     return this.http.get<NovedadResponse[]>(
       `${this.baseUrl}/obtener`
     );
   }
 
+  // ====================================================
+  // MIS ASIGNADAS
+  // ====================================================
+
   obtenerMisAsignadas(): Observable<NovedadResponse[]> {
+
     return this.http.get<NovedadResponse[]>(
       `${this.baseUrl}/mis-asignadas`
     );
   }
 
-  asignar(request: AsignarNovedadRequest): Observable<ApiResponse> {
-    return this.http.post<ApiResponse>(
+  // ====================================================
+  // ASIGNAR
+  // ====================================================
+
+  asignar(
+    request: AsignarNovedadRequest
+  ): Observable<ApiMessageResponse> {
+
+    return this.http.post<ApiMessageResponse>(
       `${this.baseUrl}/asignar`,
       request
     );
   }
 
-  agregarEvento(request: CrearEventoRequest): Observable<void> {
-    return this.http.post<void>(
+  // ====================================================
+  // SEGUIMIENTO
+  // ====================================================
+
+  agregarEvento(
+    request: CrearEventoRequest
+  ): Observable<ApiMensajeResponse> {
+
+    return this.http.post<ApiMensajeResponse>(
       `${this.baseUrl}/agregar-evento`,
       request
     );
   }
 
-  cerrarNovedad(request: CerrarNovedadRequest): Observable<void> {
-    return this.http.post<void>(
+  // ====================================================
+  // CERRAR / FINALIZAR
+  // ====================================================
+
+  cerrarNovedad(
+    request: CerrarNovedadRequest
+  ): Observable<ApiMensajeResponse> {
+
+    return this.http.post<ApiMensajeResponse>(
       `${this.baseUrl}/cerrar`,
       request
     );
   }
 
-  obtenerEventos(novedadId: string): Observable<EventoNovedad[]> {
+  // ====================================================
+  // EVENTOS
+  // ====================================================
+
+  obtenerEventos(
+    novedadId: string
+  ): Observable<EventoNovedad[]> {
+
     return this.http.get<EventoNovedad[]>(
       `${this.baseUrl}/${novedadId}/eventos`
     );
   }
 
+  // ====================================================
+  // EXPEDIENTE
+  // ====================================================
+
   obtenerExpediente(
     novedadId: string
   ): Observable<ExpedienteNovedadResponse> {
+
     return this.http.get<ExpedienteNovedadResponse>(
       `${this.baseUrl}/${novedadId}/expediente`
     );
   }
-
 }

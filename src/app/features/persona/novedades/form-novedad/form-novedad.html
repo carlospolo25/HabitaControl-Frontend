@@ -31,8 +31,12 @@
 
     <form class="novedad-form" (ngSubmit)="guardar()">
 
+      <!-- TÍTULO -->
       <div class="form-group">
-        <label for="titulo">Título</label>
+        <label for="titulo">
+          Título
+        </label>
+
         <input
           id="titulo"
           name="titulo"
@@ -44,20 +48,45 @@
         />
       </div>
 
+
+      <!-- TIPO DE NOVEDAD -->
       <div class="form-group">
-        <label for="tipo">Tipo de novedad</label>
+        <label for="tipo">
+          Tipo de novedad
+        </label>
+
         <select
           id="tipo"
           name="tipo"
           [(ngModel)]="tipo"
           [disabled]="isLoading">
-          <option value="Operativa">Operativa</option>
-          <option value="Gestion">Gestión</option>
+
+          @if (!isResident) {
+            <option value="Operativa">
+              Operativa
+            </option>
+          }
+
+          <option value="Gestion">
+            Gestión
+          </option>
+
         </select>
+
+        @if (isResident) {
+          <small>
+            Los residentes pueden reportar únicamente novedades de gestión.
+          </small>
+        }
       </div>
 
+
+      <!-- DESCRIPCIÓN -->
       <div class="form-group">
-        <label for="descripcion">Descripción</label>
+        <label for="descripcion">
+          Descripción
+        </label>
+
         <textarea
           id="descripcion"
           name="descripcion"
@@ -67,26 +96,45 @@
         </textarea>
       </div>
 
+
+      <!-- EVIDENCIA -->
       <div class="form-group">
-        <label>Evidencia fotográfica</label>
+        <label>
+          Evidencia fotográfica
+        </label>
 
         @if (!imagenBase64) {
           <label class="upload-box">
+
             <input
               type="file"
               accept="image/*"
               (change)="onFileSelected($event)"
               [disabled]="isLoading"
             />
-            <span class="upload-icon">📷</span>
-            <strong>Agregar imagen</strong>
-            <small>PNG, JPG o WEBP. Máximo 2 MB.</small>
+
+            <span class="upload-icon">
+              📷
+            </span>
+
+            <strong>
+              Agregar imagen
+            </strong>
+
+            <small>
+              PNG, JPG o WEBP. Máximo 2 MB.
+            </small>
+
           </label>
         }
 
         @if (imagenBase64) {
           <div class="preview-box">
-            <img [src]="imagenBase64" alt="Vista previa de la evidencia" />
+
+            <img
+              [src]="imagenBase64"
+              alt="Vista previa de la evidencia"
+            />
 
             <button
               type="button"
@@ -95,11 +143,15 @@
               [disabled]="isLoading">
               Quitar imagen
             </button>
+
           </div>
         }
       </div>
 
+
+      <!-- ACCIONES -->
       <footer class="form-actions">
+
         <button
           type="button"
           class="btn-secondary"
@@ -112,8 +164,15 @@
           type="submit"
           class="btn-primary"
           [disabled]="isLoading">
-          {{ isLoading ? 'Guardando...' : 'Crear novedad' }}
+
+          {{
+            isLoading
+              ? 'Guardando...'
+              : 'Crear novedad'
+          }}
+
         </button>
+
       </footer>
 
     </form>

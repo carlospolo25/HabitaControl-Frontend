@@ -19,8 +19,13 @@ import {
 export class ListaVisitantesComponent implements OnInit {
   visitantes: VisitanteResponse[] = [];
 
+  private readonly backendUrl =
+  'https://localhost:7232';
+
   visitanteDetalle: VisitanteResponse | null = null;
   mostrarDetalleVisitante = false;
+  fotoVisitanteSeleccionada: VisitanteResponse | null = null;
+  mostrarFotoVisitante = false;
   tipo = '';
   isLoading = false;
   visitanteProcesandoId: string | null = null;
@@ -143,13 +148,31 @@ export class ListaVisitantesComponent implements OnInit {
     this.searchTerm = '';
     this.selectedDate = '';
     this.selectedApartment = '';
+    this.selectedTorre = '';
+  }
+
+  abrirFotoVisitante(
+    visitante: VisitanteResponse
+  ): void {
+    if (!this.tieneFoto(visitante)) {
+      return;
+    }
+
+    this.fotoVisitanteSeleccionada = visitante;
+    this.mostrarFotoVisitante = true;
+  }
+
+  cerrarFotoVisitante(): void {
+    this.mostrarFotoVisitante = false;
+    this.fotoVisitanteSeleccionada = null;
   }
 
   get hayFiltrosActivos(): boolean {
     return Boolean(
       this.searchTerm.trim() ||
       this.selectedDate ||
-      this.selectedApartment
+      this.selectedApartment ||
+      this.selectedTorre
     );
   }
 
@@ -209,6 +232,39 @@ export class ListaVisitantesComponent implements OnInit {
       });
   }
 
+  tieneFoto(
+    visitante: VisitanteResponse
+  ): boolean {
+    return Boolean(
+      visitante.fotoUrl?.trim()
+    );
+  }
+
+  obtenerFotoUrl(
+    fotoUrl: string | null | undefined
+  ): string | null {
+    if (!fotoUrl) {
+      return null;
+    }
+
+    const url = fotoUrl.trim();
+
+    if (!url) {
+      return null;
+    }
+
+    if (
+      url.startsWith('http://') ||
+      url.startsWith('https://')
+    ) {
+      return url;
+    }
+
+    return `${this.backendUrl}${
+      url.startsWith('/') ? '' : '/'
+    }${url}`;
+  }
+
   verDetalle(visitante: VisitanteResponse): void {
     this.visitanteDetalle = visitante;
     this.mostrarDetalleVisitante = true;
@@ -242,7 +298,7 @@ export class ListaVisitantesComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.successMessage =
-            response?.message || 'Salida registrada correctamente.';
+            response?.mensaje || 'Salida registrada correctamente.';
 
           this.actualizarVisitanteFinalizado(visitante.id);
         },

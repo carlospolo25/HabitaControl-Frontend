@@ -8,14 +8,16 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { finalize, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { API_CONFIG } from '../../../../core/config/api.config';
 import jsPDF from 'jspdf';
 
 import {
+  ClaseNovedad,
   EventoNovedad,
-  NovedadService,
   ExpedienteNovedadResponse,
+  NovedadService,
+  PrioridadTarea,
 } from '../../../../core/services/novedad/novedad';
 
 @Component({
@@ -61,9 +63,44 @@ export class NovedadEventosDetalle implements OnChanges {
 
   get fechaCierre(): string | Date | null {
     return (
-      this.eventos.find(e => e.tipo === 'Cierre' || e.tipo === 'Finalizacion')
-        ?.fechaCreacion ?? null
+      this.eventos.find(
+        e =>
+          e.tipo === 'Cierre' ||
+          e.tipo === 'Finalizacion' ||
+          e.tipo === 'Finalización'
+      )?.fechaCreacion ?? null
     );
+  }
+
+  isTask(expediente?: ExpedienteNovedadResponse): boolean {
+    return expediente?.clase === ClaseNovedad.Tarea;
+  }
+
+  getClassLabel(clase: ClaseNovedad): string {
+    return clase === ClaseNovedad.Tarea
+      ? 'Tarea'
+      : 'Novedad';
+  }
+
+  getPriorityLabel(
+    prioridad?: PrioridadTarea | null
+  ): string {
+    switch (prioridad) {
+      case PrioridadTarea.Baja:
+        return 'Baja';
+
+      case PrioridadTarea.Media:
+        return 'Media';
+
+      case PrioridadTarea.Alta:
+        return 'Alta';
+
+      case PrioridadTarea.Critica:
+        return 'Crítica';
+
+      default:
+        return '—';
+    }
   }
 
   cargarEventos(): void {
@@ -79,26 +116,38 @@ export class NovedadEventosDetalle implements OnChanges {
     this.isLoading = true;
     this.cdr.detectChanges();
 
-    this.novedadService
-      .obtenerEventos(this.novedadId)
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe({
-        next: (response: any) => {
-          this.eventos = Array.isArray(response) ? response : [];
-        },
-        error: (err: any) => {
-          this.eventos = [];
-          this.errorMessage =
-            err?.error?.mensaje ??
-            err?.error?.message ??
-            err?.message ??
-            'No fue posible cargar los eventos de la novedad.';
-        },
+    Promise.all([
+      firstValueFrom(
+        this.novedadService.obtenerEventos(
+          this.novedadId
+        )
+      ),
+      firstValueFrom(
+        this.novedadService.obtenerExpediente(
+          this.novedadId
+        )
+      ),
+    ])
+      .then(([eventos, expediente]) => {
+        this.eventos = Array.isArray(eventos)
+          ? eventos
+          : [];
+
+        this.expediente = expediente;
+      })
+      .catch((err: any) => {
+        this.eventos = [];
+        this.expediente = undefined;
+
+        this.errorMessage =
+          err?.error?.mensaje ??
+          err?.error?.message ??
+          err?.message ??
+          'No fue posible cargar el expediente del registro.';
+      })
+      .finally(() => {
+        this.isLoading = false;
+        this.cdr.detectChanges();
       });
   }
 
@@ -115,11 +164,13 @@ export class NovedadEventosDetalle implements OnChanges {
     this.cdr.detectChanges();
 
     try {
-      const expediente = await firstValueFrom(
-        this.novedadService.obtenerExpediente(
-          this.novedadId
-        )
-      );
+      const expediente =
+        this.expediente ??
+        await firstValueFrom(
+          this.novedadService.obtenerExpediente(
+            this.novedadId
+          )
+        );
 
       this.expediente = expediente;
 
@@ -207,7 +258,6 @@ export class NovedadEventosDetalle implements OnChanges {
       currentY
     );
 
-    // 👇 Aquí está la diferencia
     currentY = await this.dibujarBitacoraPdf(
       doc,
       expediente,
@@ -219,11 +269,23 @@ export class NovedadEventosDetalle implements OnChanges {
     this.guardarPdf(doc, numeroExpediente);
   }
 
-  private obtenerNumeroExpediente(expediente: ExpedienteNovedadResponse): string {
-    const year = new Date(expediente.fechaApertura).getFullYear();
-    const shortId = expediente.novedadId.substring(0, 8).toUpperCase();
+  private obtenerNumeroExpediente(
+    expediente: ExpedienteNovedadResponse
+  ): string {
+    const year =
+      new Date(expediente.fechaApertura).getFullYear();
 
-    return `EXP-${year}-${shortId}`;
+    const shortId =
+      expediente.novedadId
+        .substring(0, 8)
+        .toUpperCase();
+
+    const prefijo =
+      expediente.clase === ClaseNovedad.Tarea
+        ? 'TAR'
+        : 'NOV';
+
+    return `${prefijo}-${year}-${shortId}`;
   }
 
   private formatPdfDate(value?: string | null): string {
@@ -269,9 +331,19 @@ export class NovedadEventosDetalle implements OnChanges {
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(15);
-    doc.text('EXPEDIENTE OFICIAL DE NOVEDAD', pageWidth / 2, currentY, {
-      align: 'center',
-    });
+    const tituloExpediente =
+      expediente.clase === ClaseNovedad.Tarea
+        ? 'EXPEDIENTE OFICIAL DE TAREA'
+        : 'EXPEDIENTE OFICIAL DE NOVEDAD';
+
+    doc.text(
+      tituloExpediente,
+      pageWidth / 2,
+      currentY,
+      {
+        align: 'center',
+      }
+    );
 
     currentY += 9;
 
@@ -284,7 +356,19 @@ export class NovedadEventosDetalle implements OnChanges {
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(12);
-    doc.text(expediente.titulo || 'Novedad sin título', marginX, currentY);
+    const tituloRegistro =
+      expediente.titulo ||
+      (
+        expediente.clase === ClaseNovedad.Tarea
+          ? 'Tarea sin título'
+          : 'Novedad sin título'
+      );
+
+    doc.text(
+      tituloRegistro,
+      marginX,
+      currentY
+    );
 
     currentY += 8;
 
@@ -296,6 +380,7 @@ export class NovedadEventosDetalle implements OnChanges {
       descripcion,
       pageWidth - marginX * 2
     );
+    
 
     doc.text(descripcionLines, marginX, currentY);
 
@@ -315,15 +400,49 @@ export class NovedadEventosDetalle implements OnChanges {
 
     currentY += 8;
 
-    const rows = [
+    const rows: string[][] = [
+      ['Clase', this.getClassLabel(expediente.clase)],
       ['Estado', expediente.estado || '—'],
       ['Tipo', expediente.tipo || '—'],
-      ['Reportada por', expediente.reportadaPor || '—'],
-      ['Responsable', expediente.responsable || 'Sin asignar'],
-      ['Fecha de apertura', this.formatPdfDate(expediente.fechaApertura)],
-      ['Fecha de cierre', this.formatPdfDate(expediente.fechaCierre)],
-      ['Fecha de generación', this.formatPdfDate(expediente.fechaGeneracion)],
     ];
+
+    if (expediente.clase === ClaseNovedad.Tarea) {
+      rows.push(
+        [
+          'Prioridad',
+          this.getPriorityLabel(expediente.prioridad),
+        ],
+        [
+          'Fecha límite',
+          expediente.fechaLimite
+            ? this.formatPdfDate(expediente.fechaLimite)
+            : 'Sin fecha límite',
+        ]
+      );
+    }
+
+    rows.push(
+      [
+        'Reportada por',
+        expediente.reportadaPor || '—',
+      ],
+      [
+        'Responsable',
+        expediente.responsable || 'Sin asignar',
+      ],
+      [
+        'Fecha de apertura',
+        this.formatPdfDate(expediente.fechaApertura),
+      ],
+      [
+        'Fecha de cierre',
+        this.formatPdfDate(expediente.fechaCierre),
+      ],
+      [
+        'Fecha de generación',
+        this.formatPdfDate(expediente.fechaGeneracion),
+      ]
+    );
 
     doc.setFontSize(10);
 

@@ -12,6 +12,7 @@ export interface RegistrarPaqueteRequest {
   torre: string;
   apartamento: string;
   descripcion: string;
+  foto?: File | null;
 }
 
 export interface EntregarPaqueteRequest {
@@ -27,9 +28,10 @@ export interface PaqueteResponse {
   apartamento: string;
   estado: EstadoPaquete;
   fechaRecepcion: string;
-  entregadoA:string;
-  entregadoPor: string;
+  entregadoA: string | null;
+  entregadoPor: string | null;
   fechaEntrega?: string | null;
+  fotoUrl?: string | null;
 }
 
 export interface PaqueteDetalleResponse {
@@ -53,6 +55,7 @@ export interface PaqueteDetalleResponse {
 
   entregadoA: string | null;
   firmaRecibido: string | null;
+  fotoUrl: string | null;
 }
 
 export interface NotificacionResponse {
@@ -63,6 +66,11 @@ export interface NotificacionResponse {
   leida: boolean;
   fechaCreacion: string;
   paqueteId: string | null;
+}
+
+export interface RegistrarPaqueteResponse {
+  mensaje: string;
+  paquete: PaqueteResponse;
 }
 
 @Injectable({
@@ -76,10 +84,40 @@ export class PaqueteService {
 
   registrar(
     request: RegistrarPaqueteRequest
-  ): Observable<PaqueteResponse> {
-    return this.http.post<PaqueteResponse>(
+  ): Observable<RegistrarPaqueteResponse> {
+    const formData = new FormData();
+
+    formData.append(
+      'NombreDestinatario',
+      request.nombreDestinatario
+    );
+
+    formData.append(
+      'Torre',
+      request.torre
+    );
+
+    formData.append(
+      'Apartamento',
+      request.apartamento
+    );
+
+    formData.append(
+      'Descripcion',
+      request.descripcion
+    );
+
+    if (request.foto) {
+      formData.append(
+        'Foto',
+        request.foto,
+        request.foto.name
+      );
+    }
+
+    return this.http.post<RegistrarPaqueteResponse>(
       `${this.baseUrl}/registrar`,
-      request
+      formData
     );
   }
 

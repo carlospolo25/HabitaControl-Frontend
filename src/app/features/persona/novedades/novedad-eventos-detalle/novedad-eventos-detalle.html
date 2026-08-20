@@ -1,5 +1,7 @@
 <section class="expediente-container">
+
   <header class="expediente-header">
+
     <div class="expediente-actions">
 
       <button
@@ -33,86 +35,224 @@
       </button>
 
     </div>
+
   </header>
 
+
   @if (errorMessage) {
+
     <div class="expediente-alert">
       {{ errorMessage }}
     </div>
+
   }
 
+
   @if (isLoading) {
+
     <section class="expediente-state">
       <p>Cargando expediente...</p>
     </section>
+
   } @else if (eventos.length === 0) {
+
     <section class="expediente-state">
-      <h3>Sin registros</h3>
-      <p>Cuando esta novedad tenga actuaciones, aparecerán aquí.</p>
+
+      <h3>
+        Sin registros
+      </h3>
+
+      <p>
+        Cuando este registro tenga actuaciones,
+        aparecerán aquí.
+      </p>
+
     </section>
+
   } @else {
+
     <section class="expediente-documento">
+
       <header class="documento-resumen">
+
+        @if (expediente) {
+
+          <div>
+            <span>Clase</span>
+
+            <strong>
+              {{ getClassLabel(expediente.clase) }}
+            </strong>
+          </div>
+
+        }
+
+
         <div>
+
           <span>Responsable</span>
-          <strong>{{ responsableNovedad || 'Sin asignar' }}</strong>
-        </div>
 
-        <div>
-          <span>Apertura</span>
-          <strong>{{ fechaApertura | date:'medium' }}</strong>
-        </div>
-
-        <div>
-          <span>Cierre</span>
           <strong>
-            @if (fechaCierre) {
-              {{ fechaCierre | date:'medium' }}
-            } @else {
-              Pendiente
-            }
+            {{
+              expediente?.responsable ||
+              responsableNovedad ||
+              'Sin asignar'
+            }}
           </strong>
+
         </div>
+
+
+        @if (expediente && isTask(expediente)) {
+
+          <div>
+
+            <span>Prioridad</span>
+
+            <strong>
+              {{ getPriorityLabel(expediente.prioridad) }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>Fecha límite</span>
+
+            <strong>
+
+              @if (expediente.fechaLimite) {
+
+                {{ expediente.fechaLimite | date:'mediumDate' }}
+
+              } @else {
+
+                Sin fecha límite
+
+              }
+
+            </strong>
+
+          </div>
+
+        }
+
+
+        <div>
+
+          <span>Apertura</span>
+
+          <strong>
+            {{
+              expediente?.fechaApertura
+                ? (expediente?.fechaApertura | date:'medium')
+                : (fechaApertura | date:'medium')
+            }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>Cierre</span>
+
+          <strong>
+
+            @if (expediente?.fechaCierre) {
+
+              {{ expediente?.fechaCierre | date:'medium' }}
+
+            } @else if (fechaCierre) {
+
+              {{ fechaCierre | date:'medium' }}
+
+            } @else {
+
+              Pendiente
+
+            }
+
+          </strong>
+
+        </div>
+
       </header>
 
+
       <div class="documento-title">
-        <h3>Registros</h3>
-        <span>{{ eventos.length }} actuaciones</span>
+
+        <h3>
+          Registros
+        </h3>
+
+        <span>
+          {{ eventos.length }} actuaciones
+        </span>
+
       </div>
 
+
       <section class="registros-lista">
-        @for (evento of eventos; track evento.id; let index = $index) {
+
+        @for (
+          evento of eventos;
+          track evento.id;
+          let index = $index
+        ) {
+
           <article class="registro">
+
             <header class="registro-header">
+
               <div>
+
                 <span class="registro-numero">
-                  Registro {{ (index + 1).toString().padStart(3, '0') }}
+                  Registro
+                  {{
+                    (index + 1)
+                      .toString()
+                      .padStart(3, '0')
+                  }}
                 </span>
 
                 <h4>
                   {{ evento.tipo || 'Actualización' }}
                 </h4>
+
               </div>
+
 
               <time>
                 {{ evento.fechaCreacion | date:'medium' }}
               </time>
+
             </header>
 
+
             <p class="registro-comentario">
-              {{ evento.comentario || 'Sin comentario registrado.' }}
+              {{
+                evento.comentario ||
+                'Sin comentario registrado.'
+              }}
             </p>
+
 
             <footer class="registro-footer">
 
               <span class="registro-footer__author">
+
                 Registrado por:
+
                 <strong>
                   {{ evento.registradoPor || '—' }}
                 </strong>
+
               </span>
 
             </footer>
+
 
             @if (evento.imagenUrl) {
 
@@ -127,7 +267,9 @@
                     loading="lazy"
                     (error)="manejarErrorImagen(evento.id)">
 
+
                   @if (imagenConError(evento.id)) {
+
                     <div class="registro-evidencia__error">
 
                       <span
@@ -141,9 +283,11 @@
                       </span>
 
                     </div>
+
                   }
 
                 </div>
+
 
                 <figcaption class="registro-evidencia__caption">
 
@@ -159,6 +303,7 @@
 
                   </div>
 
+
                   <a
                     class="registro-evidencia__link"
                     [href]="obtenerImagenUrl(evento.imagenUrl)"
@@ -172,9 +317,15 @@
               </figure>
 
             }
+
           </article>
+
         }
+
       </section>
+
     </section>
+
   }
+
 </section>

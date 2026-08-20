@@ -3996,3 +3996,753 @@ app-scanner-qr-visitante {
       none;
   }
 }
+
+/* =========================================================
+   INVITACIÓN QR
+   FOTOGRAFÍA DEL VISITANTE — PARTE 1
+   CONTENEDOR + HEADER + SELECTOR
+   ========================================================= */
+
+.validated-visitor-photo {
+  position: relative;
+
+  margin-top: 22px;
+  padding: 20px;
+
+  overflow: hidden;
+
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #FFFFFF 0%,
+      #F8FAFC 100%
+    );
+
+  box-shadow:
+    0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+/* Línea decorativa superior */
+
+.validated-visitor-photo::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563EB 0%,
+      #0EA5E9 55%,
+      #16A34A 100%
+    );
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.validated-visitor-photo__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 16px;
+}
+
+.validated-visitor-photo__heading {
+  min-width: 0;
+}
+
+.validated-visitor-photo__eyebrow {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 23px;
+
+  margin-bottom: 6px;
+  padding: 0 9px;
+
+  border: 1px solid #BFDBFE;
+  border-radius: 999px;
+
+  background: #DBEAFE;
+
+  color: #1E40AF;
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.validated-visitor-photo__title {
+  margin: 0;
+
+  color: #0F172A;
+
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.validated-visitor-photo__description {
+  max-width: 560px;
+
+  margin: 5px 0 0;
+
+  color: #64748B;
+
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   INPUT REAL
+   Se oculta visualmente, pero sigue siendo utilizado
+   por los labels.
+   ========================================================= */
+
+.validated-visitor-photo__input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+
+  border: 0;
+}
+
+/* =========================================================
+   SELECTOR DE FOTOGRAFÍA
+   ========================================================= */
+
+.validated-visitor-photo__selector {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  width: 100%;
+  min-height: 82px;
+
+  padding: 14px 16px;
+
+  border: 1.5px dashed #94A3B8;
+  border-radius: 13px;
+
+  background: #FFFFFF;
+
+  cursor: pointer;
+
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.validated-visitor-photo__selector:hover {
+  border-color: #2563EB;
+
+  background: #F8FAFC;
+
+  box-shadow:
+    0 6px 16px rgba(37, 99, 235, 0.08);
+
+  transform: translateY(-1px);
+}
+
+.validated-visitor-photo__selector:focus-within {
+  border-color: #2563EB;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* =========================================================
+   ICONO DE CÁMARA
+   ========================================================= */
+
+.validated-visitor-photo__icon {
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  border: 1px solid #BFDBFE;
+  border-radius: 12px;
+
+  background: #DBEAFE;
+
+  font-size: 21px;
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.08);
+}
+
+/* =========================================================
+   CONTENIDO DEL SELECTOR
+   ========================================================= */
+
+.validated-visitor-photo__selector-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 3px;
+}
+
+.validated-visitor-photo__selector-title {
+  color: #1E293B;
+
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.validated-visitor-photo__selector-description {
+  color: #64748B;
+
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   BOTÓN VISUAL "SELECCIONAR"
+   ========================================================= */
+
+.validated-visitor-photo__selector-action {
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 34px;
+
+  padding: 0 12px;
+
+  border: 1px solid #2563EB;
+  border-radius: 9px;
+
+  background: #2563EB;
+
+  color: #FFFFFF;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.16);
+
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.validated-visitor-photo__selector:hover
+.validated-visitor-photo__selector-action {
+  border-color: #1D4ED8;
+  background: #1D4ED8;
+}
+
+/* =========================================================
+   INVITACIÓN QR
+   FOTOGRAFÍA DEL VISITANTE — PARTE 2
+   PREVIEW + ESTADO + ACCIONES
+   ========================================================= */
+
+/* =========================================================
+   CONTENEDOR DEL PREVIEW
+   ========================================================= */
+
+.validated-visitor-photo__preview {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: minmax(210px, 0.9fr) minmax(0, 1.1fr);
+
+  gap: 18px;
+
+  width: 100%;
+
+  padding: 15px;
+
+  border: 1px solid #CBD5E1;
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #FFFFFF 0%,
+      #F8FAFC 100%
+    );
+
+  box-shadow:
+    0 8px 22px rgba(15, 23, 42, 0.06);
+
+  animation:
+    validatedVisitorPhotoReveal 220ms ease-out;
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+@keyframes validatedVisitorPhotoReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.validated-visitor-photo__preview:hover {
+  border-color: #94A3B8;
+
+  box-shadow:
+    0 12px 28px rgba(15, 23, 42, 0.08);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   MARCO DE LA FOTOGRAFÍA
+   ========================================================= */
+
+.validated-visitor-photo__preview-frame {
+  position: relative;
+
+  width: 100%;
+  min-height: 190px;
+  max-height: 270px;
+
+  overflow: hidden;
+
+  border: 1px solid #CBD5E1;
+  border-radius: 13px;
+
+  background: #F1F5F9;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+}
+
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+
+.validated-visitor-photo__preview-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  min-height: 190px;
+  max-height: 270px;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
+}
+
+.validated-visitor-photo__preview:hover
+.validated-visitor-photo__preview-image {
+  transform: scale(1.02);
+
+  filter:
+    saturate(1.04)
+    contrast(1.01);
+}
+
+
+/* =========================================================
+   BADGE SOBRE LA FOTO
+   ========================================================= */
+
+.validated-visitor-photo__preview-badge {
+  position: absolute;
+
+  left: 11px;
+  bottom: 11px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 28px;
+
+  padding: 0 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+
+  background:
+    rgba(15, 23, 42, 0.76);
+
+  color: #FFFFFF;
+
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+
+  backdrop-filter: blur(6px);
+
+  box-shadow:
+    0 4px 10px rgba(2, 6, 23, 0.22);
+}
+
+
+/* =========================================================
+   INFORMACIÓN DEL PREVIEW
+   ========================================================= */
+
+.validated-visitor-photo__preview-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  min-width: 0;
+
+  gap: 18px;
+
+  padding: 4px 2px;
+}
+
+.validated-visitor-photo__preview-heading {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+}
+
+.validated-visitor-photo__preview-content {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   ESTADO VERDE
+   ========================================================= */
+
+.validated-visitor-photo__status {
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid #86EFAC;
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #DCFCE7 0%,
+      #F0FDF4 100%
+    );
+
+  color: #166534;
+
+  font-size: 17px;
+  font-weight: 900;
+
+  box-shadow:
+    0 5px 14px rgba(22, 163, 74, 0.12);
+}
+
+
+/* =========================================================
+   TÍTULO DEL ESTADO
+   ========================================================= */
+
+.validated-visitor-photo__preview-title {
+  display: block;
+
+  margin-top: 1px;
+
+  color: #0F172A;
+
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+
+/* =========================================================
+   NOMBRE DEL ARCHIVO
+   ========================================================= */
+
+.validated-visitor-photo__preview-name {
+  max-width: 100%;
+
+  margin: 5px 0 0;
+
+  overflow: hidden;
+
+  color: #64748B;
+
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.45;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+
+.validated-visitor-photo__actions {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 9px;
+}
+
+
+/* =========================================================
+   BOTÓN BASE
+   ========================================================= */
+
+.validated-visitor-photo__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+
+  padding: 0 14px;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1;
+
+  cursor: pointer;
+
+  user-select: none;
+
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+
+/* =========================================================
+   CAMBIAR FOTOGRAFÍA
+   ========================================================= */
+
+.validated-visitor-photo__button--replace {
+  border-color: #BFDBFE;
+
+  background: #EFF6FF;
+
+  color: #1D4ED8;
+}
+
+.validated-visitor-photo__button--replace:hover {
+  border-color: #2563EB;
+
+  background: #DBEAFE;
+
+  color: #1E40AF;
+
+  box-shadow:
+    0 5px 14px rgba(37, 99, 235, 0.12);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   QUITAR FOTOGRAFÍA
+   ========================================================= */
+
+.validated-visitor-photo__button--remove {
+  border-color: #FCA5A5;
+
+  background: #FEE2E2;
+
+  color: #991B1B;
+}
+
+.validated-visitor-photo__button--remove:hover:not(:disabled) {
+  border-color: #DC2626;
+
+  background: #FEE2E2;
+
+  color: #991B1B;
+
+  box-shadow:
+    0 5px 14px rgba(220, 38, 38, 0.10);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DISABLED
+   ========================================================= */
+
+.validated-visitor-photo__button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.55;
+
+  transform: none;
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   NOTA INFERIOR
+   ========================================================= */
+
+.validated-visitor-photo__note {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-top: 14px;
+  padding: 10px 12px;
+
+  border: 1px solid #BAE6FD;
+  border-radius: 10px;
+
+  background: #F0F9FF;
+}
+
+.validated-visitor-photo__note-icon {
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  margin-top: 1px;
+
+  border-radius: 50%;
+
+  background: #E0F2FE;
+
+  color: #075985;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.validated-visitor-photo__note-text {
+  margin: 0;
+
+  color: #475569;
+
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 720px) {
+  .validated-visitor-photo__preview {
+    grid-template-columns: 1fr;
+  }
+
+  .validated-visitor-photo__preview-frame {
+    max-height: 290px;
+  }
+
+  .validated-visitor-photo__preview-image {
+    max-height: 290px;
+  }
+}
+
+@media (max-width: 520px) {
+  .validated-visitor-photo__preview {
+    gap: 14px;
+
+    padding: 12px;
+
+    border-radius: 13px;
+  }
+
+  .validated-visitor-photo__preview-frame {
+    min-height: 170px;
+  }
+
+  .validated-visitor-photo__preview-image {
+    min-height: 170px;
+  }
+
+  .validated-visitor-photo__actions {
+    flex-direction: column;
+  }
+
+  .validated-visitor-photo__button {
+    width: 100%;
+  }
+
+  .validated-visitor-photo__status {
+    width: 34px;
+    height: 34px;
+  }
+
+  .validated-visitor-photo__note {
+    margin-top: 12px;
+  }
+}
