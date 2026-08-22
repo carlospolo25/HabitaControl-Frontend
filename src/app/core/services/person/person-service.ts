@@ -84,9 +84,7 @@ export interface UpdateMyAccountResponse {
   person: PersonResponse;
 }
 
-export interface MessageResponse {
-  message: string;
-}
+
 
 export interface CreateInvitationRequest {
   email: string;
@@ -117,6 +115,14 @@ export interface MassInvitationsResponse {
   totalFailed: number;
   created: InvitationResponse[];
   failed: FailedInvitationResponse[];
+}
+
+export interface ConfirmarPasswordPersonaRequest {
+  password: string;
+}
+
+export interface MessageResponse {
+  message: string;
 }
 
 @Injectable({
@@ -181,10 +187,18 @@ export class PersonService {
     );
   }
 
-  permanentlyDeactivateOwnAccount(): Observable<MessageResponse> {
-    return this.http.put<MessageResponse>(
-      `${this.apiUrl}/me/permanent-deactivation`,
-      {}
+  confirmarPassword(
+    request: ConfirmarPasswordPersonaRequest
+  ): Observable<MessageResponse> {
+    return this.http.post<MessageResponse>(
+      `${this.apiUrl}/confirmar-password`,
+      request
+    );
+  }
+
+  eliminarMiCuenta(): Observable<MessageResponse> {
+    return this.http.delete<MessageResponse>(
+      `${this.apiUrl}/eliminar-cuenta`
     );
   }
 

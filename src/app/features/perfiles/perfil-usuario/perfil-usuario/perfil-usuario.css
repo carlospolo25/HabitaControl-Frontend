@@ -3817,3 +3817,704 @@
     display: none;
   }
 }
+
+
+
+
+/* =========================================================
+   PERFIL ADMIN
+   ZONA SENSIBLE - ELIMINAR CUENTA
+   ========================================================= */
+
+
+/* =========================================================
+   ZONA SENSIBLE - CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.profile-danger-zone {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: var(--space-24);
+
+  margin-top: var(--space-20);
+
+  padding:
+    var(--space-24);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(254, 226, 226, 0.82) 0%,
+      rgba(255, 255, 255, 0.98) 56%,
+      rgba(248, 250, 252, 0.98) 100%
+    );
+
+  border:
+    1px solid
+    var(--danger-border);
+
+  border-radius:
+    var(--radius-xl);
+
+  box-shadow:
+    var(--shadow-sm);
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.20s ease,
+    box-shadow 0.20s ease,
+    transform 0.20s ease;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - ACENTO LATERAL
+   ========================================================= */
+
+.profile-danger-zone::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 5px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--danger) 0%,
+      var(--danger-dark) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - RESPLANDOR DECORATIVO
+   ========================================================= */
+
+.profile-danger-zone::after {
+  content: '';
+
+  position: absolute;
+  top: -90px;
+  right: -75px;
+
+  width: 220px;
+  height: 220px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(220, 38, 38, 0.08) 0%,
+      rgba(245, 158, 11, 0.025) 45%,
+      transparent 72%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - HOVER GENERAL
+   ========================================================= */
+
+.profile-danger-zone:hover {
+  border-color:
+    var(--danger);
+
+  box-shadow:
+    var(--shadow-md);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - CONTENIDO
+   ========================================================= */
+
+.profile-danger-zone__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  gap: var(--space-8);
+
+  min-width: 0;
+  max-width: 720px;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - BADGE
+   ========================================================= */
+
+.profile-danger-zone__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+
+  padding:
+    5px
+    10px;
+
+  background:
+    var(--danger-light);
+
+  border:
+    1px solid
+    var(--danger-border);
+
+  border-radius:
+    999px;
+
+  color:
+    var(--danger-dark);
+
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1.1;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - TÍTULO
+   ========================================================= */
+
+.profile-danger-zone__title {
+  margin: 0;
+
+  color:
+    var(--danger-dark);
+
+  font-size: 1.05rem;
+  font-weight: 850;
+  line-height: 1.3;
+
+  letter-spacing: -0.012em;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - DESCRIPCIÓN
+   ========================================================= */
+
+.profile-danger-zone__description {
+  margin: 0;
+
+  max-width: 700px;
+
+  color:
+    var(--text-secondary);
+
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - ÉNFASIS
+   ========================================================= */
+
+.profile-danger-zone__description strong {
+  color:
+    var(--danger-dark);
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - ACCIONES
+   ========================================================= */
+
+.profile-danger-zone__actions {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-shrink: 0;
+
+  min-width: max-content;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - SEPARADOR DE ACCIONES
+   ========================================================= */
+
+.profile-danger-zone__content
++ .profile-danger-zone__actions {
+  padding-left:
+    var(--space-20);
+
+  border-left:
+    1px solid
+    rgba(220, 38, 38, 0.14);
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - BASE
+   ========================================================= */
+
+.profile-danger-button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: var(--space-8);
+
+  min-width: 155px;
+  min-height: 44px;
+
+  padding:
+    0
+    var(--space-16);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger) 0%,
+      var(--danger-dark) 100%
+    );
+
+  border:
+    1px solid
+    var(--danger);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--text-white);
+
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 18px
+    rgba(220, 38, 38, 0.18),
+    0 1px 0
+    rgba(255, 255, 255, 0.14)
+    inset;
+
+  overflow: hidden;
+
+  transition:
+    background 0.20s ease,
+    border-color 0.20s ease,
+    box-shadow 0.20s ease,
+    transform 0.20s ease,
+    opacity 0.20s ease;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - BRILLO DECORATIVO
+   ========================================================= */
+
+.profile-danger-button::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: -120%;
+
+  width: 70%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.14),
+      transparent
+    );
+
+  transform:
+    skewX(-18deg);
+
+  pointer-events: none;
+
+  transition:
+    left 0.45s ease;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - HOVER
+   ========================================================= */
+
+.profile-danger-button:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      #B91C1C 0%,
+      var(--danger-dark) 100%
+    );
+
+  border-color:
+    var(--danger-dark);
+
+  box-shadow:
+    0 11px 24px
+    rgba(153, 27, 27, 0.26);
+
+  transform:
+    translateY(-1px);
+}
+
+.profile-danger-button:hover:not(:disabled)::before {
+  left: 140%;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - ACTIVE
+   ========================================================= */
+
+.profile-danger-button:active:not(:disabled) {
+  transform:
+    translateY(0);
+
+  box-shadow:
+    0 5px 12px
+    rgba(153, 27, 27, 0.18);
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - FOCUS
+   ========================================================= */
+
+.profile-danger-button:focus-visible {
+  outline: none;
+
+  border-color:
+    var(--danger-dark);
+
+  box-shadow:
+    0 0 0 3px
+    var(--surface),
+    0 0 0 6px
+    rgba(220, 38, 38, 0.22),
+    0 8px 18px
+    rgba(220, 38, 38, 0.18);
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - DESHABILITADO
+   ========================================================= */
+
+.profile-danger-button:disabled {
+  background:
+    linear-gradient(
+      135deg,
+      var(--gray-200),
+      var(--gray-300)
+    );
+
+  border-color:
+    var(--gray-300);
+
+  color:
+    var(--gray-500);
+
+  cursor:
+    not-allowed;
+
+  box-shadow:
+    none;
+
+  transform:
+    none;
+
+  opacity:
+    0.76;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - ICONO
+   ========================================================= */
+
+.profile-danger-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 21px;
+  height: 21px;
+
+  flex-shrink: 0;
+
+  background:
+    rgba(255, 255, 255, 0.14);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.17);
+
+  border-radius:
+    999px;
+
+  color:
+    var(--text-white);
+
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1;
+
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - ICONO HOVER
+   ========================================================= */
+
+.profile-danger-button:hover:not(:disabled)
+.profile-danger-button__icon {
+  background:
+    rgba(255, 255, 255, 0.20);
+
+  transform:
+    scale(1.06);
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - ICONO DESHABILITADO
+   ========================================================= */
+
+.profile-danger-button:disabled
+.profile-danger-button__icon {
+  background:
+    rgba(100, 116, 139, 0.08);
+
+  border-color:
+    rgba(100, 116, 139, 0.12);
+
+  color:
+    var(--gray-500);
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .profile-danger-zone {
+    align-items: stretch;
+
+    gap: var(--space-20);
+
+    padding:
+      var(--space-20);
+  }
+
+  .profile-danger-zone__content {
+    max-width: none;
+  }
+
+  .profile-danger-zone__actions {
+    min-width: auto;
+  }
+
+  .profile-danger-zone__content
+  + .profile-danger-zone__actions {
+    padding-left:
+      var(--space-14);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MÓVIL
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+  .profile-danger-zone {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: var(--space-16);
+
+    margin-top:
+      var(--space-16);
+
+    padding:
+      var(--space-20)
+      var(--space-16);
+
+    border-radius:
+      var(--radius-lg);
+  }
+
+  .profile-danger-zone::before {
+    width: 4px;
+  }
+
+  .profile-danger-zone__content {
+    width: 100%;
+    max-width: none;
+  }
+
+  .profile-danger-zone__badge {
+    padding:
+      5px
+      9px;
+
+    font-size:
+      0.67rem;
+  }
+
+  .profile-danger-zone__title {
+    font-size:
+      1rem;
+  }
+
+  .profile-danger-zone__description {
+    max-width: none;
+
+    font-size:
+      0.86rem;
+
+    line-height:
+      1.6;
+  }
+
+  .profile-danger-zone__actions {
+    width: 100%;
+
+    min-width: 0;
+
+    justify-content:
+      stretch;
+  }
+
+  .profile-danger-zone__content
+  + .profile-danger-zone__actions {
+    padding-top:
+      var(--space-16);
+
+    padding-left:
+      0;
+
+    border-top:
+      1px solid
+      rgba(220, 38, 38, 0.14);
+
+    border-left:
+      none;
+  }
+
+  .profile-danger-button {
+    width: 100%;
+
+    min-width: 0;
+    min-height: 46px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - TELÉFONOS PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .profile-danger-zone {
+    padding:
+      var(--space-16)
+      var(--space-12);
+
+    border-radius:
+      var(--radius-md);
+  }
+
+  .profile-danger-zone__description {
+    font-size:
+      0.83rem;
+  }
+
+  .profile-danger-button {
+    min-height:
+      44px;
+
+    font-size:
+      0.83rem;
+  }
+
+  .profile-danger-button__icon {
+    width:
+      19px;
+
+    height:
+      19px;
+
+    font-size:
+      0.76rem;
+  }
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD - REDUCCIÓN DE MOVIMIENTO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .profile-danger-zone,
+  .profile-danger-button,
+  .profile-danger-button__icon {
+    transition: none;
+  }
+
+  .profile-danger-zone:hover,
+  .profile-danger-button:hover:not(:disabled),
+  .profile-danger-button:hover:not(:disabled)
+  .profile-danger-button__icon {
+    transform: none;
+  }
+
+  .profile-danger-button::before {
+    display: none;
+  }
+}

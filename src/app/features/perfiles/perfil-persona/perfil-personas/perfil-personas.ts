@@ -18,6 +18,7 @@ import {
 } from '../../../../core/services/person/person-service';
 
 import { FormPerfilPersonaComponent } from '../../form-perfil-persona/form-perfil-persona/form-perfil-persona';
+import { EliminarCuentaPersona } from '../../../persona/eliminar-cuenta-persona/eliminar-cuenta-persona';
 
 @Component({
   selector: 'app-perfil-personas',
@@ -25,6 +26,7 @@ import { FormPerfilPersonaComponent } from '../../form-perfil-persona/form-perfi
   imports: [
     CommonModule,
     FormPerfilPersonaComponent,
+    EliminarCuentaPersona
   ],
   templateUrl: './perfil-personas.html',
   styleUrl: './perfil-personas.css',
@@ -40,6 +42,7 @@ export class PerfilPersonasComponent implements OnInit {
 
   mostrarFormulario = false;
   fotoNoDisponible = false;
+  mostrarEliminarCuenta = false;
 
   constructor(
     private readonly personService: PersonService,
@@ -92,8 +95,28 @@ export class PerfilPersonasComponent implements OnInit {
       });
   }
 
+  abrirEliminarCuenta(): void {
+    if (
+      this.isLoading ||
+      !this.perfil ||
+      this.mostrarFormulario
+    ) {
+      return;
+    }
+
+    this.mostrarEliminarCuenta = true;
+  }
+
+  cerrarEliminarCuenta(): void {
+    this.mostrarEliminarCuenta = false;
+  }
+
   abrirFormulario(): void {
-    if (!this.perfil || this.isLoading) {
+    if (
+      !this.perfil ||
+      this.isLoading ||
+      this.mostrarEliminarCuenta
+    ) {
       return;
     }
 

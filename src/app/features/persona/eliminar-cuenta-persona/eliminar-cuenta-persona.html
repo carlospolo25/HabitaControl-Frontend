@@ -1,0 +1,478 @@
+<!-- =========================================================
+     ELIMINAR CUENTA - OVERLAY
+     ========================================================= -->
+
+<div
+  class="delete-account-overlay"
+  role="presentation"
+>
+  <!-- =======================================================
+       MODAL
+       ======================================================= -->
+
+  <section
+    class="delete-account-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="delete-account-title"
+    aria-describedby="delete-account-description"
+  >
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="delete-account-header">
+
+      <div class="delete-account-header__icon">
+        <span aria-hidden="true">
+          ⚠
+        </span>
+      </div>
+
+      <div class="delete-account-header__content">
+
+        <span class="delete-account-header__eyebrow">
+          Acción permanente
+        </span>
+
+        <h2
+          id="delete-account-title"
+          class="delete-account-header__title"
+        >
+          Eliminar mi cuenta
+        </h2>
+
+        <p
+          id="delete-account-description"
+          class="delete-account-header__description"
+        >
+          Esta acción eliminará permanentemente tu acceso
+          a HabitaControl.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="delete-account-header__close"
+        aria-label="Cerrar"
+        title="Cerrar"
+        [disabled]="isConfirmingPassword || isDeleting"
+        (click)="cerrarFormulario()"
+      >
+        ×
+      </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTENIDO
+         ===================================================== -->
+
+    <div class="delete-account-body">
+
+      <!-- ===================================================
+           ADVERTENCIA
+           =================================================== -->
+
+      <div class="delete-account-warning">
+
+        <div class="delete-account-warning__icon">
+          <span aria-hidden="true">
+            !
+          </span>
+        </div>
+
+        <div class="delete-account-warning__content">
+
+          <h3 class="delete-account-warning__title">
+            Esta acción no se puede deshacer
+          </h3>
+
+          <p class="delete-account-warning__text">
+            Una vez eliminada tu cuenta, no podrás volver
+            a iniciar sesión con ella.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           CONSECUENCIAS
+           =================================================== -->
+
+      <div class="delete-account-consequences">
+
+        <h3 class="delete-account-consequences__title">
+          ¿Qué ocurrirá al eliminar tu cuenta?
+        </h3>
+
+        <ul class="delete-account-consequences__list">
+
+          <li class="delete-account-consequences__item">
+
+            <span
+              class="delete-account-consequences__marker"
+              aria-hidden="true"
+            >
+              ×
+            </span>
+
+            <span>
+              Tu cuenta quedará desactivada
+              permanentemente.
+            </span>
+
+          </li>
+
+          <li class="delete-account-consequences__item">
+
+            <span
+              class="delete-account-consequences__marker"
+              aria-hidden="true"
+            >
+              ×
+            </span>
+
+            <span>
+              Todas tus sesiones abiertas serán
+              cerradas.
+            </span>
+
+          </li>
+
+          <li class="delete-account-consequences__item">
+
+            <span
+              class="delete-account-consequences__marker"
+              aria-hidden="true"
+            >
+              ×
+            </span>
+
+            <span>
+              No podrás recuperar ni reactivar esta
+              cuenta mediante los mecanismos normales
+              de HabitaControl.
+            </span>
+
+          </li>
+
+          <li
+            class="
+              delete-account-consequences__item
+              delete-account-consequences__item--history
+            "
+          >
+
+            <span
+              class="
+                delete-account-consequences__marker
+                delete-account-consequences__marker--history
+              "
+              aria-hidden="true"
+            >
+              i
+            </span>
+
+            <span>
+              El historial operativo necesario podrá
+              conservarse para fines administrativos
+              y de trazabilidad.
+            </span>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- ===================================================
+           CONFIRMACIÓN DE IDENTIDAD
+           =================================================== -->
+
+      <div class="delete-account-confirmation">
+
+        <div class="delete-account-confirmation__header">
+
+          <span class="delete-account-confirmation__step">
+            Verificación de seguridad
+          </span>
+
+          <h3 class="delete-account-confirmation__title">
+            Confirma tu contraseña
+          </h3>
+
+          <p class="delete-account-confirmation__description">
+            Para proteger tu cuenta, necesitamos comprobar
+            tu identidad antes de permitir la eliminación.
+          </p>
+
+        </div>
+
+
+        <!-- =================================================
+             PASSWORD
+             ================================================= -->
+
+        <div class="delete-account-field">
+
+          <label
+            for="delete-account-password"
+            class="delete-account-field__label"
+          >
+            Contraseña actual
+          </label>
+
+          <div
+            class="delete-account-field__control"
+            [class.delete-account-field__control--verified]="
+              passwordConfirmada
+            "
+          >
+
+            <input
+              id="delete-account-password"
+              name="deleteAccountPassword"
+              class="delete-account-field__input"
+              [type]="mostrarPassword ? 'text' : 'password'"
+              [(ngModel)]="password"
+              (ngModelChange)="onPasswordChange()"
+              [disabled]="isConfirmingPassword || isDeleting"
+              autocomplete="current-password"
+              placeholder="Ingresa tu contraseña"
+              maxlength="200"
+            />
+
+            <button
+              type="button"
+              class="delete-account-field__visibility"
+              [disabled]="isConfirmingPassword || isDeleting"
+              [attr.aria-label]="
+                mostrarPassword
+                  ? 'Ocultar contraseña'
+                  : 'Mostrar contraseña'
+              "
+              [attr.title]="
+                mostrarPassword
+                  ? 'Ocultar contraseña'
+                  : 'Mostrar contraseña'
+              "
+              (click)="alternarPassword()"
+            >
+              {{ mostrarPassword ? 'Ocultar' : 'Mostrar' }}
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ERROR
+             ================================================= -->
+
+        @if (errorMessage) {
+
+          <div
+            class="delete-account-alert delete-account-alert--error"
+            role="alert"
+          >
+
+            <span
+              class="delete-account-alert__icon"
+              aria-hidden="true"
+            >
+              !
+            </span>
+
+            <span class="delete-account-alert__message">
+              {{ errorMessage }}
+            </span>
+
+          </div>
+
+        }
+
+
+        <!-- =================================================
+             CONFIRMACIÓN CORRECTA
+             ================================================= -->
+
+        @if (passwordConfirmada && successMessage) {
+
+          <div
+            class="delete-account-alert delete-account-alert--success"
+            role="status"
+          >
+
+            <span
+              class="delete-account-alert__icon"
+              aria-hidden="true"
+            >
+              ✓
+            </span>
+
+            <span class="delete-account-alert__message">
+              {{ successMessage }}
+            </span>
+
+          </div>
+
+        }
+
+
+        <!-- =================================================
+             BOTÓN CONFIRMAR PASSWORD
+             ================================================= -->
+
+        @if (!passwordConfirmada) {
+
+          <button
+            type="button"
+            class="delete-account-verify-button"
+            [disabled]="
+              isConfirmingPassword ||
+              isDeleting ||
+              !password.trim()
+            "
+            (click)="confirmarPassword()"
+          >
+
+            @if (isConfirmingPassword) {
+
+              <span
+                class="delete-account-spinner"
+                aria-hidden="true"
+              ></span>
+
+              <span>
+                Verificando contraseña...
+              </span>
+
+            } @else {
+
+              <span
+                class="delete-account-verify-button__icon"
+                aria-hidden="true"
+              >
+                ✓
+              </span>
+
+              <span>
+                Confirmar contraseña
+              </span>
+
+            }
+
+          </button>
+
+        }
+
+      </div>
+
+
+      <!-- ===================================================
+           CONFIRMACIÓN FINAL
+           =================================================== -->
+
+      @if (passwordConfirmada) {
+
+        <div class="delete-account-final-confirmation">
+
+          <div class="delete-account-final-confirmation__content">
+
+            <span
+              class="delete-account-final-confirmation__icon"
+              aria-hidden="true"
+            >
+              ⚠
+            </span>
+
+            <div>
+
+              <h3 class="delete-account-final-confirmation__title">
+                Identidad confirmada
+              </h3>
+
+              <p class="delete-account-final-confirmation__description">
+                Tu contraseña fue verificada. Si continúas,
+                tu cuenta será eliminada permanentemente.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="delete-account-footer">
+
+      <button
+        type="button"
+        class="delete-account-cancel-button"
+        [disabled]="isConfirmingPassword || isDeleting"
+        (click)="cerrarFormulario()"
+      >
+        Cancelar
+      </button>
+
+
+      <button
+        type="button"
+        class="delete-account-submit-button"
+        [disabled]="
+          !passwordConfirmada ||
+          isConfirmingPassword ||
+          isDeleting
+        "
+        (click)="eliminarCuenta()"
+      >
+
+        @if (isDeleting) {
+
+          <span
+            class="delete-account-spinner"
+            aria-hidden="true"
+          ></span>
+
+          <span>
+            Eliminando cuenta...
+          </span>
+
+        } @else {
+
+          <span
+            class="delete-account-submit-button__icon"
+            aria-hidden="true"
+          >
+            ×
+          </span>
+
+          <span>
+            Eliminar mi cuenta permanentemente
+          </span>
+
+        }
+
+      </button>
+
+    </footer>
+
+  </section>
+
+</div>

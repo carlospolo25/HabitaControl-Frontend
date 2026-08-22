@@ -650,6 +650,53 @@
 
         </article>
 
+        <!-- ===================================================
+            ELIMINACIÓN DE CUENTA
+            =================================================== -->
+
+        <article class="profile-danger-zone">
+
+          <div class="profile-danger-zone__content">
+
+            <span class="profile-danger-zone__badge">
+              Zona sensible
+            </span>
+
+            <h4 class="profile-danger-zone__title">
+              Eliminar cuenta de administrador
+            </h4>
+
+            <p class="profile-danger-zone__description">
+              Esta acción eliminará permanentemente tu cuenta administrativa.
+              La residencia y su historial operativo permanecerán registrados.
+            </p>
+
+          </div>
+
+          <div class="profile-danger-zone__actions">
+
+            <button
+              type="button"
+              class="profile-danger-button"
+              (click)="abrirEliminarCuenta()"
+              [disabled]="isLoading">
+
+              <span
+                class="profile-danger-button__icon"
+                aria-hidden="true">
+                ⚠
+              </span>
+
+              <span>
+                Eliminar cuenta
+              </span>
+
+            </button>
+
+          </div>
+
+        </article>
+
       </section>
 
       <!-- ===================================================
@@ -683,5 +730,14 @@
     </div>
   }
 }
+
+@if (mostrarEliminarCuenta) {
+
+  <app-eliminar-cuenta-admin
+    (cerrar)="cerrarEliminarCuenta()">
+  </app-eliminar-cuenta-admin>
+
+}
+
 
 </section>

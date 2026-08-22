@@ -1,0 +1,5392 @@
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 1
+   OVERLAY + MODAL + BODY
+   ========================================================= */
+
+
+/* =========================================================
+   OVERLAY GENERAL
+   ========================================================= */
+
+.delete-admin-account-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 100dvh;
+
+  padding: var(--space-24);
+
+  background:
+    radial-gradient(
+      circle at 20% 15%,
+      rgba(37, 99, 235, 0.10) 0%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 82% 82%,
+      rgba(220, 38, 38, 0.09) 0%,
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(124, 58, 237, 0.045) 0%,
+      transparent 34%
+    ),
+    rgba(2, 6, 23, 0.76);
+
+  backdrop-filter: blur(11px);
+  -webkit-backdrop-filter: blur(11px);
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
+
+  animation:
+    deleteAdminAccountOverlayEnter
+    0.22s ease-out both;
+}
+
+
+/* =========================================================
+   MODAL PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-modal {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: min(100%, 800px);
+  max-height: calc(100dvh - 48px);
+
+  margin: auto;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      var(--surface) 76%,
+      var(--gray-50) 100%
+    );
+
+  border: 1px solid
+    rgba(203, 213, 225, 0.92);
+
+  border-radius: var(--radius-xl);
+
+  box-shadow:
+    0 36px 90px rgba(2, 6, 23, 0.34),
+    0 16px 38px rgba(2, 6, 23, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.74) inset;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  animation:
+    deleteAdminAccountModalEnter
+    0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+
+/* =========================================================
+   MODAL - ACENTO SUPERIOR
+   ========================================================= */
+
+.delete-admin-account-modal::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--danger-dark) 0%,
+      var(--danger) 30%,
+      var(--warning) 58%,
+      var(--color-primary) 82%,
+      var(--accent) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   MODAL - RESPLANDOR DECORATIVO
+   ========================================================= */
+
+.delete-admin-account-modal::after {
+  content: '';
+
+  position: absolute;
+  top: -170px;
+  right: -150px;
+  z-index: -1;
+
+  width: 390px;
+  height: 390px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(220, 38, 38, 0.075) 0%,
+      rgba(245, 158, 11, 0.025) 38%,
+      transparent 72%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   BODY PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-body {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-20);
+
+  padding:
+    var(--space-24)
+    var(--space-28);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.46) 0%,
+      rgba(255, 255, 255, 0) 20%
+    );
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    var(--gray-300)
+    transparent;
+}
+
+
+/* =========================================================
+   BODY - DECORACIÓN MUY SUTIL
+   ========================================================= */
+
+.delete-admin-account-body::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  width: 70%;
+  height: 1px;
+
+  transform: translateX(-50%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(37, 99, 235, 0.08),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   SCROLLBAR - CHROME / EDGE
+   ========================================================= */
+
+.delete-admin-account-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.delete-admin-account-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.delete-admin-account-body::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+
+  border: 2px solid transparent;
+  border-radius: 999px;
+
+  background-clip: padding-box;
+}
+
+.delete-admin-account-body::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+
+  border: 2px solid transparent;
+
+  background-clip: padding-box;
+}
+
+
+/* =========================================================
+   SELECCIÓN DE TEXTO
+   ========================================================= */
+
+.delete-admin-account-modal ::selection {
+  background: var(--color-primary-light);
+
+  color: var(--color-primary-dark);
+}
+
+
+/* =========================================================
+   ANIMACIÓN - OVERLAY
+   ========================================================= */
+
+@keyframes deleteAdminAccountOverlayEnter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   ANIMACIÓN - MODAL
+   ========================================================= */
+
+@keyframes deleteAdminAccountModalEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(20px)
+      scale(0.972);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 2
+   HEADER DEL MODAL
+   ========================================================= */
+
+
+/* =========================================================
+   HEADER - CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-header {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: var(--space-16);
+
+  padding:
+    var(--space-24)
+    var(--space-28);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(254, 226, 226, 0.78) 0%,
+      rgba(255, 255, 255, 0.98) 42%,
+      rgba(248, 250, 252, 0.98) 72%,
+      rgba(219, 234, 254, 0.42) 100%
+    );
+
+  border-bottom:
+    1px solid
+    var(--border-light);
+}
+
+
+/* =========================================================
+   HEADER - LÍNEA DECORATIVA INFERIOR
+   ========================================================= */
+
+.delete-admin-account-header::after {
+  content: '';
+
+  position: absolute;
+
+  right: var(--space-28);
+  bottom: -1px;
+  left: var(--space-28);
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(220, 38, 38, 0.20) 18%,
+      rgba(245, 158, 11, 0.12) 45%,
+      rgba(37, 99, 235, 0.12) 72%,
+      transparent 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HEADER - ICONO PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-header__icon {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 54px;
+
+  flex-shrink: 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--danger-light) 0%,
+      rgba(255, 255, 255, 0.90) 100%
+    );
+
+  border:
+    1px solid
+    var(--danger-border);
+
+  border-radius:
+    var(--radius-lg);
+
+  color:
+    var(--danger-dark);
+
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1;
+
+  box-shadow:
+    0 8px 18px
+      rgba(220, 38, 38, 0.11),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   HEADER - RESPLANDOR DEL ICONO
+   ========================================================= */
+
+.delete-admin-account-header__icon::before {
+  content: '';
+
+  position: absolute;
+
+  inset: -6px;
+  z-index: -1;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(220, 38, 38, 0.10) 0%,
+      transparent 72%
+    );
+
+  border-radius:
+    calc(var(--radius-lg) + 6px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HEADER - MICROINTERACCIÓN DEL ICONO
+   ========================================================= */
+
+.delete-admin-account-header:hover
+.delete-admin-account-header__icon {
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 10px 24px
+      rgba(220, 38, 38, 0.14),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+}
+
+
+/* =========================================================
+   HEADER - CONTENIDO
+   ========================================================= */
+
+.delete-admin-account-header__content {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 4px;
+}
+
+
+/* =========================================================
+   HEADER - EYEBROW
+   ========================================================= */
+
+.delete-admin-account-header__eyebrow {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  color:
+    var(--danger);
+
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1.2;
+
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HEADER - TÍTULO
+   ========================================================= */
+
+.delete-admin-account-header__title {
+  margin: 0;
+
+  color:
+    var(--gray-950);
+
+  font-size:
+    clamp(
+      1.35rem,
+      2vw,
+      1.75rem
+    );
+
+  font-weight: 850;
+  line-height: 1.2;
+
+  letter-spacing: -0.025em;
+}
+
+
+/* =========================================================
+   HEADER - DESCRIPCIÓN
+   ========================================================= */
+
+.delete-admin-account-header__description {
+  margin:
+    2px
+    0
+    0;
+
+  max-width: 610px;
+
+  color:
+    var(--text-secondary);
+
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   HEADER - BOTÓN CERRAR
+   ========================================================= */
+
+.delete-admin-account-header__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  padding: 0;
+
+  flex-shrink: 0;
+
+  background:
+    rgba(255, 255, 255, 0.76);
+
+  border:
+    1px solid
+    var(--border-light);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--gray-500);
+
+  font-size: 1.45rem;
+  font-weight: 400;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 8px
+      rgba(15, 23, 42, 0.05);
+
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   HEADER - BOTÓN CERRAR HOVER
+   ========================================================= */
+
+.delete-admin-account-header__close:hover:not(:disabled) {
+  background:
+    var(--danger-light);
+
+  border-color:
+    var(--danger-border);
+
+  color:
+    var(--danger-dark);
+
+  box-shadow:
+    0 6px 14px
+      rgba(220, 38, 38, 0.10);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   HEADER - BOTÓN CERRAR ACTIVE
+   ========================================================= */
+
+.delete-admin-account-header__close:active:not(:disabled) {
+  transform:
+    translateY(0);
+
+  box-shadow:
+    0 2px 6px
+      rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   HEADER - BOTÓN CERRAR FOCUS
+   ========================================================= */
+
+.delete-admin-account-header__close:focus-visible {
+  outline: none;
+
+  border-color:
+    var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px
+      var(--color-primary-light),
+    0 4px 10px
+      rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================================================
+   HEADER - BOTÓN CERRAR DESHABILITADO
+   ========================================================= */
+
+.delete-admin-account-header__close:disabled {
+  background:
+    var(--gray-100);
+
+  border-color:
+    var(--gray-200);
+
+  color:
+    var(--text-disabled);
+
+  cursor:
+    not-allowed;
+
+  box-shadow:
+    none;
+
+  opacity: 0.7;
+}
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 2
+   HEADER DEL MODAL
+   ========================================================= */
+
+
+/* =========================================================
+   HEADER - CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-header {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: var(--space-16);
+
+  padding:
+    var(--space-24)
+    var(--space-28);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(254, 226, 226, 0.78) 0%,
+      rgba(255, 255, 255, 0.98) 42%,
+      rgba(248, 250, 252, 0.98) 72%,
+      rgba(219, 234, 254, 0.42) 100%
+    );
+
+  border-bottom:
+    1px solid
+    var(--border-light);
+}
+
+
+/* =========================================================
+   HEADER - LÍNEA DECORATIVA INFERIOR
+   ========================================================= */
+
+.delete-admin-account-header::after {
+  content: '';
+
+  position: absolute;
+
+  right: var(--space-28);
+  bottom: -1px;
+  left: var(--space-28);
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(220, 38, 38, 0.20) 18%,
+      rgba(245, 158, 11, 0.12) 45%,
+      rgba(37, 99, 235, 0.12) 72%,
+      transparent 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HEADER - ICONO PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-header__icon {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 54px;
+
+  flex-shrink: 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--danger-light) 0%,
+      rgba(255, 255, 255, 0.90) 100%
+    );
+
+  border:
+    1px solid
+    var(--danger-border);
+
+  border-radius:
+    var(--radius-lg);
+
+  color:
+    var(--danger-dark);
+
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1;
+
+  box-shadow:
+    0 8px 18px
+      rgba(220, 38, 38, 0.11),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   HEADER - RESPLANDOR DEL ICONO
+   ========================================================= */
+
+.delete-admin-account-header__icon::before {
+  content: '';
+
+  position: absolute;
+
+  inset: -6px;
+  z-index: -1;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(220, 38, 38, 0.10) 0%,
+      transparent 72%
+    );
+
+  border-radius:
+    calc(var(--radius-lg) + 6px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HEADER - MICROINTERACCIÓN DEL ICONO
+   ========================================================= */
+
+.delete-admin-account-header:hover
+.delete-admin-account-header__icon {
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 10px 24px
+      rgba(220, 38, 38, 0.14),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+}
+
+
+/* =========================================================
+   HEADER - CONTENIDO
+   ========================================================= */
+
+.delete-admin-account-header__content {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 4px;
+}
+
+
+/* =========================================================
+   HEADER - EYEBROW
+   ========================================================= */
+
+.delete-admin-account-header__eyebrow {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  color:
+    var(--danger);
+
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1.2;
+
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HEADER - TÍTULO
+   ========================================================= */
+
+.delete-admin-account-header__title {
+  margin: 0;
+
+  color:
+    var(--gray-950);
+
+  font-size:
+    clamp(
+      1.35rem,
+      2vw,
+      1.75rem
+    );
+
+  font-weight: 850;
+  line-height: 1.2;
+
+  letter-spacing: -0.025em;
+}
+
+
+/* =========================================================
+   HEADER - DESCRIPCIÓN
+   ========================================================= */
+
+.delete-admin-account-header__description {
+  margin:
+    2px
+    0
+    0;
+
+  max-width: 610px;
+
+  color:
+    var(--text-secondary);
+
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   HEADER - BOTÓN CERRAR
+   ========================================================= */
+
+.delete-admin-account-header__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  padding: 0;
+
+  flex-shrink: 0;
+
+  background:
+    rgba(255, 255, 255, 0.76);
+
+  border:
+    1px solid
+    var(--border-light);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--gray-500);
+
+  font-size: 1.45rem;
+  font-weight: 400;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 8px
+      rgba(15, 23, 42, 0.05);
+
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   HEADER - BOTÓN CERRAR HOVER
+   ========================================================= */
+
+.delete-admin-account-header__close:hover:not(:disabled) {
+  background:
+    var(--danger-light);
+
+  border-color:
+    var(--danger-border);
+
+  color:
+    var(--danger-dark);
+
+  box-shadow:
+    0 6px 14px
+      rgba(220, 38, 38, 0.10);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   HEADER - BOTÓN CERRAR ACTIVE
+   ========================================================= */
+
+.delete-admin-account-header__close:active:not(:disabled) {
+  transform:
+    translateY(0);
+
+  box-shadow:
+    0 2px 6px
+      rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   HEADER - BOTÓN CERRAR FOCUS
+   ========================================================= */
+
+.delete-admin-account-header__close:focus-visible {
+  outline: none;
+
+  border-color:
+    var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px
+      var(--color-primary-light),
+    0 4px 10px
+      rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================================================
+   HEADER - BOTÓN CERRAR DESHABILITADO
+   ========================================================= */
+
+.delete-admin-account-header__close:disabled {
+  background:
+    var(--gray-100);
+
+  border-color:
+    var(--gray-200);
+
+  color:
+    var(--text-disabled);
+
+  cursor:
+    not-allowed;
+
+  box-shadow:
+    none;
+
+  opacity: 0.7;
+}
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 3
+   ADVERTENCIA IRREVERSIBLE
+   ========================================================= */
+
+
+/* =========================================================
+   ADVERTENCIA - CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-warning {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: var(--space-16);
+
+  padding:
+    var(--space-18)
+    var(--space-20);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(254, 243, 199, 0.96) 0%,
+      rgba(255, 255, 255, 0.98) 52%,
+      rgba(254, 226, 226, 0.74) 100%
+    );
+
+  border:
+    1px solid
+    rgba(245, 158, 11, 0.40);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    0 9px 24px
+      rgba(146, 64, 14, 0.08),
+    0 1px 0
+      rgba(255, 255, 255, 0.92)
+      inset;
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================================
+   ADVERTENCIA - ACENTO LATERAL
+   ========================================================= */
+
+.delete-admin-account-warning::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 4px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--warning) 0%,
+      var(--danger) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   ADVERTENCIA - RESPLANDOR
+   ========================================================= */
+
+.delete-admin-account-warning::after {
+  content: '';
+
+  position: absolute;
+  top: -70px;
+  right: -55px;
+
+  width: 170px;
+  height: 170px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(245, 158, 11, 0.12) 0%,
+      rgba(220, 38, 38, 0.04) 44%,
+      transparent 72%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   ADVERTENCIA - ICONO
+   ========================================================= */
+
+.delete-admin-account-warning__icon {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--warning-light) 0%,
+      rgba(255, 255, 255, 0.90) 100%
+    );
+
+  border:
+    1px solid
+    rgba(245, 158, 11, 0.42);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--warning-dark);
+
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+
+  box-shadow:
+    0 6px 14px
+      rgba(146, 64, 14, 0.10),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   ADVERTENCIA - CONTENIDO
+   ========================================================= */
+
+.delete-admin-account-warning__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: var(--space-6);
+}
+
+
+/* =========================================================
+   ADVERTENCIA - TÍTULO
+   ========================================================= */
+
+.delete-admin-account-warning__title {
+  margin: 0;
+
+  color:
+    var(--warning-dark);
+
+  font-size: 0.98rem;
+  font-weight: 850;
+  line-height: 1.35;
+
+  letter-spacing: -0.01em;
+}
+
+
+/* =========================================================
+   ADVERTENCIA - TEXTO
+   ========================================================= */
+
+.delete-admin-account-warning__text {
+  margin: 0;
+
+  max-width: 650px;
+
+  color:
+    var(--gray-700);
+
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ADVERTENCIA - TEXTO DESTACADO
+   ========================================================= */
+
+.delete-admin-account-warning__text strong {
+  color:
+    var(--danger-dark);
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   ADVERTENCIA - HOVER
+   ========================================================= */
+
+.delete-admin-account-warning:hover {
+  border-color:
+    rgba(245, 158, 11, 0.58);
+
+  box-shadow:
+    0 11px 28px
+      rgba(146, 64, 14, 0.11),
+    0 1px 0
+      rgba(255, 255, 255, 0.94)
+      inset;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   ADVERTENCIA - ICONO EN HOVER
+   ========================================================= */
+
+.delete-admin-account-warning:hover
+.delete-admin-account-warning__icon {
+  transform:
+    translateY(-1px)
+    rotate(-2deg);
+
+  box-shadow:
+    0 8px 18px
+      rgba(146, 64, 14, 0.14);
+}
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 4
+   AVISO: LA RESIDENCIA NO SERÁ ELIMINADA
+   ========================================================= */
+
+
+/* =========================================================
+   AVISO TENANT - CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-tenant-notice {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: var(--space-16);
+
+  padding:
+    var(--space-18)
+    var(--space-20);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(224, 242, 254, 0.94) 0%,
+      rgba(255, 255, 255, 0.98) 52%,
+      rgba(220, 252, 231, 0.60) 100%
+    );
+
+  border:
+    1px solid
+    rgba(14, 165, 233, 0.30);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    0 9px 24px
+      rgba(14, 165, 233, 0.07),
+    0 1px 0
+      rgba(255, 255, 255, 0.94)
+      inset;
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================================
+   AVISO TENANT - ACENTO LATERAL
+   ========================================================= */
+
+.delete-admin-account-tenant-notice::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 4px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--info) 0%,
+      var(--color-primary) 52%,
+      var(--success) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   AVISO TENANT - RESPLANDOR DECORATIVO
+   ========================================================= */
+
+.delete-admin-account-tenant-notice::after {
+  content: '';
+
+  position: absolute;
+  top: -75px;
+  right: -60px;
+
+  width: 180px;
+  height: 180px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(14, 165, 233, 0.10) 0%,
+      rgba(22, 163, 74, 0.04) 44%,
+      transparent 72%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   AVISO TENANT - ICONO
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__icon {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--info-light) 0%,
+      rgba(255, 255, 255, 0.92) 100%
+    );
+
+  border:
+    1px solid
+    rgba(14, 165, 233, 0.32);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--info-dark);
+
+  font-size: 1.05rem;
+  line-height: 1;
+
+  box-shadow:
+    0 6px 14px
+      rgba(14, 165, 233, 0.09),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   AVISO TENANT - CONTENIDO
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: var(--space-6);
+}
+
+
+/* =========================================================
+   AVISO TENANT - BADGE
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+
+  padding:
+    5px
+    10px;
+
+  background:
+    var(--info-light);
+
+  border:
+    1px solid
+    rgba(14, 165, 233, 0.26);
+
+  border-radius:
+    999px;
+
+  color:
+    var(--info-dark);
+
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.1;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   AVISO TENANT - TÍTULO
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__title {
+  margin: 0;
+
+  color:
+    var(--color-primary-dark);
+
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.35;
+
+  letter-spacing: -0.012em;
+}
+
+
+/* =========================================================
+   AVISO TENANT - DESCRIPCIÓN
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__description {
+  margin: 0;
+
+  max-width: 660px;
+
+  color:
+    var(--gray-700);
+
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.62;
+}
+
+
+/* =========================================================
+   AVISO TENANT - TEXTO DESTACADO
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__description strong {
+  color:
+    var(--success-dark);
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   AVISO TENANT - HOVER
+   ========================================================= */
+
+.delete-admin-account-tenant-notice:hover {
+  border-color:
+    rgba(14, 165, 233, 0.46);
+
+  box-shadow:
+    0 11px 28px
+      rgba(14, 165, 233, 0.10),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   AVISO TENANT - ICONO EN HOVER
+   ========================================================= */
+
+.delete-admin-account-tenant-notice:hover
+.delete-admin-account-tenant-notice__icon {
+  transform:
+    translateY(-1px)
+    scale(1.03);
+
+  box-shadow:
+    0 8px 18px
+      rgba(14, 165, 233, 0.12);
+}/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 4
+   AVISO: LA RESIDENCIA NO SERÁ ELIMINADA
+   ========================================================= */
+
+
+/* =========================================================
+   AVISO TENANT - CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-tenant-notice {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: var(--space-16);
+
+  padding:
+    var(--space-18)
+    var(--space-20);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(224, 242, 254, 0.94) 0%,
+      rgba(255, 255, 255, 0.98) 52%,
+      rgba(220, 252, 231, 0.60) 100%
+    );
+
+  border:
+    1px solid
+    rgba(14, 165, 233, 0.30);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    0 9px 24px
+      rgba(14, 165, 233, 0.07),
+    0 1px 0
+      rgba(255, 255, 255, 0.94)
+      inset;
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================================
+   AVISO TENANT - ACENTO LATERAL
+   ========================================================= */
+
+.delete-admin-account-tenant-notice::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 4px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--info) 0%,
+      var(--color-primary) 52%,
+      var(--success) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   AVISO TENANT - RESPLANDOR DECORATIVO
+   ========================================================= */
+
+.delete-admin-account-tenant-notice::after {
+  content: '';
+
+  position: absolute;
+  top: -75px;
+  right: -60px;
+
+  width: 180px;
+  height: 180px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(14, 165, 233, 0.10) 0%,
+      rgba(22, 163, 74, 0.04) 44%,
+      transparent 72%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   AVISO TENANT - ICONO
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__icon {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--info-light) 0%,
+      rgba(255, 255, 255, 0.92) 100%
+    );
+
+  border:
+    1px solid
+    rgba(14, 165, 233, 0.32);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--info-dark);
+
+  font-size: 1.05rem;
+  line-height: 1;
+
+  box-shadow:
+    0 6px 14px
+      rgba(14, 165, 233, 0.09),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   AVISO TENANT - CONTENIDO
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: var(--space-6);
+}
+
+
+/* =========================================================
+   AVISO TENANT - BADGE
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+
+  padding:
+    5px
+    10px;
+
+  background:
+    var(--info-light);
+
+  border:
+    1px solid
+    rgba(14, 165, 233, 0.26);
+
+  border-radius:
+    999px;
+
+  color:
+    var(--info-dark);
+
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.1;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   AVISO TENANT - TÍTULO
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__title {
+  margin: 0;
+
+  color:
+    var(--color-primary-dark);
+
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.35;
+
+  letter-spacing: -0.012em;
+}
+
+
+/* =========================================================
+   AVISO TENANT - DESCRIPCIÓN
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__description {
+  margin: 0;
+
+  max-width: 660px;
+
+  color:
+    var(--gray-700);
+
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.62;
+}
+
+
+/* =========================================================
+   AVISO TENANT - TEXTO DESTACADO
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__description strong {
+  color:
+    var(--success-dark);
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   AVISO TENANT - HOVER
+   ========================================================= */
+
+.delete-admin-account-tenant-notice:hover {
+  border-color:
+    rgba(14, 165, 233, 0.46);
+
+  box-shadow:
+    0 11px 28px
+      rgba(14, 165, 233, 0.10),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   AVISO TENANT - ICONO EN HOVER
+   ========================================================= */
+
+.delete-admin-account-tenant-notice:hover
+.delete-admin-account-tenant-notice__icon {
+  transform:
+    translateY(-1px)
+    scale(1.03);
+
+  box-shadow:
+    0 8px 18px
+      rgba(14, 165, 233, 0.12);
+}
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 5
+   CONSECUENCIAS DE LA ELIMINACIÓN
+   ========================================================= */
+
+
+/* =========================================================
+   CONSECUENCIAS - CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-consequences {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-14);
+
+  padding:
+    var(--space-20)
+    var(--space-20);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      rgba(248, 250, 252, 0.96) 100%
+    );
+
+  border:
+    1px solid
+    var(--border-light);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    0 8px 20px
+      rgba(15, 23, 42, 0.05),
+    0 1px 0
+      rgba(255, 255, 255, 0.94)
+      inset;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - ACENTO DECORATIVO
+   ========================================================= */
+
+.delete-admin-account-consequences::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--danger) 0%,
+      rgba(220, 38, 38, 0.45) 38%,
+      rgba(22, 163, 74, 0.30) 72%,
+      var(--success) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - TÍTULO
+   ========================================================= */
+
+.delete-admin-account-consequences__title {
+  margin: 0;
+
+  color:
+    var(--gray-900);
+
+  font-size: 0.96rem;
+  font-weight: 850;
+  line-height: 1.35;
+
+  letter-spacing: -0.01em;
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - LISTA
+   ========================================================= */
+
+.delete-admin-account-consequences__list {
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-10);
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - ITEM BASE
+   ========================================================= */
+
+.delete-admin-account-consequences__item {
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(0, 1fr);
+
+  align-items: start;
+
+  gap: var(--space-10);
+
+  padding:
+    var(--space-12)
+    var(--space-14);
+
+  background:
+    rgba(254, 226, 226, 0.34);
+
+  border:
+    1px solid
+    rgba(252, 165, 165, 0.54);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--gray-700);
+
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.56;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - ITEM HOVER
+   ========================================================= */
+
+.delete-admin-account-consequences__item:hover {
+  background:
+    rgba(254, 226, 226, 0.58);
+
+  border-color:
+    var(--danger-border);
+
+  box-shadow:
+    0 5px 14px
+      rgba(220, 38, 38, 0.07);
+
+  transform:
+    translateX(2px);
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - MARCADOR BASE
+   ========================================================= */
+
+.delete-admin-account-consequences__marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  flex-shrink: 0;
+
+  margin-top: 1px;
+
+  background:
+    var(--danger-light);
+
+  border:
+    1px solid
+    var(--danger-border);
+
+  border-radius:
+    999px;
+
+  color:
+    var(--danger-dark);
+
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1;
+
+  box-shadow:
+    0 2px 6px
+      rgba(220, 38, 38, 0.08);
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - MARCADOR HOVER
+   ========================================================= */
+
+.delete-admin-account-consequences__item:hover
+.delete-admin-account-consequences__marker {
+  transform:
+    scale(1.06);
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - ITEM QUE CONSERVA TENANT
+   ========================================================= */
+
+.delete-admin-account-consequences__item--tenant {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(220, 252, 231, 0.72) 0%,
+      rgba(255, 255, 255, 0.98) 100%
+    );
+
+  border-color:
+    rgba(134, 239, 172, 0.72);
+
+  color:
+    var(--gray-700);
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - ITEM TENANT HOVER
+   ========================================================= */
+
+.delete-admin-account-consequences__item--tenant:hover {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(220, 252, 231, 0.94) 0%,
+      rgba(255, 255, 255, 1) 100%
+    );
+
+  border-color:
+    var(--success-border);
+
+  box-shadow:
+    0 5px 14px
+      rgba(22, 163, 74, 0.08);
+
+  transform:
+    translateX(2px);
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - MARCADOR TENANT
+   ========================================================= */
+
+.delete-admin-account-consequences__marker--tenant {
+  background:
+    var(--success-light);
+
+  border-color:
+    var(--success-border);
+
+  color:
+    var(--success-dark);
+
+  box-shadow:
+    0 2px 6px
+      rgba(22, 163, 74, 0.08);
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - TEXTO DESTACADO
+   ========================================================= */
+
+.delete-admin-account-consequences__item strong {
+  color:
+    var(--gray-900);
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - ÉNFASIS DESTRUCTIVO
+   ========================================================= */
+
+.delete-admin-account-consequences__item:not(
+  .delete-admin-account-consequences__item--tenant
+) strong {
+  color:
+    var(--danger-dark);
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - ÉNFASIS POSITIVO
+   ========================================================= */
+
+.delete-admin-account-consequences__item--tenant strong {
+  color:
+    var(--success-dark);
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 6
+   VERIFICACIÓN DE SEGURIDAD
+   ========================================================= */
+
+
+/* =========================================================
+   CONFIRMACIÓN - CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-confirmation {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-18);
+
+  padding:
+    var(--space-20)
+    var(--space-20);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(219, 234, 254, 0.52) 0%,
+      rgba(255, 255, 255, 0.99) 44%,
+      rgba(248, 250, 252, 0.98) 100%
+    );
+
+  border:
+    1px solid
+    rgba(37, 99, 235, 0.20);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    0 10px 26px
+      rgba(30, 64, 175, 0.065),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN - ACENTO SUPERIOR
+   ========================================================= */
+
+.delete-admin-account-confirmation::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-primary-dark) 0%,
+      var(--color-primary) 55%,
+      var(--info) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN - RESPLANDOR DECORATIVO
+   ========================================================= */
+
+.delete-admin-account-confirmation::after {
+  content: '';
+
+  position: absolute;
+  top: -80px;
+  right: -70px;
+
+  width: 190px;
+  height: 190px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.085) 0%,
+      rgba(14, 165, 233, 0.035) 42%,
+      transparent 72%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN - HEADER
+   ========================================================= */
+
+.delete-admin-account-confirmation__header {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-6);
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN - ETIQUETA DE PASO
+   ========================================================= */
+
+.delete-admin-account-confirmation__step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+
+  padding:
+    5px
+    10px;
+
+  background:
+    var(--color-primary-light);
+
+  border:
+    1px solid
+    rgba(37, 99, 235, 0.20);
+
+  border-radius:
+    999px;
+
+  color:
+    var(--color-primary-dark);
+
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.1;
+
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN - TÍTULO
+   ========================================================= */
+
+.delete-admin-account-confirmation__title {
+  margin: 0;
+
+  color:
+    var(--gray-950);
+
+  font-size: 1.05rem;
+  font-weight: 850;
+  line-height: 1.3;
+
+  letter-spacing: -0.015em;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN - DESCRIPCIÓN
+   ========================================================= */
+
+.delete-admin-account-confirmation__description {
+  margin: 0;
+
+  max-width: 650px;
+
+  color:
+    var(--text-secondary);
+
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.62;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN - TEXTO DESTACADO
+   ========================================================= */
+
+.delete-admin-account-confirmation__description strong {
+  color:
+    var(--color-primary-dark);
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN - ESTADO VERIFICADO
+   ========================================================= */
+
+.delete-admin-account-confirmation:has(
+  .delete-admin-account-field__control--verified
+) {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(220, 252, 231, 0.44) 0%,
+      rgba(255, 255, 255, 0.99) 46%,
+      rgba(248, 250, 252, 0.98) 100%
+    );
+
+  border-color:
+    rgba(22, 163, 74, 0.30);
+
+  box-shadow:
+    0 10px 28px
+      rgba(22, 163, 74, 0.075),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN - ACENTO VERIFICADO
+   ========================================================= */
+
+.delete-admin-account-confirmation:has(
+  .delete-admin-account-field__control--verified
+)::before {
+  background:
+    linear-gradient(
+      90deg,
+      var(--success-dark) 0%,
+      var(--success) 52%,
+      var(--color-primary) 100%
+    );
+}
+
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 7
+   CAMPO DE CONTRASEÑA
+   ========================================================= */
+
+
+/* =========================================================
+   CAMPO - CONTENEDOR
+   ========================================================= */
+
+.delete-admin-account-field {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-8);
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   CAMPO - LABEL
+   ========================================================= */
+
+.delete-admin-account-field__label {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  color: var(--gray-800);
+
+  font-size: 0.84rem;
+  font-weight: 750;
+  line-height: 1.3;
+
+  letter-spacing: -0.005em;
+}
+
+
+/* =========================================================
+   CAMPO - CONTROL PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-field__control {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-height: 50px;
+
+  background: var(--surface);
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    var(--radius-md);
+
+  box-shadow:
+    0 2px 6px
+      rgba(15, 23, 42, 0.035),
+    0 1px 0
+      rgba(255, 255, 255, 0.96)
+      inset;
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+
+/* =========================================================
+   CAMPO - HOVER
+   ========================================================= */
+
+.delete-admin-account-field__control:hover {
+  border-color:
+    var(--border-dark);
+}
+
+
+/* =========================================================
+   CAMPO - FOCUS
+   ========================================================= */
+
+.delete-admin-account-field__control:focus-within {
+  background:
+    var(--surface);
+
+  border-color:
+    var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px
+      rgba(37, 99, 235, 0.12),
+    0 5px 14px
+      rgba(30, 64, 175, 0.065);
+}
+
+
+/* =========================================================
+   CAMPO - ESTADO VERIFICADO
+   ========================================================= */
+
+.delete-admin-account-field__control--verified {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(220, 252, 231, 0.62),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border-color:
+    var(--success-border);
+
+  box-shadow:
+    0 0 0 2px
+      rgba(22, 163, 74, 0.07),
+    0 5px 14px
+      rgba(22, 163, 74, 0.065);
+}
+
+
+/* =========================================================
+   CAMPO - VERIFICADO + FOCUS
+   ========================================================= */
+
+.delete-admin-account-field__control--verified:focus-within {
+  border-color:
+    var(--success);
+
+  box-shadow:
+    0 0 0 3px
+      rgba(22, 163, 74, 0.12),
+    0 5px 16px
+      rgba(22, 163, 74, 0.075);
+}
+
+
+/* =========================================================
+   CAMPO - INPUT
+   ========================================================= */
+
+.delete-admin-account-field__input {
+  width: 100%;
+  min-width: 0;
+
+  height: 48px;
+
+  padding:
+    0
+    var(--space-12)
+    0
+    var(--space-14);
+
+  background:
+    transparent;
+
+  border:
+    none;
+
+  outline:
+    none;
+
+  color:
+    var(--text-primary);
+
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1;
+
+  caret-color:
+    var(--color-primary);
+}
+
+
+/* =========================================================
+   CAMPO - PLACEHOLDER
+   ========================================================= */
+
+.delete-admin-account-field__input::placeholder {
+  color:
+    var(--gray-400);
+
+  font-weight: 400;
+
+  opacity: 1;
+}
+
+
+/* =========================================================
+   CAMPO - INPUT DESHABILITADO
+   ========================================================= */
+
+.delete-admin-account-field__input:disabled {
+  color:
+    var(--text-disabled);
+
+  cursor:
+    not-allowed;
+}
+
+
+/* =========================================================
+   CAMPO - CONTROL DESHABILITADO
+   ========================================================= */
+
+.delete-admin-account-field__control:has(
+  .delete-admin-account-field__input:disabled
+) {
+  background:
+    var(--gray-50);
+
+  border-color:
+    var(--gray-200);
+
+  box-shadow:
+    none;
+
+  opacity: 0.82;
+}
+
+
+/* =========================================================
+   CAMPO - BOTÓN MOSTRAR / OCULTAR
+   ========================================================= */
+
+.delete-admin-account-field__visibility {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 80px;
+  height: 34px;
+
+  margin-right: 6px;
+
+  padding:
+    0
+    var(--space-10);
+
+  flex-shrink: 0;
+
+  background:
+    var(--gray-50);
+
+  border:
+    1px solid
+    var(--border-light);
+
+  border-radius:
+    var(--radius-sm);
+
+  color:
+    var(--gray-600);
+
+  font-size: 0.76rem;
+  font-weight: 750;
+  line-height: 1;
+
+  cursor:
+    pointer;
+
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   CAMPO - BOTÓN VISIBILIDAD HOVER
+   ========================================================= */
+
+.delete-admin-account-field__visibility:hover:not(:disabled) {
+  background:
+    var(--color-primary-light);
+
+  border-color:
+    rgba(37, 99, 235, 0.26);
+
+  color:
+    var(--color-primary-dark);
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 4px 10px
+      rgba(37, 99, 235, 0.09);
+}
+
+
+/* =========================================================
+   CAMPO - BOTÓN VISIBILIDAD ACTIVE
+   ========================================================= */
+
+.delete-admin-account-field__visibility:active:not(:disabled) {
+  transform:
+    translateY(0);
+
+  box-shadow:
+    none;
+}
+
+
+/* =========================================================
+   CAMPO - BOTÓN VISIBILIDAD FOCUS
+   ========================================================= */
+
+.delete-admin-account-field__visibility:focus-visible {
+  outline:
+    none;
+
+  border-color:
+    var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px
+      rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================================================
+   CAMPO - BOTÓN VISIBILIDAD DESHABILITADO
+   ========================================================= */
+
+.delete-admin-account-field__visibility:disabled {
+  background:
+    var(--gray-100);
+
+  border-color:
+    var(--gray-200);
+
+  color:
+    var(--text-disabled);
+
+  cursor:
+    not-allowed;
+
+  box-shadow:
+    none;
+
+  opacity: 0.72;
+}
+
+
+/* =========================================================
+   CAMPO - BOTÓN EN ESTADO VERIFICADO
+   ========================================================= */
+
+.delete-admin-account-field__control--verified
+.delete-admin-account-field__visibility {
+  background:
+    var(--success-light);
+
+  border-color:
+    var(--success-border);
+
+  color:
+    var(--success-dark);
+}
+
+
+/* =========================================================
+   CAMPO - AUTOFILL DEL NAVEGADOR
+   ========================================================= */
+
+.delete-admin-account-field__input:-webkit-autofill,
+.delete-admin-account-field__input:-webkit-autofill:hover,
+.delete-admin-account-field__input:-webkit-autofill:focus {
+  -webkit-text-fill-color:
+    var(--text-primary);
+
+  -webkit-box-shadow:
+    0 0 0 1000px
+    var(--surface)
+    inset;
+
+  transition:
+    background-color
+    9999s
+    ease-out
+    0s;
+}
+
+
+/* =========================================================
+   CAMPO - SELECCIÓN DE TEXTO
+   ========================================================= */
+
+.delete-admin-account-field__input::selection {
+  background:
+    var(--color-primary-light);
+
+  color:
+    var(--color-primary-dark);
+}
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 8
+   ALERTAS DE ESTADO
+   ========================================================= */
+
+
+/* =========================================================
+   ALERTA - BASE
+   ========================================================= */
+
+.delete-admin-account-alert {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: var(--space-10);
+
+  width: 100%;
+
+  padding:
+    var(--space-12)
+    var(--space-14);
+
+  border-radius:
+    var(--radius-md);
+
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.5;
+
+  overflow: hidden;
+
+  animation:
+    deleteAdminAccountAlertEnter
+    0.22s ease-out both;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   ALERTA - ACENTO LATERAL
+   ========================================================= */
+
+.delete-admin-account-alert::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 3px;
+
+  border-radius:
+    var(--radius-md)
+    0
+    0
+    var(--radius-md);
+}
+
+
+/* =========================================================
+   ALERTA - ERROR
+   ========================================================= */
+
+.delete-admin-account-alert--error {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(254, 226, 226, 0.94),
+      rgba(255, 255, 255, 0.99)
+    );
+
+  border:
+    1px solid
+    var(--danger-border);
+
+  color:
+    var(--danger-dark);
+
+  box-shadow:
+    0 5px 14px
+      rgba(220, 38, 38, 0.075),
+    0 1px 0
+      rgba(255, 255, 255, 0.92)
+      inset;
+}
+
+.delete-admin-account-alert--error::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--danger),
+      var(--danger-dark)
+    );
+}
+
+
+/* =========================================================
+   ALERTA - ÉXITO
+   ========================================================= */
+
+.delete-admin-account-alert--success {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(220, 252, 231, 0.94),
+      rgba(255, 255, 255, 0.99)
+    );
+
+  border:
+    1px solid
+    var(--success-border);
+
+  color:
+    var(--success-dark);
+
+  box-shadow:
+    0 5px 14px
+      rgba(22, 163, 74, 0.075),
+    0 1px 0
+      rgba(255, 255, 255, 0.94)
+      inset;
+}
+
+.delete-admin-account-alert--success::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--success),
+      var(--success-dark)
+    );
+}
+
+
+/* =========================================================
+   ALERTA - ICONO
+   ========================================================= */
+
+.delete-admin-account-alert__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  flex-shrink: 0;
+
+  margin-top: 1px;
+
+  border-radius: 999px;
+
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   ALERTA - ICONO ERROR
+   ========================================================= */
+
+.delete-admin-account-alert--error
+.delete-admin-account-alert__icon {
+  background:
+    var(--danger-light);
+
+  border:
+    1px solid
+    var(--danger-border);
+
+  color:
+    var(--danger-dark);
+
+  box-shadow:
+    0 2px 6px
+      rgba(220, 38, 38, 0.08);
+}
+
+
+/* =========================================================
+   ALERTA - ICONO ÉXITO
+   ========================================================= */
+
+.delete-admin-account-alert--success
+.delete-admin-account-alert__icon {
+  background:
+    var(--success-light);
+
+  border:
+    1px solid
+    var(--success-border);
+
+  color:
+    var(--success-dark);
+
+  box-shadow:
+    0 2px 6px
+      rgba(22, 163, 74, 0.08);
+}
+
+
+/* =========================================================
+   ALERTA - MENSAJE
+   ========================================================= */
+
+.delete-admin-account-alert__message {
+  flex: 1;
+
+  min-width: 0;
+
+  padding-top: 2px;
+
+  color: inherit;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   ALERTA - HOVER ERROR
+   ========================================================= */
+
+.delete-admin-account-alert--error:hover {
+  border-color:
+    var(--danger);
+
+  box-shadow:
+    0 7px 18px
+      rgba(220, 38, 38, 0.10);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   ALERTA - HOVER ÉXITO
+   ========================================================= */
+
+.delete-admin-account-alert--success:hover {
+  border-color:
+    var(--success);
+
+  box-shadow:
+    0 7px 18px
+      rgba(22, 163, 74, 0.10);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   ALERTA - ANIMACIÓN DE ENTRADA
+   ========================================================= */
+
+@keyframes deleteAdminAccountAlertEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-4px)
+      scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 9
+   BOTÓN CONFIRMAR CONTRASEÑA
+   ========================================================= */
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - BASE
+   ========================================================= */
+
+.delete-admin-account-verify-button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: var(--space-8);
+
+  width: fit-content;
+  min-width: 220px;
+  min-height: 44px;
+
+  padding:
+    0
+    var(--space-18);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-primary-dark) 100%
+    );
+
+  border:
+    1px solid
+    var(--color-primary);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--text-white);
+
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 18px
+      rgba(37, 99, 235, 0.20),
+    0 1px 0
+      rgba(255, 255, 255, 0.16)
+      inset;
+
+  overflow: hidden;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - BRILLO DECORATIVO
+   ========================================================= */
+
+.delete-admin-account-verify-button::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: -120%;
+
+  width: 72%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.16),
+      transparent
+    );
+
+  transform: skewX(-18deg);
+
+  pointer-events: none;
+
+  transition:
+    left 0.45s ease;
+}
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - HOVER
+   ========================================================= */
+
+.delete-admin-account-verify-button:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-hover) 0%,
+      var(--color-primary-dark) 100%
+    );
+
+  border-color:
+    var(--color-primary-dark);
+
+  box-shadow:
+    0 11px 24px
+      rgba(37, 99, 235, 0.25),
+    0 1px 0
+      rgba(255, 255, 255, 0.18)
+      inset;
+
+  transform:
+    translateY(-1px);
+}
+
+.delete-admin-account-verify-button:hover:not(:disabled)::before {
+  left: 140%;
+}
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - ACTIVE
+   ========================================================= */
+
+.delete-admin-account-verify-button:active:not(:disabled) {
+  transform:
+    translateY(0);
+
+  box-shadow:
+    0 5px 12px
+      rgba(37, 99, 235, 0.18);
+}
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - FOCUS
+   ========================================================= */
+
+.delete-admin-account-verify-button:focus-visible {
+  outline: none;
+
+  border-color:
+    var(--color-primary-dark);
+
+  box-shadow:
+    0 0 0 3px
+      var(--surface),
+    0 0 0 6px
+      rgba(37, 99, 235, 0.24),
+    0 8px 18px
+      rgba(37, 99, 235, 0.20);
+}
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - DESHABILITADO
+   ========================================================= */
+
+.delete-admin-account-verify-button:disabled {
+  background:
+    linear-gradient(
+      135deg,
+      var(--gray-200),
+      var(--gray-300)
+    );
+
+  border-color:
+    var(--gray-300);
+
+  color:
+    var(--gray-500);
+
+  cursor:
+    not-allowed;
+
+  box-shadow:
+    none;
+
+  transform:
+    none;
+
+  opacity:
+    0.82;
+}
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - ICONO
+   ========================================================= */
+
+.delete-admin-account-verify-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+
+  flex-shrink: 0;
+
+  background:
+    rgba(255, 255, 255, 0.14);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.18);
+
+  border-radius:
+    999px;
+
+  color:
+    var(--text-white);
+
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - ICONO HOVER
+   ========================================================= */
+
+.delete-admin-account-verify-button:hover:not(:disabled)
+.delete-admin-account-verify-button__icon {
+  background:
+    rgba(255, 255, 255, 0.20);
+
+  transform:
+    scale(1.06);
+}
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - ICONO DESHABILITADO
+   ========================================================= */
+
+.delete-admin-account-verify-button:disabled
+.delete-admin-account-verify-button__icon {
+  background:
+    rgba(100, 116, 139, 0.08);
+
+  border-color:
+    rgba(100, 116, 139, 0.12);
+
+  color:
+    var(--gray-500);
+}
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - ESTADO PROCESANDO
+   ========================================================= */
+
+.delete-admin-account-verify-button:disabled:has(
+  .delete-admin-account-spinner
+) {
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-primary-dark) 100%
+    );
+
+  border-color:
+    var(--color-primary);
+
+  color:
+    var(--text-white);
+
+  cursor:
+    wait;
+
+  opacity:
+    0.80;
+}
+
+
+/* =========================================================
+   BOTÓN VERIFICAR - TEXTO
+   ========================================================= */
+
+.delete-admin-account-verify-button > span:not(
+  .delete-admin-account-spinner
+):not(
+  .delete-admin-account-verify-button__icon
+) {
+  position: relative;
+  z-index: 1;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 10
+   IDENTIDAD CONFIRMADA
+   ========================================================= */
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - CONTENEDOR
+   ========================================================= */
+
+.delete-admin-account-final-confirmation {
+  position: relative;
+
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+
+  padding:
+    var(--space-16)
+    var(--space-18);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(220, 252, 231, 0.90) 0%,
+      rgba(255, 255, 255, 0.99) 56%,
+      rgba(248, 250, 252, 0.98) 100%
+    );
+
+  border:
+    1px solid
+    var(--success-border);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    0 8px 22px
+      rgba(22, 163, 74, 0.085),
+    0 1px 0
+      rgba(255, 255, 255, 0.95)
+      inset;
+
+  overflow: hidden;
+
+  animation:
+    deleteAdminAccountFinalEnter
+    0.26s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - ACENTO LATERAL
+   ========================================================= */
+
+.delete-admin-account-final-confirmation::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 4px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--success) 0%,
+      var(--success-dark) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - RESPLANDOR
+   ========================================================= */
+
+.delete-admin-account-final-confirmation::after {
+  content: '';
+
+  position: absolute;
+  top: -70px;
+  right: -55px;
+
+  width: 165px;
+  height: 165px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(22, 163, 74, 0.11) 0%,
+      rgba(37, 99, 235, 0.03) 44%,
+      transparent 72%
+    );
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - CONTENIDO
+   ========================================================= */
+
+.delete-admin-account-final-confirmation__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: var(--space-14);
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - ICONO
+   ========================================================= */
+
+.delete-admin-account-final-confirmation__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--success-light) 0%,
+      rgba(255, 255, 255, 0.92) 100%
+    );
+
+  border:
+    1px solid
+    var(--success-border);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--success-dark);
+
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+
+  box-shadow:
+    0 5px 12px
+      rgba(22, 163, 74, 0.10),
+    0 1px 0
+      rgba(255, 255, 255, 0.94)
+      inset;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - TÍTULO
+   ========================================================= */
+
+.delete-admin-account-final-confirmation__title {
+  margin: 0;
+
+  color:
+    var(--success-dark);
+
+  font-size: 0.96rem;
+  font-weight: 850;
+  line-height: 1.35;
+
+  letter-spacing: -0.01em;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - DESCRIPCIÓN
+   ========================================================= */
+
+.delete-admin-account-final-confirmation__description {
+  margin:
+    var(--space-4)
+    0
+    0;
+
+  max-width: 620px;
+
+  color:
+    var(--gray-700);
+
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.62;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - ÉNFASIS
+   ========================================================= */
+
+.delete-admin-account-final-confirmation__description strong {
+  color:
+    var(--danger-dark);
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - HOVER
+   ========================================================= */
+
+.delete-admin-account-final-confirmation:hover {
+  border-color:
+    var(--success);
+
+  box-shadow:
+    0 10px 26px
+      rgba(22, 163, 74, 0.11),
+    0 1px 0
+      rgba(255, 255, 255, 0.96)
+      inset;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - ICONO HOVER
+   ========================================================= */
+
+.delete-admin-account-final-confirmation:hover
+.delete-admin-account-final-confirmation__icon {
+  transform:
+    scale(1.04);
+
+  box-shadow:
+    0 7px 16px
+      rgba(22, 163, 74, 0.13);
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN FINAL - ANIMACIÓN
+   ========================================================= */
+
+@keyframes deleteAdminAccountFinalEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(8px)
+      scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 11
+   FOOTER + ACCIONES FINALES
+   ========================================================= */
+
+
+/* =========================================================
+   FOOTER - CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.delete-admin-account-footer {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: var(--space-12);
+
+  padding:
+    var(--space-18)
+    var(--space-28);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 250, 252, 0.78) 0%,
+      var(--surface) 100%
+    );
+
+  border-top:
+    1px solid
+    var(--border-light);
+
+  box-shadow:
+    0 -8px 22px
+      rgba(15, 23, 42, 0.035);
+}
+
+
+/* =========================================================
+   FOOTER - ACENTO SUPERIOR
+   ========================================================= */
+
+.delete-admin-account-footer::before {
+  content: '';
+
+  position: absolute;
+  top: -1px;
+  right: var(--space-28);
+  left: var(--space-28);
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(37, 99, 235, 0.10) 25%,
+      rgba(245, 158, 11, 0.08) 50%,
+      rgba(220, 38, 38, 0.14) 76%,
+      transparent 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   BOTÓN CANCELAR - BASE
+   ========================================================= */
+
+.delete-admin-account-cancel-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 112px;
+  min-height: 44px;
+
+  padding:
+    0
+    var(--space-18);
+
+  background:
+    var(--surface);
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--gray-700);
+
+  font-size: 0.86rem;
+  font-weight: 750;
+  line-height: 1;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 3px 8px
+      rgba(15, 23, 42, 0.05),
+    0 1px 0
+      rgba(255, 255, 255, 0.94)
+      inset;
+
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   BOTÓN CANCELAR - HOVER
+   ========================================================= */
+
+.delete-admin-account-cancel-button:hover:not(:disabled) {
+  background:
+    var(--surface-hover);
+
+  border-color:
+    var(--border-dark);
+
+  color:
+    var(--gray-950);
+
+  box-shadow:
+    0 6px 14px
+      rgba(15, 23, 42, 0.08);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   BOTÓN CANCELAR - ACTIVE
+   ========================================================= */
+
+.delete-admin-account-cancel-button:active:not(:disabled) {
+  transform:
+    translateY(0);
+
+  box-shadow:
+    0 2px 6px
+      rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   BOTÓN CANCELAR - FOCUS
+   ========================================================= */
+
+.delete-admin-account-cancel-button:focus-visible {
+  outline:
+    none;
+
+  border-color:
+    var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px
+      rgba(37, 99, 235, 0.14),
+    0 4px 10px
+      rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================================
+   BOTÓN CANCELAR - DESHABILITADO
+   ========================================================= */
+
+.delete-admin-account-cancel-button:disabled {
+  background:
+    var(--gray-100);
+
+  border-color:
+    var(--gray-200);
+
+  color:
+    var(--text-disabled);
+
+  cursor:
+    not-allowed;
+
+  box-shadow:
+    none;
+
+  opacity:
+    0.72;
+
+  transform:
+    none;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - BASE
+   ========================================================= */
+
+.delete-admin-account-submit-button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: var(--space-8);
+
+  min-width: 300px;
+  min-height: 44px;
+
+  padding:
+    0
+    var(--space-20);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger) 0%,
+      var(--danger-dark) 100%
+    );
+
+  border:
+    1px solid
+    var(--danger);
+
+  border-radius:
+    var(--radius-md);
+
+  color:
+    var(--text-white);
+
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 9px 20px
+      rgba(220, 38, 38, 0.21),
+    0 1px 0
+      rgba(255, 255, 255, 0.14)
+      inset;
+
+  overflow:
+    hidden;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - BRILLO DECORATIVO
+   ========================================================= */
+
+.delete-admin-account-submit-button::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: -120%;
+
+  width: 72%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.14),
+      transparent
+    );
+
+  transform:
+    skewX(-18deg);
+
+  pointer-events:
+    none;
+
+  transition:
+    left 0.48s ease;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - HOVER
+   ========================================================= */
+
+.delete-admin-account-submit-button:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      #B91C1C 0%,
+      var(--danger-dark) 100%
+    );
+
+  border-color:
+    var(--danger-dark);
+
+  box-shadow:
+    0 12px 28px
+      rgba(153, 27, 27, 0.29),
+    0 1px 0
+      rgba(255, 255, 255, 0.14)
+      inset;
+
+  transform:
+    translateY(-1px);
+}
+
+.delete-admin-account-submit-button:hover:not(:disabled)::before {
+  left: 140%;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - ACTIVE
+   ========================================================= */
+
+.delete-admin-account-submit-button:active:not(:disabled) {
+  transform:
+    translateY(0);
+
+  box-shadow:
+    0 5px 12px
+      rgba(153, 27, 27, 0.20);
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - FOCUS
+   ========================================================= */
+
+.delete-admin-account-submit-button:focus-visible {
+  outline:
+    none;
+
+  border-color:
+    var(--danger-dark);
+
+  box-shadow:
+    0 0 0 3px
+      var(--surface),
+    0 0 0 6px
+      rgba(220, 38, 38, 0.22),
+    0 9px 20px
+      rgba(220, 38, 38, 0.21);
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - DESHABILITADO
+   ========================================================= */
+
+.delete-admin-account-submit-button:disabled {
+  background:
+    linear-gradient(
+      135deg,
+      var(--gray-200),
+      var(--gray-300)
+    );
+
+  border-color:
+    var(--gray-300);
+
+  color:
+    var(--gray-500);
+
+  cursor:
+    not-allowed;
+
+  box-shadow:
+    none;
+
+  opacity:
+    0.78;
+
+  transform:
+    none;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - ICONO
+   ========================================================= */
+
+.delete-admin-account-submit-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+
+  flex-shrink: 0;
+
+  background:
+    rgba(255, 255, 255, 0.14);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.18);
+
+  border-radius:
+    999px;
+
+  color:
+    var(--text-white);
+
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1;
+
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - ICONO HOVER
+   ========================================================= */
+
+.delete-admin-account-submit-button:hover:not(:disabled)
+.delete-admin-account-submit-button__icon {
+  background:
+    rgba(255, 255, 255, 0.20);
+
+  transform:
+    rotate(4deg)
+    scale(1.06);
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - ICONO DESHABILITADO
+   ========================================================= */
+
+.delete-admin-account-submit-button:disabled
+.delete-admin-account-submit-button__icon {
+  background:
+    rgba(100, 116, 139, 0.08);
+
+  border-color:
+    rgba(100, 116, 139, 0.12);
+
+  color:
+    var(--gray-500);
+
+  transform:
+    none;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - ESTADO PROCESANDO
+   ========================================================= */
+
+.delete-admin-account-submit-button:disabled:has(
+  .delete-admin-account-spinner
+) {
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger) 0%,
+      var(--danger-dark) 100%
+    );
+
+  border-color:
+    var(--danger);
+
+  color:
+    var(--text-white);
+
+  cursor:
+    wait;
+
+  opacity:
+    0.82;
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR - TEXTO
+   ========================================================= */
+
+.delete-admin-account-submit-button > span:not(
+  .delete-admin-account-spinner
+):not(
+  .delete-admin-account-submit-button__icon
+) {
+  position: relative;
+  z-index: 1;
+
+  white-space: nowrap;
+}
+
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 12
+   SPINNER + MICROANIMACIONES + ACCESIBILIDAD
+   ========================================================= */
+
+
+/* =========================================================
+   SPINNER - BASE
+   ========================================================= */
+
+.delete-admin-account-spinner {
+  display: inline-block;
+
+  width: 18px;
+  height: 18px;
+
+  flex-shrink: 0;
+
+  border:
+    2px solid
+    rgba(255, 255, 255, 0.32);
+
+  border-top-color:
+    var(--text-white);
+
+  border-radius:
+    50%;
+
+  animation:
+    deleteAdminAccountSpinnerRotate
+    0.75s linear infinite;
+}
+
+
+/* =========================================================
+   SPINNER - DENTRO DEL BOTÓN VERIFICAR
+   ========================================================= */
+
+.delete-admin-account-verify-button
+.delete-admin-account-spinner {
+  border-color:
+    rgba(255, 255, 255, 0.30);
+
+  border-top-color:
+    var(--text-white);
+
+  box-shadow:
+    0 0 0 1px
+    rgba(255, 255, 255, 0.04);
+}
+
+
+/* =========================================================
+   SPINNER - DENTRO DEL BOTÓN ELIMINAR
+   ========================================================= */
+
+.delete-admin-account-submit-button
+.delete-admin-account-spinner {
+  border-color:
+    rgba(255, 255, 255, 0.28);
+
+  border-top-color:
+    var(--text-white);
+
+  box-shadow:
+    0 0 0 1px
+    rgba(255, 255, 255, 0.04);
+}
+
+
+/* =========================================================
+   SPINNER - ANIMACIÓN
+   ========================================================= */
+
+@keyframes deleteAdminAccountSpinnerRotate {
+  from {
+    transform:
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   MODAL - ESTADO DE PROCESAMIENTO
+   ========================================================= */
+
+.delete-admin-account-modal:has(
+  .delete-admin-account-spinner
+) {
+  cursor:
+    progress;
+}
+
+
+/* =========================================================
+   BOTONES - PROCESAMIENTO
+   ========================================================= */
+
+.delete-admin-account-verify-button:disabled:has(
+  .delete-admin-account-spinner
+),
+.delete-admin-account-submit-button:disabled:has(
+  .delete-admin-account-spinner
+) {
+  pointer-events:
+    none;
+
+  user-select:
+    none;
+}
+
+
+/* =========================================================
+   CERRAR - BLOQUEADO DURANTE PROCESAMIENTO
+   ========================================================= */
+
+.delete-admin-account-modal:has(
+  .delete-admin-account-spinner
+)
+.delete-admin-account-header__close {
+  pointer-events:
+    none;
+}
+
+
+/* =========================================================
+   CANCELAR - BLOQUEADO DURANTE PROCESAMIENTO
+   ========================================================= */
+
+.delete-admin-account-modal:has(
+  .delete-admin-account-spinner
+)
+.delete-admin-account-cancel-button {
+  pointer-events:
+    none;
+}
+
+
+/* =========================================================
+   CAMPO - ANIMACIÓN AL SER VERIFICADO
+   ========================================================= */
+
+.delete-admin-account-field__control--verified {
+  animation:
+    deleteAdminAccountVerifiedField
+    0.28s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+
+/* =========================================================
+   CAMPO - KEYFRAMES VERIFICADO
+   ========================================================= */
+
+@keyframes deleteAdminAccountVerifiedField {
+
+  0% {
+    transform:
+      scale(1);
+
+    box-shadow:
+      0 0 0 0
+      rgba(22, 163, 74, 0);
+  }
+
+  45% {
+    transform:
+      scale(1.008);
+
+    box-shadow:
+      0 0 0 4px
+      rgba(22, 163, 74, 0.10);
+  }
+
+  100% {
+    transform:
+      scale(1);
+
+    box-shadow:
+      0 0 0 2px
+      rgba(22, 163, 74, 0.07),
+      0 5px 14px
+      rgba(22, 163, 74, 0.065);
+  }
+}
+
+
+/* =========================================================
+   BOTÓN DESTRUCTIVO - ENTRADA AL HABILITARSE
+   ========================================================= */
+
+.delete-admin-account-submit-button:not(:disabled) {
+  animation:
+    deleteAdminAccountDangerReady
+    0.24s ease-out both;
+}
+
+
+/* =========================================================
+   BOTÓN DESTRUCTIVO - KEYFRAMES
+   ========================================================= */
+
+@keyframes deleteAdminAccountDangerReady {
+
+  from {
+    opacity:
+      0.72;
+
+    transform:
+      translateY(2px)
+      scale(0.99);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   ALERTA ÉXITO - ICONO
+   ========================================================= */
+
+.delete-admin-account-alert--success
+.delete-admin-account-alert__icon {
+  animation:
+    deleteAdminAccountSuccessIconEnter
+    0.30s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+
+/* =========================================================
+   ALERTA ÉXITO - KEYFRAMES
+   ========================================================= */
+
+@keyframes deleteAdminAccountSuccessIconEnter {
+
+  from {
+    opacity:
+      0;
+
+    transform:
+      scale(0.7)
+      rotate(-12deg);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      scale(1)
+      rotate(0deg);
+  }
+}
+
+
+/* =========================================================
+   ALERTA ERROR - ANIMACIÓN SUAVE
+   ========================================================= */
+
+.delete-admin-account-alert--error {
+  animation:
+    deleteAdminAccountErrorEnter
+    0.28s ease-out both;
+}
+
+
+/* =========================================================
+   ALERTA ERROR - KEYFRAMES
+   ========================================================= */
+
+@keyframes deleteAdminAccountErrorEnter {
+
+  0% {
+    opacity:
+      0;
+
+    transform:
+      translateX(0);
+  }
+
+  30% {
+    opacity:
+      1;
+
+    transform:
+      translateX(-3px);
+  }
+
+  60% {
+    transform:
+      translateX(3px);
+  }
+
+  100% {
+    transform:
+      translateX(0);
+  }
+}
+
+
+/* =========================================================
+   CONSECUENCIAS - MICROINTERACCIÓN
+   ========================================================= */
+
+.delete-admin-account-consequences__marker {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.delete-admin-account-consequences__item:hover
+.delete-admin-account-consequences__marker {
+  transform:
+    scale(1.06);
+
+  box-shadow:
+    0 3px 8px
+    rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   AVISO TENANT - MICROINTERACCIÓN
+   ========================================================= */
+
+.delete-admin-account-tenant-notice__icon {
+  transition:
+    transform 0.20s ease,
+    box-shadow 0.20s ease;
+}
+
+.delete-admin-account-tenant-notice:hover
+.delete-admin-account-tenant-notice__icon {
+  transform:
+    translateY(-1px)
+    scale(1.03);
+}
+
+
+/* =========================================================
+   HEADER - MICROINTERACCIÓN
+   ========================================================= */
+
+.delete-admin-account-header__icon {
+  transition:
+    transform 0.20s ease,
+    box-shadow 0.20s ease;
+}
+
+
+/* =========================================================
+   REDUCCIÓN DE MOVIMIENTO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .delete-admin-account-overlay,
+  .delete-admin-account-modal,
+  .delete-admin-account-alert,
+  .delete-admin-account-final-confirmation,
+  .delete-admin-account-field__control--verified,
+  .delete-admin-account-submit-button:not(:disabled),
+  .delete-admin-account-alert--success
+  .delete-admin-account-alert__icon {
+    animation:
+      none;
+  }
+
+  .delete-admin-account-header__icon,
+  .delete-admin-account-warning,
+  .delete-admin-account-warning__icon,
+  .delete-admin-account-tenant-notice,
+  .delete-admin-account-tenant-notice__icon,
+  .delete-admin-account-consequences__item,
+  .delete-admin-account-consequences__marker,
+  .delete-admin-account-confirmation,
+  .delete-admin-account-field__control,
+  .delete-admin-account-field__visibility,
+  .delete-admin-account-alert,
+  .delete-admin-account-final-confirmation,
+  .delete-admin-account-final-confirmation__icon,
+  .delete-admin-account-verify-button,
+  .delete-admin-account-cancel-button,
+  .delete-admin-account-submit-button,
+  .delete-admin-account-header__close {
+    transition:
+      none;
+  }
+
+  .delete-admin-account-spinner {
+    animation-duration:
+      1.2s;
+  }
+
+  .delete-admin-account-header:hover
+  .delete-admin-account-header__icon,
+  .delete-admin-account-warning:hover,
+  .delete-admin-account-warning:hover
+  .delete-admin-account-warning__icon,
+  .delete-admin-account-tenant-notice:hover,
+  .delete-admin-account-tenant-notice:hover
+  .delete-admin-account-tenant-notice__icon,
+  .delete-admin-account-consequences__item:hover,
+  .delete-admin-account-final-confirmation:hover,
+  .delete-admin-account-final-confirmation:hover
+  .delete-admin-account-final-confirmation__icon,
+  .delete-admin-account-verify-button:hover:not(:disabled),
+  .delete-admin-account-cancel-button:hover:not(:disabled),
+  .delete-admin-account-submit-button:hover:not(:disabled),
+  .delete-admin-account-header__close:hover:not(:disabled) {
+    transform:
+      none;
+  }
+}       
+
+
+/* =========================================================
+   ELIMINAR CUENTA ADMIN
+   PARTE 13
+   RESPONSIVE + ALTURAS REDUCIDAS + AJUSTES FINALES
+   ========================================================= */
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .delete-admin-account-overlay {
+    padding: var(--space-20);
+  }
+
+  .delete-admin-account-modal {
+    width: min(100%, 740px);
+
+    max-height:
+      calc(100dvh - 40px);
+  }
+
+  .delete-admin-account-header {
+    gap: var(--space-14);
+
+    padding:
+      var(--space-20)
+      var(--space-22);
+  }
+
+  .delete-admin-account-header::after {
+    right: var(--space-22);
+    left: var(--space-22);
+  }
+
+  .delete-admin-account-body {
+    gap: var(--space-18);
+
+    padding:
+      var(--space-22)
+      var(--space-22);
+  }
+
+  .delete-admin-account-footer {
+    padding:
+      var(--space-16)
+      var(--space-22);
+  }
+
+  .delete-admin-account-footer::before {
+    right: var(--space-22);
+    left: var(--space-22);
+  }
+
+  .delete-admin-account-submit-button {
+    min-width: 270px;
+  }
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+  .delete-admin-account-overlay {
+    align-items: flex-start;
+
+    padding: var(--space-12);
+
+    background:
+      rgba(2, 6, 23, 0.80);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .delete-admin-account-modal {
+    width: 100%;
+
+    max-height:
+      calc(100dvh - 24px);
+
+    margin:
+      var(--space-12)
+      auto;
+
+    border-radius:
+      var(--radius-lg);
+  }
+
+  .delete-admin-account-modal::before {
+    height: 3px;
+  }
+
+  .delete-admin-account-header {
+    grid-template-columns:
+      auto
+      minmax(0, 1fr)
+      auto;
+
+    align-items: flex-start;
+
+    gap: var(--space-12);
+
+    padding:
+      var(--space-18)
+      var(--space-16);
+  }
+
+  .delete-admin-account-header::after {
+    right: var(--space-16);
+    left: var(--space-16);
+  }
+
+  .delete-admin-account-header__icon {
+    width: 44px;
+    height: 44px;
+
+    border-radius:
+      var(--radius-md);
+
+    font-size: 1.1rem;
+  }
+
+  .delete-admin-account-header__eyebrow {
+    font-size: 0.64rem;
+  }
+
+  .delete-admin-account-header__title {
+    font-size: 1.23rem;
+  }
+
+  .delete-admin-account-header__description {
+    font-size: 0.83rem;
+    line-height: 1.5;
+  }
+
+  .delete-admin-account-header__close {
+    width: 36px;
+    height: 36px;
+
+    font-size: 1.25rem;
+  }
+
+  .delete-admin-account-body {
+    gap: var(--space-16);
+
+    padding:
+      var(--space-16);
+  }
+
+  .delete-admin-account-warning,
+  .delete-admin-account-tenant-notice {
+    gap: var(--space-12);
+
+    padding:
+      var(--space-14);
+  }
+
+  .delete-admin-account-warning__icon,
+  .delete-admin-account-tenant-notice__icon {
+    width: 36px;
+    height: 36px;
+
+    font-size: 0.92rem;
+  }
+
+  .delete-admin-account-warning__title,
+  .delete-admin-account-tenant-notice__title {
+    font-size: 0.92rem;
+  }
+
+  .delete-admin-account-warning__text,
+  .delete-admin-account-tenant-notice__description {
+    font-size: 0.83rem;
+  }
+
+  .delete-admin-account-consequences {
+    gap: var(--space-12);
+
+    padding:
+      var(--space-16);
+  }
+
+  .delete-admin-account-consequences__title {
+    font-size: 0.9rem;
+  }
+
+  .delete-admin-account-consequences__list {
+    gap: var(--space-8);
+  }
+
+  .delete-admin-account-consequences__item {
+    gap: var(--space-8);
+
+    padding:
+      var(--space-10)
+      var(--space-12);
+
+    font-size: 0.82rem;
+  }
+
+  .delete-admin-account-consequences__marker {
+    width: 22px;
+    height: 22px;
+
+    font-size: 0.72rem;
+  }
+
+  .delete-admin-account-confirmation {
+    gap: var(--space-16);
+
+    padding:
+      var(--space-16);
+  }
+
+  .delete-admin-account-confirmation__step {
+    font-size: 0.63rem;
+  }
+
+  .delete-admin-account-confirmation__title {
+    font-size: 0.98rem;
+  }
+
+  .delete-admin-account-confirmation__description {
+    font-size: 0.82rem;
+  }
+
+  .delete-admin-account-field__label {
+    font-size: 0.8rem;
+  }
+
+  .delete-admin-account-field__control {
+    min-height: 46px;
+  }
+
+  .delete-admin-account-field__input {
+    height: 44px;
+
+    padding-left:
+      var(--space-12);
+
+    font-size: 0.88rem;
+  }
+
+  .delete-admin-account-field__visibility {
+    min-width: 72px;
+    height: 32px;
+
+    margin-right: 5px;
+
+    font-size: 0.72rem;
+  }
+
+  .delete-admin-account-alert {
+    gap: var(--space-8);
+
+    padding:
+      var(--space-10)
+      var(--space-12);
+
+    font-size: 0.82rem;
+  }
+
+  .delete-admin-account-alert__icon {
+    width: 22px;
+    height: 22px;
+
+    font-size: 0.72rem;
+  }
+
+  .delete-admin-account-verify-button {
+    width: 100%;
+
+    min-width: 0;
+    min-height: 46px;
+
+    padding:
+      0
+      var(--space-16);
+
+    font-size: 0.84rem;
+  }
+
+  .delete-admin-account-final-confirmation {
+    padding:
+      var(--space-14);
+  }
+
+  .delete-admin-account-final-confirmation__content {
+    gap: var(--space-12);
+  }
+
+  .delete-admin-account-final-confirmation__icon {
+    width: 36px;
+    height: 36px;
+
+    font-size: 0.9rem;
+  }
+
+  .delete-admin-account-final-confirmation__title {
+    font-size: 0.9rem;
+  }
+
+  .delete-admin-account-final-confirmation__description {
+    font-size: 0.82rem;
+  }
+
+  .delete-admin-account-footer {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: var(--space-10);
+
+    padding:
+      var(--space-14)
+      var(--space-16);
+  }
+
+  .delete-admin-account-footer::before {
+    right: var(--space-16);
+    left: var(--space-16);
+  }
+
+  .delete-admin-account-cancel-button,
+  .delete-admin-account-submit-button {
+    width: 100%;
+
+    min-width: 0;
+    min-height: 46px;
+  }
+
+  .delete-admin-account-submit-button {
+    padding:
+      0
+      var(--space-14);
+
+    font-size: 0.82rem;
+  }
+
+  .delete-admin-account-cancel-button {
+    font-size: 0.82rem;
+  }
+
+  .delete-admin-account-submit-button > span:not(
+    .delete-admin-account-spinner
+  ):not(
+    .delete-admin-account-submit-button__icon
+  ) {
+    white-space: normal;
+
+    text-align: center;
+
+    line-height: 1.25;
+  }
+}
+
+
+/* =========================================================
+   TELÉFONOS PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .delete-admin-account-overlay {
+    padding: var(--space-8);
+  }
+
+  .delete-admin-account-modal {
+    max-height:
+      calc(100dvh - 16px);
+
+    margin:
+      var(--space-8)
+      auto;
+
+    border-radius:
+      var(--radius-md);
+  }
+
+  .delete-admin-account-header {
+    grid-template-columns:
+      auto
+      minmax(0, 1fr);
+
+    padding:
+      var(--space-16)
+      var(--space-14);
+  }
+
+  .delete-admin-account-header__close {
+    position: absolute;
+
+    top: var(--space-12);
+    right: var(--space-12);
+
+    width: 34px;
+    height: 34px;
+  }
+
+  .delete-admin-account-header__content {
+    padding-right: 38px;
+  }
+
+  .delete-admin-account-header__icon {
+    width: 40px;
+    height: 40px;
+
+    font-size: 1rem;
+  }
+
+  .delete-admin-account-header__title {
+    font-size: 1.13rem;
+  }
+
+  .delete-admin-account-header__description {
+    font-size: 0.79rem;
+  }
+
+  .delete-admin-account-body {
+    gap: var(--space-14);
+
+    padding:
+      var(--space-14);
+  }
+
+  .delete-admin-account-warning,
+  .delete-admin-account-tenant-notice {
+    flex-direction: column;
+
+    border-radius:
+      var(--radius-md);
+  }
+
+  .delete-admin-account-warning__icon,
+  .delete-admin-account-tenant-notice__icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .delete-admin-account-consequences,
+  .delete-admin-account-confirmation,
+  .delete-admin-account-final-confirmation {
+    border-radius:
+      var(--radius-md);
+  }
+
+  .delete-admin-account-consequences {
+    padding:
+      var(--space-14);
+  }
+
+  .delete-admin-account-consequences__item {
+    font-size: 0.79rem;
+  }
+
+  .delete-admin-account-confirmation {
+    padding:
+      var(--space-14);
+  }
+
+  .delete-admin-account-field__control {
+    flex-direction: column;
+    align-items: stretch;
+
+    padding-bottom: 5px;
+  }
+
+  .delete-admin-account-field__input {
+    width: 100%;
+
+    padding:
+      0
+      var(--space-12);
+  }
+
+  .delete-admin-account-field__visibility {
+    align-self: flex-end;
+
+    min-width: 76px;
+
+    margin:
+      0
+      5px;
+
+    height: 30px;
+  }
+
+  .delete-admin-account-final-confirmation__content {
+    flex-direction: column;
+  }
+
+  .delete-admin-account-footer {
+    padding:
+      var(--space-12)
+      var(--space-14);
+  }
+
+  .delete-admin-account-cancel-button,
+  .delete-admin-account-submit-button {
+    min-height: 44px;
+  }
+}
+
+
+/* =========================================================
+   PANTALLAS CON POCA ALTURA
+   ========================================================= */
+
+@media (max-height: 760px) and (min-width: 641px) {
+
+  .delete-admin-account-overlay {
+    align-items: flex-start;
+
+    padding:
+      var(--space-16);
+  }
+
+  .delete-admin-account-modal {
+    max-height:
+      calc(100dvh - 32px);
+
+    margin:
+      var(--space-16)
+      auto;
+  }
+
+  .delete-admin-account-header {
+    padding:
+      var(--space-18)
+      var(--space-24);
+  }
+
+  .delete-admin-account-body {
+    gap:
+      var(--space-14);
+
+    padding:
+      var(--space-16)
+      var(--space-24);
+  }
+
+  .delete-admin-account-footer {
+    padding:
+      var(--space-14)
+      var(--space-24);
+  }
+
+  .delete-admin-account-warning,
+  .delete-admin-account-tenant-notice,
+  .delete-admin-account-consequences,
+  .delete-admin-account-confirmation {
+    padding:
+      var(--space-14)
+      var(--space-16);
+  }
+}
+
+
+/* =========================================================
+   PANTALLAS MUY BAJAS
+   ========================================================= */
+
+@media (max-height: 600px) {
+
+  .delete-admin-account-overlay {
+    align-items:
+      flex-start;
+  }
+
+  .delete-admin-account-modal {
+    max-height:
+      calc(100dvh - 16px);
+
+    margin:
+      var(--space-8)
+      auto;
+  }
+
+  .delete-admin-account-header {
+    padding-top:
+      var(--space-14);
+
+    padding-bottom:
+      var(--space-14);
+  }
+
+  .delete-admin-account-header__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .delete-admin-account-body {
+    gap:
+      var(--space-12);
+
+    padding-top:
+      var(--space-12);
+
+    padding-bottom:
+      var(--space-12);
+  }
+
+  .delete-admin-account-footer {
+    padding-top:
+      var(--space-10);
+
+    padding-bottom:
+      var(--space-10);
+  }
+}
+
+
+/* =========================================================
+   DISPOSITIVOS SIN HOVER REAL
+   ========================================================= */
+
+@media (hover: none) {
+
+  .delete-admin-account-warning:hover,
+  .delete-admin-account-tenant-notice:hover,
+  .delete-admin-account-consequences__item:hover,
+  .delete-admin-account-final-confirmation:hover,
+  .delete-admin-account-header:hover
+  .delete-admin-account-header__icon {
+    transform:
+      none;
+  }
+}
+
+
+/* =========================================================
+   CONTRASTE FORZADO
+   ========================================================= */
+
+@media (forced-colors: active) {
+
+  .delete-admin-account-modal,
+  .delete-admin-account-warning,
+  .delete-admin-account-tenant-notice,
+  .delete-admin-account-consequences,
+  .delete-admin-account-confirmation,
+  .delete-admin-account-final-confirmation,
+  .delete-admin-account-alert,
+  .delete-admin-account-field__control,
+  .delete-admin-account-header__close,
+  .delete-admin-account-cancel-button,
+  .delete-admin-account-verify-button,
+  .delete-admin-account-submit-button {
+    forced-color-adjust:
+      auto;
+  }
+
+  .delete-admin-account-modal::before,
+  .delete-admin-account-warning::before,
+  .delete-admin-account-tenant-notice::before,
+  .delete-admin-account-confirmation::before,
+  .delete-admin-account-final-confirmation::before {
+    background:
+      CanvasText;
+  }
+}
+
+

@@ -37,6 +37,10 @@ export interface ApiMessageResponse {
   message: string;
 }
 
+export interface ConfirmarPasswordUsuarioRequest {
+  password: string;
+}
+
 /* =========================================================
    PERFIL DEL ADMINISTRADOR
    ========================================================= */
@@ -154,6 +158,21 @@ export class AuthService {
     return this.http.put<PerfilUsuarioResponse>(
       `${this.baseUrl}/auth/actualizar-perfil`,
       formData
+    );
+  }
+
+  confirmarPassword(
+    request: ConfirmarPasswordUsuarioRequest
+  ): Observable<ApiMessageResponse> {
+    return this.http.post<ApiMessageResponse>(
+      `${this.baseUrl}/auth/confirmar-password`,
+      request
+    );
+  }
+
+  eliminarMiCuenta(): Observable<ApiMessageResponse> {
+    return this.http.delete<ApiMessageResponse>(
+      `${this.baseUrl}/auth/eliminar-cuenta`
     );
   }
 

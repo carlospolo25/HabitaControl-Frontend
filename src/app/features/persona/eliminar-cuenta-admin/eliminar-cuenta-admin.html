@@ -1,0 +1,510 @@
+<!-- =========================================================
+     ELIMINAR CUENTA ADMIN - OVERLAY
+     ========================================================= -->
+
+<div
+  class="delete-admin-account-overlay"
+  role="presentation"
+>
+  <section
+    class="delete-admin-account-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="delete-admin-account-title"
+    aria-describedby="delete-admin-account-description"
+  >
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="delete-admin-account-header">
+
+      <div class="delete-admin-account-header__icon">
+        <span aria-hidden="true">
+          ⚠
+        </span>
+      </div>
+
+      <div class="delete-admin-account-header__content">
+
+        <span class="delete-admin-account-header__eyebrow">
+          Acción permanente
+        </span>
+
+        <h2
+          id="delete-admin-account-title"
+          class="delete-admin-account-header__title"
+        >
+          Eliminar cuenta de administrador
+        </h2>
+
+        <p
+          id="delete-admin-account-description"
+          class="delete-admin-account-header__description"
+        >
+          Esta acción eliminará permanentemente tu acceso administrativo
+          a HabitaControl.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="delete-admin-account-header__close"
+        aria-label="Cerrar"
+        title="Cerrar"
+        [disabled]="isConfirmingPassword || isDeleting"
+        (click)="cerrarFormulario()"
+      >
+        ×
+      </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         BODY
+         ===================================================== -->
+
+    <div class="delete-admin-account-body">
+
+      <!-- ===================================================
+           ADVERTENCIA PRINCIPAL
+           =================================================== -->
+
+      <div class="delete-admin-account-warning">
+
+        <div class="delete-admin-account-warning__icon">
+          <span aria-hidden="true">
+            !
+          </span>
+        </div>
+
+        <div class="delete-admin-account-warning__content">
+
+          <h3 class="delete-admin-account-warning__title">
+            Esta acción no se puede deshacer
+          </h3>
+
+          <p class="delete-admin-account-warning__text">
+            Una vez eliminada tu cuenta, no podrás volver a iniciar sesión
+            como administrador con esta cuenta.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           ACLARACIÓN SOBRE LA RESIDENCIA
+           =================================================== -->
+
+      <div class="delete-admin-account-tenant-notice">
+
+        <div class="delete-admin-account-tenant-notice__icon">
+          <span aria-hidden="true">
+            🏢
+          </span>
+        </div>
+
+        <div class="delete-admin-account-tenant-notice__content">
+
+          <span class="delete-admin-account-tenant-notice__badge">
+            Importante
+          </span>
+
+          <h3 class="delete-admin-account-tenant-notice__title">
+            La residencia no será eliminada
+          </h3>
+
+          <p class="delete-admin-account-tenant-notice__description">
+            Esta operación elimina únicamente tu cuenta de administrador.
+            La residencia, sus personas, visitantes, paquetes, reservas,
+            novedades, finanzas y demás historial operativo permanecerán
+            registrados en HabitaControl.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           CONSECUENCIAS
+           =================================================== -->
+
+      <div class="delete-admin-account-consequences">
+
+        <h3 class="delete-admin-account-consequences__title">
+          ¿Qué ocurrirá con tu cuenta?
+        </h3>
+
+        <ul class="delete-admin-account-consequences__list">
+
+          <li class="delete-admin-account-consequences__item">
+
+            <span
+              class="delete-admin-account-consequences__marker"
+              aria-hidden="true"
+            >
+              ×
+            </span>
+
+            <span>
+              Tu cuenta administrativa quedará eliminada
+              permanentemente.
+            </span>
+
+          </li>
+
+          <li class="delete-admin-account-consequences__item">
+
+            <span
+              class="delete-admin-account-consequences__marker"
+              aria-hidden="true"
+            >
+              ×
+            </span>
+
+            <span>
+              Todas tus sesiones administrativas abiertas serán
+              cerradas.
+            </span>
+
+          </li>
+
+          <li class="delete-admin-account-consequences__item">
+
+            <span
+              class="delete-admin-account-consequences__marker"
+              aria-hidden="true"
+            >
+              ×
+            </span>
+
+            <span>
+              No podrás recuperar ni reactivar esta cuenta mediante
+              los mecanismos normales de acceso.
+            </span>
+
+          </li>
+
+          <li
+            class="
+              delete-admin-account-consequences__item
+              delete-admin-account-consequences__item--tenant
+            "
+          >
+
+            <span
+              class="
+                delete-admin-account-consequences__marker
+                delete-admin-account-consequences__marker--tenant
+              "
+              aria-hidden="true"
+            >
+              ✓
+            </span>
+
+            <span>
+              La residencia y su historial operativo continuarán
+              existiendo.
+            </span>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- ===================================================
+           VERIFICACIÓN DE SEGURIDAD
+           =================================================== -->
+
+      <div class="delete-admin-account-confirmation">
+
+        <div class="delete-admin-account-confirmation__header">
+
+          <span class="delete-admin-account-confirmation__step">
+            Verificación de seguridad
+          </span>
+
+          <h3 class="delete-admin-account-confirmation__title">
+            Confirma tu contraseña
+          </h3>
+
+          <p class="delete-admin-account-confirmation__description">
+            Para proteger tu cuenta administrativa necesitamos comprobar
+            tu identidad antes de permitir la eliminación.
+          </p>
+
+        </div>
+
+
+        <!-- =================================================
+             PASSWORD
+             ================================================= -->
+
+        <div class="delete-admin-account-field">
+
+          <label
+            for="delete-admin-account-password"
+            class="delete-admin-account-field__label"
+          >
+            Contraseña actual
+          </label>
+
+          <div
+            class="delete-admin-account-field__control"
+            [class.delete-admin-account-field__control--verified]="
+              passwordConfirmada
+            "
+          >
+
+            <input
+              id="delete-admin-account-password"
+              name="deleteAdminAccountPassword"
+              class="delete-admin-account-field__input"
+              [type]="mostrarPassword ? 'text' : 'password'"
+              [(ngModel)]="password"
+              (ngModelChange)="onPasswordChange()"
+              [disabled]="isConfirmingPassword || isDeleting"
+              autocomplete="current-password"
+              placeholder="Ingresa tu contraseña"
+              maxlength="200"
+            />
+
+            <button
+              type="button"
+              class="delete-admin-account-field__visibility"
+              [disabled]="isConfirmingPassword || isDeleting"
+              [attr.aria-label]="
+                mostrarPassword
+                  ? 'Ocultar contraseña'
+                  : 'Mostrar contraseña'
+              "
+              [attr.title]="
+                mostrarPassword
+                  ? 'Ocultar contraseña'
+                  : 'Mostrar contraseña'
+              "
+              (click)="alternarPassword()"
+            >
+              {{ mostrarPassword ? 'Ocultar' : 'Mostrar' }}
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ERROR
+             ================================================= -->
+
+        @if (errorMessage) {
+
+          <div
+            class="
+              delete-admin-account-alert
+              delete-admin-account-alert--error
+            "
+            role="alert"
+          >
+
+            <span
+              class="delete-admin-account-alert__icon"
+              aria-hidden="true"
+            >
+              !
+            </span>
+
+            <span class="delete-admin-account-alert__message">
+              {{ errorMessage }}
+            </span>
+
+          </div>
+
+        }
+
+
+        <!-- =================================================
+             ÉXITO
+             ================================================= -->
+
+        @if (passwordConfirmada && successMessage) {
+
+          <div
+            class="
+              delete-admin-account-alert
+              delete-admin-account-alert--success
+            "
+            role="status"
+          >
+
+            <span
+              class="delete-admin-account-alert__icon"
+              aria-hidden="true"
+            >
+              ✓
+            </span>
+
+            <span class="delete-admin-account-alert__message">
+              {{ successMessage }}
+            </span>
+
+          </div>
+
+        }
+
+
+        <!-- =================================================
+             BOTÓN VERIFICAR
+             ================================================= -->
+
+        @if (!passwordConfirmada) {
+
+          <button
+            type="button"
+            class="delete-admin-account-verify-button"
+            [disabled]="
+              isConfirmingPassword ||
+              isDeleting ||
+              !password.trim()
+            "
+            (click)="confirmarPassword()"
+          >
+
+            @if (isConfirmingPassword) {
+
+              <span
+                class="delete-admin-account-spinner"
+                aria-hidden="true"
+              ></span>
+
+              <span>
+                Verificando contraseña...
+              </span>
+
+            } @else {
+
+              <span
+                class="delete-admin-account-verify-button__icon"
+                aria-hidden="true"
+              >
+                ✓
+              </span>
+
+              <span>
+                Confirmar contraseña
+              </span>
+
+            }
+
+          </button>
+
+        }
+
+      </div>
+
+
+      <!-- ===================================================
+           IDENTIDAD CONFIRMADA
+           =================================================== -->
+
+      @if (passwordConfirmada) {
+
+        <div class="delete-admin-account-final-confirmation">
+
+          <div class="delete-admin-account-final-confirmation__content">
+
+            <span
+              class="delete-admin-account-final-confirmation__icon"
+              aria-hidden="true"
+            >
+              ✓
+            </span>
+
+            <div>
+
+              <h3 class="delete-admin-account-final-confirmation__title">
+                Identidad confirmada
+              </h3>
+
+              <p class="delete-admin-account-final-confirmation__description">
+                Tu contraseña fue verificada. Si continúas, únicamente
+                tu cuenta administrativa será eliminada permanentemente.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="delete-admin-account-footer">
+
+      <button
+        type="button"
+        class="delete-admin-account-cancel-button"
+        [disabled]="isConfirmingPassword || isDeleting"
+        (click)="cerrarFormulario()"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="delete-admin-account-submit-button"
+        [disabled]="
+          !passwordConfirmada ||
+          isConfirmingPassword ||
+          isDeleting
+        "
+        (click)="eliminarCuenta()"
+      >
+
+        @if (isDeleting) {
+
+          <span
+            class="delete-admin-account-spinner"
+            aria-hidden="true"
+          ></span>
+
+          <span>
+            Eliminando cuenta...
+          </span>
+
+        } @else {
+
+          <span
+            class="delete-admin-account-submit-button__icon"
+            aria-hidden="true"
+          >
+            ×
+          </span>
+
+          <span>
+            Eliminar mi cuenta permanentemente
+          </span>
+
+        }
+
+      </button>
+
+    </footer>
+
+  </section>
+</div>

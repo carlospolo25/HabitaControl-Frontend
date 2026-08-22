@@ -15,6 +15,8 @@ import {
   PerfilUsuarioResponse,
 } from '../../../../core/services/auth/auth';
 
+import { EliminarCuentaAdmin } from '../../../persona/eliminar-cuenta-admin/eliminar-cuenta-admin';
+
 import {
   FormPerfilUsuarioComponent,
 } from '../../form-perfil-usuario/form-perfil-usuario/form-perfil-usuario';
@@ -25,6 +27,7 @@ import {
   imports: [
     CommonModule,
     FormPerfilUsuarioComponent,
+    EliminarCuentaAdmin,
   ],
   templateUrl: './perfil-usuario.html',
   styleUrl: './perfil-usuario.css',
@@ -45,6 +48,10 @@ export class PerfilUsuarioComponent implements OnInit {
 
   mostrarFormulario = false;
   fotoNoDisponible = false;
+
+  mostrarEliminarCuenta = false;
+
+
 
   constructor(
     private readonly authService: AuthService,
@@ -111,7 +118,8 @@ export class PerfilUsuarioComponent implements OnInit {
   abrirFormulario(): void {
     if (
       !this.perfil ||
-      this.isLoading
+      this.isLoading ||
+      this.mostrarEliminarCuenta
     ) {
       return;
     }
@@ -119,6 +127,26 @@ export class PerfilUsuarioComponent implements OnInit {
     this.mostrarFormulario = true;
     this.errorMessage = '';
     this.hasError = false;
+  }
+
+  /* =========================================================
+    ELIMINACIÓN DE CUENTA
+    ========================================================= */
+
+  abrirEliminarCuenta(): void {
+    if (
+      !this.perfil ||
+      this.isLoading ||
+      this.mostrarFormulario
+    ) {
+      return;
+    }
+
+    this.mostrarEliminarCuenta = true;
+  }
+
+  cerrarEliminarCuenta(): void {
+    this.mostrarEliminarCuenta = false;
   }
 
   cerrarFormulario(): void {
@@ -143,6 +171,11 @@ export class PerfilUsuarioComponent implements OnInit {
      ========================================================= */
 
   cerrarVista(): void {
+    if (this.mostrarEliminarCuenta) {
+      this.cerrarEliminarCuenta();
+      return;
+    }
+
     if (this.mostrarFormulario) {
       this.cerrarFormulario();
       return;

@@ -738,9 +738,9 @@
 
         </section>
 
-<!-- =================================================
-     SEGURIDAD DE LA CUENTA
-================================================= -->
+        <!-- =================================================
+            SEGURIDAD DE LA CUENTA
+        ================================================= -->
 
         <section class="person-profile-section person-profile-section--security">
 
@@ -816,6 +816,53 @@
 
           </article>
 
+          <!-- =================================================
+              ELIMINACIÓN DE CUENTA
+              ================================================= -->
+
+          <article class="person-profile-danger-zone">
+
+            <div class="person-profile-danger-zone__content">
+
+              <span class="person-profile-danger-zone__badge">
+                Zona sensible
+              </span>
+
+              <h4 class="person-profile-danger-zone__title">
+                Eliminar cuenta
+              </h4>
+
+              <p class="person-profile-danger-zone__description">
+                Esta acción eliminará permanentemente el acceso a tu cuenta.
+                Para continuar deberás confirmar tu contraseña.
+              </p>
+
+            </div>
+
+            <div class="person-profile-danger-zone__actions">
+
+              <button
+                type="button"
+                class="person-profile-danger-button"
+                (click)="abrirEliminarCuenta()"
+                [disabled]="isLoading || !perfil.active">
+
+                <span
+                  class="person-profile-danger-button__icon"
+                  aria-hidden="true">
+                  ⚠
+                </span>
+
+                <span>
+                  Eliminar cuenta
+                </span>
+
+              </button>
+
+            </div>
+
+          </article>
+
         </section>
 
 
@@ -850,5 +897,13 @@
     }
 
   }
+
+@if (mostrarEliminarCuenta) {
+
+  <app-eliminar-cuenta-persona
+    (cerrar)="cerrarEliminarCuenta()">
+  </app-eliminar-cuenta-persona>
+
+}
 
 </section>

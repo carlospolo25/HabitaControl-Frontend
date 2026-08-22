@@ -76,19 +76,35 @@ export class LoginComponent {
     this.router.navigate(['/solicitar-recuperacion']);
   }
 
-  private getLoginErrorMessage(error: any): string {
-    if (error.status === 0) {
-      return 'No hay conexión con el servidor.';
-    }
-
-    if (error.status === 401) {
-      return 'Correo o contraseña incorrectos.';
-    }
-
-    if (error?.error?.message) {
-      return error.error.message;
-    }
-
-    return 'No pudimos iniciar sesión. Intenta nuevamente.';
+private getLoginErrorMessage(error: any): string {
+  if (error.status === 0) {
+    return 'No hay conexión con el servidor.';
   }
+
+  const backendMessage =
+    error?.error?.message ??
+    error?.error?.mensaje ??
+    error?.error?.title;
+
+  if (
+    typeof backendMessage === 'string' &&
+    backendMessage.trim()
+  ) {
+    return backendMessage;
+  }
+
+  if (error.status === 401) {
+    return 'Correo o contraseña incorrectos.';
+  }
+
+  if (error.status === 403) {
+    return 'No tienes permisos para iniciar sesión.';
+  }
+
+  if (error.status === 500) {
+    return 'Ocurrió un error interno al iniciar sesión.';
+  }
+
+  return 'No pudimos iniciar sesión. Intenta nuevamente.';
+}
 }

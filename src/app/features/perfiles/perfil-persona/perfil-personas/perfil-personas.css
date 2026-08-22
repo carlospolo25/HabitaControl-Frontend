@@ -4554,3 +4554,458 @@
   }
 
 }
+
+
+/* =========================================================
+   ZONA SENSIBLE - CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.person-profile-danger-zone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-24);
+
+  margin-top: var(--space-20);
+  padding: var(--space-24);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(254, 226, 226, 0.82),
+      rgba(255, 255, 255, 0.98)
+    );
+
+  border: 1px solid var(--danger-border);
+  border-radius: var(--radius-xl);
+
+  box-shadow: var(--shadow-sm);
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.person-profile-danger-zone::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 5px;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--danger),
+      var(--danger-dark)
+    );
+}
+
+.person-profile-danger-zone:hover {
+  border-color: var(--danger);
+
+  box-shadow: var(--shadow-md);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - CONTENIDO
+   ========================================================= */
+
+.person-profile-danger-zone__content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  gap: var(--space-8);
+
+  min-width: 0;
+  max-width: 760px;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - BADGE
+   ========================================================= */
+
+.person-profile-danger-zone__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+
+  padding: 5px 10px;
+
+  background: var(--danger-light);
+
+  border: 1px solid var(--danger-border);
+  border-radius: 999px;
+
+  color: var(--danger-dark);
+
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - TÍTULO
+   ========================================================= */
+
+.person-profile-danger-zone__title {
+  margin: 0;
+
+  color: var(--danger-dark);
+
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.3;
+
+  letter-spacing: -0.01em;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - DESCRIPCIÓN
+   ========================================================= */
+
+.person-profile-danger-zone__description {
+  margin: 0;
+
+  max-width: 720px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+.person-profile-danger-zone__description strong {
+  color: var(--danger-dark);
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   ZONA SENSIBLE - ACCIONES
+   ========================================================= */
+
+.person-profile-danger-zone__actions {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-shrink: 0;
+
+  min-width: max-content;
+}
+
+.person-profile-danger-zone__content
++ .person-profile-danger-zone__actions {
+  padding-left: var(--space-16);
+
+  border-left: 1px solid
+    rgba(220, 38, 38, 0.14);
+}
+
+
+/* =========================================================
+   BOTÓN DE ELIMINACIÓN - BASE
+   ========================================================= */
+
+.person-profile-danger-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: var(--space-8);
+
+  min-height: 44px;
+
+  padding:
+    0
+    var(--space-16);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger),
+      var(--danger-dark)
+    );
+
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-md);
+
+  color: var(--text-white);
+
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 18px
+    rgba(220, 38, 38, 0.18);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+/* =========================================================
+   BOTÓN - HOVER
+   ========================================================= */
+
+.person-profile-danger-button:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      var(--danger-dark),
+      var(--danger)
+    );
+
+  border-color: var(--danger-dark);
+
+  box-shadow:
+    0 10px 24px
+    rgba(153, 27, 27, 0.24);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   BOTÓN - ACTIVE
+   ========================================================= */
+
+.person-profile-danger-button:active:not(:disabled) {
+  transform: translateY(0);
+
+  box-shadow:
+    0 5px 12px
+    rgba(153, 27, 27, 0.18);
+}
+
+
+/* =========================================================
+   BOTÓN - FOCUS
+   ========================================================= */
+
+.person-profile-danger-button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px var(--surface),
+    0 0 0 6px var(--danger-border),
+    0 8px 18px rgba(220, 38, 38, 0.18);
+}
+
+
+/* =========================================================
+   BOTÓN - DESHABILITADO
+   ========================================================= */
+
+.person-profile-danger-button:disabled {
+  background: var(--gray-300);
+
+  border-color: var(--gray-300);
+
+  color: var(--gray-500);
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+
+  transform: none;
+
+  opacity: 0.78;
+}
+
+
+/* =========================================================
+   BOTÓN - ICONO
+   ========================================================= */
+
+.person-profile-danger-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 20px;
+  height: 20px;
+
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.person-profile-danger-button:hover:not(:disabled)
+.person-profile-danger-button__icon {
+  transform:
+    translateY(-1px)
+    scale(1.05);
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .person-profile-danger-zone {
+    align-items: stretch;
+
+    gap: var(--space-20);
+
+    padding: var(--space-20);
+  }
+
+  .person-profile-danger-zone__content {
+    max-width: none;
+  }
+
+  .person-profile-danger-zone__actions {
+    min-width: auto;
+  }
+
+  .person-profile-danger-zone__content
+  + .person-profile-danger-zone__actions {
+    padding-left: var(--space-12);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MÓVIL
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+  .person-profile-danger-zone {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: var(--space-16);
+
+    margin-top: var(--space-16);
+
+    padding:
+      var(--space-20)
+      var(--space-16);
+
+    border-radius: var(--radius-lg);
+  }
+
+  .person-profile-danger-zone::before {
+    width: 4px;
+  }
+
+  .person-profile-danger-zone__content {
+    width: 100%;
+    max-width: none;
+  }
+
+  .person-profile-danger-zone__badge {
+    padding: 5px 9px;
+
+    font-size: 0.68rem;
+  }
+
+  .person-profile-danger-zone__title {
+    font-size: 1rem;
+  }
+
+  .person-profile-danger-zone__description {
+    max-width: none;
+
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .person-profile-danger-zone__actions {
+    width: 100%;
+
+    justify-content: stretch;
+  }
+
+  .person-profile-danger-zone__content
+  + .person-profile-danger-zone__actions {
+    padding-top: var(--space-16);
+    padding-left: 0;
+
+    border-top: 1px solid
+      rgba(220, 38, 38, 0.14);
+
+    border-left: none;
+  }
+
+  .person-profile-danger-button {
+    width: 100%;
+    min-height: 46px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - TELÉFONOS PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .person-profile-danger-zone {
+    padding:
+      var(--space-16)
+      var(--space-12);
+
+    border-radius: var(--radius-md);
+  }
+
+  .person-profile-danger-zone__description {
+    font-size: 0.84rem;
+  }
+
+  .person-profile-danger-button {
+    min-height: 44px;
+
+    font-size: 0.84rem;
+  }
+
+  .person-profile-danger-button__icon {
+    width: 18px;
+    height: 18px;
+
+    font-size: 0.95rem;
+  }
+}
