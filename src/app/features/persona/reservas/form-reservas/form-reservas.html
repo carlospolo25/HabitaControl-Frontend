@@ -284,12 +284,12 @@
             (ngModelChange)="seleccionarFecha()"
             required>
 
-          <span class="reservation-form__hint">
-            Rango permitido:
-            {{ fechaMinima | date: 'dd/MM/yyyy' }}
-            –
-            {{ fechaMaxima | date: 'dd/MM/yyyy' }}
-          </span>
+            <span class="reservation-form__hint">
+              Rango permitido:
+              {{ fechaMinima | date: 'dd/MM/yyyy':'UTC' }}
+              –
+              {{ fechaMaxima | date: 'dd/MM/yyyy':'UTC' }}
+            </span>
         </div>
       </section>
 
@@ -371,7 +371,7 @@
                 </span>
 
                 <strong class="reservation-form__availability-date">
-                  {{ fechaReserva | date: 'dd/MM/yyyy' }}
+                  {{ fechaReserva | date: 'dd/MM/yyyy':'UTC' }}
                 </strong>
               </div>
 

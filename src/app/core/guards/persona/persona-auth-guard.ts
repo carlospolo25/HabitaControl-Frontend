@@ -1,15 +1,53 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import {
+  CanActivateFn,
+  Router,
+} from '@angular/router';
 
-export const personaAuthGuard: CanActivateFn = () => {
-  const router = inject(Router);
+import {
+  catchError,
+  map,
+  of,
+} from 'rxjs';
 
-  const accessToken = localStorage.getItem('personaAccessToken');
-  const refreshToken = localStorage.getItem('personaRefreshToken');
+import {
+  AuthPersona,
+} from '../../services/authPersona/auth-persona';
 
-  if (!accessToken || !refreshToken) {
-    return router.createUrlTree(['/loginPersona']);
-  }
+import {
+  AuthSessionContext,
+} from '../../../core/Auth/auth-session-context';
 
-  return true;
-};
+export const personaAuthGuard:
+  CanActivateFn = () => {
+
+    const router =
+      inject(Router);
+
+    const authPersona =
+      inject(AuthPersona);
+
+    const sessionContext =
+      inject(AuthSessionContext);
+
+    return authPersona
+      .comprobarSesion()
+      .pipe(
+        map(() => {
+          sessionContext
+            .setPersona();
+
+          return true;
+        }),
+
+        catchError(() => {
+          sessionContext.clear();
+
+          return of(
+            router.createUrlTree([
+              '/loginPersona',
+            ])
+          );
+        })
+      );
+  };

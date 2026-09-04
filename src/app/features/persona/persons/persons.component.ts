@@ -6,6 +6,13 @@ import { PersonResponse, PersonService} from '../../../core/services/person/pers
 import { DetallePersona } from '../detalle-persona/detalle-persona';
 import { PersonInvitation } from '../person-invitation/person-invitation';
 import { AuthService } from '../../../core/services/auth/auth';
+import {
+  AuthPersona,
+} from '../../../core/services/authPersona/auth-persona';
+
+import {
+  AuthSessionContext,
+} from '../../../core/Auth/auth-session-context';
 
 @Component({
   selector: 'app-persons',
@@ -31,106 +38,133 @@ export class PersonsComponent implements OnInit {
   isAdmin = false;
   isSecurity = false;
 
-
-
   constructor(
     private readonly personService: PersonService,
     private readonly authService: AuthService,
+    private readonly authPersona: AuthPersona,
+    private readonly sessionContext: AuthSessionContext,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.loadUserPermissions();
-    this.loadPeople();
   }
 
   private loadUserPermissions(): void {
-    const adminToken =
-      this.authService.getAccessToken();
-
-    const personaToken =
-      localStorage.getItem('personaAccessToken');
-
-    const token =
-      adminToken ?? personaToken;
-
     this.isAdmin = false;
     this.isSecurity = false;
 
-    if (!token) {
+    const identityType =
+      this.sessionContext
+        .getIdentityType();
+
+    if (identityType === 'persona') {
+      this.validarSesionPersona();
       return;
     }
 
-    try {
-      const partes = token.split('.');
-
-      if (partes.length !== 3) {
-        throw new Error(
-          'El token no tiene un formato válido.'
-        );
-      }
-
-      const payloadBase64 = partes[1]
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
-
-      const payloadConPadding =
-        payloadBase64.padEnd(
-          payloadBase64.length +
-            ((4 - payloadBase64.length % 4) % 4),
-          '='
-        );
-
-      const payload = JSON.parse(
-        atob(payloadConPadding)
-      );
-
-      const role =
-        payload.Role ??
-        payload.role ??
-        payload.Rol ??
-        payload.rol ??
-        payload[
-          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-        ] ??
-        '';
-
-      const personType =
-        payload.PersonType ??
-        payload.personType ??
-        payload.TipoPersona ??
-        payload.tipoPersona ??
-        payload.Tipo ??
-        payload.tipo ??
-        '';
-
-      const roleNormalizado =
-        String(role)
-          .trim()
-          .toLowerCase();
-
-      const tipoNormalizado =
-        String(personType)
-          .trim()
-          .toLowerCase();
-
-      this.isAdmin =
-        roleNormalizado === 'admin';
-
-      this.isSecurity =
-        tipoNormalizado === 'seguridad' ||
-        tipoNormalizado === '2' ||
-        roleNormalizado === 'seguridad';
-
-    } catch (error) {
-      console.error(
-        'Error leyendo permisos de personas:',
-        error
-      );
-
-      this.isAdmin = false;
-      this.isSecurity = false;
+    if (identityType === 'admin') {
+      this.validarSesionAdmin();
+      return;
     }
+
+    this.validarSesionDesconocida();
+  }
+
+  private validarSesionPersona(): void {
+    this.authPersona
+      .comprobarSesion()
+      .subscribe({
+        next: (session) => {
+          this.isAdmin = false;
+
+          this.isSecurity =
+            session.tipo === 'Seguridad';
+
+          this.sessionContext
+            .setPersona();
+
+          this.loadPeople();
+        },
+
+        error: () => {
+          this.sessionContext.clear();
+          this.mostrarErrorPermisos();
+        },
+      });
+  }
+
+  private validarSesionAdmin(): void {
+    this.authService
+      .obtenerPerfil()
+      .subscribe({
+        next: () => {
+          this.isAdmin = true;
+          this.isSecurity = false;
+
+          this.sessionContext
+            .setAdmin();
+
+          this.loadPeople();
+        },
+
+        error: () => {
+          this.sessionContext.clear();
+          this.mostrarErrorPermisos();
+        },
+      });
+  }
+
+  private validarSesionDesconocida(): void {
+    this.authPersona
+      .comprobarSesion()
+      .subscribe({
+        next: (session) => {
+          this.isAdmin = false;
+
+          this.isSecurity =
+            session.tipo === 'Seguridad';
+
+          this.sessionContext
+            .setPersona();
+
+          this.loadPeople();
+        },
+
+        error: () => {
+          this.authService
+            .obtenerPerfil()
+            .subscribe({
+              next: () => {
+                this.isAdmin = true;
+                this.isSecurity = false;
+
+                this.sessionContext
+                  .setAdmin();
+
+                this.loadPeople();
+              },
+
+              error: () => {
+                this.mostrarErrorPermisos();
+              },
+            });
+        },
+      });
+  }
+
+  private mostrarErrorPermisos(): void {
+    this.isAdmin = false;
+    this.isSecurity = false;
+
+    this.people = [];
+
+    this.hasErrors = true;
+
+    this.errorMessage =
+      'No tienes permisos para consultar la lista de personas.';
+
+    this.cdr.detectChanges();
   }
 
   loadPeople(): void {
@@ -321,6 +355,22 @@ export class PersonsComponent implements OnInit {
   clearSearch(): void {
     this.searchTerm = '';
     this.resetPagination();
+  }
+
+  getPersonTypeName(personType: number): string {
+    switch (personType) {
+      case 1:
+        return 'Residente';
+
+      case 2:
+        return 'Seguridad';
+
+      case 3:
+        return 'Personal';
+
+      default:
+        return 'Desconocido';
+    }
   }
 
   private normalizeText(value: string | null | undefined): string {

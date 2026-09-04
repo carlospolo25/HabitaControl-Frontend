@@ -640,7 +640,7 @@
                   <time
                     class="financial-table__date"
                     [attr.datetime]="movimiento.fecha">
-                    {{ movimiento.fecha | date:'dd/MM/yyyy' }}
+                    {{ movimiento.fecha | date:'dd/MM/yyyy':'UTC' }}
                   </time>
                 </td>
 
@@ -785,7 +785,7 @@
                             Anulado el
                             {{
                               movimiento.fechaAnulacion
-                                | date:'dd/MM/yyyy, h:mm a'
+                                | date:'dd/MM/yyyy, h:mm a':'America/Bogota'
                             }}
                           </small>
                         }

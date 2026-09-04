@@ -10,6 +10,10 @@ import {
   LoginPersonaRequest,
 } from '../../../core/services/authPersona/auth-persona';
 
+import {
+  AuthSessionContext,
+} from '../../../core/Auth/auth-session-context';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -28,12 +32,15 @@ export class Login {
 
   constructor(
     private readonly authPersona: AuthPersona,
+    private readonly sessionContext: AuthSessionContext,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
   forgotPassword(): void {
-    this.router.navigate(['/solicitar-recuperacion']);
+    this.router.navigate([
+      '/solicitar-recuperacion'
+    ]);
   }
 
   login(): void {
@@ -46,12 +53,16 @@ export class Login {
 
     const request: LoginPersonaRequest = {
       email: this.email.trim(),
-      password: this.password
+      password: this.password,
     };
 
-    if (!request.email || !request.password.trim()) {
+    if (
+      !request.email ||
+      !request.password.trim()
+    ) {
       this.errorMessage =
         'Ingrese su correo electrónico y contraseña.';
+
       return;
     }
 
@@ -66,11 +77,23 @@ export class Login {
         })
       )
       .subscribe({
-        next: (response) => {
+        next: () => {
 
-          this.authPersona.guardarTokensPersona(response);
+          /*
+           * Los JWT ya fueron instalados
+           * por el backend mediante
+           * cookies HttpOnly.
+           *
+           * Angular únicamente conserva
+           * qué identidad utiliza
+           * esta pestaña.
+           */
+          this.sessionContext
+            .setPersona();
 
-          this.router.navigate(['/dashboard-persona']);
+          this.router.navigate([
+            '/dashboard-persona'
+          ]);
         },
 
         error: ({ error }) => {
@@ -78,7 +101,7 @@ export class Login {
           this.errorMessage =
             error?.message ??
             'No fue posible iniciar sesión. Inténtelo nuevamente.';
-        }
+        },
       });
   }
 }

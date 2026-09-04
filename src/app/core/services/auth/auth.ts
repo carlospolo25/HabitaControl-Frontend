@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { API_CONFIG } from '../../config/api.config';
 
-export interface AuthResult {
-  accessToken: string;
-  refreshToken: string;
-}
+import {
+  SKIP_AUTH_REFRESH,
+} from '../../Auth/auth-http-context';
 
 export interface LoginRequest {
   email: string;
@@ -41,12 +40,7 @@ export interface ConfirmarPasswordUsuarioRequest {
   password: string;
 }
 
-/* =========================================================
-   PERFIL DEL ADMINISTRADOR
-   ========================================================= */
-
 export interface PerfilUsuarioResponse {
-  // Usuario administrador
   usuarioId: string;
   nombre: string;
   documento: string;
@@ -56,7 +50,6 @@ export interface PerfilUsuarioResponse {
   fechaCreacionUsuario: string;
   fechaActualizacionUsuario: string | null;
 
-  // Tenant / residencia
   tenantId: string;
   nombreEmpresa: string;
   nit: string;
@@ -73,13 +66,11 @@ export interface PerfilUsuarioResponse {
 }
 
 export interface ActualizarPerfilUsuarioRequest {
-  // Usuario administrador
   nombre: string;
   documento: string;
   telefono: string;
   email: string;
 
-  // Tenant / residencia
   nombreEmpresa: string;
   nit: string;
   dominio: string;
@@ -91,7 +82,6 @@ export interface ActualizarPerfilUsuarioRequest {
   cantidadTorres: number | null;
   cantidadApartamentos: number | null;
 
-  // Archivo opcional
   foto?: File | null;
 }
 
@@ -101,48 +91,40 @@ export interface ActualizarPerfilUsuarioRequest {
 export class AuthService {
   private readonly baseUrl = API_CONFIG.baseUrl;
 
-  private readonly accessTokenKey = 'accessToken';
-  private readonly refreshTokenKey = 'refreshToken';
-  private readonly legacyTokenKey = 'token';
+  constructor(private readonly http: HttpClient) {}
 
-  constructor(private http: HttpClient) {}
-
-  login(data: LoginRequest): Observable<AuthResult> {
-    return this.http.post<AuthResult>(
+  login(
+    data: LoginRequest
+  ): Observable<ApiMessageResponse> {
+    return this.http.post<ApiMessageResponse>(
       `${this.baseUrl}/auth/login`,
       data
     );
   }
 
-  register(data: RegisterRequest): Observable<ApiMessageResponse> {
+  register(
+    data: RegisterRequest
+  ): Observable<ApiMessageResponse> {
     return this.http.post<ApiMessageResponse>(
       `${this.baseUrl}/auth/register`,
       data
     );
   }
 
-  refreshToken(): Observable<AuthResult> {
-    return this.http.post<AuthResult>(
+  refreshToken():
+    Observable<ApiMessageResponse> {
+    return this.http.post<ApiMessageResponse>(
       `${this.baseUrl}/auth/refresh`,
-      {
-        accessToken: this.getAccessToken() ?? '',
-        refreshToken: this.getRefreshToken() ?? '',
-      }
+      {}
     );
   }
 
   logout(): Observable<ApiMessageResponse> {
     return this.http.post<ApiMessageResponse>(
       `${this.baseUrl}/auth/logout`,
-      {
-        refreshToken: this.getRefreshToken() ?? '',
-      }
+      {}
     );
   }
-
-  /* =========================================================
-     PERFIL DEL ADMINISTRADOR
-     ========================================================= */
 
   obtenerPerfil(): Observable<PerfilUsuarioResponse> {
     return this.http.get<PerfilUsuarioResponse>(
@@ -153,7 +135,8 @@ export class AuthService {
   actualizarPerfil(
     request: ActualizarPerfilUsuarioRequest
   ): Observable<PerfilUsuarioResponse> {
-    const formData = this.construirPerfilFormData(request);
+    const formData =
+      this.construirPerfilFormData(request);
 
     return this.http.put<PerfilUsuarioResponse>(
       `${this.baseUrl}/auth/actualizar-perfil`,
@@ -170,7 +153,8 @@ export class AuthService {
     );
   }
 
-  eliminarMiCuenta(): Observable<ApiMessageResponse> {
+  eliminarMiCuenta():
+    Observable<ApiMessageResponse> {
     return this.http.delete<ApiMessageResponse>(
       `${this.baseUrl}/auth/eliminar-cuenta`
     );
@@ -181,18 +165,50 @@ export class AuthService {
   ): FormData {
     const formData = new FormData();
 
-    // Datos del administrador
-    formData.append('nombreUsuario', request.nombre.trim());
-    formData.append('documentoUsuario', request.documento.trim());
-    formData.append('telefonoUsuario', request.telefono.trim());
-    formData.append('emailUsuario', request.email.trim());
+    formData.append(
+      'nombreUsuario',
+      request.nombre.trim()
+    );
 
-    // Datos del Tenant
-    formData.append('nombreEmpresa', request.nombreEmpresa.trim());
-    formData.append('nit', request.nit.trim());
-    formData.append('dominio', request.dominio.trim());
-    formData.append('direccion', request.direccion.trim());
-    formData.append('ciudad', request.ciudad.trim());
+    formData.append(
+      'documentoUsuario',
+      request.documento.trim()
+    );
+
+    formData.append(
+      'telefonoUsuario',
+      request.telefono.trim()
+    );
+
+    formData.append(
+      'emailUsuario',
+      request.email.trim()
+    );
+
+    formData.append(
+      'nombreEmpresa',
+      request.nombreEmpresa.trim()
+    );
+
+    formData.append(
+      'nit',
+      request.nit.trim()
+    );
+
+    formData.append(
+      'dominio',
+      request.dominio.trim()
+    );
+
+    formData.append(
+      'direccion',
+      request.direccion.trim()
+    );
+
+    formData.append(
+      'ciudad',
+      request.ciudad.trim()
+    );
 
     formData.append(
       'telefonoEmpresa',
@@ -216,7 +232,9 @@ export class AuthService {
       );
     }
 
-    if (request.cantidadApartamentos !== null) {
+    if (
+      request.cantidadApartamentos !== null
+    ) {
       formData.append(
         'cantidadApartamentos',
         request.cantidadApartamentos.toString()
@@ -234,50 +252,17 @@ export class AuthService {
     return formData;
   }
 
-  /* =========================================================
-     SESIÓN Y TOKENS
-     ========================================================= */
-
-  saveTokens(tokens: AuthResult): void {
-    localStorage.setItem(
-      this.accessTokenKey,
-      tokens.accessToken
-    );
-
-    localStorage.setItem(
-      this.refreshTokenKey,
-      tokens.refreshToken
-    );
-
-    localStorage.removeItem(this.legacyTokenKey);
-  }
-
-  guardarTokens(tokens: AuthResult): void {
-    this.saveTokens(tokens);
-  }
-
-  clearSession(): void {
-    localStorage.removeItem(this.accessTokenKey);
-    localStorage.removeItem(this.refreshTokenKey);
-    localStorage.removeItem(this.legacyTokenKey);
-  }
-
-  limpiarSesion(): void {
-    this.clearSession();
-  }
-
-  getAccessToken(): string | null {
-    return localStorage.getItem(this.accessTokenKey);
-  }
-
-  getRefreshToken(): string | null {
-    return localStorage.getItem(this.refreshTokenKey);
-  }
-
-  isAuthenticated(): boolean {
-    return (
-      !!this.getAccessToken() &&
-      !!this.getRefreshToken()
+  comprobarSesion():
+    Observable<PerfilUsuarioResponse> {
+    return this.http.get<PerfilUsuarioResponse>(
+      `${this.baseUrl}/auth/mi-perfil`,
+      {
+        context:
+          new HttpContext().set(
+            SKIP_AUTH_REFRESH,
+            true
+          ),
+      }
     );
   }
 }

@@ -333,12 +333,10 @@
                 <time
                   class="persona-aviso-card__date"
                   [attr.datetime]="aviso.fechaPublicacion">
-
                   {{
                     aviso.fechaPublicacion
-                      | date:'dd/MM/yyyy'
+                      | date:'dd/MM/yyyy':'America/Bogota'
                   }}
-
                 </time>
 
               </div>
@@ -824,7 +822,7 @@
             Publicado el
             {{
               avisoSeleccionado.fechaPublicacion
-                | date:'dd/MM/yyyy HH:mm'
+                | date:'dd/MM/yyyy HH:mm':'America/Bogota'
             }}
 
           </div>

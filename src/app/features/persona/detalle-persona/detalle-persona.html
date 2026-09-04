@@ -172,6 +172,55 @@
 
             </header>
 
+            <div class="person-profile-photo">
+
+              @if (
+                obtenerFotoPersona();
+                as fotoPersona
+              ) {
+
+                <button
+                  type="button"
+                  class="person-profile-photo__button"
+                  aria-label="Ampliar fotografía de la persona"
+                  (click)="abrirImagen(
+                    fotoPersona,
+                    'Fotografía de ' + (persona?.name || 'la persona')
+                  )">
+
+                  <img
+                    class="person-profile-photo__image"
+                    [src]="fotoPersona"
+                    [alt]="'Fotografía de ' + (persona?.name || 'la persona')">
+
+                  <span
+                    class="person-profile-photo__hint"
+                    aria-hidden="true">
+                    🔍 Ampliar
+                  </span>
+
+                </button>
+
+              } @else {
+
+                <div class="person-profile-photo__placeholder">
+
+                  <span
+                    class="person-profile-photo__placeholder-icon"
+                    aria-hidden="true">
+                    👤
+                  </span>
+
+                  <span class="person-profile-photo__placeholder-text">
+                    Sin fotografía
+                  </span>
+
+                </div>
+
+              }
+
+            </div>
+
             <div class="person-data-grid">
 
               <article class="person-data-card">
@@ -405,7 +454,7 @@
                     <strong class="person-data-card__value">
                       {{
                         persona?.birthDate
-                          ? (persona.birthDate | date:'dd/MM/yyyy')
+                          ? (persona.birthDate | date:'dd/MM/yyyy':'UTC')
                           : 'No registrada'
                       }}
                     </strong>
@@ -780,11 +829,28 @@
                       as fotoVehiculo
                     ) {
 
-                      <img
-                        class="person-record-card__image"
-                        [src]="fotoVehiculo"
-                        [alt]="'Fotografía del vehículo con placa ' + vehiculo.placa"
-                        loading="lazy">
+                      <button
+                        type="button"
+                        class="person-record-card__image-button"
+                        [attr.aria-label]="'Ampliar fotografía del vehículo con placa ' + vehiculo.placa"
+                        (click)="abrirImagen(
+                          fotoVehiculo,
+                          'Fotografía del vehículo con placa ' + vehiculo.placa
+                        )">
+
+                        <img
+                          class="person-record-card__image"
+                          [src]="fotoVehiculo"
+                          [alt]="'Fotografía del vehículo con placa ' + vehiculo.placa"
+                          loading="lazy">
+
+                        <span
+                          class="person-record-card__zoom"
+                          aria-hidden="true">
+                          🔍
+                        </span>
+
+                      </button>
 
                     } @else {
 
@@ -1019,11 +1085,28 @@
                       as fotoMascota
                     ) {
 
+                    <button
+                      type="button"
+                      class="person-record-card__image-button"
+                      [attr.aria-label]="'Ampliar fotografía de ' + mascota.nombre"
+                      (click)="abrirImagen(
+                        fotoMascota,
+                        'Fotografía de ' + mascota.nombre
+                      )">
+
                       <img
                         class="person-record-card__image"
                         [src]="fotoMascota"
                         [alt]="'Fotografía de ' + mascota.nombre"
                         loading="lazy">
+
+                      <span
+                        class="person-record-card__zoom"
+                        aria-hidden="true">
+                        🔍
+                      </span>
+
+                    </button>
 
                     } @else {
 
@@ -1098,7 +1181,7 @@
                           <dd class="person-record-details__value">
                             {{
                               mascota.fechaNacimiento
-                                | date:'dd/MM/yyyy'
+                                | date:'dd/MM/yyyy':'UTC'
                             }}
                           </dd>
 
@@ -1171,3 +1254,44 @@
   </section>
 
 </div>
+
+@if (imagenAmpliada) {
+
+  <div
+    class="image-viewer"
+    role="presentation"
+    (click)="cerrarImagen()">
+
+    <section
+      class="image-viewer__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Vista ampliada de fotografía"
+      (click)="$event.stopPropagation()">
+
+      <button
+        type="button"
+        class="image-viewer__close"
+        aria-label="Cerrar fotografía ampliada"
+        (click)="cerrarImagen()">
+        ×
+      </button>
+
+      <div class="image-viewer__content">
+
+        <img
+          class="image-viewer__image"
+          [src]="imagenAmpliada"
+          [alt]="imagenAmpliadaAlt">
+
+      </div>
+
+      <footer class="image-viewer__footer">
+        {{ imagenAmpliadaAlt }}
+      </footer>
+
+    </section>
+
+  </div>
+
+}

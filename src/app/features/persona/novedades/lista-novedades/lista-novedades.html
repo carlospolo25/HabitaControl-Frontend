@@ -482,7 +482,7 @@
 
                     @if (n.fechaLimite) {
                       <span>
-                        {{ n.fechaLimite | date:'shortDate' }}
+                        {{ n.fechaLimite | date:'shortDate':'UTC' }}
                       </span>
 
                       @if (isOverdue(n)) {
@@ -517,7 +517,7 @@
                 <td data-label="Última actualización">
                   {{
                     (n.ultimaActualizacion ?? n.fechaCreacion)
-                      | date:'short'
+                      | date:'short':'America/Bogota'
                   }}
                 </td>
 

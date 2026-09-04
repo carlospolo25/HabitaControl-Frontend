@@ -2,9 +2,9 @@
 
   <aside class="persona-sidebar">
     <div class="sidebar-brand">
-      <span class="brand-mark">H</span>
+      <span class="brand-mark">SH</span>
       <div>
-        <h2>HabitaControl</h2>
+        <h2>SincroHabit</h2>
         <p>Panel persona</p>
       </div>
     </div>
@@ -210,7 +210,7 @@
             </p>
           }
 
-          @if (tipo === 'Mantenimiento') {
+          @if (tipo === 'Personal') {
             <p>
               Desde aquí puedes revisar novedades y registrar el seguimiento correspondiente.
             </p>
@@ -235,10 +235,6 @@
 
       @if (vistaActiva === 'notificaciones') {
         <app-lista-notificaciones></app-lista-notificaciones>
-      }
-
-      @if (vistaActiva === 'zonas-comunes') {
-        <app-zonas-comunes></app-zonas-comunes>
       }
 
       @if (vistaActiva === 'mis-vehiculos') {

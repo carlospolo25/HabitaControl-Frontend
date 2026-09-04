@@ -444,7 +444,7 @@
 
                     <span class="normas-content__created">
                       Creada:
-                      {{ norma.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}
+                      {{ norma.fechaCreacion | date:'dd/MM/yyyy HH:mm':'America/Bogota' }}
                     </span>
 
                   </div>
@@ -484,7 +484,7 @@
 
                     <a
                       class="normas-file"
-                      [href]="norma.archivoUrl"
+                      [href]="obtenerUrlArchivo(norma.archivoUrl)"
                       target="_blank"
                       rel="noopener noreferrer">
 
@@ -537,7 +537,7 @@
 
                   @if (norma.fechaActualizacion) {
 
-                    {{ norma.fechaActualizacion | date:'dd/MM/yyyy HH:mm' }}
+                    {{ norma.fechaActualizacion | date:'dd/MM/yyyy HH:mm':'America/Bogota' }}
 
                   } @else {
 

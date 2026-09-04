@@ -486,7 +486,7 @@
                   <strong class="package-detail-timeline__value">
                     {{
                       paqueteDetalle.fechaRecepcion
-                        | date:'dd/MM/yyyy, h:mm a'
+                        | date:'dd/MM/yyyy, h:mm a':'America/Bogota'
                     }}
                   </strong>
 
@@ -533,7 +533,7 @@
                       paqueteDetalle.fechaEntrega
                         ? (
                             paqueteDetalle.fechaEntrega
-                              | date:'dd/MM/yyyy, h:mm a'
+                              | date:'dd/MM/yyyy, h:mm a':'America/Bogota'
                           )
                         : 'Entrega pendiente'
                     }}

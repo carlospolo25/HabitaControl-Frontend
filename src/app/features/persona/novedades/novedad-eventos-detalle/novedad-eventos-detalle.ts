@@ -20,6 +20,10 @@ import {
   PrioridadTarea,
 } from '../../../../core/services/novedad/novedad';
 
+import {
+  formatearInstanteColombia
+} from '../../../../core/utils/colombia-date.util';
+
 @Component({
   selector: 'app-novedad-eventos-detalle',
   standalone: true,
@@ -273,7 +277,17 @@ export class NovedadEventosDetalle implements OnChanges {
     expediente: ExpedienteNovedadResponse
   ): string {
     const year =
-      new Date(expediente.fechaApertura).getFullYear();
+      formatearInstanteColombia(
+        expediente.fechaApertura,
+        {
+          year: 'numeric',
+          month: undefined,
+          day: undefined,
+          hour: undefined,
+          minute: undefined,
+          second: undefined,
+        }
+      );
 
     const shortId =
       expediente.novedadId
@@ -288,12 +302,24 @@ export class NovedadEventosDetalle implements OnChanges {
     return `${prefijo}-${year}-${shortId}`;
   }
 
-  private formatPdfDate(value?: string | null): string {
+  private formatPdfDate(
+    value?: string | null
+  ): string {
     if (!value) {
       return 'Pendiente';
     }
 
-    return new Date(value).toLocaleString('es-CO');
+    return formatearInstanteColombia(
+      value,
+      {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: undefined,
+      }
+    );
   }
 
   private dibujarEncabezadoPdf(
@@ -415,7 +441,7 @@ export class NovedadEventosDetalle implements OnChanges {
         [
           'Fecha límite',
           expediente.fechaLimite
-            ? this.formatPdfDate(expediente.fechaLimite)
+            ? expediente.fechaLimite.substring(0, 10)
             : 'Sin fecha límite',
         ]
       );

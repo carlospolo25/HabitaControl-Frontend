@@ -15,6 +15,8 @@ import {
 } from '../../../core/services/norma-convivencia/norma-convivencia';
 import { FormNormaConvivencia } from '../form-norma-convivencia/form-norma-convivencia';
 
+import { API_CONFIG } from '../../../core/config/api.config';
+
 
 @Component({
   selector: 'app-gestion-normas-convivencia',
@@ -120,6 +122,35 @@ export class GestionNormasConvivenciaComponent implements OnInit {
             'No fue posible cargar las normas de convivencia.';
         },
       });
+  }
+
+  obtenerUrlArchivo(
+    archivoUrl?: string | null
+  ): string {
+
+    if (!archivoUrl) {
+      return '';
+    }
+
+    if (
+      archivoUrl.startsWith('http://') ||
+      archivoUrl.startsWith('https://')
+    ) {
+      return archivoUrl;
+    }
+
+    const backendUrl =
+      API_CONFIG.baseUrl.replace(
+        /\/api\/?$/,
+        ''
+      );
+
+    const rutaArchivo =
+      archivoUrl.startsWith('/')
+        ? archivoUrl
+        : `/${archivoUrl}`;
+
+    return `${backendUrl}${rutaArchivo}`;
   }
 
   // =========================================================

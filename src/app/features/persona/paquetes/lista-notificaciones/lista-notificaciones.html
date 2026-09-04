@@ -189,15 +189,15 @@
                 }
               </div>
 
-              <time
-                class="notification__date"
-                [id]="'notification-date-' + notificacion.id"
-                [attr.datetime]="notificacion.fechaCreacion">
-                {{
-                  notificacion.fechaCreacion
-                    | date:'dd/MM/yyyy, h:mm a'
-                }}
-              </time>
+                <time
+                  class="notification__date"
+                  [id]="'notification-date-' + notificacion.id"
+                  [attr.datetime]="notificacion.fechaCreacion">
+                  {{
+                    notificacion.fechaCreacion
+                      | date:'dd/MM/yyyy, h:mm a':'America/Bogota'
+                  }}
+                </time>
             </div>
 
             <p

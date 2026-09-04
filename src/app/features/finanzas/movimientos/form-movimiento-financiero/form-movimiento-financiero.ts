@@ -27,6 +27,10 @@ import {
 } from '../../../../core/services/finanzas/Ingreso/ingreso.service';
 
 import {
+  obtenerFechaHoyColombia
+} from '../../../../core/utils/colombia-date.util';
+
+import {
   ActualizarEgresoRequest,
   EgresoResponse,
   EgresoService,
@@ -791,13 +795,7 @@ export class FormMovimientoFinanciero
   }
 
   private obtenerFechaActual(): string {
-    const fecha = new Date();
-
-    const anio = fecha.getFullYear();
-    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-    const dia = String(fecha.getDate()).padStart(2, '0');
-
-    return `${anio}-${mes}-${dia}`;
+    return obtenerFechaHoyColombia();
   }
 
   private convertirFechaParaInput(

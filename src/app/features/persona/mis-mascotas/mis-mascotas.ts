@@ -7,6 +7,9 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
+import {
+  AuthPersona,
+} from '../../../core/services/authPersona/auth-persona';
 
 import {
   ActualizarMascotaRequest,
@@ -15,6 +18,10 @@ import {
   RegistrarMascotaRequest,
   TipoMascota,
 } from '../../../core/services/mascotas/mascota-service';
+
+import {
+  obtenerFechaHoyColombia
+} from '../../../core/utils/colombia-date.util';
 
 interface OpcionTipoMascota {
   valor: TipoMascota;
@@ -102,19 +109,12 @@ export class MisMascotasComponent
 
   constructor(
     private readonly mascotaService: MascotaService,
+    private readonly authPersona: AuthPersona,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.personaId = this.obtenerPersonaId();
-
-    if (!this.personaId) {
-      this.errorMessage =
-        'No fue posible identificar a la persona autenticada.';
-      return;
-    }
-
-    this.cargarMascotas();
+    this.cargarSesionPersona();
   }
 
   ngOnDestroy(): void {
@@ -366,6 +366,33 @@ export class MisMascotasComponent
     this.successMessage = '';
   }
 
+  private cargarSesionPersona(): void {
+    this.authPersona
+      .comprobarSesion()
+      .subscribe({
+        next: (session) => {
+          this.personaId =
+            session.personaId;
+
+          if (!this.personaId) {
+            this.errorMessage =
+              'No fue posible identificar a la persona autenticada.';
+
+            return;
+          }
+
+          this.cargarMascotas();
+        },
+
+        error: () => {
+          this.personaId = '';
+
+          this.errorMessage =
+            'No fue posible identificar a la persona autenticada.';
+        },
+      });
+  }
+
   private registrarMascota(): void {
     const request: RegistrarMascotaRequest = {
       personaId: this.personaId,
@@ -535,19 +562,11 @@ export class MisMascotasComponent
     }
 
     if (this.fechaNacimiento) {
-      const fechaSeleccionada =
-        new Date(
-          `${this.fechaNacimiento}T00:00:00`
-        );
-
-      const hoy = new Date();
-      hoy.setHours(0, 0, 0, 0);
+      const hoyColombia =
+        obtenerFechaHoyColombia();
 
       if (
-        Number.isNaN(
-          fechaSeleccionada.getTime()
-        ) ||
-        fechaSeleccionada > hoy
+        this.fechaNacimiento > hoyColombia
       ) {
         return 'La fecha de nacimiento no puede ser futura.';
       }
@@ -627,65 +646,6 @@ export class MisMascotasComponent
   private limpiarMensajes(): void {
     this.errorMessage = '';
     this.successMessage = '';
-  }
-
-  private obtenerPersonaId(): string {
-    const token =
-      localStorage.getItem(
-        'personaAccessToken'
-      );
-
-    if (!token) {
-      return '';
-    }
-
-    try {
-      const partes = token.split('.');
-
-      if (partes.length !== 3) {
-        return '';
-      }
-
-      const payloadBase64 = partes[1]
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
-
-      const payloadNormalizado =
-        payloadBase64.padEnd(
-          Math.ceil(
-            payloadBase64.length / 4
-          ) * 4,
-          '='
-        );
-
-      const payload = JSON.parse(
-        decodeURIComponent(
-          atob(payloadNormalizado)
-            .split('')
-            .map(
-              caracter =>
-                `%${caracter
-                  .charCodeAt(0)
-                  .toString(16)
-                  .padStart(2, '0')}`
-            )
-            .join('')
-        )
-      );
-
-      return (
-        payload?.PersonaId ??
-        payload?.personaId ??
-        ''
-      );
-    } catch (error) {
-      console.error(
-        'No fue posible leer el PersonaId del token:',
-        error
-      );
-
-      return '';
-    }
   }
 
   private obtenerMensajeError(

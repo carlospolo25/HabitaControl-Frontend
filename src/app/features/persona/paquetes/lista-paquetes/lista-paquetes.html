@@ -693,7 +693,7 @@
                     </span>
 
                     <span class="packages-list__date-value">
-                      {{ paquete.fechaRecepcion | date:'short' }}
+                      {{ paquete.fechaRecepcion | date:'short':'America/Bogota' }}
                     </span>
 
                   </div>
@@ -722,7 +722,7 @@
                     <span class="packages-list__date-value">
                       {{
                         paquete.fechaEntrega
-                          ? (paquete.fechaEntrega | date:'short')
+                          ? (paquete.fechaEntrega | date:'short':'America/Bogota')
                           : 'Pendiente'
                       }}
                     </span>

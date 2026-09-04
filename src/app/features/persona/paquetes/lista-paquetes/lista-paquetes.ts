@@ -12,8 +12,16 @@ import {
 } from '../../../../core/services/paquete/paquete';
 
 import {
+  AuthPersona,
+} from '../../../../core/services/authPersona/auth-persona';
+
+import {
   FormEntregaPaqueteComponent,
 } from '../form-entrega-paquete/form-entrega-paquete';
+
+import {
+  AuthSessionContext,
+} from '../../../../core/Auth/auth-session-context';
 
 type PackageSortOption =
   | 'recent'
@@ -60,12 +68,13 @@ export class ListaPaquetesComponent implements OnInit {
 
   constructor(
     private readonly paqueteService: PaqueteService,
+    private readonly authPersona: AuthPersona,
+    private readonly sessionContext: AuthSessionContext,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.cargarPermisos();
-    this.cargar();
   }
 
   get torresDisponibles(): string[] {
@@ -353,73 +362,50 @@ export class ListaPaquetesComponent implements OnInit {
   }
 
   private cargarPermisos(): void {
-    const token = localStorage.getItem(
-      'personaAccessToken'
-    );
-
     this.isSecurity = false;
 
-    if (!token) {
+    const identityType =
+      this.sessionContext
+        .getIdentityType();
+
+    if (identityType === 'admin') {
+      this.cargar();
       return;
     }
 
-    const claims = this.decodificarToken(token);
-
-    if (!claims) {
+    if (identityType === 'persona') {
+      this.validarPermisosPersona();
       return;
     }
 
-    const tipoClaim =
-      claims['Tipo'] ??
-      claims['tipo'] ??
-      claims['TipoPersona'] ??
-      claims['tipoPersona'] ??
-      claims['personType'] ??
-      claims['PersonType'];
-
-    if (typeof tipoClaim === 'string') {
-      const tipoNormalizado = tipoClaim
-        .trim()
-        .toLowerCase();
-
-      this.isSecurity =
-        tipoNormalizado === 'seguridad' ||
-        tipoNormalizado === '2';
-
-      return;
-    }
-
-    if (typeof tipoClaim === 'number') {
-      this.isSecurity = tipoClaim === 2;
-    }
+    this.validarPermisosPersona();
   }
 
-  private decodificarToken(
-    token: string
-  ): Record<string, unknown> | null {
-    try {
-      const partes = token.split('.');
+  private validarPermisosPersona(): void {
+    this.authPersona
+      .comprobarSesion()
+      .subscribe({
+        next: (session) => {
+          this.isSecurity =
+            session.tipo === 'Seguridad';
 
-      if (partes.length !== 3) {
-        return null;
-      }
+          this.sessionContext
+            .setPersona();
 
-      const payload = partes[1]
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
+          this.cargar();
+        },
 
-      const payloadConPadding = payload.padEnd(
-        payload.length +
-          ((4 - (payload.length % 4)) % 4),
-        '='
-      );
+        error: () => {
+          this.isSecurity = false;
 
-      return JSON.parse(
-        atob(payloadConPadding)
-      ) as Record<string, unknown>;
-    } catch {
-      return null;
-    }
+          /*
+          * Si todavía no conocemos la identidad,
+          * la carga del endpoint determinará si
+          * existe una sesión válida de Admin.
+          */
+          this.cargar();
+        },
+      });
   }
 
   private obtenerOrdenEstado(

@@ -344,14 +344,13 @@
 
         </div>
 
-        <a
-          class="norma-form__existing-file-link"
-          [href]="norma?.archivoUrl"
-          target="_blank"
-          rel="noopener noreferrer">
-          Ver archivo
-        </a>
-
+          <a
+            class="norma-form__existing-file-link"
+            [href]="obtenerUrlArchivo(norma?.archivoUrl)"
+            target="_blank"
+            rel="noopener noreferrer">
+            Ver archivo
+          </a>
       </div>
 
     }

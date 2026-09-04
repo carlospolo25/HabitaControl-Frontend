@@ -1,24 +1,32 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { API_CONFIG } from '../../config/api.config';
 
-export interface AuthPersonaResult {
-  accessToken: string;
-  refreshToken: string;
-}
+import {
+  HttpClient,
+  HttpContext,
+} from '@angular/common/http';
+
+import {
+  SKIP_AUTH_REFRESH,
+} from '../../Auth/auth-http-context';
 
 export interface LoginPersonaRequest {
   email: string;
   password: string;
 }
 
-export interface RefreshPersonaRequest {
-  refreshToken: string;
+export interface ApiMessageResponse {
+  message: string;
 }
 
-export interface LogoutPersonaRequest {
-  refreshToken: string;
+export interface PersonaSessionResponse {
+  authenticated: boolean;
+  identityType: string;
+  personaId: string;
+  tenantId: string;
+  tipo: string;
 }
 
 @Injectable({
@@ -27,10 +35,15 @@ export interface LogoutPersonaRequest {
 export class AuthPersona {
   private readonly baseUrl = API_CONFIG.baseUrl;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient
+  ) {}
 
   registro(data: unknown) {
-    return this.http.post(`${this.baseUrl}/auth/registro`, data);
+    return this.http.post(
+      `${this.baseUrl}/auth/registro`,
+      data
+    );
   }
 
   validarInvitacion(token: string) {
@@ -46,55 +59,46 @@ export class AuthPersona {
     );
   }
 
-  loginPersona(data: LoginPersonaRequest) {
-    return this.http.post<AuthPersonaResult>(
+  loginPersona(
+    data: LoginPersonaRequest
+  ): Observable<ApiMessageResponse> {
+    return this.http.post<ApiMessageResponse>(
       `${this.baseUrl}/authPersona/login-persona`,
       data
     );
   }
 
-  refreshTokenPersona() {
-    const request: RefreshPersonaRequest = {
-      refreshToken: this.getPersonaRefreshToken() ?? '',
-    };
-
-    return this.http.post<AuthPersonaResult>(
+  refreshTokenPersona():
+    Observable<ApiMessageResponse> {
+    return this.http.post<ApiMessageResponse>(
       `${this.baseUrl}/authPersona/refresh`,
-      request
+      {}
     );
   }
 
-  logoutPersona() {
-    const request: LogoutPersonaRequest = {
-      refreshToken: this.getPersonaRefreshToken() ?? '',
-    };
-
-    return this.http.post(
+  logoutPersona():
+    Observable<ApiMessageResponse> {
+    return this.http.post<ApiMessageResponse>(
       `${this.baseUrl}/authPersona/logout`,
-      request
+      {}
     );
   }
 
-  guardarTokensPersona(tokens: AuthPersonaResult): void {
-    localStorage.setItem('personaAccessToken', tokens.accessToken);
-    localStorage.setItem('personaRefreshToken', tokens.refreshToken);
-  }
+  comprobarSesion():
+    Observable<PersonaSessionResponse> {
 
-  limpiarSesionPersona(): void {
-    localStorage.removeItem('personaAccessToken');
-    localStorage.removeItem('personaRefreshToken');
-    localStorage.removeItem('tokenPersona');
-  }
+    const context =
+      new HttpContext()
+        .set(
+          SKIP_AUTH_REFRESH,
+          true
+        );
 
-  getPersonaAccessToken(): string | null {
-    return localStorage.getItem('personaAccessToken');
-  }
-
-  getPersonaRefreshToken(): string | null {
-    return localStorage.getItem('personaRefreshToken');
-  }
-
-  isPersonaLoggedIn(): boolean {
-    return !!this.getPersonaAccessToken();
+    return this.http.get<PersonaSessionResponse>(
+      `${this.baseUrl}/authPersona/session`,
+      {
+        context,
+      }
+    );
   }
 }

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth/auth';
 import { ChangeDetectorRef } from '@angular/core';
 import { finalize } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -37,7 +38,8 @@ export class RegisterComponent {
   acceptPolicies = false;
 
   constructor(private authService: AuthService,
-              private cdr: ChangeDetectorRef
+              private cdr: ChangeDetectorRef,
+              private router: Router
               ) {}
 
   hasUppercase(): boolean {
@@ -109,8 +111,14 @@ export class RegisterComponent {
       )
       .subscribe({
         next: () => {
-          this.successMessage = 'Registro completado correctamente. Ya puedes iniciar sesión.';
+          this.successMessage =
+            'Registro completado correctamente. Ya puedes iniciar sesión.';
+
           this.clearSensitiveFields();
+
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 1500);
         },
         error: (error) => {
           this.errorMessage = this.getRegisterErrorMessage(error);

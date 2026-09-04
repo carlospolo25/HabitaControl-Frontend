@@ -581,11 +581,11 @@
                           {{ item.status }}
                         </span>
 
-                        <small class="news-item__date">
-                          {{ item.createdAt | date:'mediumDate' }}
-                          ·
-                          {{ item.createdAt | date:'shortTime' }}
-                        </small>
+                          <small class="news-item__date">
+                            {{ item.createdAt | date:'mediumDate':'America/Bogota' }}
+                            ·
+                            {{ item.createdAt | date:'shortTime':'America/Bogota' }}
+                          </small>
 
                       </div>
 
@@ -667,11 +667,11 @@
                           {{ item.status }}
                         </span>
 
-                        <small class="news-item__date">
-                          {{ item.createdAt | date:'mediumDate' }}
-                          ·
-                          {{ item.createdAt | date:'shortTime' }}
-                        </small>
+                          <small class="news-item__date">
+                            {{ item.createdAt | date:'mediumDate':'America/Bogota' }}
+                            ·
+                            {{ item.createdAt | date:'shortTime':'America/Bogota' }}
+                          </small>
 
                       </div>
 

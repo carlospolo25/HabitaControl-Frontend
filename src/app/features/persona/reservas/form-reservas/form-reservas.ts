@@ -21,6 +21,12 @@ import {
   ReservaZonaComunService,
 } from '../../../../core/services/ReservaZonaComun/reservazona-comun';
 
+import {
+  obtenerAnioActualColombia,
+  obtenerFechaHoyColombia,
+  obtenerMesActualColombia,
+} from '../../../../core/utils/colombia-date.util';
+
 @Component({
   selector: 'app-form-reservas',
   standalone: true,
@@ -492,21 +498,9 @@ export class FormReservas implements OnInit {
       return 'Solo puedes reservar dentro del mes actual.';
     }
 
-    const fechaSeleccionada =
-      this.convertirFechaLocal(
-        this.fechaReserva,
-      );
-
-    const hoy =
-      this.convertirFechaLocal(
-        this.fechaMinima,
-      );
-
     if (
-      fechaSeleccionada.getFullYear() !==
-        hoy.getFullYear() ||
-      fechaSeleccionada.getMonth() !==
-        hoy.getMonth()
+      this.fechaReserva.substring(0, 7) !==
+      this.fechaMinima.substring(0, 7)
     ) {
       return 'La fecha seleccionada debe pertenecer al mes actual.';
     }
@@ -587,50 +581,24 @@ export class FormReservas implements OnInit {
   }
 
   private establecerRangoFechas(): void {
-    const hoy = new Date();
+    const year =
+      obtenerAnioActualColombia();
 
-    const ultimoDiaMes = new Date(
-      hoy.getFullYear(),
-      hoy.getMonth() + 1,
-      0,
-    );
+    const month =
+      obtenerMesActualColombia();
 
     this.fechaMinima =
-      this.formatearFechaInput(hoy);
+      obtenerFechaHoyColombia();
+
+    const ultimoDia =
+      new Date(
+        Date.UTC(year, month, 0)
+      ).getUTCDate();
 
     this.fechaMaxima =
-      this.formatearFechaInput(
-        ultimoDiaMes,
-      );
-  }
-
-  private formatearFechaInput(
-    fecha: Date,
-  ): string {
-    const year = fecha.getFullYear();
-
-    const month = String(
-      fecha.getMonth() + 1,
-    ).padStart(2, '0');
-
-    const day = String(
-      fecha.getDate(),
-    ).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  }
-
-  private convertirFechaLocal(
-    fecha: string,
-  ): Date {
-    const [year, month, day] =
-      fecha.split('-').map(Number);
-
-    return new Date(
-      year,
-      month - 1,
-      day,
-    );
+      `${year}-${String(month).padStart(2, '0')}-${String(
+        ultimoDia
+      ).padStart(2, '0')}`;
   }
 
   private normalizarHora(

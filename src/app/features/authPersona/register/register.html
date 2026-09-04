@@ -20,12 +20,12 @@
 
       <header class="register-header">
         <div class="register-logo">
-          <img src="assets/brand/logo-habitacontrol.png" alt="HabitaControl">
+          <img src="assets/brand/SincroHabit.png" alt="HabitaControl">
         </div>
 
         <span>Registro de acceso</span>
         <h1>Completa tu registro</h1>
-        <p>Activa tu cuenta para ingresar a HabitaControl.</p>
+        <p>Activa tu cuenta para ingresar a SincroHabit.</p>
         <span class="person-badge">
 
           @if(isResident){
@@ -309,11 +309,46 @@
           </div>
         }
 
+        <div class="privacy-consent">
+
+          <label class="checkbox-consent">
+            <input
+              type="checkbox"
+              name="acceptPolicies"
+              [(ngModel)]="acceptPolicies">
+
+            <span>
+              He leído y acepto la
+
+              <a
+                class="link-button"
+                href="/documentos-legales/politica-tratamiento-datos-v1.0.pdf"
+                target="_blank"
+                rel="noopener noreferrer">
+                Política de Privacidad
+              </a>
+
+              y los
+
+              <a
+                class="link-button"
+                href="/documentos-legales/terminos-condiciones-v1.0.pdf"
+                target="_blank"
+                rel="noopener noreferrer">
+                Términos y Condiciones
+              </a>.
+            </span>
+
+          </label>
+
+        </div>
+
         <div class="form-actions">
           <button
             type="submit"
             class="btn-primary"
-            [disabled]="isSubmitting">
+            [disabled]="isSubmitting || !acceptPolicies">
+
             {{ isSubmitting ? 'Registrando...' : 'Completar registro' }}
           </button>
         </div>

@@ -623,80 +623,34 @@ export class GestionReservasComponent implements OnInit {
   }
 
   private ordenarReservas(
-    reservas:
-      ReservaZonaComunResponse[],
+    reservas: ReservaZonaComunResponse[],
   ): ReservaZonaComunResponse[] {
     return [...reservas].sort(
       (a, b) => {
         const prioridadA =
-          this.esEstadoPendiente(
-            a.estado,
-          )
+          this.esEstadoPendiente(a.estado)
             ? 0
             : 1;
 
         const prioridadB =
-          this.esEstadoPendiente(
-            b.estado,
-          )
+          this.esEstadoPendiente(b.estado)
             ? 0
             : 1;
 
-        if (
-          prioridadA !== prioridadB
-        ) {
-          return (
-            prioridadA -
-            prioridadB
-          );
+        if (prioridadA !== prioridadB) {
+          return prioridadA - prioridadB;
         }
 
-        const fechaA =
-          this.construirFechaHoraLocal(
-            a.fechaReserva,
-            a.horaInicio,
-          ).getTime();
+        const fechaHoraA =
+          `${a.fechaReserva.substring(0, 10)}T${a.horaInicio.substring(0, 5)}`;
 
-        const fechaB =
-          this.construirFechaHoraLocal(
-            b.fechaReserva,
-            b.horaInicio,
-          ).getTime();
+        const fechaHoraB =
+          `${b.fechaReserva.substring(0, 10)}T${b.horaInicio.substring(0, 5)}`;
 
-        return fechaA - fechaB;
+        return fechaHoraA.localeCompare(
+          fechaHoraB
+        );
       },
-    );
-  }
-
-  private construirFechaHoraLocal(
-    fecha: string,
-    hora: string,
-  ): Date {
-    const [
-      year,
-      month,
-      day,
-    ] = fecha
-      .substring(0, 10)
-      .split('-')
-      .map(Number);
-
-    const [
-      hours,
-      minutes,
-    ] = hora
-      .substring(0, 5)
-      .split(':')
-      .map(Number);
-
-    return new Date(
-      year,
-      month - 1,
-      day,
-      hours,
-      minutes,
-      0,
-      0,
     );
   }
 

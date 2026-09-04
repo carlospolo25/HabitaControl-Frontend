@@ -15,6 +15,11 @@ import {
 } from '../../../../core/services/finanzas/balanceFinanciero/balance-financiero.service';
 
 import {
+  obtenerAnioActualColombia,
+  obtenerMesActualColombia,
+} from '../../../../core/utils/colombia-date.util';
+
+import {
   ReporteFinanciero,
 } from '../reporte-financiero/reporte-financiero';
 
@@ -54,8 +59,11 @@ export class BalanceFinanciero implements OnInit {
   errorMessage = '';
   successMessage = '';
 
-  readonly anioActual = new Date().getFullYear();
-  readonly mesActual = new Date().getMonth() + 1;
+  readonly anioActual =
+    obtenerAnioActualColombia();
+
+  readonly mesActual =
+    obtenerMesActualColombia();
 
   anioSeleccionado = this.anioActual;
   tipoPeriodoSeleccionado: TipoPeriodoFinanciero = 'mensual';

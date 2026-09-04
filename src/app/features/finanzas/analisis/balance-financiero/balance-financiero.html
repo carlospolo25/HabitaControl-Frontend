@@ -593,11 +593,11 @@
           <p class="balance-results__description">
             Información comprendida entre el
             <strong>
-              {{ balance.fechaInicio | date:'dd/MM/yyyy' }}
+              {{ balance.fechaInicio | date:'dd/MM/yyyy':'UTC' }}
             </strong>
             y el
             <strong>
-              {{ balance.fechaFin | date:'dd/MM/yyyy' }}
+              {{ balance.fechaFin | date:'dd/MM/yyyy':'UTC' }}
             </strong>.
           </p>
         </div>
@@ -1013,7 +1013,7 @@
             <dt>Fecha inicial</dt>
 
             <dd>
-              {{ balance.fechaInicio | date:'dd/MM/yyyy' }}
+              {{ balance.fechaInicio | date:'dd/MM/yyyy':'UTC' }}
             </dd>
           </div>
 
@@ -1021,7 +1021,7 @@
             <dt>Fecha final</dt>
 
             <dd>
-              {{ balance.fechaFin | date:'dd/MM/yyyy' }}
+              {{ balance.fechaFin | date:'dd/MM/yyyy':'UTC' }}
             </dd>
           </div>
         </dl>

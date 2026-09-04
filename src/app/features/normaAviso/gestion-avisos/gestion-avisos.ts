@@ -15,6 +15,7 @@ import {
 } from '../../../core/services/avisos/aviso';
 import { FormAvisoComponent } from '../FormAvisoComponent/form-aviso-component/form-aviso-component';
 import { GestionNormasConvivenciaComponent } from '../gestion-normas-convivencia-component/gestion-normas-convivencia-component';
+import { API_CONFIG } from '../../../core/config/api.config';
 
 @Component({
   selector: 'app-gestion-avisos',
@@ -306,21 +307,36 @@ export class GestionAvisosComponent implements OnInit {
   }
 
   // =========================================================
-  // ARCHIVO
+  // OBTENER ARCHIVO
   // =========================================================
 
-  abrirArchivo(
-    aviso: AvisoResponse
-  ): void {
-    if (!aviso.archivoUrl) {
-      return;
+  obtenerUrlArchivo(
+    archivoUrl?: string | null
+  ): string {
+
+    if (!archivoUrl) {
+      return '';
     }
 
-    window.open(
-      aviso.archivoUrl,
-      '_blank',
-      'noopener,noreferrer'
-    );
+    if (
+      archivoUrl.startsWith('http://') ||
+      archivoUrl.startsWith('https://')
+    ) {
+      return archivoUrl;
+    }
+
+    const backendUrl =
+      API_CONFIG.baseUrl.replace(
+        /\/api\/?$/,
+        ''
+      );
+
+    const rutaArchivo =
+      archivoUrl.startsWith('/')
+        ? archivoUrl
+        : `/${archivoUrl}`;
+
+    return `${backendUrl}${rutaArchivo}`;
   }
 
   // =========================================================

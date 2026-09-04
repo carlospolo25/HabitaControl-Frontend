@@ -40,6 +40,7 @@ export class RegisterPersonaComponent implements OnInit {
   observaciones = '';
   recibeNotificaciones = true;
   showPassword = false;
+  acceptPolicies = false;
 
   
 
@@ -66,28 +67,47 @@ export class RegisterPersonaComponent implements OnInit {
     this.estado = 'loading';
     this.errorMessage = '';
 
-    this.authPersona.validarInvitacion(this.token).subscribe({
-      next: (response: any) => {
-        this.tipoPersona = Number(
-          response.personType ??
-          response.tipoPersona ??
-          response.type ??
-          response.tipo
-        );
+    this.authPersona
+      .validarInvitacion(this.token)
+      .pipe(
+        finalize(() => {
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.tipoPersona = Number(
+            response.personType ??
+            response.tipoPersona ??
+            response.type ??
+            response.tipo
+          );
 
-        this.estado = 'ok';
-        this.cdr.detectChanges();
-      },
-      error: ({ error }) => {
-        this.estado = 'error';
-        this.errorMessage =
-          error?.message ??
-          'La invitación no es válida, fue usada o ya expiró.';
-      },
-    });
+          this.estado = 'ok';
+        },
+
+        error: (err) => {
+          this.estado = 'error';
+
+          this.errorMessage =
+            err?.error?.message ??
+            err?.error?.title ??
+            err?.message ??
+            'No fue posible validar la invitación.';
+        },
+      });
   }
 
   registrar(): void {
+
+    this.clearMessages();
+
+    if (!this.acceptPolicies) {
+      this.errorMessage =
+        'Debes aceptar la Política de Privacidad y los Términos y Condiciones para completar el registro.';
+      return;
+    }
+
     if (this.isSubmitting) {
       return;
     }

@@ -42,6 +42,22 @@ export class ReporteFinancieroPdfService {
       compress: true,
     });
 
+    const ingresosPagados = (reporte.ingresosDetalle ?? [])
+      .filter(
+        movimiento =>
+          movimiento.estado
+            ?.trim()
+            .toLowerCase() === 'pagado'
+      );
+
+    const egresosPagados = (reporte.egresosDetalle ?? [])
+      .filter(
+        movimiento =>
+          movimiento.estado
+            ?.trim()
+            .toLowerCase() === 'pagado'
+      );
+
     this.configurarPropiedades(documento, reporte);
     this.agregarEncabezado(documento, reporte);
 
@@ -50,6 +66,8 @@ export class ReporteFinancieroPdfService {
     posicionY = this.agregarResumenFinanciero(
       documento,
       reporte,
+      ingresosPagados.length,
+      egresosPagados.length,
       posicionY
     );
 
@@ -78,7 +96,7 @@ export class ReporteFinancieroPdfService {
     posicionY = this.agregarMovimientos(
       documento,
       'Detalle de ingresos',
-      reporte.ingresosDetalle ?? [],
+      ingresosPagados,
       this.colores.verdeExito,
       posicionY + 8
     );
@@ -86,13 +104,37 @@ export class ReporteFinancieroPdfService {
     this.agregarMovimientos(
       documento,
       'Detalle de egresos',
-      reporte.egresosDetalle ?? [],
+      egresosPagados,
       this.colores.rojoAlerta,
       posicionY + 8
     );
 
     this.agregarPaginacion(documento);
     this.descargar(documento, reporte);
+  }
+
+  private formatearFechaPeriodo(
+    fecha: string | Date | null | undefined
+  ): string {
+    if (!fecha) {
+      return 'Sin fecha';
+    }
+
+    const fechaConvertida =
+      fecha instanceof Date
+        ? fecha
+        : new Date(fecha);
+
+    if (Number.isNaN(fechaConvertida.getTime())) {
+      return 'Fecha inválida';
+    }
+
+    return new Intl.DateTimeFormat('es-CO', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).format(fechaConvertida);
   }
 
   private configurarPropiedades(
@@ -178,6 +220,8 @@ export class ReporteFinancieroPdfService {
   private agregarResumenFinanciero(
     documento: jsPDF,
     reporte: ReporteFinancieroResponse,
+    cantidadIngresos: number,
+    cantidadEgresos: number,
     posicionY: number
   ): number {
     const anchoPagina = documento.internal.pageSize.getWidth();
@@ -196,8 +240,8 @@ export class ReporteFinancieroPdfService {
       anchoTarjeta,
       'Total de ingresos',
       this.formatearMoneda(reporte.totalIngresos),
-      `${reporte.cantidadIngresos} ${this.obtenerTextoMovimientos(
-        reporte.cantidadIngresos
+      `${cantidadIngresos} ${this.obtenerTextoMovimientos(
+        cantidadIngresos
       )}`,
       this.colores.verdeExito
     );
@@ -211,8 +255,8 @@ export class ReporteFinancieroPdfService {
       anchoTarjeta,
       'Total de egresos',
       this.formatearMoneda(reporte.totalEgresos),
-      `${reporte.cantidadEgresos} ${this.obtenerTextoMovimientos(
-        reporte.cantidadEgresos
+      `${cantidadEgresos} ${this.obtenerTextoMovimientos(
+        cantidadEgresos
       )}`,
       this.colores.rojoAlerta
     );
@@ -354,7 +398,9 @@ export class ReporteFinancieroPdfService {
     documento.setTextColor(...this.colores.textoSecundario);
 
     documento.text(
-      `${this.formatearFecha(reporte.fechaInicio)} al ${this.formatearFecha(
+    `${this.formatearFechaPeriodo(
+      reporte.fechaInicio
+      )} al ${this.formatearFechaPeriodo(
         reporte.fechaFin
       )}`,
       this.margenHorizontal + 105,
@@ -891,7 +937,7 @@ export class ReporteFinancieroPdfService {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
-      timeZone: 'America/Bogota',
+      timeZone: 'UTC',
     }).format(fechaConvertida);
   }
 

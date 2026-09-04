@@ -11,6 +11,10 @@ import {
   SeguridadService,
 } from '../../../core/services/seguridad/seguridad';
 
+import {
+  AuthSessionContext,
+} from '../../../core/Auth/auth-session-context';
+
 @Component({
   selector: 'app-cerrar-sesiones',
   standalone: true,
@@ -35,6 +39,7 @@ export class CerrarSesionesComponent implements OnInit {
     private readonly seguridadService: SeguridadService,
     private readonly authService: AuthService,
     private readonly authPersona: AuthPersona,
+    private readonly sessionContext: AuthSessionContext,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
@@ -131,7 +136,36 @@ export class CerrarSesionesComponent implements OnInit {
   }
 
   private limpiarSesionesLocales(): void {
-    this.authService.clearSession();
-    this.authPersona.limpiarSesionPersona();
+    this.sessionContext.clear();
+
+    this.authPersona
+      .logoutPersona()
+      .subscribe({
+        next: () => {
+          // Cookies Persona eliminadas.
+        },
+
+        error: (error) => {
+          console.warn(
+            'Las sesiones fueron revocadas, pero no fue posible completar la limpieza de las cookies Persona:',
+            error
+          );
+        },
+      });
+
+    this.authService
+      .logout()
+      .subscribe({
+        next: () => {
+          // Cookies Admin eliminadas.
+        },
+
+        error: (error) => {
+          console.warn(
+            'Las sesiones fueron revocadas, pero no fue posible completar la limpieza de las cookies Admin:',
+            error
+          );
+        },
+      });
   }
 }

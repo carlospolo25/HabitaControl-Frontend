@@ -925,9 +925,9 @@
                   </dt>
 
                   <dd class="pet-profile-details__value">
-                    {{
+                   {{
                       mascota.fechaNacimiento
-                        ? (mascota.fechaNacimiento | date: 'dd/MM/yyyy')
+                        ? (mascota.fechaNacimiento | date: 'dd/MM/yyyy':'UTC')
                         : 'No registrada'
                     }}
                   </dd>

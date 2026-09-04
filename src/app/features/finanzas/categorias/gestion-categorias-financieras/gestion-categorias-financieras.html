@@ -381,7 +381,7 @@
                             Actualizada el
                             {{
                               categoria.fechaActualizacion
-                                | date:'dd/MM/yyyy'
+                                | date:'dd/MM/yyyy':'America/Bogota'
                             }}
                           </small>
                         }
@@ -418,7 +418,7 @@
                     <time
                       class="category-table__date"
                       [attr.datetime]="categoria.fechaCreacion">
-                      {{ categoria.fechaCreacion | date:'dd/MM/yyyy' }}
+                      {{ categoria.fechaCreacion | date:'dd/MM/yyyy':'America/Bogota' }}
                     </time>
                   </td>
 

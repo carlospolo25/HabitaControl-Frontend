@@ -59,6 +59,9 @@ export class DetallePersona implements OnChanges {
   errorVehiculos = '';
   errorMascotas = '';
 
+  imagenAmpliada: string | null = null;
+  imagenAmpliadaAlt = '';
+
   vehiculosCargados = false;
   mascotasCargadas = false;
 
@@ -80,6 +83,30 @@ export class DetallePersona implements OnChanges {
     ) {
       this.reiniciarDetalle();
     }
+  }
+
+  obtenerFotoPersona(): string | null {
+    return this.construirUrlArchivo(
+      this.persona?.fotoUrl
+    );
+  }
+
+
+  abrirImagen(
+    url: string | null,
+    alt: string
+  ): void {
+    if (!url) {
+      return;
+    }
+
+    this.imagenAmpliada = url;
+    this.imagenAmpliadaAlt = alt;
+  }
+
+  cerrarImagen(): void {
+    this.imagenAmpliada = null;
+    this.imagenAmpliadaAlt = '';
   }
 
   cambiarTab(
@@ -308,6 +335,9 @@ export class DetallePersona implements OnChanges {
 
     this.vehiculosCargados = false;
     this.mascotasCargadas = false;
+
+    this.imagenAmpliada = null;
+    this.imagenAmpliadaAlt = '';
   }
 
   private construirUrlArchivo(

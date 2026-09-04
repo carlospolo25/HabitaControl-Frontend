@@ -13,6 +13,10 @@ import {
   PrioridadTarea,
 } from '../../../../core/services/novedad/novedad';
 
+import {
+  obtenerFechaHoyColombia
+} from '../../../../core/utils/colombia-date.util';
+
 @Component({
   selector: 'app-form-tarea',
   standalone: true,
@@ -214,13 +218,9 @@ export class FormTarea {
       return false;
     }
 
-    const fechaSeleccionada =
-      new Date(`${this.fechaLimite}T00:00:00`);
+    const hoyColombia =
+      obtenerFechaHoyColombia();
 
-    const hoy = new Date();
-
-    hoy.setHours(0, 0, 0, 0);
-
-    return fechaSeleccionada < hoy;
+    return this.fechaLimite < hoyColombia;
   }
 }

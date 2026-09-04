@@ -540,7 +540,7 @@
                   <strong class="management-reservation-card__schedule-value">
                     {{
                       reservation.fechaReserva
-                        | date: 'dd/MM/yyyy'
+                        | date: 'dd/MM/yyyy':'UTC'
                     }}
                   </strong>
                 </div>
@@ -595,7 +595,7 @@
                 <dd>
                   {{
                     reservation.fechaCreacion
-                      | date: 'dd/MM/yyyy, h:mm a'
+                      | date: 'dd/MM/yyyy, h:mm a':'America/Bogota'
                   }}
                 </dd>
               </div>
@@ -829,7 +829,7 @@
                 <dd>
                   {{
                     reservaSeleccionada.fechaReserva
-                      | date: 'dd/MM/yyyy'
+                      | date: 'dd/MM/yyyy':'UTC'
                   }}
                 </dd>
               </div>
@@ -868,7 +868,7 @@
                 <dd>
                   {{
                     reservaSeleccionada.fechaCreacion
-                      | date: 'dd/MM/yyyy, h:mm a'
+                      | date: 'dd/MM/yyyy, h:mm a':'America/Bogota'
                   }}
                 </dd>
               </div>
@@ -878,9 +878,9 @@
                   <dt>Última actualización</dt>
 
                   <dd>
-                    {{
+                   {{
                       reservaSeleccionada.fechaActualizacion
-                        | date: 'dd/MM/yyyy, h:mm a'
+                        | date: 'dd/MM/yyyy, h:mm a':'America/Bogota'
                     }}
                   </dd>
                 </div>
@@ -893,7 +893,7 @@
                   <dd>
                     {{
                       reservaSeleccionada.fechaRevision
-                        | date: 'dd/MM/yyyy, h:mm a'
+                        | date: 'dd/MM/yyyy, h:mm a':'America/Bogota'
                     }}
                   </dd>
                 </div>
@@ -906,7 +906,7 @@
                   <dd>
                     {{
                       reservaSeleccionada.fechaCancelacion
-                        | date: 'dd/MM/yyyy, h:mm a'
+                        | date: 'dd/MM/yyyy, h:mm a':'America/Bogota'
                     }}
                   </dd>
                 </div>
@@ -1147,7 +1147,7 @@
                 <dd>
                   {{
                     reservaParaRevisar.fechaReserva
-                      | date: 'dd/MM/yyyy'
+                      | date: 'dd/MM/yyyy':'UTC'
                   }}
                 </dd>
               </div>

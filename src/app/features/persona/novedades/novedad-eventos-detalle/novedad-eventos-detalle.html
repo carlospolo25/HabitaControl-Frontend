@@ -124,7 +124,7 @@
 
               @if (expediente.fechaLimite) {
 
-                {{ expediente.fechaLimite | date:'mediumDate' }}
+                {{ expediente.fechaLimite | date:'mediumDate':'UTC' }}
 
               } @else {
 
@@ -146,8 +146,8 @@
           <strong>
             {{
               expediente?.fechaApertura
-                ? (expediente?.fechaApertura | date:'medium')
-                : (fechaApertura | date:'medium')
+                ? (expediente?.fechaApertura | date:'medium':'America/Bogota')
+                : (fechaApertura | date:'medium':'America/Bogota')
             }}
           </strong>
 
@@ -162,11 +162,11 @@
 
             @if (expediente?.fechaCierre) {
 
-              {{ expediente?.fechaCierre | date:'medium' }}
+              {{ expediente?.fechaCierre | date:'medium':'America/Bogota' }}
 
             } @else if (fechaCierre) {
 
-              {{ fechaCierre | date:'medium' }}
+              {{ fechaCierre | date:'medium':'America/Bogota' }}
 
             } @else {
 
@@ -224,9 +224,9 @@
               </div>
 
 
-              <time>
-                {{ evento.fechaCreacion | date:'medium' }}
-              </time>
+                <time>
+                  {{ evento.fechaCreacion | date:'medium':'America/Bogota' }}
+                </time>
 
             </header>
 

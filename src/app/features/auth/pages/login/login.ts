@@ -49,8 +49,7 @@ export class LoginComponent {
         })
       )
       .subscribe({
-        next: (response) => {
-          this.authService.guardarTokens(response);
+        next: () => {
           this.router.navigateByUrl('/dashboard');
         },
         error: (error) => {

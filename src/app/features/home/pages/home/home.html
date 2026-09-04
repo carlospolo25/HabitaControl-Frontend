@@ -1,10 +1,159 @@
 <section class="home-page">
 
-  <main class="home-hero">
+  <!-- ======================================================
+       HEADER / NAVEGACIÓN
+       ====================================================== -->
 
-    <!-- ======================================================
-         PRESENTACIÓN DE HABITACONTROL
-         ====================================================== -->
+  <header class="home-navbar">
+
+    <div class="home-navbar__brand">
+
+      <img
+        src="assets/brand/SincroHabit.png"
+        alt="Logo de SincroHabit"
+        class="home-navbar__logo">
+
+      <div class="home-navbar__brand-text">
+        <strong>SincroHabit</strong>
+        <span>Gestión residencial inteligente</span>
+      </div>
+
+    </div>
+
+    <nav
+      class="home-navbar__nav"
+      aria-label="Navegación principal">
+
+      <button
+        type="button"
+        class="home-navbar__link"
+        (click)="scrollToSection('inicio')">
+        Inicio
+      </button>
+
+      <button
+        type="button"
+        class="home-navbar__link"
+        (click)="scrollToSection('modulos')">
+        Módulos
+      </button>
+
+      <button
+        type="button"
+        class="home-navbar__link"
+        (click)="scrollToSection('beneficios')">
+        Beneficios
+      </button>
+
+      <button
+        type="button"
+        class="home-navbar__link"
+        (click)="scrollToSection('como-funciona')">
+        ¿Cómo funciona?
+      </button>
+
+      <button
+        type="button"
+        class="home-navbar__link"
+        (click)="scrollToSection('contacto')">
+        Contacto
+      </button>
+
+    </nav>
+
+    <div class="home-navbar__actions">
+
+      <div class="home-login-selector">
+
+        <button
+          type="button"
+          class="home-navbar__button home-navbar__button--secondary"
+          aria-haspopup="menu"
+          [attr.aria-expanded]="loginMenuOpen === 'navbar'"
+          (click)="toggleLoginMenu('navbar')">
+
+          Iniciar sesión
+
+          <span
+            class="home-login-selector__arrow"
+            [class.home-login-selector__arrow--open]="
+              loginMenuOpen === 'navbar'
+            "
+            aria-hidden="true">
+            ▾
+          </span>
+
+        </button>
+
+        @if (loginMenuOpen === 'navbar') {
+
+          <div
+            class="home-login-menu home-login-menu--navbar"
+            role="menu">
+
+            <button
+              type="button"
+              class="home-login-menu__option"
+              role="menuitem"
+              (click)="goToAdminLogin()">
+
+              <span
+                class="home-login-menu__icon"
+                aria-hidden="true">
+                👤
+              </span>
+
+              <span class="home-login-menu__content">
+                <strong>Administrador</strong>
+                <small>Panel administrativo</small>
+              </span>
+
+            </button>
+
+            <button
+              type="button"
+              class="home-login-menu__option"
+              role="menuitem"
+              (click)="goToPersonaLogin()">
+
+              <span
+                class="home-login-menu__icon"
+                aria-hidden="true">
+                🏠
+              </span>
+
+              <span class="home-login-menu__content">
+                <strong>Persona</strong>
+                <small>Residente, seguridad o personal</small>
+              </span>
+
+            </button>
+
+          </div>
+
+        }
+
+      </div>
+
+      <button
+        type="button"
+        class="home-navbar__button home-navbar__button--primary"
+        (click)="goToRegister()">
+        Crear cuenta
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- ======================================================
+       HERO PRINCIPAL
+       ====================================================== -->
+
+  <main
+    id="inicio"
+    class="home-hero">
 
     <section
       class="home-hero__content"
@@ -14,8 +163,8 @@
 
         <img
           class="home-brand__logo"
-          src="assets/brand/logo-habitacontrol.png"
-          alt="Logo de HabitaControl">
+          src="assets/brand/SincroHabit.png"
+          alt="Logo de SincroHabit">
 
         <span class="home-brand__badge">
           Plataforma SaaS para conjuntos residenciales
@@ -38,7 +187,7 @@
           </span>
 
           <strong class="home-hero__title-brand">
-            HabitaControl
+            SincroHabit
           </strong>
 
         </h1>
@@ -52,29 +201,97 @@
 
       </header>
 
-      <div
-        class="home-hero__actions"
-        aria-label="Opciones de acceso">
+      <div class="home-navbar__actions">
+
+        <!-- ==========================================
+            SELECTOR DE INICIO DE SESIÓN
+            ========================================== -->
+
+        <div class="home-login-selector">
+
+          <button
+            type="button"
+            class="home-button home-button--primary"
+            aria-haspopup="menu"
+            [attr.aria-expanded]="loginMenuOpen === 'hero'"
+            (click)="toggleLoginMenu('hero')">
+
+            <span class="home-button__text">
+              Iniciar sesión
+            </span>
+
+            <span
+              class="home-login-selector__arrow"
+              [class.home-login-selector__arrow--open]="
+                loginMenuOpen === 'hero'
+              "
+              aria-hidden="true">
+              ▾
+            </span>
+
+          </button>
+
+          @if (loginMenuOpen === 'hero') {
+
+            <div
+              class="home-login-menu home-login-menu--hero"
+              role="menu">
+
+              <button
+                type="button"
+                class="home-login-menu__option"
+                role="menuitem"
+                (click)="goToAdminLogin()">
+
+                <span
+                  class="home-login-menu__icon"
+                  aria-hidden="true">
+                  👤
+                </span>
+
+                <span class="home-login-menu__content">
+                  <strong>Administrador</strong>
+                  <small>Panel administrativo</small>
+                </span>
+
+              </button>
+
+              <button
+                type="button"
+                class="home-login-menu__option"
+                role="menuitem"
+                (click)="goToPersonaLogin()">
+
+                <span
+                  class="home-login-menu__icon"
+                  aria-hidden="true">
+                  🏠
+                </span>
+
+                <span class="home-login-menu__content">
+                  <strong>Persona</strong>
+                  <small>Residente, seguridad o personal</small>
+                </span>
+
+              </button>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- ==========================================
+            CREAR CUENTA
+            ========================================== -->
 
         <button
           type="button"
-          class="home-button home-button--primary"
-          (click)="goToLogin()">
-
-          <span class="home-button__text">
-            Iniciar sesión
-          </span>
-
-        </button>
-
-        <button
-          type="button"
-          class="home-button home-button--secondary"
+          class="home-navbar__button home-navbar__button--primary"
           (click)="goToRegister()">
 
-          <span class="home-button__text">
-            Crear cuenta
-          </span>
+          Crear cuenta
 
         </button>
 
@@ -99,6 +316,7 @@
       </div>
 
     </section>
+
 
     <!-- ======================================================
          CARRUSEL DE FUNCIONALIDADES
@@ -189,7 +407,7 @@
             <div class="feature-card__body">
 
               <span class="feature-card__label">
-                Módulo de HabitaControl
+                Módulo de SincroHabit
               </span>
 
               <h3 class="feature-card__title">
@@ -265,5 +483,417 @@
     </section>
 
   </main>
+
+
+  <!-- ======================================================
+       ¿QUÉ ES SINCROHABIT?
+       ====================================================== -->
+
+  <section
+    class="home-about"
+    aria-labelledby="about-title">
+
+    <div class="home-about__content">
+
+      <span class="home-section-eyebrow">
+        Sobre nosotros
+      </span>
+
+      <h2
+        id="about-title"
+        class="home-section-title">
+        ¿Qué es <strong>SincroHabit?</strong>
+      </h2>
+
+      <p class="home-about__description">
+        SincroHabit es una plataforma web diseñada para apoyar la gestión
+        integral de conjuntos residenciales. Centraliza procesos operativos,
+        administrativos y de comunicación en un entorno moderno, organizado
+        y accesible para cada tipo de usuario.
+      </p>
+
+      <p class="home-about__description">
+        Desde el registro de residentes y visitantes hasta paquetes,
+        novedades, reservas, vehículos, mascotas y finanzas, cada módulo está
+        diseñado para simplificar las tareas diarias de la administración.
+      </p>
+
+    </div>
+
+    <aside class="home-about__purpose">
+
+      <span class="home-about__purpose-icon">
+        🏢
+      </span>
+
+      <div>
+        <h3>Nuestro propósito</h3>
+
+        <p>
+          Ayudar a las comunidades residenciales a trabajar de manera más
+          organizada, segura y eficiente mediante tecnología útil y sencilla.
+        </p>
+      </div>
+
+    </aside>
+
+  </section>
+
+
+  <!-- ======================================================
+       MÓDULOS
+       ====================================================== -->
+
+  <section
+    id="modulos"
+    class="home-modules"
+    aria-labelledby="modules-title">
+
+    <header class="home-section-header">
+
+      <span class="home-section-eyebrow">
+        Nuestros módulos
+      </span>
+
+      <h2
+        id="modules-title"
+        class="home-section-title">
+        Todo lo que tu conjunto
+        <strong>necesita</strong>
+      </h2>
+
+      <p class="home-section-description">
+        Herramientas especializadas para centralizar la operación diaria.
+      </p>
+
+    </header>
+
+    <div class="home-modules__grid">
+
+      @for (module of modules; track module.title) {
+
+        <article class="home-module-card">
+
+          <div class="home-module-card__header">
+
+            <span class="home-module-card__icon">
+              {{ module.icon }}
+            </span>
+
+            <h3 class="home-module-card__title">
+              {{ module.title }}
+            </h3>
+
+          </div>
+
+          <p class="home-module-card__description">
+            {{ module.description }}
+          </p>
+
+          <figure class="home-module-card__media">
+
+            <img
+              [src]="module.image"
+              [alt]="'Vista del módulo ' + module.title + ' de SincroHabit'">
+
+          </figure>
+
+        </article>
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================
+       BENEFICIOS
+       ====================================================== -->
+
+  <section
+    id="beneficios"
+    class="home-benefits"
+    aria-labelledby="benefits-title">
+
+    <header class="home-benefits__header">
+
+      <span class="home-section-eyebrow home-section-eyebrow--light">
+        ¿Por qué elegir SincroHabit?
+      </span>
+
+      <h2
+        id="benefits-title"
+        class="home-benefits__title">
+        Beneficios que marcan la
+        <strong>diferencia</strong>
+      </h2>
+
+    </header>
+
+    <div class="home-benefits__grid">
+
+      @for (benefit of benefits; track benefit.title) {
+
+        <article class="home-benefit-card">
+
+          <span class="home-benefit-card__icon">
+            {{ benefit.icon }}
+          </span>
+
+          <div>
+
+            <h3 class="home-benefit-card__title">
+              {{ benefit.title }}
+            </h3>
+
+            <p class="home-benefit-card__description">
+              {{ benefit.description }}
+            </p>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================
+       CÓMO FUNCIONA
+       ====================================================== -->
+
+  <section
+    id="como-funciona"
+    class="home-process"
+    aria-labelledby="process-title">
+
+    <header class="home-section-header home-section-header--left">
+
+      <span class="home-section-eyebrow">
+        ¿Cómo funciona?
+      </span>
+
+      <h2
+        id="process-title"
+        class="home-section-title">
+        Es muy fácil comenzar
+      </h2>
+
+    </header>
+
+    <div class="home-process__steps">
+
+      @for (step of steps; track step.number) {
+
+        <article class="home-process-step">
+
+          <span class="home-process-step__number">
+            {{ step.number }}
+          </span>
+
+          <div>
+
+            <h3 class="home-process-step__title">
+              {{ step.title }}
+            </h3>
+
+            <p class="home-process-step__description">
+              {{ step.description }}
+            </p>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================
+       CTA FINAL
+       ====================================================== -->
+
+  <section class="home-final-cta">
+
+    <div class="home-final-cta__content">
+
+      <span class="home-final-cta__icon">
+        🏢
+      </span>
+
+      <div>
+
+        <h2>
+          ¿Listo para organizar mejor tu conjunto?
+        </h2>
+
+        <p>
+          Crea tu cuenta y empieza a centralizar la gestión de tu comunidad
+          con SincroHabit.
+        </p>
+
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="home-button home-button--primary"
+      (click)="goToRegister()">
+      Crear cuenta ahora
+    </button>
+
+  </section>
+
+
+<!-- ======================================================
+     FOOTER
+====================================================== -->
+
+  <footer
+    id="contacto"
+    class="home-footer">
+
+    <div class="home-footer__inner">
+
+      <!-- ==================================================
+          MARCA
+      =================================================== -->
+
+      <section class="home-footer__brand">
+
+        <div class="home-footer__brand-header">
+
+          <img
+            src="assets/brand/SincroHabit.png"
+            alt="Logo de SincroHabit"
+            class="home-footer__logo">
+
+          <div class="home-footer__brand-name">
+
+            <strong>
+              SincroHabit
+            </strong>
+
+            <span>
+              Gestión residencial inteligente
+            </span>
+
+          </div>
+
+        </div>
+
+        <p class="home-footer__description">
+          Centraliza la gestión de tu comunidad residencial
+          en una plataforma simple, segura y organizada.
+        </p>
+
+      </section>
+
+
+      <!-- ==================================================
+          LEGAL
+      =================================================== -->
+
+      <section class="home-footer__column">
+
+        <h3 class="home-footer__column-title">
+          Legal
+        </h3>
+
+        <nav
+          class="home-footer__links"
+          aria-label="Información legal">
+
+          <a
+            href="/documentos-legales/politica-tratamiento-datos-v1.0.pdf"
+            target="_blank"
+            rel="noopener noreferrer">
+            Política de Privacidad
+          </a>
+
+          <a
+            href="/documentos-legales/terminos-condiciones-v1.0.pdf"
+            target="_blank"
+            rel="noopener noreferrer">
+            Términos y Condiciones
+          </a>
+
+        </nav>
+
+      </section>
+
+
+      <!-- ==================================================
+          CONTACTO
+      =================================================== -->
+
+      <section class="home-footer__column">
+
+        <h3 class="home-footer__column-title">
+          Contacto
+        </h3>
+
+        <div class="home-footer__contact">
+
+          <div class="home-footer__contact-item">
+
+            <span
+              class="home-footer__contact-icon"
+              aria-hidden="true">
+              ✉
+            </span>
+
+            <a href="mailto:habitacontrol.privacidad@gmail.com">
+              habitacontrol.privacidad@gmail.com
+            </a>
+
+          </div>
+
+          <div class="home-footer__contact-item">
+
+            <span
+              class="home-footer__contact-icon"
+              aria-hidden="true">
+              ☎
+            </span>
+
+            <a href="tel:+573105323953">
+              +57 310 532 3953
+            </a>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <!-- ==================================================
+        PARTE INFERIOR
+    =================================================== -->
+
+    <div class="home-footer__bottom">
+
+      <p class="home-footer__copyright">
+        © 2026 SincroHabit. Todos los derechos reservados.
+      </p>
+
+      <p class="home-footer__bottom-note">
+        Gestión residencial simple, segura y organizada.
+      </p>
+
+    </div>
+
+  </footer>
 
 </section>

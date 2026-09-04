@@ -17,6 +17,11 @@ import {
 } from '../../../../core/services/finanzas/reporteFinanciero/reporte-financiero.service';
 
 import {
+  obtenerAnioActualColombia,
+  obtenerMesActualColombia,
+} from '../../../../core/utils/colombia-date.util';
+
+import {
   ReporteFinancieroPdfService,
 } from '../../../../core/services/finanzas/reporte-financiero-pdf-service/reporte-financiero-pdf.service';
 
@@ -55,8 +60,11 @@ export class ReporteFinanciero implements OnInit {
   errorMessage = '';
   successMessage = '';
 
-  readonly anioActual = new Date().getFullYear();
-  readonly mesActual = new Date().getMonth() + 1;
+  readonly anioActual =
+    obtenerAnioActualColombia();
+
+  readonly mesActual =
+    obtenerMesActualColombia();
 
   anioSeleccionado = this.anioActual;
   tipoPeriodoSeleccionado: TipoPeriodoFinanciero = 'mensual';
@@ -404,9 +412,17 @@ export class ReporteFinanciero implements OnInit {
       return [];
     }
 
-    return this.detalleActivo === 'ingresos'
-      ? this.reporte.ingresosDetalle
-      : this.reporte.egresosDetalle;
+    const movimientos =
+      this.detalleActivo === 'ingresos'
+        ? this.reporte.ingresosDetalle
+        : this.reporte.egresosDetalle;
+
+    return movimientos.filter(
+      movimiento =>
+        movimiento.estado
+          .trim()
+          .toLowerCase() === 'pagado'
+    );
   }
 
   get movimientosFiltrados(): MovimientoFinancieroResponse[] {

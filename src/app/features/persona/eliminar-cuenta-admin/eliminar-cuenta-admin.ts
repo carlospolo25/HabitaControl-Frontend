@@ -167,15 +167,31 @@ export class EliminarCuentaAdmin {
       )
       .subscribe({
         next: () => {
-          this.authService.clearSession();
+          this.authService
+            .logout()
+            .subscribe({
+              next: () => {
+                this.limpiarFormulario();
 
-          this.limpiarFormulario();
+                this.router.navigate([
+                  '/login',
+                ]);
+              },
 
-          this.router.navigate([
-            '/login',
-          ]);
+              error: (error) => {
+                console.error(
+                  'La cuenta fue eliminada, pero no fue posible finalizar la limpieza de la sesión:',
+                  error
+                );
+
+                this.limpiarFormulario();
+
+                this.router.navigate([
+                  '/login',
+                ]);
+              },
+            });
         },
-
         error: (error) => {
           console.error(
             'Error eliminando la cuenta del administrador:',

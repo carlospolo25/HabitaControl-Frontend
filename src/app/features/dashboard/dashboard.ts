@@ -137,18 +137,28 @@ export class DashboardPage {
   }
 
   logout(): void {
-    const confirmLogout = confirm('¿Quieres cerrar sesión?');
+    const confirmLogout = confirm(
+      '¿Quieres cerrar sesión?'
+    );
 
     if (!confirmLogout) {
       return;
     }
 
-    this.authService.clearSession();                                        
-    this.router.navigate(['/login']);
-
     this.authService.logout().subscribe({
-      next: () => {},
-      error: () => {}
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+
+      error: () => {
+        /*
+        * Si el backend falla, no fingimos
+        * que la sesión fue cerrada.
+        */
+        console.error(
+          'No fue posible cerrar la sesión.'
+        );
+      }
     });
   }
 }

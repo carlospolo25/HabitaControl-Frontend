@@ -16,6 +16,10 @@ import {
   VehiculoService,
 } from '../../../core/services/vehiculos/vehiculo-service';
 
+import {
+  AuthPersona,
+} from '../../../core/services/authPersona/auth-persona';
+
 interface OpcionTipoVehiculo {
   valor: TipoVehiculo;
   etiqueta: string;
@@ -94,19 +98,12 @@ export class MisVehiculosComponent
 
   constructor(
     private readonly vehiculoService: VehiculoService,
+    private readonly authPersona: AuthPersona,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.personaId = this.obtenerPersonaId();
-
-    if (!this.personaId) {
-      this.errorMessage =
-        'No fue posible identificar a la persona autenticada.';
-      return;
-    }
-
-    this.cargarVehiculos();
+    this.cargarSesionPersona();
   }
 
   ngOnDestroy(): void {
@@ -354,6 +351,33 @@ export class MisVehiculosComponent
     this.successMessage = '';
   }
 
+  private cargarSesionPersona(): void {
+    this.authPersona
+      .comprobarSesion()
+      .subscribe({
+        next: (session) => {
+          this.personaId =
+            session.personaId;
+
+          if (!this.personaId) {
+            this.errorMessage =
+              'No fue posible identificar a la persona autenticada.';
+
+            return;
+          }
+
+          this.cargarVehiculos();
+        },
+
+        error: () => {
+          this.personaId = '';
+
+          this.errorMessage =
+            'No fue posible identificar a la persona autenticada.';
+        },
+      });
+  }
+
   private registrarVehiculo(): void {
     const request: RegistrarVehiculoRequest = {
       personaId: this.personaId,
@@ -576,65 +600,6 @@ export class MisVehiculosComponent
   private limpiarMensajes(): void {
     this.errorMessage = '';
     this.successMessage = '';
-  }
-
-  private obtenerPersonaId(): string {
-    const token =
-      localStorage.getItem(
-        'personaAccessToken'
-      );
-
-    if (!token) {
-      return '';
-    }
-
-    try {
-      const partes = token.split('.');
-
-      if (partes.length !== 3) {
-        return '';
-      }
-
-      const payloadBase64 = partes[1]
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
-
-      const payloadNormalizado =
-        payloadBase64.padEnd(
-          Math.ceil(
-            payloadBase64.length / 4
-          ) * 4,
-          '='
-        );
-
-      const payload = JSON.parse(
-        decodeURIComponent(
-          atob(payloadNormalizado)
-            .split('')
-            .map(
-              caracter =>
-                `%${caracter
-                  .charCodeAt(0)
-                  .toString(16)
-                  .padStart(2, '0')}`
-            )
-            .join('')
-        )
-      );
-
-      return (
-        payload?.PersonaId ??
-        payload?.personaId ??
-        ''
-      );
-    } catch (error) {
-      console.error(
-        'No fue posible leer el PersonaId del token:',
-        error
-      );
-
-      return '';
-    }
   }
 
   private obtenerMensajeError(

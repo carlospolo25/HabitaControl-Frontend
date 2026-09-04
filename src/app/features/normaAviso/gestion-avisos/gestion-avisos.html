@@ -414,7 +414,7 @@
 
                     <span class="avisos-notice__created">
                       Creado:
-                      {{ aviso.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}
+                      {{ aviso.fechaCreacion | date:'dd/MM/yyyy HH:mm':'America/Bogota' }}
                     </span>
                   </div>
                 </td>
@@ -442,14 +442,14 @@
                 <!-- PUBLICACIÓN -->
 
                 <td class="avisos-table__date">
-                  {{ aviso.fechaPublicacion | date:'dd/MM/yyyy HH:mm' }}
+                  {{ aviso.fechaPublicacion | date:'dd/MM/yyyy HH:mm':'America/Bogota' }}
                 </td>
 
                 <!-- EXPIRACIÓN -->
 
                 <td class="avisos-table__date">
                   @if (aviso.fechaExpiracion) {
-                    {{ aviso.fechaExpiracion | date:'dd/MM/yyyy HH:mm' }}
+                    {{ aviso.fechaExpiracion | date:'dd/MM/yyyy HH:mm':'America/Bogota' }}
                   } @else {
                     <span class="avisos-table__no-expiration">
                       Sin expiración
@@ -460,11 +460,15 @@
                 <!-- ARCHIVO -->
 
                 <td>
+
                   @if (aviso.archivoUrl) {
-                    <button
-                      type="button"
+
+                    <a
                       class="avisos-file-button"
-                      (click)="abrirArchivo(aviso)">
+                      [href]="obtenerUrlArchivo(aviso.archivoUrl)"
+                      target="_blank"
+                      rel="noopener noreferrer">
+
                       <span class="avisos-file-button__icon">
                         📎
                       </span>
@@ -472,12 +476,17 @@
                       <span class="avisos-file-button__text">
                         {{ aviso.nombreArchivo || 'Ver archivo' }}
                       </span>
-                    </button>
+
+                    </a>
+
                   } @else {
+
                     <span class="avisos-table__no-file">
                       Sin adjunto
                     </span>
+
                   }
+
                 </td>
 
                 <!-- ESTADO -->

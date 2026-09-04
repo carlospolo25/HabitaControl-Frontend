@@ -20,6 +20,12 @@ import {
   PrioridadAviso,
 } from '../../../../core/services/avisos/aviso';
 
+import { API_CONFIG } from '../../../../core/config/api.config';
+import {
+  COLOMBIA_TIME_ZONE,
+  fechaHoraColombiaAUtc
+} from '../../../../core/utils/colombia-date.util';
+
 @Component({
   selector: 'app-form-aviso-component',
   standalone: true,
@@ -277,15 +283,15 @@ export class FormAvisoComponent implements OnChanges {
       audiencia: this.audiencia,
 
       fechaPublicacion:
-        new Date(
+        fechaHoraColombiaAUtc(
           this.fechaPublicacion
-        ).toISOString(),
+        ),
 
       fechaExpiracion:
         this.fechaExpiracion
-          ? new Date(
+          ? fechaHoraColombiaAUtc(
               this.fechaExpiracion
-            ).toISOString()
+            )
           : null,
     };
 
@@ -340,16 +346,17 @@ export class FormAvisoComponent implements OnChanges {
       audiencia: this.audiencia,
 
       fechaPublicacion:
-        new Date(
+        fechaHoraColombiaAUtc(
           this.fechaPublicacion
-        ).toISOString(),
+        ),
 
       fechaExpiracion:
         this.fechaExpiracion
-          ? new Date(
+          ? fechaHoraColombiaAUtc(
               this.fechaExpiracion
-            ).toISOString()
+            )
           : null,
+
     };
 
     this.isSubmitting = true;
@@ -437,8 +444,11 @@ export class FormAvisoComponent implements OnChanges {
       return false;
     }
 
-    const publicacion =
-      new Date(this.fechaPublicacion);
+    const publicacion = new Date(
+      fechaHoraColombiaAUtc(
+        this.fechaPublicacion
+      )
+    );
 
     if (
       Number.isNaN(
@@ -452,8 +462,11 @@ export class FormAvisoComponent implements OnChanges {
     }
 
     if (this.fechaExpiracion) {
-      const expiracion =
-        new Date(this.fechaExpiracion);
+      const expiracion = new Date(
+        fechaHoraColombiaAUtc(
+          this.fechaExpiracion
+        )
+      );
 
       if (
         Number.isNaN(
@@ -477,6 +490,39 @@ export class FormAvisoComponent implements OnChanges {
     }
 
     return true;
+  }
+
+  // =========================================================
+  // URL DEL ARCHIVO
+  // =========================================================
+
+  obtenerUrlArchivo(
+    archivoUrl?: string | null
+  ): string {
+
+    if (!archivoUrl) {
+      return '';
+    }
+
+    if (
+      archivoUrl.startsWith('http://') ||
+      archivoUrl.startsWith('https://')
+    ) {
+      return archivoUrl;
+    }
+
+    const backendUrl =
+      API_CONFIG.baseUrl.replace(
+        /\/api\/?$/,
+        ''
+      );
+
+    const rutaArchivo =
+      archivoUrl.startsWith('/')
+        ? archivoUrl
+        : `/${archivoUrl}`;
+
+    return `${backendUrl}${rutaArchivo}`;
   }
 
   // =========================================================
@@ -508,16 +554,30 @@ export class FormAvisoComponent implements OnChanges {
   // =========================================================
 
   private obtenerFechaActualParaInput(): string {
-    const fecha = new Date();
+    const partes =
+      new Intl.DateTimeFormat(
+        'en-CA',
+        {
+          timeZone: COLOMBIA_TIME_ZONE,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          hourCycle: 'h23'
+        }
+      ).formatToParts(new Date());
 
-    fecha.setMinutes(
-      fecha.getMinutes() -
-      fecha.getTimezoneOffset()
+    const obtener = (tipo: Intl.DateTimeFormatPartTypes) =>
+      partes.find(p => p.type === tipo)?.value ?? '';
+
+    return (
+      `${obtener('year')}-` +
+      `${obtener('month')}-` +
+      `${obtener('day')}T` +
+      `${obtener('hour')}:` +
+      `${obtener('minute')}`
     );
-
-    return fecha
-      .toISOString()
-      .slice(0, 16);
   }
 
   private convertirFechaParaInput(
@@ -525,14 +585,34 @@ export class FormAvisoComponent implements OnChanges {
   ): string {
     const valor = new Date(fecha);
 
-    valor.setMinutes(
-      valor.getMinutes() -
-      valor.getTimezoneOffset()
-    );
+    if (Number.isNaN(valor.getTime())) {
+      return '';
+    }
 
-    return valor
-      .toISOString()
-      .slice(0, 16);
+    const partes =
+      new Intl.DateTimeFormat(
+        'en-CA',
+        {
+          timeZone: COLOMBIA_TIME_ZONE,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          hourCycle: 'h23'
+        }
+      ).formatToParts(valor);
+
+    const obtener = (tipo: Intl.DateTimeFormatPartTypes) =>
+      partes.find(p => p.type === tipo)?.value ?? '';
+
+    return (
+      `${obtener('year')}-` +
+      `${obtener('month')}-` +
+      `${obtener('day')}T` +
+      `${obtener('hour')}:` +
+      `${obtener('minute')}`
+    );
   }
 
   // =========================================================

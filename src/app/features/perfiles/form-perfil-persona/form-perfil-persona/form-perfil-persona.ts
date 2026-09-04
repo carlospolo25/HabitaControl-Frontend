@@ -21,6 +21,10 @@ import {
   PersonService,
 } from '../../../../core/services/person/person-service';
 
+import {
+  fechaCivilComparable
+} from '../../../../core/utils/colombia-date.util';
+
 @Component({
   selector: 'app-form-perfil-persona',
   standalone: true,
@@ -541,26 +545,10 @@ export class FormPerfilPersonaComponent
       return null;
     }
 
-    const valor = new Date(fecha);
+    const fechaNormalizada =
+      fechaCivilComparable(fecha);
 
-    if (Number.isNaN(valor.getTime())) {
-      return null;
-    }
-
-    const year =
-      valor.getFullYear();
-
-    const month =
-      String(
-        valor.getMonth() + 1
-      ).padStart(2, '0');
-
-    const day =
-      String(
-        valor.getDate()
-      ).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
+    return fechaNormalizada || null;
   }
 
   private normalizarFechaOpcional(

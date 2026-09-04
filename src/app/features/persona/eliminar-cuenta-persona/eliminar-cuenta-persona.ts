@@ -8,6 +8,9 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
+import {
+  AuthSessionContext,
+} from '../../../core/Auth/auth-session-context';
 
 import {
   ConfirmarPasswordPersonaRequest,
@@ -45,6 +48,7 @@ export class EliminarCuentaPersona {
 
   constructor(
     private readonly personService: PersonService,
+    private readonly sessionContext: AuthSessionContext,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
   ) {}
@@ -170,9 +174,9 @@ export class EliminarCuentaPersona {
           this.limpiarSesion();
           this.limpiarFormulario();
 
-          this.router.navigate([
-            '/login-persona',
-          ]);
+        this.router.navigate([
+          '/loginPersona',
+        ]);
         },
 
         error: (error) => {
@@ -212,21 +216,7 @@ export class EliminarCuentaPersona {
   }
 
   private limpiarSesion(): void {
-    localStorage.removeItem(
-      'personaAccessToken'
-    );
-
-    localStorage.removeItem(
-      'personaRefreshToken'
-    );
-
-    sessionStorage.removeItem(
-      'personaAccessToken'
-    );
-
-    sessionStorage.removeItem(
-      'personaRefreshToken'
-    );
+    this.sessionContext.clear();
   }
 
   private obtenerMensajeError(

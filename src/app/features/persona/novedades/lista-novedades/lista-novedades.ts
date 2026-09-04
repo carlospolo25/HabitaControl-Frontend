@@ -13,6 +13,9 @@ import { finalize } from 'rxjs';
 import { NovedadAsignar } from '../novedad-asignar/novedad-asignar';
 import { NovedadEventosDetalle } from '../novedad-eventos-detalle/novedad-eventos-detalle';
 import { FormTarea } from '../form-tarea/form-tarea';
+import {
+  AuthPersona,
+} from '../../../../core/services/authPersona/auth-persona';
 
 import {
   ClaseNovedad,
@@ -20,6 +23,11 @@ import {
   NovedadService,
   PrioridadTarea,
 } from '../../../../core/services/novedad/novedad';
+
+import {
+  fechaCivilComparable,
+  obtenerFechaHoyColombia,
+} from '../../../../core/utils/colombia-date.util';
 
 @Component({
   selector: 'app-lista-novedades',
@@ -74,12 +82,12 @@ export class ListaNovedadesComponent implements OnInit {
 
   constructor(
     private readonly novedadService: NovedadService,
+    private readonly authPersona: AuthPersona,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.loadUserPermissions();
-    this.cargar();
   }
 
   abrirFormTarea(): void {
@@ -344,19 +352,29 @@ export class ListaNovedadesComponent implements OnInit {
           );
           break;
 
-      case 'deadline':
-        data.sort((a, b) => {
-          const fechaA = a.fechaLimite
-            ? new Date(a.fechaLimite).getTime()
-            : Number.MAX_SAFE_INTEGER;
+        case 'deadline':
+          data.sort((a, b) => {
+            const fechaA =
+              fechaCivilComparable(a.fechaLimite);
 
-          const fechaB = b.fechaLimite
-            ? new Date(b.fechaLimite).getTime()
-            : Number.MAX_SAFE_INTEGER;
+            const fechaB =
+              fechaCivilComparable(b.fechaLimite);
 
-          return fechaA - fechaB;
-        });
-        break;
+            if (!fechaA && !fechaB) {
+              return 0;
+            }
+
+            if (!fechaA) {
+              return 1;
+            }
+
+            if (!fechaB) {
+              return -1;
+            }
+
+            return fechaA.localeCompare(fechaB);
+          });
+          break;
 
       default:
         data.sort(
@@ -393,15 +411,15 @@ export class ListaNovedadesComponent implements OnInit {
       return false;
     }
 
-    const fechaLimite = new Date(
-      novedad.fechaLimite
-    );
+    const fechaLimite =
+      fechaCivilComparable(
+        novedad.fechaLimite
+      );
 
-    const hoy = new Date();
+    const hoyColombia =
+      obtenerFechaHoyColombia();
 
-    fechaLimite.setHours(23, 59, 59, 999);
-
-    return fechaLimite.getTime() < hoy.getTime();
+    return fechaLimite < hoyColombia;
   }
 
   getClassLabel(
@@ -455,91 +473,56 @@ export class ListaNovedadesComponent implements OnInit {
   }
 
   private loadUserPermissions(): void {
-    const token = this.getCurrentToken();
 
-    if (!token) {
-      this.resetPermissions();
+    // ==========================================
+    // ADMIN
+    // ==========================================
+
+    if (this.esAdmin) {
+      this.role = 'Admin';
+      this.personType = '';
+
+      this.isAdmin = true;
+      this.isSecurity = false;
+      this.isMaintenance = false;
+
+      this.cargar();
+
       return;
     }
 
-    try {
-      const payload = this.decodeJwt(token);
+    // ==========================================
+    // PERSONA
+    // ==========================================
 
-      this.role = this.getClaim(payload, [
-        'role',
-        'Role',
-        'rol',
-        'Rol',
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
-      ]);
+    this.authPersona
+      .comprobarSesion()
+      .subscribe({
+        next: (session) => {
+          this.role = '';
+          this.personType =
+            session.tipo ?? '';
 
-      this.personType = this.getClaim(payload, [
-        'personType',
-        'PersonType',
-        'tipoPersona',
-        'TipoPersona',
-        'personaTipo',
-        'PersonaTipo',
-        'tipo',
-        'Tipo',
-      ]);
+          this.isAdmin = false;
 
-      this.isAdmin =
-        this.esAdmin ||
-        this.role === 'Admin';
+          this.isSecurity =
+            this.personType ===
+            'Seguridad';
 
-      this.isSecurity =
-        this.personType === 'Seguridad' ||
-        this.role === 'Seguridad';
+          this.isMaintenance =
+            this.personType ===
+            'Personal';
 
-      this.isMaintenance =
-        this.personType === 'Mantenimiento' ||
-        this.personType === 'Personal' ||
-        this.role === 'Mantenimiento' ||
-        this.role === 'Personal';
-    } catch {
-      this.resetPermissions();
-    }
-  }
+          this.cargar();
+        },
 
-  private getCurrentToken(): string | null {
-    if (this.esAdmin) {
-      return localStorage.getItem('accessToken');
-    }
+        error: () => {
+          this.resetPermissions();
 
-    return (
-      localStorage.getItem('personaAccessToken') ??
-      localStorage.getItem('accessToken')
-    );
-  }
-
-  private decodeJwt(token: string): any {
-    const payload = token.split('.')[1];
-
-    if (!payload) {
-      throw new Error('Token inválido');
-    }
-
-    const normalizedPayload = payload
-      .replace(/-/g, '+')
-      .replace(/_/g, '/');
-
-    return JSON.parse(
-      atob(normalizedPayload)
-    );
-  }
-
-  private getClaim(
-    payload: any,
-    keys: string[]
-  ): string {
-    for (const key of keys) {
-      if (payload[key]) {
-        return payload[key];
-      }
-    }
-
-    return '';
+          this.errorMessage =
+            'No fue posible validar la sesión de la persona.';
+        },
+      });
   }
 
   private resetPermissions(): void {

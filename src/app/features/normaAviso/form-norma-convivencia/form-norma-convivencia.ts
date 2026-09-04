@@ -16,6 +16,7 @@ import {
   NormaConvivencia,
   NormaConvivenciaResponse,
 } from '../../../core/services/norma-convivencia/norma-convivencia';
+import { API_CONFIG } from '../../../core/config/api.config';
 
 
 @Component({
@@ -395,6 +396,47 @@ export class FormNormaConvivencia implements OnChanges {
     }
 
     return true;
+  }
+
+  // =========================================================
+  // URL DEL ARCHIVO
+  // =========================================================
+
+  obtenerUrlArchivo(
+    archivoUrl?: string | null
+  ): string {
+
+    if (!archivoUrl) {
+      return '';
+    }
+
+    // Si el backend ya devuelve una URL absoluta,
+    // no hacemos ninguna modificación.
+    if (
+      archivoUrl.startsWith('http://') ||
+      archivoUrl.startsWith('https://')
+    ) {
+      return archivoUrl;
+    }
+
+    // API_CONFIG.baseUrl:
+    // https://localhost:7232/api
+    //
+    // backendUrl:
+    // https://localhost:7232
+    const backendUrl =
+      API_CONFIG.baseUrl.replace(
+        /\/api\/?$/,
+        ''
+      );
+
+    // Evita problemas si la ruta viene con o sin "/".
+    const rutaArchivo =
+      archivoUrl.startsWith('/')
+        ? archivoUrl
+        : `/${archivoUrl}`;
+
+    return `${backendUrl}${rutaArchivo}`;
   }
 
 

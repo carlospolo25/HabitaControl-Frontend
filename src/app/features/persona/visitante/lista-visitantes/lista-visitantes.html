@@ -377,7 +377,7 @@
                     
                     class="visitors-table__date"
                     [attr.datetime]="visitante.fechaIngreso">
-                    {{ visitante.fechaIngreso | date:'dd/MM/yyyy, h:mm a' }}
+                    {{ visitante.fechaIngreso | date:'dd/MM/yyyy, h:mm a':'America/Bogota' }}
                   </time>
                 </td>
 
@@ -387,7 +387,7 @@
                     <time
                       class="visitors-table__date"
                       [attr.datetime]="visitante.fechaSalida">
-                      {{ visitante.fechaSalida | date:'dd/MM/yyyy, h:mm a' }}
+                      {{ visitante.fechaSalida | date:'dd/MM/yyyy, h:mm a':'America/Bogota' }}
                     </time>
                   } @else {
                     <span class="visitors-table__pending-exit">
@@ -634,7 +634,7 @@
           </span>
 
           <strong class="visitor-detail__value">
-            {{ visitanteDetalle.fechaIngreso | date:'medium' }}
+            {{ visitanteDetalle.fechaIngreso | date:'medium':'America/Bogota' }}
           </strong>
         </article>
 
@@ -645,7 +645,7 @@
 
           <strong class="visitor-detail__value">
             @if (visitanteDetalle.fechaSalida) {
-              {{ visitanteDetalle.fechaSalida | date:'medium' }}
+              {{ visitanteDetalle.fechaSalida | date:'medium':'America/Bogota' }}
             } @else {
               Aún no registra salida
             }

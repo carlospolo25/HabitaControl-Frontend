@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef,Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {
+  AuthSessionContext,
+} from '../../../core/Auth/auth-session-context';
+
 
 import { AuthPersona } from '../../../core/services/authPersona/auth-persona';
 
@@ -29,7 +33,7 @@ import { AvisosConvivenciaPersonaComponent } from '../../normaAviso/avisos-convi
 type TipoPersona =
   | 'Residente'
   | 'Seguridad'
-  | 'Mantenimiento'
+  | 'Personal'
   | '';
 
 type VistaPersona =
@@ -94,11 +98,13 @@ export class DashboardPersona implements OnInit {
 
   constructor(
     private readonly authPersona: AuthPersona,
+    private readonly sessionContext: AuthSessionContext,
     private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.tipo = this.obtenerTipoPersona();
+    this.cargarSesionPersona();
   }
 
   get puedeReportarNovedad(): boolean {
@@ -125,38 +131,11 @@ export class DashboardPersona implements OnInit {
   }
 
   get puedeSeguirNovedades(): boolean {
-    return this.tipo === 'Mantenimiento';
+    return this.tipo === 'Personal';
   }
 
   get puedeVerPersonas(): boolean {
     return this.tipo === 'Seguridad';
-  }
-
-  obtenerTipoPersona(): TipoPersona {
-    const token = localStorage.getItem(
-      'personaAccessToken',
-    );
-
-    if (!token) {
-      return '';
-    }
-
-    try {
-      const payload = JSON.parse(
-        atob(token.split('.')[1]),
-      );
-
-      return payload.Tipo ?? '';
-    } catch {
-      this.authPersona
-        .limpiarSesionPersona();
-
-      this.router.navigate([
-        '/loginPersona',
-      ]);
-
-      return '';
-    }
   }
 
   cambiarVista(
@@ -277,6 +256,51 @@ export class DashboardPersona implements OnInit {
     );
   }
 
+  private cargarSesionPersona(): void {
+    this.authPersona
+      .comprobarSesion()
+      .subscribe({
+        next: (session) => {
+          this.tipo =
+            this.normalizarTipoPersona(
+              session.tipo
+            );
+
+          this.sessionContext
+            .setPersona();
+
+          this.cdr.detectChanges();
+        },
+
+        error: () => {
+          this.tipo = '';
+
+          this.sessionContext
+            .clear();
+
+          this.cdr.detectChanges();
+
+          this.router.navigate([
+            '/loginPersona',
+          ]);
+        },
+      });
+  }
+
+  private normalizarTipoPersona(
+    tipo: string
+  ): TipoPersona {
+    switch (tipo) {
+      case 'Residente':
+      case 'Seguridad':
+      case 'Personal':
+        return tipo;
+
+      default:
+        return '';
+    }
+  }
+
   abrirSegumiento(
     novedadId: string,
   ): void {
@@ -317,17 +341,20 @@ export class DashboardPersona implements OnInit {
     this.authPersona
       .logoutPersona()
       .subscribe({
-        next: () =>
-          this.finalizarSesion(),
+        next: () => {
+          this.finalizarSesion();
+        },
 
-        error: () =>
-          this.finalizarSesion(),
+        error: () => {
+          this.finalizarSesion();
+        },
       });
   }
 
   private finalizarSesion(): void {
-    this.authPersona
-      .limpiarSesionPersona();
+    this.sessionContext.clear();
+
+    this.tipo = '';
 
     this.router.navigate([
       '/loginPersona',

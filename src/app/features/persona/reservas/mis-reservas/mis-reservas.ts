@@ -13,6 +13,10 @@ import {
   ReservaZonaComunService,
 } from '../../../../core/services/ReservaZonaComun/reservazona-comun';
 
+import {
+  obtenerFechaHoraActualColombia
+} from '../../../../core/utils/colombia-date.util';
+
 import { FormReservas } from '../form-reservas/form-reservas';
 
 type FiltroEstadoReserva =
@@ -453,13 +457,12 @@ export class MisReservasComponent implements OnInit {
     }
 
     const fechaHoraFin =
-      this.construirFechaHoraLocal(
-        reserva.fechaReserva,
-        reserva.horaFin,
-      );
+      `${reserva.fechaReserva.substring(0, 10)}T${reserva.horaFin.substring(0, 5)}`;
 
-    return fechaHoraFin.getTime() <=
-      Date.now();
+    const ahoraColombia =
+      obtenerFechaHoraActualColombia();
+
+    return fechaHoraFin <= ahoraColombia;
   }
 
   estaProcesando(
@@ -575,61 +578,20 @@ export class MisReservasComponent implements OnInit {
   }
 
   private ordenarReservas(
-    reservas:
-      ReservaZonaComunResponse[],
+    reservas: ReservaZonaComunResponse[],
   ): ReservaZonaComunResponse[] {
     return [...reservas].sort(
       (a, b) => {
-        const fechaA =
-          this.construirFechaHoraLocal(
-            a.fechaReserva,
-            a.horaInicio,
-          ).getTime();
+        const fechaHoraA =
+          `${a.fechaReserva.substring(0, 10)}T${a.horaInicio.substring(0, 5)}`;
 
-        const fechaB =
-          this.construirFechaHoraLocal(
-            b.fechaReserva,
-            b.horaInicio,
-          ).getTime();
+        const fechaHoraB =
+          `${b.fechaReserva.substring(0, 10)}T${b.horaInicio.substring(0, 5)}`;
 
-        return fechaB - fechaA;
+        return fechaHoraB.localeCompare(
+          fechaHoraA
+        );
       },
-    );
-  }
-
-  private construirFechaHoraLocal(
-    fecha: string,
-    hora: string,
-  ): Date {
-    const fechaNormalizada =
-      fecha.substring(0, 10);
-
-    const horaNormalizada =
-      hora.substring(0, 5);
-
-    const [
-      year,
-      month,
-      day,
-    ] = fechaNormalizada
-      .split('-')
-      .map(Number);
-
-    const [
-      hours,
-      minutes,
-    ] = horaNormalizada
-      .split(':')
-      .map(Number);
-
-    return new Date(
-      year,
-      month - 1,
-      day,
-      hours,
-      minutes,
-      0,
-      0,
     );
   }
 

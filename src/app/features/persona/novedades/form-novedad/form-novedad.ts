@@ -14,6 +14,10 @@ import {
   NovedadService,
 } from '../../../../core/services/novedad/novedad';
 
+import {
+  AuthPersona,
+} from '../../../../core/services/authPersona/auth-persona';
+
 @Component({
   selector: 'app-form-novedad',
   standalone: true,
@@ -37,7 +41,8 @@ export class FormNovedadComponent implements OnInit {
   successMessage = '';
 
   constructor(
-    private readonly novedadService: NovedadService
+    private readonly novedadService: NovedadService,
+    private readonly authPersona: AuthPersona
   ) {}
 
 
@@ -208,82 +213,22 @@ export class FormNovedadComponent implements OnInit {
   // =====================================================
 
   private loadUserPermissions(): void {
-    const token =
-      localStorage.getItem(
-        'personaAccessToken'
-      );
+    this.authPersona
+      .comprobarSesion()
+      .subscribe({
+        next: (session) => {
+          this.isResident =
+            session.tipo === 'Residente';
 
-    if (!token) {
-      this.isResident = false;
-      return;
-    }
+          if (this.isResident) {
+            this.tipo = 'Gestion';
+          }
+        },
 
-    try {
-      const payload =
-        this.decodeJwt(token);
-
-      const tipoPersona =
-        this.getClaim(
-          payload,
-          [
-            'TipoPersona',
-            'tipoPersona',
-            'Tipo',
-            'tipo',
-            'personType',
-            'PersonType',
-          ]
-        );
-
-      this.isResident =
-        tipoPersona === 'Residente';
-
-      // Seguridad adicional:
-      // un residente siempre comienza
-      // con Operativa.
-      if (this.isResident) {
-        this.tipo = 'Gestion';
-      }
-
-    } catch {
-      this.isResident = false;
-    }
+        error: () => {
+          this.isResident = false;
+        },
+      });
   }
 
-
-  private decodeJwt(
-    token: string
-  ): any {
-    const payload =
-      token.split('.')[1];
-
-    if (!payload) {
-      throw new Error(
-        'Token inválido.'
-      );
-    }
-
-    const normalizedPayload =
-      payload
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
-
-    return JSON.parse(
-      atob(normalizedPayload)
-    );
-  }
-
-
-  private getClaim(
-    payload: any,
-    keys: string[]
-  ): string {
-    for (const key of keys) {
-      if (payload[key]) {
-        return payload[key];
-      }
-    }
-
-    return '';
-  }
 }

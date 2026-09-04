@@ -25,6 +25,11 @@ import {
   TipoMovimientoFinanciero,
 } from '../form-movimiento-financiero/form-movimiento-financiero';
 
+import {
+  obtenerAnioActualColombia,
+  obtenerMesActualColombia,
+} from '../../../../core/utils/colombia-date.util';
+
 type TipoConsultaMovimiento =
   | 'todos'
   | 'mes'
@@ -152,8 +157,8 @@ export class ListaMovimientosFinancieros
 
   tipoConsulta: TipoConsultaMovimiento = 'todos';
 
-  mesSeleccionado = new Date().getMonth() + 1;
-  anioSeleccionado = new Date().getFullYear();
+  mesSeleccionado = obtenerMesActualColombia();
+  anioSeleccionado = obtenerAnioActualColombia();
 
   fechaDesde = '';
   fechaHasta = '';
@@ -239,7 +244,11 @@ export class ListaMovimientosFinancieros
 
   get totalValor(): number {
     return this.movimientosFiltrados
-      .filter((movimiento) => !this.estaAnulado(movimiento))
+      .filter((movimiento) =>
+        movimiento.estado
+          .trim()
+          .toLowerCase() === 'pagado'
+      )
       .reduce(
         (total, movimiento) => total + movimiento.valor,
         0
@@ -333,10 +342,10 @@ export class ListaMovimientosFinancieros
     this.tipoConsulta = 'todos';
 
     this.mesSeleccionado =
-      new Date().getMonth() + 1;
+      obtenerMesActualColombia();
 
     this.anioSeleccionado =
-      new Date().getFullYear();
+      obtenerAnioActualColombia();
 
     this.fechaDesde = '';
     this.fechaHasta = '';
@@ -400,9 +409,22 @@ export class ListaMovimientosFinancieros
   ): void {
     if (
       this.isLoading ||
-      this.isAnulando ||
-      this.estaAnulado(movimiento)
+      this.isAnulando
     ) {
+      return;
+    }
+
+    if (this.estaAnulado(movimiento)) {
+      this.mostrarValidacion(
+        `El ${this.tipo} está anulado y no puede ser editado.`
+      );
+      return;
+    }
+
+    if (this.estaPagado(movimiento)) {
+      this.mostrarValidacion(
+        `Los ${this.tipo === 'ingreso' ? 'ingresos' : 'egresos'} pagados no pueden ser editados. Si necesitas corregirlo, anula el movimiento y registra uno nuevo.`
+      );
       return;
     }
 
@@ -453,6 +475,10 @@ export class ListaMovimientosFinancieros
       return;
     }
 
+    this.cerrarAnulacion();
+  }
+
+  private cerrarAnulacion(): void {
     this.mostrarAnulacion = false;
     this.movimientoAnulando = null;
     this.motivoAnulacion = '';
@@ -515,7 +541,7 @@ export class ListaMovimientosFinancieros
 
           this.actualizarMovimientoEnLista(normalizado);
 
-          this.cancelarAnulacion();
+          this.cerrarAnulacion();
 
           this.successMessage =
             this.configuracion.mensajeAnulacionExitosa;
@@ -535,6 +561,14 @@ export class ListaMovimientosFinancieros
     return movimiento.estado
       .trim()
       .toLowerCase() === 'anulado';
+  }
+
+  estaPagado(
+    movimiento: MovimientoFinancieroNormalizado
+  ): boolean {
+    return movimiento.estado
+      .trim()
+      .toLowerCase() === 'pagado';
   }
 
   obtenerClaseEstado(estado: string): string {
@@ -809,10 +843,10 @@ export class ListaMovimientosFinancieros
     this.estadoSeleccionado = 'todos';
 
     this.mesSeleccionado =
-      new Date().getMonth() + 1;
+      obtenerMesActualColombia();
 
     this.anioSeleccionado =
-      new Date().getFullYear();
+      obtenerAnioActualColombia();
 
     this.fechaDesde = '';
     this.fechaHasta = '';

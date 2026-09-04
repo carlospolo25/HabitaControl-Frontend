@@ -557,13 +557,13 @@
             Movimientos registrados entre el
 
             <strong>
-              {{ reporte.fechaInicio | date:'dd/MM/yyyy' }}
+              {{ reporte.fechaInicio | date:'dd/MM/yyyy':'UTC' }}
             </strong>
 
             y el
 
             <strong>
-              {{ reporte.fechaFin | date:'dd/MM/yyyy' }}
+              {{ reporte.fechaFin | date:'dd/MM/yyyy':'UTC' }}
             </strong>.
           </p>
         </div>
@@ -1271,9 +1271,9 @@
                     <td
                       class="report-table__date"
                       [attr.data-label]="'Fecha'">
-                      {{
+                     {{
                         movimiento.fecha
-                          | date:'dd/MM/yyyy'
+                          | date:'dd/MM/yyyy':'UTC'
                       }}
                     </td>
 
@@ -1517,7 +1517,7 @@
             <dt>Fecha inicial</dt>
 
             <dd>
-              {{ reporte.fechaInicio | date:'dd/MM/yyyy' }}
+              {{ reporte.fechaInicio | date:'dd/MM/yyyy':'UTC' }}
             </dd>
           </div>
 
@@ -1525,7 +1525,7 @@
             <dt>Fecha final</dt>
 
             <dd>
-              {{ reporte.fechaFin | date:'dd/MM/yyyy' }}
+              {{ reporte.fechaFin | date:'dd/MM/yyyy':'UTC' }}
             </dd>
           </div>
 

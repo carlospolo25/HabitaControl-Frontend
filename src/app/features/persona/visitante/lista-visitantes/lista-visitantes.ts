@@ -9,6 +9,27 @@ import {
   VisitanteService,
 } from '../../../../core/services/visitante/visitante';
 
+import { AuthService } from '../../../../core/services/auth/auth';
+
+import {
+  Observable,
+  catchError,
+  map,
+  of,
+} from 'rxjs';
+
+import {
+  AuthPersona,
+} from '../../../../core/services/authPersona/auth-persona';
+
+import {
+  AuthSessionContext,
+} from '../../../../core/Auth/auth-session-context';
+
+import {
+  formatearInstanteColombia
+} from '../../../../core/utils/colombia-date.util';
+
 @Component({
   selector: 'app-lista-visitantes',
   standalone: true,
@@ -38,15 +59,35 @@ export class ListaVisitantesComponent implements OnInit {
 
   constructor(
     private readonly visitanteService: VisitanteService,
-    private readonly cdr: ChangeDetectorRef
+    private readonly cdr: ChangeDetectorRef,
+    private readonly authService: AuthService,
+    private readonly authPersona: AuthPersona,
+    private readonly sessionContext: AuthSessionContext
   ) {}
 
   ngOnInit(): void {
-    this.tipo = this.obtenerTipo();
+    this.obtenerTipo().subscribe({
+      next: (tipo) => {
+        this.tipo = tipo;
 
-    console.log('Tipo detectado:', this.tipo);
+        console.log(
+          'Tipo detectado:',
+          this.tipo
+        );
 
-    this.cargar();
+        this.cargar();
+      },
+
+      error: (error) => {
+        console.error(
+          'Error determinando el tipo de usuario:',
+          error
+        );
+
+        this.tipo = '';
+        this.cargar();
+      },
+    });
   }
 
   get puedeUsarFiltrosAvanzados(): boolean {
@@ -184,20 +225,38 @@ export class ListaVisitantesComponent implements OnInit {
       .replace(/[\u0300-\u036f]/g, '');
   }
 
-  private obtenerFechaLocal(fecha: string): string {
+  private obtenerFechaLocal(
+    fecha: string
+  ): string {
     if (!fecha) {
       return '';
     }
 
-    const fechaConvertida = new Date(fecha);
+    const fechaColombia =
+      formatearInstanteColombia(
+        fecha,
+        {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: undefined,
+          minute: undefined,
+          second: undefined,
+        }
+      );
 
-    if (Number.isNaN(fechaConvertida.getTime())) {
+    if (!fechaColombia) {
       return '';
     }
 
-    const year = fechaConvertida.getFullYear();
-    const month = String(fechaConvertida.getMonth() + 1).padStart(2, '0');
-    const day = String(fechaConvertida.getDate()).padStart(2, '0');
+    const partes =
+      fechaColombia.split('/');
+
+    if (partes.length !== 3) {
+      return '';
+    }
+
+    const [day, month, year] = partes;
 
     return `${year}-${month}-${day}`;
   }
@@ -395,59 +454,91 @@ export class ListaVisitantesComponent implements OnInit {
     );
   }
 
-  private obtenerTipo(): string {
-    const token =
-      localStorage.getItem('personaAccessToken') ||
-      localStorage.getItem('accessToken');
+  private obtenerTipo(): Observable<string> {
+    const identityType =
+      this.sessionContext
+        .getIdentityType();
 
-    console.log('Token encontrado:', !!token);
+    if (identityType === 'persona') {
+      return this.authPersona
+        .comprobarSesion()
+        .pipe(
+          map((session) => {
+            this.sessionContext
+              .setPersona();
 
-    if (!token) {
-      return '';
+            return session.tipo ?? '';
+          }),
+
+          catchError((error) => {
+            console.error(
+              'No fue posible validar la sesión Persona:',
+              error
+            );
+
+            return of('');
+          })
+        );
     }
 
-    try {
-      const partes = token.split('.');
+    if (identityType === 'admin') {
+      return this.authService
+        .obtenerPerfil()
+        .pipe(
+          map(() => {
+            this.sessionContext
+              .setAdmin();
 
-      if (partes.length !== 3) {
-        return '';
-      }
+            return 'Admin';
+          }),
 
-      const payload = JSON.parse(this.decodificarBase64Url(partes[1]));
+          catchError((error) => {
+            console.error(
+              'No fue posible validar la sesión Admin:',
+              error
+            );
 
-      console.log('Payload visitantes:', payload);
-
-      return (
-        payload.Tipo ||
-        payload.tipo ||
-        payload.TipoPersona ||
-        payload.tipoPersona ||
-        payload.Rol ||
-        payload.rol ||
-        payload.Role ||
-        payload.role ||
-        ''
-      );
-    } catch (error) {
-      console.error('Error leyendo token:', error);
-      return '';
+            return of('');
+          })
+        );
     }
+
+    return this.obtenerTipoSinContexto();
   }
 
-  private decodificarBase64Url(value: string): string {
-    const base64 = value
-      .replace(/-/g, '+')
-      .replace(/_/g, '/')
-      .padEnd(Math.ceil(value.length / 4) * 4, '=');
+  private obtenerTipoSinContexto(): Observable<string> {
+    return this.authPersona
+      .comprobarSesion()
+      .pipe(
+        map((session) => {
+          this.sessionContext
+            .setPersona();
 
-    return decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map(
-          (character) =>
-            `%${character.charCodeAt(0).toString(16).padStart(2, '0')}`
+          return session.tipo ?? '';
+        }),
+
+        catchError(() =>
+          this.authService
+            .obtenerPerfil()
+            .pipe(
+              map(() => {
+                this.sessionContext
+                  .setAdmin();
+
+                return 'Admin';
+              }),
+
+              catchError((error) => {
+                console.error(
+                  'No fue posible determinar la identidad autenticada:',
+                  error
+                );
+
+                return of('');
+              })
+            )
         )
-        .join('')
-    );
+      );
   }
+
 }
