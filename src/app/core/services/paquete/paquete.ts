@@ -8,6 +8,7 @@ export enum EstadoPaquete {
 }
 
 export interface RegistrarPaqueteRequest {
+  personaDestinatariaId: string;
   nombreDestinatario: string;
   torre: string;
   apartamento: string;
@@ -86,6 +87,11 @@ export class PaqueteService {
     request: RegistrarPaqueteRequest
   ): Observable<RegistrarPaqueteResponse> {
     const formData = new FormData();
+
+    formData.append(
+      'PersonaDestinatariaId',
+      request.personaDestinatariaId
+    );
 
     formData.append(
       'NombreDestinatario',

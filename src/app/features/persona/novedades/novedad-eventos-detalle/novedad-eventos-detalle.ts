@@ -33,6 +33,7 @@ import {
 })
 export class NovedadEventosDetalle implements OnChanges {
   @Input() novedadId = '';
+  @Input() isAdmin = false;
   @Output() cerrar = new EventEmitter<void>();
 
   eventos: EventoNovedad[] = [];
@@ -663,7 +664,7 @@ export class NovedadEventosDetalle implements OnChanges {
       doc.setFontSize(8);
 
       doc.text(
-        `Documento generado automáticamente por HabitaControl · ${this.formatPdfDate(expediente.fechaGeneracion)}`,
+        `Documento generado automáticamente por SincroHabit · ${this.formatPdfDate(expediente.fechaGeneracion)}`,
         marginX,
         pageHeight - 12
       );

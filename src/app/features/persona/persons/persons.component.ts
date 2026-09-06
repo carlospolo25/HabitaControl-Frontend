@@ -37,6 +37,8 @@ export class PersonsComponent implements OnInit {
   showPersonDetail = false;
   isAdmin = false;
   isSecurity = false;
+  isAnonymizing = false;
+  anonymizingPersonId: string | null = null;
 
   constructor(
     private readonly personService: PersonService,
@@ -233,6 +235,15 @@ export class PersonsComponent implements OnInit {
   }
 
   openPersonDetail(person: PersonResponse): void {
+    if (this.isPersonAnonymized(person)) {
+      this.hasErrors = true;
+
+      this.errorMessage =
+        'Los datos personales de esta cuenta ya fueron eliminados.';
+
+      return;
+    }
+
     this.selectedPerson = person;
     this.showPersonDetail = true;
   }
@@ -279,6 +290,90 @@ export class PersonsComponent implements OnInit {
             error?.error?.mensaje ??
             error?.message ??
             'No se pudo cambiar el estado de la persona.';
+        },
+      });
+  }
+
+  anonimizarPersona(person: PersonResponse): void {
+    if (!this.isAdmin) {
+      this.hasErrors = true;
+
+      this.errorMessage =
+        'Solo un administrador puede eliminar los datos personales de una cuenta.';
+
+      return;
+    }
+
+    if (!person?.id) {
+      return;
+    }
+
+    if (!person.permanentlyDeactivated) {
+      this.hasErrors = true;
+
+      this.errorMessage =
+        'Solo se pueden eliminar los datos de cuentas eliminadas permanentemente.';
+
+      return;
+    }
+
+    if (this.isPersonAnonymized(person)) {
+      this.hasErrors = true;
+
+      this.errorMessage =
+        'Los datos de esta cuenta ya fueron eliminados.';
+
+      return;
+    }
+
+    if (this.isAnonymizing) {
+      return;
+    }
+
+    const confirmado = window.confirm(
+      `¿Eliminar definitivamente los datos personales de ${person.name}?\n\n` +
+      'Esta acción eliminará sus datos personales, vehículos, mascotas y fotografías.\n\n' +
+      'La cuenta permanecerá únicamente como registro técnico y esta acción no se puede deshacer.'
+    );
+
+    if (!confirmado) {
+      return;
+    }
+
+    this.isAnonymizing = true;
+    this.anonymizingPersonId = person.id;
+
+    this.hasErrors = false;
+    this.errorMessage = '';
+
+    this.personService
+      .anonimizarPersona(person.id)
+      .pipe(
+        finalize(() => {
+          this.isAnonymizing = false;
+          this.anonymizingPersonId = null;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.closePersonDetail();
+          this.loadPeople();
+        },
+
+        error: (error) => {
+          console.error(
+            'Error eliminando los datos personales de la persona:',
+            error
+          );
+
+          this.hasErrors = true;
+
+          this.errorMessage =
+            error?.error?.message ??
+            error?.error?.mensaje ??
+            error?.message ??
+            'No se pudieron eliminar los datos personales de la cuenta.';
         },
       });
   }
@@ -371,6 +466,21 @@ export class PersonsComponent implements OnInit {
       default:
         return 'Desconocido';
     }
+  }
+
+  isPersonAnonymized(
+    person: PersonResponse
+  ): boolean {
+    if (!person?.id || !person?.email) {
+      return false;
+    }
+
+    const expectedEmail =
+      `eliminado-${person.id.replaceAll('-', '').toLowerCase()}@anonimo.local`;
+
+    return person.email
+      .trim()
+      .toLowerCase() === expectedEmail;
   }
 
   private normalizeText(value: string | null | undefined): string {

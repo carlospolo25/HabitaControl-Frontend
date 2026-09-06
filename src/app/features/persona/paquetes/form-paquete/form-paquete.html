@@ -102,40 +102,139 @@
 
           <div class="package-form__grid">
 
+            <!-- =====================================================
+                BUSCADOR DE RESIDENTE
+                ===================================================== -->
+
             <div class="package-form__field package-form__field--full">
 
               <label
                 for="nombreDestinatario"
                 class="package-form__label">
-                Nombre del destinatario
+
+                Residente destinatario
 
                 <span
                   class="package-form__required"
                   aria-hidden="true">
                   *
                 </span>
+
               </label>
 
               <p
                 id="nombreDestinatario-help"
                 class="package-form__help">
-                Escribe el nombre completo del residente.
+                Escribe al menos 2 caracteres y selecciona al residente registrado.
               </p>
 
-              <input
-                id="nombreDestinatario"
-                name="nombreDestinatario"
-                class="package-form__input"
-                type="text"
-                autocomplete="name"
-                maxlength="150"
-                required
-                aria-describedby="nombreDestinatario-help"
-                [(ngModel)]="nombreDestinatario"
-                [disabled]="isSubmitting"
-                placeholder="Ej. Andrea Martínez">
+              <div class="package-form__resident-search">
+
+                <input
+                  id="nombreDestinatario"
+                  name="nombreDestinatario"
+                  class="package-form__input"
+                  type="text"
+                  autocomplete="off"
+                  maxlength="150"
+                  required
+                  aria-describedby="nombreDestinatario-help"
+                  [(ngModel)]="nombreDestinatario"
+                  [disabled]="isSubmitting"
+                  (ngModelChange)="onNombreDestinatarioChange($event)"
+                  placeholder="Ej. Katya Vargas">
+
+                @if (buscandoResidentes) {
+
+                  <div class="package-form__search-status">
+                    Buscando residentes...
+                  </div>
+
+                }
+
+                @if (
+                  !buscandoResidentes &&
+                  residentesEncontrados.length > 0
+                ) {
+
+                  <div
+                    class="package-form__resident-results"
+                    role="listbox"
+                    aria-label="Residentes encontrados">
+
+                    @for (
+                      residente of residentesEncontrados;
+                      track residente.id
+                    ) {
+
+                      <button
+                        type="button"
+                        class="package-form__resident-option"
+                        [disabled]="isSubmitting"
+                        (click)="seleccionarResidente(residente)">
+
+                        <span class="package-form__resident-name">
+                          {{ residente.nombre }}
+                        </span>
+
+                        <span class="package-form__resident-location">
+                          Torre {{ residente.torre || '—' }}
+                          ·
+                          Apto {{ residente.apartamento || '—' }}
+                        </span>
+
+                      </button>
+
+                    }
+
+                  </div>
+
+                }
+
+              </div>
 
             </div>
+
+
+            <!-- =====================================================
+                RESIDENTE SELECCIONADO
+                ===================================================== -->
+
+            @if (residenteSeleccionado) {
+
+              <div
+                class="package-form__field package-form__field--full">
+
+                <div class="package-form__selected-resident">
+
+                  <div class="package-form__selected-resident-info">
+
+                    <span class="package-form__selected-resident-label">
+                      Residente seleccionado
+                    </span>
+
+                    <strong class="package-form__selected-resident-name">
+                      {{ nombreDestinatario }}
+                    </strong>
+
+                  </div>
+
+                  <span
+                    class="package-form__selected-resident-status"
+                    aria-label="Residente seleccionado correctamente">
+                    ✓
+                  </span>
+
+                </div>
+
+              </div>
+
+            }
+
+
+            <!-- =====================================================
+                TORRE
+                ===================================================== -->
 
             <div class="package-form__field">
 
@@ -143,12 +242,6 @@
                 for="torre"
                 class="package-form__label">
                 Torre
-
-                <span
-                  class="package-form__required"
-                  aria-hidden="true">
-                  *
-                </span>
               </label>
 
               <input
@@ -156,13 +249,17 @@
                 name="torre"
                 class="package-form__input"
                 type="text"
-                maxlength="20"
-                required
                 [(ngModel)]="torre"
-                [disabled]="isSubmitting"
-                placeholder="Ej. Torre 2">
+                readonly
+                tabindex="-1"
+                placeholder="Se completa automáticamente">
 
             </div>
+
+
+            <!-- =====================================================
+                APARTAMENTO
+                ===================================================== -->
 
             <div class="package-form__field">
 
@@ -170,12 +267,6 @@
                 for="apartamento"
                 class="package-form__label">
                 Apartamento
-
-                <span
-                  class="package-form__required"
-                  aria-hidden="true">
-                  *
-                </span>
               </label>
 
               <input
@@ -183,11 +274,10 @@
                 name="apartamento"
                 class="package-form__input"
                 type="text"
-                maxlength="20"
-                required
                 [(ngModel)]="apartamento"
-                [disabled]="isSubmitting"
-                placeholder="Ej. 504">
+                readonly
+                tabindex="-1"
+                placeholder="Se completa automáticamente">
 
             </div>
 

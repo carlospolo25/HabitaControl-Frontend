@@ -84,7 +84,6 @@ export class RegisterComponent {
       nombreEmpresa: this.tenantName.trim(),
       dominio: (this.domain || this.tenantName).trim().toLowerCase(),
       nit: this.tenantNit.trim(),
-
       direccion: this.address.trim(),
       ciudad: this.city.trim(),
       telefonoEmpresa: this.companyPhone.trim(),
@@ -98,6 +97,8 @@ export class RegisterComponent {
       adminTelefono: this.adminPhone.trim(),
       adminEmail: this.adminEmail.trim().toLowerCase(),
       adminPassword: this.password,
+
+      aceptaPoliticasPrivacidad: this.acceptPolicies,
     };
 
     this.isLoading = true;
@@ -135,15 +136,6 @@ export class RegisterComponent {
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
-
-  openPrivacyPolicy(): void {
-    window.open('/politica-privacidad', '_blank');
-  }
-
-  openTerms(): void {
-    window.open('/terminos-condiciones', '_blank');
-  }
-
 
   private validateForm(): boolean {
     if (!this.tenantName.trim()) {
@@ -205,6 +197,14 @@ export class RegisterComponent {
       this.errorMessage = 'Ingresa un NIT válido.';
       return false;
     }
+
+    if (!this.acceptPolicies) {
+      this.errorMessage =
+        'Debes aceptar las Políticas de Privacidad y los Términos y Condiciones para continuar.';
+
+      return false;
+    }
+     
     return true;
   }
 

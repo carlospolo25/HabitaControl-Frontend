@@ -29,6 +29,34 @@ export interface PersonaSessionResponse {
   tipo: string;
 }
 
+export interface CompletePersonRegistrationRequest {
+  token: string;
+
+  name: string;
+  document: string;
+  phone: string;
+  email: string;
+  password: string;
+
+  tower: string;
+  apartment: string;
+  relationship: string;
+
+  birthDate: string | null;
+
+  emergencyContactName: string;
+  emergencyContactPhone: string;
+
+  jobTitle: string;
+  contractorCompany: string;
+
+  receivesNotifications: boolean;
+
+  notes: string;
+
+  aceptaPoliticasPrivacidad: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -52,8 +80,10 @@ export class AuthPersona {
     );
   }
 
-  completarRegistro(data: unknown) {
-    return this.http.post(
+  completarRegistro(
+    data: CompletePersonRegistrationRequest
+  ): Observable<ApiMessageResponse> {
+    return this.http.post<ApiMessageResponse>(
       `${this.baseUrl}/RegisterPerson/complete-registration`,
       data
     );

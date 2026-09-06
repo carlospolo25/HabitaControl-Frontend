@@ -43,6 +43,8 @@ export class EscanearInvitacionVisitante {
   successMessage = '';
   errorMessage = '';
 
+  acceptPolicies = false;
+
   mostrarScanner = false;
 
   private readonly maxFotoBytes =
@@ -147,6 +149,8 @@ export class EscanearInvitacionVisitante {
     this.limpiarVisitante();
     this.limpiarFoto();
 
+    this.acceptPolicies = false;
+
     const tokenLimpio =
       this.token.trim();
 
@@ -196,13 +200,26 @@ export class EscanearInvitacionVisitante {
   }
 
   registrarIngreso(): void {
+
     if (!this.visitante) {
       this.errorMessage =
         'Primero debes validar una invitación.';
       return;
     }
 
+    if (!this.visitante.personaAutorizanteId) {
+      this.errorMessage =
+        'No fue posible identificar al residente que autorizó la invitación.';
+      return;
+    }
+
     this.limpiarMensajes();
+
+    if (!this.acceptPolicies) {
+      this.errorMessage =
+        'Debes confirmar que el visitante manifestó aceptar las Políticas de Privacidad y los Términos y Condiciones.';
+      return;
+    }
 
     const tokenLimpio =
       this.token.trim();
@@ -215,6 +232,8 @@ export class EscanearInvitacionVisitante {
 
     const request: RegistrarVisitanteRequest = {
       ...this.visitante,
+      aceptaPoliticasPrivacidad:
+        this.acceptPolicies,
       foto: this.foto,
     };
 
@@ -269,6 +288,7 @@ export class EscanearInvitacionVisitante {
     this.token = '';
     this.limpiarVisitante();
     this.limpiarFoto();
+    this.acceptPolicies = false;
     this.mostrarScanner = false;
   }
 

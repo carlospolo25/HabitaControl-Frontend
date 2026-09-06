@@ -143,11 +143,11 @@ export class ReporteFinancieroPdfService {
   ): void {
     documento.setProperties({
       title: `Reporte financiero - ${reporte.periodoTexto}`,
-      subject: 'Reporte financiero de HabitaControl',
-      author: 'HabitaControl',
-      creator: 'HabitaControl',
+      subject: 'Reporte financiero de SincroHabit',
+      author: 'SincroHabit',
+      creator: 'SincroHabit',
       keywords:
-        'HabitaControl, finanzas, ingresos, egresos, balance financiero',
+        'SincroHabit, finanzas, ingresos, egresos, balance financiero',
     });
   }
 
@@ -174,11 +174,11 @@ export class ReporteFinancieroPdfService {
     documento.setTextColor(...this.colores.blanco);
     documento.setFont('helvetica', 'bold');
     documento.setFontSize(13);
-    documento.text('HC', this.margenHorizontal + 2.3, 17);
+    documento.text('SH', this.margenHorizontal + 2.3, 17);
 
     documento.setFontSize(18);
     documento.text(
-      'HabitaControl',
+      'SincroHabit',
       this.margenHorizontal + 17,
       14
     );
@@ -186,7 +186,7 @@ export class ReporteFinancieroPdfService {
     documento.setFont('helvetica', 'normal');
     documento.setFontSize(9);
     documento.text(
-      'Gestión financiera residencial',
+      'Gestión residencial conectada',
       this.margenHorizontal + 17,
       20
     );
@@ -756,7 +756,7 @@ export class ReporteFinancieroPdfService {
     documento.setFontSize(9);
 
     documento.text(
-      'HabitaControl · Reporte financiero',
+      'SincroHabit · Reporte financiero',
       this.margenHorizontal,
       9
     );
@@ -787,7 +787,7 @@ export class ReporteFinancieroPdfService {
       documento.setTextColor(...this.colores.textoSecundario);
 
       documento.text(
-        'Documento generado automáticamente por HabitaControl',
+        'Documento generado automáticamente por SincroHabit',
         this.margenHorizontal,
         altoPagina - 5
       );

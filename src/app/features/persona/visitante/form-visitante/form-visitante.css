@@ -1,5 +1,5 @@
 /* ==========================================================
-   HABITACONTROL — REGISTRO DE VISITANTE
+   SincroHabit — REGISTRO DE VISITANTE
    PARTE 1: VARIABLES, RESET, FONDO DEL MODAL,
    TARJETA PRINCIPAL Y ANIMACIONES
 ========================================================== */
@@ -23,7 +23,7 @@
   --visitor-primary-800: #1e40af;
   --visitor-primary-900: #1e3a8a;
 
-  /* Azul oscuro HabitaControl */
+  /* Azul oscuro SincroHabit */
 
   --visitor-navy-700: #334155;
   --visitor-navy-800: #1e293b;
@@ -771,7 +771,7 @@
 }
 
 /* ==========================================================
-   HABITACONTROL — REGISTRO DE VISITANTE
+   SincroHabit — REGISTRO DE VISITANTE
    PARTE 2: HEADER DEL MODAL
 ========================================================== */
 
@@ -1292,7 +1292,7 @@
 }
 
 /* ==========================================================
-   HABITACONTROL — REGISTRO DE VISITANTE
+   SincroHabit — REGISTRO DE VISITANTE
    PARTE 3: ALERTAS DEL FORMULARIO
 ========================================================== */
 
@@ -1663,7 +1663,7 @@
 }
 
 /* ==========================================================
-   HABITACONTROL — REGISTRO DE VISITANTE
+   SincroHabit — REGISTRO DE VISITANTE
    PARTE 4: FORMULARIO, GRID, CAMPOS Y CONTROLES
 ========================================================== */
 
@@ -2524,7 +2524,7 @@
 }
 
 /* ==========================================================
-   HABITACONTROL — REGISTRO DE VISITANTE
+   SincroHabit — REGISTRO DE VISITANTE
    PARTE 5: PIE DEL FORMULARIO Y BOTONES DE ACCIÓN
 ========================================================== */
 
@@ -3396,7 +3396,7 @@
 
 
 /* ==========================================================
-   HABITACONTROL — REGISTRO DE VISITANTE
+   SincroHabit — REGISTRO DE VISITANTE
    PARTE 6: MODAL DEL ESCÁNER QR
 ========================================================== */
 
@@ -5079,5 +5079,611 @@ or
   .visitor-photo__note {
     animation: none;
     transition: none;
+  }
+}
+
+/* ==========================================================
+   VISITANTES
+   CONFIRMACIÓN DE POLÍTICAS
+========================================================== */
+
+
+/* ==========================================================
+   1. CONTENEDOR
+========================================================== */
+
+.visitor-consent {
+  position: relative;
+
+  width: 100%;
+
+  margin-top: 0.5rem;
+  padding: 1rem 1.125rem;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(240, 253, 244, 0.96),
+      rgba(248, 250, 252, 0.98)
+    );
+
+  border:
+    1px solid
+    rgba(134, 239, 172, 0.72);
+
+  border-radius: 1rem;
+
+  box-shadow:
+    0 0.375rem 1rem rgba(22, 163, 74, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* Barra lateral */
+
+.visitor-consent::before {
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 0.25rem;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      180deg,
+      #22c55e,
+      #16a34a
+    );
+}
+
+
+/* ==========================================================
+   2. LABEL
+========================================================== */
+
+.visitor-consent__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+
+  width: 100%;
+
+  cursor: pointer;
+
+  user-select: none;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+
+/* ==========================================================
+   3. CHECKBOX
+========================================================== */
+
+.visitor-consent__label input[type="checkbox"] {
+  flex: 0 0 auto;
+
+  width: 1.25rem;
+  height: 1.25rem;
+
+  margin: 0.125rem 0 0;
+
+  accent-color: #16a34a;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================================
+   4. CONTENIDO
+========================================================== */
+
+.visitor-consent__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   5. TÍTULO
+========================================================== */
+
+.visitor-consent__title {
+  color: #166534;
+
+  font-size: 0.8125rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+
+/* ==========================================================
+   6. TEXTO
+========================================================== */
+
+.visitor-consent__text {
+  color: #64748b;
+
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================
+   7. ENLACES
+========================================================== */
+
+.visitor-consent__text a {
+  color: #1d4ed8;
+
+  font-weight: 750;
+
+  text-decoration: underline;
+  text-decoration-color: rgba(37, 99, 235, 0.35);
+  text-decoration-thickness: 0.08rem;
+  text-underline-offset: 0.16rem;
+
+  transition:
+    color 0.18s ease,
+    text-decoration-color 0.18s ease;
+}
+
+
+.visitor-consent__text a:hover {
+  color: #2563eb;
+
+  text-decoration-color: #2563eb;
+}
+
+
+.visitor-consent__text a:focus-visible {
+  outline:
+    0.15rem solid
+    rgba(37, 99, 235, 0.2);
+
+  outline-offset:
+    0.15rem;
+
+  border-radius:
+    0.2rem;
+}
+
+
+/* ==========================================================
+   8. HOVER
+========================================================== */
+
+.visitor-consent:hover {
+  border-color:
+    rgba(74, 222, 128, 0.9);
+
+  box-shadow:
+    0 0.625rem 1.375rem rgba(22, 163, 74, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+
+  transform:
+    translateY(-0.0625rem);
+}
+
+
+/* ==========================================================
+   9. ESTADO CONFIRMADO
+========================================================== */
+
+.visitor-consent:has(
+  input[type="checkbox"]:checked
+) {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(220, 252, 231, 0.98),
+      rgba(240, 253, 244, 0.98)
+    );
+
+  border-color:
+    rgba(34, 197, 94, 0.78);
+
+  box-shadow:
+    0 0.625rem 1.5rem rgba(22, 163, 74, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+
+.visitor-consent:has(
+  input[type="checkbox"]:checked
+)
+.visitor-consent__title {
+  color: #14532d;
+}
+
+
+/* ==========================================================
+   10. DESHABILITADO
+========================================================== */
+
+.visitor-consent:has(
+  input[type="checkbox"]:disabled
+) {
+  opacity: 0.68;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+.visitor-consent__label
+input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+
+/* ==========================================================
+   11. CELULAR
+========================================================== */
+
+@media (max-width: 520px) {
+
+  .visitor-consent {
+    padding: 0.875rem;
+  }
+
+  .visitor-consent__label {
+    gap: 0.75rem;
+  }
+
+  .visitor-consent__title {
+    font-size: 0.78125rem;
+  }
+
+  .visitor-consent__text {
+    font-size: 0.71875rem;
+    line-height: 1.5;
+  }
+
+}
+
+
+/* ==========================================================
+   12. MOVIMIENTO REDUCIDO
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .visitor-consent,
+  .visitor-consent__text a {
+    transition: none;
+  }
+
+  .visitor-consent:hover {
+    transform: none;
+  }
+
+}
+
+
+/* =========================================================
+   BUSCADOR DE RESIDENTE AUTORIZANTE
+========================================================= */
+
+.visitor-field--resident-search {
+  position: relative;
+  z-index: 30;
+}
+
+.visitor-field--resident-search:focus-within {
+  z-index: 120;
+}
+
+.visitor-resident-search {
+  position: relative;
+  width: 100%;
+}
+
+
+/* =========================================================
+   ESTADO DE BÚSQUEDA
+========================================================= */
+
+.visitor-resident-search__status {
+  margin-top: 8px;
+  padding: 10px 12px;
+
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 10px;
+
+  background: rgba(248, 250, 252, 0.95);
+
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   RESULTADOS DEL BUSCADOR
+========================================================= */
+
+.visitor-resident-search__results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+
+  z-index: 150;
+
+  display: flex;
+  flex-direction: column;
+
+  max-height: 260px;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 20px 45px rgba(15, 23, 42, 0.14),
+    0 8px 18px rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   OPCIÓN DE RESIDENTE
+========================================================= */
+
+.visitor-resident-search__option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 100%;
+
+  padding: 13px 15px;
+
+  border: 0;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+
+  background: transparent;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.visitor-resident-search__option:last-child {
+  border-bottom: 0;
+}
+
+.visitor-resident-search__option:hover {
+  background: #eff6ff;
+}
+
+.visitor-resident-search__option:focus-visible {
+  position: relative;
+  z-index: 1;
+
+  outline: 2px solid rgba(37, 99, 235, 0.55);
+  outline-offset: -2px;
+
+  background: #eff6ff;
+}
+
+.visitor-resident-search__option:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DEL RESULTADO
+========================================================= */
+
+.visitor-resident-search__name {
+  display: block;
+
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.visitor-resident-search__location {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+
+/* =========================================================
+   RESIDENTE SELECCIONADO
+========================================================= */
+
+.visitor-resident-selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-top: 10px;
+  padding: 13px 15px;
+
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(219, 234, 254, 0.72),
+      rgba(239, 246, 255, 0.9)
+    );
+}
+
+.visitor-resident-selected__info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.visitor-resident-selected__label {
+  color: #64748b;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.visitor-resident-selected__name {
+  overflow: hidden;
+
+  color: #1e3a8a;
+
+  font-size: 0.95rem;
+  font-weight: 800;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.visitor-resident-selected__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  font-size: 0.9rem;
+  font-weight: 900;
+
+  box-shadow: 0 5px 12px rgba(37, 99, 235, 0.22);
+}
+
+
+/* =========================================================
+   TEXTO DE AYUDA
+========================================================= */
+
+.visitor-field__help {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #64748b;
+
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   CAMPOS READONLY
+========================================================= */
+
+.visitor-field__control[readonly] {
+  cursor: default;
+
+  border-color: rgba(148, 163, 184, 0.3);
+
+  background: #f8fafc;
+
+  color: #475569;
+
+  box-shadow: none;
+}
+
+.visitor-field__control[readonly]:focus {
+  border-color: rgba(148, 163, 184, 0.3);
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   SCROLL DEL DROPDOWN
+========================================================= */
+
+.visitor-resident-search__results::-webkit-scrollbar {
+  width: 8px;
+}
+
+.visitor-resident-search__results::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.visitor-resident-search__results::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+
+  background: rgba(148, 163, 184, 0.55);
+}
+
+.visitor-resident-search__results::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.7);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+  .visitor-resident-search__results {
+    max-height: 220px;
+  }
+
+  .visitor-resident-search__option {
+    padding: 12px 13px;
+  }
+
+  .visitor-resident-selected {
+    padding: 12px 13px;
+  }
+
+  .visitor-resident-selected__name {
+    white-space: normal;
   }
 }

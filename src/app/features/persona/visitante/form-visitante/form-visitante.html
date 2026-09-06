@@ -110,6 +110,114 @@
 
         </div>
 
+        <!-- ========================================= -->
+        <!-- RESIDENTE QUE AUTORIZA                    -->
+        <!-- ========================================= -->
+
+        <div class="visitor-field visitor-field--full visitor-field--resident-search">
+
+          <label
+            class="visitor-field__label"
+            for="autorizadoPor">
+
+            Residente que autoriza
+
+          </label>
+
+          <div class="visitor-resident-search">
+
+            <input
+              id="autorizadoPor"
+              class="visitor-field__control"
+              type="text"
+              [ngModel]="autorizadoPorNombre"
+              (ngModelChange)="onAutorizadoPorNombreChange($event)"
+              name="autorizadoPorNombre"
+              placeholder="Escribe al menos 2 letras del nombre"
+              autocomplete="off"
+              [disabled]="isSaving">
+
+            @if (buscandoResidentes) {
+
+              <div class="visitor-resident-search__status">
+                Buscando residentes...
+              </div>
+
+            }
+
+            @if (
+              !buscandoResidentes &&
+              residentesEncontrados.length > 0
+            ) {
+
+              <div class="visitor-resident-search__results">
+
+                @for (
+                  residente of residentesEncontrados;
+                  track residente.id
+                ) {
+
+                  <button
+                    type="button"
+                    class="visitor-resident-search__option"
+                    (click)="seleccionarResidente(residente)"
+                    [disabled]="isSaving">
+
+                    <span class="visitor-resident-search__name">
+                      {{ residente.nombre }}
+                    </span>
+
+                    <span class="visitor-resident-search__location">
+                      Torre {{ residente.torre || '—' }}
+                      ·
+                      Apto {{ residente.apartamento || '—' }}
+                    </span>
+
+                  </button>
+
+                }
+
+              </div>
+
+            }
+
+            @if (
+              residenteSeleccionado &&
+              personaAutorizanteId
+            ) {
+
+              <div class="visitor-resident-selected">
+
+                <div class="visitor-resident-selected__info">
+
+                  <span class="visitor-resident-selected__label">
+                    Residente seleccionado
+                  </span>
+
+                  <strong class="visitor-resident-selected__name">
+                    {{ autorizadoPorNombre }}
+                  </strong>
+
+                </div>
+
+                <span
+                  class="visitor-resident-selected__status"
+                  aria-label="Residente seleccionado">
+                  ✓
+                </span>
+
+              </div>
+
+            }
+
+          </div>
+
+          <small class="visitor-field__help">
+            Busca y selecciona al residente que autorizó el ingreso.
+          </small>
+
+        </div>
+
         <!-- Torre -->
 
         <div class="visitor-field">
@@ -128,7 +236,8 @@
             type="text"
             [(ngModel)]="torre"
             name="torre"
-            placeholder="Ej. Torre A"
+            placeholder="Se completa al seleccionar residente"
+            readonly
             [disabled]="isSaving">
 
         </div>
@@ -151,35 +260,11 @@
             type="text"
             [(ngModel)]="apartamento"
             name="apartamento"
-            placeholder="Ej. 302"
+            placeholder="Se completa al seleccionar residente"
+            readonly
             [disabled]="isSaving">
 
         </div>
-
-      </div>
-
-      <!-- ========================================= -->
-      <!-- AUTORIZADO POR                           -->
-      <!-- ========================================= -->
-
-      <div class="visitor-field visitor-field--full">
-
-        <label
-          class="visitor-field__label"
-          for="autorizadoPor">
-
-          Autorizado por
-
-        </label>
-
-        <input
-          id="autorizadoPor"
-          class="visitor-field__control"
-          type="text"
-          [(ngModel)]="autorizadoPorNombre"
-          name="autorizadoPorNombre"
-          placeholder="Nombre del residente que autoriza"
-          [disabled]="isSaving">
 
       </div>
 
@@ -340,6 +425,53 @@
       </section>
 
       <!-- ========================================= -->
+      <!-- ACEPTACIÓN DE POLÍTICAS                   -->
+      <!-- ========================================= -->
+
+      <section class="visitor-consent">
+
+        <label class="visitor-consent__label">
+
+          <input
+            type="checkbox"
+            name="acceptPolicies"
+            [(ngModel)]="acceptPolicies"
+            [disabled]="isSaving"
+            (change)="errorMessage = ''">
+
+          <span class="visitor-consent__content">
+
+            <strong class="visitor-consent__title">
+              Confirmación de aceptación
+            </strong>
+
+            <span class="visitor-consent__text">
+              Confirmo que el visitante manifestó aceptar la
+
+              <a
+                href="/documentos-legales/politica-tratamiento-datos-v1.0.pdf"
+                target="_blank"
+                rel="noopener noreferrer">
+                Política de Privacidad
+              </a>
+
+              y los
+
+              <a
+                href="/documentos-legales/terminos-condiciones-v1.0.pdf"
+                target="_blank"
+                rel="noopener noreferrer">
+                Términos y Condiciones
+              </a>.
+            </span>
+
+          </span>
+
+        </label>
+
+      </section>
+
+      <!-- ========================================= -->
       <!-- ACCIONES                                 -->
       <!-- ========================================= -->
 
@@ -358,7 +490,7 @@
         <button
           type="submit"
           class="visitor-action visitor-action--primary"
-          [disabled]="isSaving">
+          [disabled]="isSaving || !acceptPolicies">
 
           @if (isSaving) {
             Registrando...

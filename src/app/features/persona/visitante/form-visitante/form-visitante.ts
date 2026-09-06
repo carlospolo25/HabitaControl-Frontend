@@ -15,6 +15,11 @@ import {
   VisitanteService,
 } from '../../../../core/services/visitante/visitante';
 
+import {
+  PersonService,
+  ResidenteBusquedaResponse,
+} from '../../../../core/services/person/person-service';
+
 type TipoPersona =
   | 'Residente'
   | 'Seguridad'
@@ -52,9 +57,19 @@ export class FormVisitanteComponent {
   isSaving = false;
   errorMessage = '';
   successMessage = '';
+  acceptPolicies = false;
 
   tipo: TipoPersona = '';
   vistaActiva: VistaPersona = 'inicio';
+
+  personaAutorizanteId = '';
+
+  residentesEncontrados: ResidenteBusquedaResponse[] = [];
+  residenteSeleccionado = false;
+  buscandoResidentes = false;
+
+  private busquedaTimeout:
+    ReturnType<typeof setTimeout> | null = null;
 
   private readonly maxFotoBytes =
     5 * 1024 * 1024;
@@ -67,6 +82,7 @@ export class FormVisitanteComponent {
 
   constructor(
     private readonly visitanteService: VisitanteService,
+    private readonly personService: PersonService,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
@@ -166,17 +182,116 @@ export class FormVisitanteComponent {
     this.fotoPreview = null;
   }
 
+  onAutorizadoPorNombreChange(valor: string): void {
+    this.autorizadoPorNombre = valor;
+
+    this.personaAutorizanteId = '';
+    this.residenteSeleccionado = false;
+
+    this.torre = '';
+    this.apartamento = '';
+
+    this.residentesEncontrados = [];
+    this.errorMessage = '';
+
+    if (this.busquedaTimeout) {
+      clearTimeout(this.busquedaTimeout);
+      this.busquedaTimeout = null;
+    }
+
+    const termino = valor.trim();
+
+    if (termino.length < 2) {
+      return;
+    }
+
+    this.busquedaTimeout = setTimeout(() => {
+      this.buscarResidentes(termino);
+    }, 300);
+  }
+
+  private buscarResidentes(
+    termino: string
+  ): void {
+    this.buscandoResidentes = true;
+
+    this.personService
+      .buscarResidentesParaPaquetes(termino)
+      .pipe(
+        finalize(() => {
+          this.buscandoResidentes = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (residentes) => {
+          const terminoActual =
+            this.autorizadoPorNombre
+              .trim()
+              .toLowerCase();
+
+          if (
+            terminoActual !==
+            termino.trim().toLowerCase()
+          ) {
+            return;
+          }
+
+          this.residentesEncontrados =
+            residentes ?? [];
+        },
+
+        error: (err) => {
+          this.residentesEncontrados = [];
+
+          this.errorMessage =
+            err?.error?.message ||
+            err?.error?.mensaje ||
+            'No fue posible buscar los residentes.';
+        },
+      });
+  }
+
+  seleccionarResidente(
+    residente: ResidenteBusquedaResponse
+  ): void {
+    this.personaAutorizanteId =
+      residente.id;
+
+    this.autorizadoPorNombre =
+      residente.nombre;
+
+    this.torre =
+      residente.torre;
+
+    this.apartamento =
+      residente.apartamento;
+
+    this.residenteSeleccionado = true;
+    this.residentesEncontrados = [];
+
+    if (this.busquedaTimeout) {
+      clearTimeout(this.busquedaTimeout);
+      this.busquedaTimeout = null;
+    }
+
+    this.errorMessage = '';
+  }
+
   guardar(): void {
     this.errorMessage = '';
     this.successMessage = '';
 
     const request: RegistrarVisitanteRequest = {
+      personaAutorizanteId:
+        this.personaAutorizanteId,
       nombre: this.nombre.trim(),
       documento: this.documento.trim(),
       torre: this.torre.trim(),
       apartamento: this.apartamento.trim(),
       autorizadoPorNombre:
         this.autorizadoPorNombre.trim(),
+      aceptaPoliticasPrivacidad: this.acceptPolicies,
       foto: this.foto,
     };
 
@@ -206,7 +321,22 @@ export class FormVisitanteComponent {
 
     if (!request.autorizadoPorNombre) {
       this.errorMessage =
-        'El nombre de quien autoriza es obligatorio.';
+        'Busca al residente que autoriza el ingreso.';
+      return;
+    }
+
+    if (
+      !request.personaAutorizanteId ||
+      !this.residenteSeleccionado
+    ) {
+      this.errorMessage =
+        'Debes seleccionar un residente registrado de la lista.';
+      return;
+    }
+
+    if (!this.acceptPolicies) {
+      this.errorMessage =
+        'Debes confirmar que el visitante manifestó aceptar las Políticas de Privacidad y los Términos y Condiciones.';
       return;
     }
 

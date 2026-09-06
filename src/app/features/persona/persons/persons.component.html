@@ -722,29 +722,30 @@
 
                     <div class="person-actions">
 
-                      <button
-                        type="button"
-                        class="person-actions__button person-actions__button--detail"
-                        (click)="openPersonDetail(person)">
+                      @if (!isPersonAnonymized(person)) {
+                        <button
+                          type="button"
+                          class="person-actions__button person-actions__button--detail"
+                          (click)="openPersonDetail(person)">
 
-                        <span
-                          class="person-actions__icon"
-                          aria-hidden="true">
-                          👁
-                        </span>
+                          <span
+                            class="person-actions__icon"
+                            aria-hidden="true">
+                            👁
+                          </span>
 
-                        <span class="person-actions__label">
-                          Ver detalle
-                        </span>
+                          <span class="person-actions__label">
+                            Ver detalle
+                          </span>
 
-                      </button>
+                        </button>
+                      }
 
-                      @if (isAdmin) {
+                      @if (isAdmin && !person.permanentlyDeactivated) {
                         <button
                           type="button"
                           class="person-actions__button person-actions__button--status"
                           [class.person-actions__button--activate]="!person.active"
-                          [disabled]="person.permanentlyDeactivated"
                           (click)="togglePersonStatus(person.id)">
 
                           <span class="person-actions__label">
@@ -752,6 +753,40 @@
                           </span>
 
                         </button>
+                      }
+
+                      @if (
+                        isAdmin &&
+                        person.permanentlyDeactivated &&
+                        !isPersonAnonymized(person)
+                      ) {
+                        <button
+                          type="button"
+                          class="person-actions__button person-actions__button--anonymize"
+                          [disabled]="isAnonymizing"
+                          (click)="anonimizarPersona(person)">
+
+                          <span
+                            class="person-actions__icon"
+                            aria-hidden="true">
+                            ⌫
+                          </span>
+
+                          <span class="person-actions__label">
+                            {{
+                              anonymizingPersonId === person.id
+                                ? 'Eliminando datos...'
+                                : 'Eliminar datos'
+                            }}
+                          </span>
+
+                        </button>
+                      }
+
+                      @if (isPersonAnonymized(person)) {
+                        <span class="person-actions__anonymized">
+                          Datos eliminados
+                        </span>
                       }
 
                     </div>

@@ -1,5 +1,5 @@
 /* ==========================================================
-   HABITACONTROL — ESCÁNER QR DE VISITANTES
+   SincroHabit — ESCÁNER QR DE VISITANTES
    PARTE 1: VARIABLES, OVERLAY, PANEL Y ENCABEZADO
 ========================================================== */
 
@@ -913,7 +913,7 @@ select {
 
 
 /* ==========================================================
-   HABITACONTROL — ESCÁNER QR DE VISITANTES
+   SincroHabit — ESCÁNER QR DE VISITANTES
    PARTE 2: ALERTAS Y SELECTOR DE CÁMARA
 ========================================================== */
 
@@ -1809,7 +1809,7 @@ select {
 
 
 /* ==========================================================
-   HABITACONTROL — ESCÁNER QR DE VISITANTES
+   SincroHabit — ESCÁNER QR DE VISITANTES
    PARTE 3: ÁREA DE CAPTURA, VIDEO Y GUÍA DE ESCANEO
 ========================================================== */
 
@@ -2684,7 +2684,7 @@ and (
 
 
 /* ==========================================================
-   HABITACONTROL — ESCÁNER QR DE VISITANTES
+   SincroHabit — ESCÁNER QR DE VISITANTES
    PARTE 4: ESTADO DETECTADO Y BARRA DE ESTADO
 ========================================================== */
 
@@ -3518,7 +3518,7 @@ and (
 
 
 /* ==========================================================
-   HABITACONTROL — ESCÁNER QR DE VISITANTES
+   SincroHabit — ESCÁNER QR DE VISITANTES
    PARTE 5: RECOMENDACIONES Y ACCIONES
 ========================================================== */
 
@@ -4540,7 +4540,7 @@ and (
 
 
 /* ==========================================================
-   HABITACONTROL — ESCÁNER QR DE VISITANTES
+   SincroHabit — ESCÁNER QR DE VISITANTES
    PARTE 6: SCROLLBAR, COMPATIBILIDAD Y AJUSTES FINALES
 ========================================================== */
 

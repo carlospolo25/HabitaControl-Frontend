@@ -20,7 +20,7 @@
 
       <header class="register-header">
         <div class="register-logo">
-          <img src="assets/brand/SincroHabit.png" alt="HabitaControl">
+          <img src="assets/brand/SincroHabit.png" alt="SincroHabit">
         </div>
 
         <span>Registro de acceso</span>
@@ -315,7 +315,9 @@
             <input
               type="checkbox"
               name="acceptPolicies"
-              [(ngModel)]="acceptPolicies">
+              [(ngModel)]="acceptPolicies"
+              (change)="clearMessages()"
+              [disabled]="isSubmitting">
 
             <span>
               He leído y acepto la

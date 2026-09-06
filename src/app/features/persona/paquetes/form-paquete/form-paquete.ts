@@ -15,6 +15,11 @@ import {
   PaqueteService,
 } from '../../../../core/services/paquete/paquete';
 
+import {
+  PersonService,
+  ResidenteBusquedaResponse,
+} from '../../../../core/services/person/person-service';
+
 @Component({
   selector: 'app-form-paquete',
   standalone: true,
@@ -30,9 +35,15 @@ export class FormPaqueteComponent {
   @Output() paqueteRegistrado = new EventEmitter<void>();
 
   nombreDestinatario = '';
+  personaDestinatariaId = '';
+
   apartamento = '';
   torre = '';
   descripcion = '';
+
+  residentesEncontrados: ResidenteBusquedaResponse[] = [];
+  residenteSeleccionado = false;
+  buscandoResidentes = false;
 
   foto: File | null = null;
   fotoPreview: string | null = null;
@@ -51,6 +62,7 @@ export class FormPaqueteComponent {
 
   constructor(
     private readonly paqueteService: PaqueteService,
+    private readonly personService: PersonService,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
@@ -116,6 +128,110 @@ export class FormPaqueteComponent {
     this.limpiarFoto();
   }
 
+  onNombreDestinatarioChange(
+    valor: string
+  ): void {
+    this.nombreDestinatario = valor;
+
+    this.personaDestinatariaId = '';
+    this.residenteSeleccionado = false;
+
+    this.torre = '';
+    this.apartamento = '';
+
+    this.residentesEncontrados = [];
+    this.errorMessage = '';
+
+    if (this.busquedaTimeout) {
+      clearTimeout(this.busquedaTimeout);
+    }
+
+    const termino = valor.trim();
+
+    if (termino.length < 2) {
+      this.buscandoResidentes = false;
+      return;
+    }
+
+    this.busquedaTimeout = setTimeout(() => {
+      this.buscarResidentes(termino);
+    }, 300);
+  }
+
+  private buscarResidentes(
+    termino: string
+  ): void {
+    this.buscandoResidentes = true;
+
+    this.personService
+      .buscarResidentesParaPaquetes(
+        termino
+      )
+      .pipe(
+        finalize(() => {
+          this.buscandoResidentes = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (residentes) => {
+          if (
+            this.nombreDestinatario
+              .trim()
+              .toLowerCase() !==
+            termino.toLowerCase()
+          ) {
+            return;
+          }
+
+          this.residentesEncontrados =
+            residentes;
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error: HttpErrorResponse) => {
+          this.residentesEncontrados = [];
+
+          this.errorMessage =
+            this.obtenerMensajeError(
+              error,
+              'No fue posible buscar los residentes.'
+            );
+        },
+      });
+  }
+
+  seleccionarResidente(
+    residente: ResidenteBusquedaResponse
+  ): void {
+    this.personaDestinatariaId =
+      residente.id;
+
+    this.nombreDestinatario =
+      residente.nombre;
+
+    this.torre =
+      residente.torre;
+
+    this.apartamento =
+      residente.apartamento;
+
+    this.residenteSeleccionado = true;
+
+    this.residentesEncontrados = [];
+
+    this.errorMessage = '';
+
+    if (this.busquedaTimeout) {
+      clearTimeout(this.busquedaTimeout);
+      this.busquedaTimeout = null;
+    }
+  }
+
+  private busquedaTimeout:
+  ReturnType<typeof setTimeout> | null = null;
+
   private limpiarFoto(): void {
     this.foto = null;
     this.fotoPreview = null;
@@ -143,6 +259,15 @@ export class FormPaqueteComponent {
     if (!nombreDestinatario) {
       this.errorMessage =
         'Ingresa el nombre del destinatario.';
+      return;
+    }
+
+    if (
+      !this.personaDestinatariaId ||
+      !this.residenteSeleccionado
+    ) {
+      this.errorMessage =
+        'Debes seleccionar un residente registrado de la lista.';
       return;
     }
 
@@ -192,6 +317,9 @@ export class FormPaqueteComponent {
     }
 
     const request: RegistrarPaqueteRequest = {
+      personaDestinatariaId:
+        this.personaDestinatariaId,
+
       nombreDestinatario,
       torre,
       apartamento,

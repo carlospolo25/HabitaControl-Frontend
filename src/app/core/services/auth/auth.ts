@@ -30,6 +30,8 @@ export interface RegisterRequest {
   adminTelefono: string;
   adminEmail: string;
   adminPassword: string;
+
+  aceptaPoliticasPrivacidad: boolean;
 }
 
 export interface ApiMessageResponse {

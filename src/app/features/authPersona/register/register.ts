@@ -2,10 +2,12 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import {
+  AuthPersona,
+  CompletePersonRegistrationRequest,
+} from '../../../core/services/authPersona/auth-persona';
 
 import { finalize } from 'rxjs';
-
-import { AuthPersona } from '../../../core/services/authPersona/auth-persona';
 
 @Component({
   selector: 'app-register',
@@ -100,6 +102,10 @@ export class RegisterPersonaComponent implements OnInit {
 
   registrar(): void {
 
+    if (this.isSubmitting) {
+      return;
+    }
+
     this.clearMessages();
 
     if (!this.acceptPolicies) {
@@ -108,20 +114,13 @@ export class RegisterPersonaComponent implements OnInit {
       return;
     }
 
-    if (this.isSubmitting) {
-      return;
-    }
-
-    this.errorMessage = '';
-    this.successMessage = '';
-
     if (!this.isFormValid()) {
       return;
     }
 
     this.isSubmitting = true;
 
-    const request = {
+    const request: CompletePersonRegistrationRequest = {
       token: this.token,
 
       name: this.nombre.trim(),
@@ -170,6 +169,8 @@ export class RegisterPersonaComponent implements OnInit {
       receivesNotifications: this.recibeNotificaciones,
 
       notes: this.observaciones.trim(),
+
+      aceptaPoliticasPrivacidad: this.acceptPolicies,
     };
 
     this.authPersona

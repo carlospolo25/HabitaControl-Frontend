@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface RegistrarVisitanteRequest {
+  personaAutorizanteId: string;
+
   nombre: string;
   documento: string;
   torre: string;
@@ -11,6 +13,8 @@ export interface RegistrarVisitanteRequest {
 
   emailVisitante?: string;
   telefonoVisitante?: string;
+
+  aceptaPoliticasPrivacidad: boolean;
 
   foto?: File | null;
 }
@@ -74,6 +78,11 @@ export class VisitanteService {
     const formData = new FormData();
 
     formData.append(
+      'PersonaAutorizanteId',
+      data.personaAutorizanteId
+    );
+
+    formData.append(
       'Nombre',
       data.nombre
     );
@@ -96,6 +105,11 @@ export class VisitanteService {
     formData.append(
       'AutorizadoPorNombre',
       data.autorizadoPorNombre
+    );
+
+    formData.append(
+      'AceptaPoliticasPrivacidad',
+      data.aceptaPoliticasPrivacidad.toString()
     );
 
     if (data.emailVisitante) {

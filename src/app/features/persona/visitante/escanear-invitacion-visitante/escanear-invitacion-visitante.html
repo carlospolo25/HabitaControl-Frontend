@@ -503,6 +503,55 @@
 
       </section>
 
+      <!-- =====================================================
+          ACEPTACIÓN DE POLÍTICAS
+      ====================================================== -->
+
+      <section class="validated-visitor-consent">
+
+        <label class="validated-visitor-consent__label">
+
+          <input
+            type="checkbox"
+            name="acceptPoliciesQr"
+            [(ngModel)]="acceptPolicies"
+            [disabled]="estaProcesando"
+            (change)="errorMessage = ''">
+
+          <span class="validated-visitor-consent__content">
+
+            <strong class="validated-visitor-consent__title">
+              Confirmación de aceptación
+            </strong>
+
+            <span class="validated-visitor-consent__text">
+
+              Confirmo que el visitante manifestó aceptar la
+
+              <a
+                href="/documentos-legales/politica-tratamiento-datos-v1.0.pdf"
+                target="_blank"
+                rel="noopener noreferrer">
+                Política de Privacidad
+              </a>
+
+              y los
+
+              <a
+                href="/documentos-legales/terminos-condiciones-v1.0.pdf"
+                target="_blank"
+                rel="noopener noreferrer">
+                Términos y Condiciones
+              </a>.
+
+            </span>
+
+          </span>
+
+        </label>
+
+      </section>
+
       <!-- Acción de ingreso -->
 
       <footer class="validated-visitor__footer">
@@ -511,7 +560,7 @@
           type="button"
           class="invitation-action invitation-action--success"
           (click)="registrarIngreso()"
-          [disabled]="estaProcesando">
+          [disabled]="estaProcesando || !acceptPolicies">
 
           @if (isRegistering) {
             <span

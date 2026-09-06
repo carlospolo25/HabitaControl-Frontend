@@ -12,19 +12,21 @@
         Actualizar
       </button>
 
-      <button
-        type="button"
-        class="btn-pdf"
-        (click)="exportarPdf()"
-        [disabled]="isLoading || isGeneratingPdf">
+      @if (isAdmin) {
+        <button
+          type="button"
+          class="btn-pdf"
+          (click)="exportarPdf()"
+          [disabled]="isLoading || isGeneratingPdf">
 
-        @if (isGeneratingPdf) {
-          Generando PDF...
-        } @else {
-          📄 Exportar PDF
-        }
+          @if (isGeneratingPdf) {
+            Generando PDF...
+          } @else {
+            📄 Exportar PDF
+          }
 
-      </button>
+        </button>
+      }
 
       <button
         type="button"

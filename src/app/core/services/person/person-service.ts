@@ -36,6 +36,13 @@ export interface PersonResponse {
   notes: string;
 }
 
+export interface ResidenteBusquedaResponse {
+  id: string;
+  nombre: string;
+  torre: string;
+  apartamento: string;
+}
+
 export interface UpdatePersonRequest {
   name: string;
   phone: string;
@@ -148,6 +155,19 @@ export class PersonService {
     );
   }
 
+  buscarResidentesParaPaquetes(
+    termino: string
+  ): Observable<ResidenteBusquedaResponse[]> {
+    return this.http.get<ResidenteBusquedaResponse[]>(
+      `${this.apiUrl}/buscar-residentes-paquetes`,
+      {
+        params: {
+          termino: termino.trim()
+        }
+      }
+    );
+  }
+
   getSecurityVisiblePeople(): Observable<PersonResponse[]> {
     return this.http.get<PersonResponse[]>(
       `${this.apiUrl}/security-visible`
@@ -199,6 +219,14 @@ export class PersonService {
   eliminarMiCuenta(): Observable<MessageResponse> {
     return this.http.delete<MessageResponse>(
       `${this.apiUrl}/eliminar-cuenta`
+    );
+  }
+
+  anonimizarPersona(
+    personId: string
+  ): Observable<MessageResponse> {
+    return this.http.delete<MessageResponse>(
+      `${this.apiUrl}/${personId}/anonimizar`
     );
   }
 
