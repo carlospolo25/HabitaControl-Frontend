@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../config/api.config';
 
 export interface ZonaComunResponse {
   id: string;
@@ -41,7 +42,7 @@ export interface ActualizarZonaComunRequest {
 })
 export class ZonaComunService {
   private readonly apiUrl =
-    'https://localhost:7232/api/ZonaComun';
+    `${API_CONFIG.baseUrl}/ZonaComun`;
 
   constructor(
     private readonly http: HttpClient,

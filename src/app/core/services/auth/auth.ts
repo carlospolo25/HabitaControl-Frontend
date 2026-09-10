@@ -134,6 +134,10 @@ export class AuthService {
     );
   }
 
+  obtenerFotoPerfilUrl(): string {
+    return `${this.baseUrl}/auth/mi-perfil/foto`;
+  }
+
   actualizarPerfil(
     request: ActualizarPerfilUsuarioRequest
   ): Observable<PerfilUsuarioResponse> {

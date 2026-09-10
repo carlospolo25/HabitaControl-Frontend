@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../config/api.config';
 
 export enum TipoVehiculo {
   Carro = 1,
@@ -47,7 +48,7 @@ export interface VehiculoResponse {
 })
 export class VehiculoService {
   private readonly apiUrl =
-    'https://localhost:7232/api/Vehiculo';
+    `${API_CONFIG.baseUrl}/Vehiculo`;
 
   constructor(
     private readonly http: HttpClient
@@ -74,6 +75,12 @@ export class VehiculoService {
     return this.http.get<VehiculoResponse[]>(
       `${this.apiUrl}/persona/${personaId}`
     );
+  }
+
+  obtenerFotoUrl(
+    vehiculoId: string
+  ): string {
+    return `${this.apiUrl}/${vehiculoId}/foto`;
   }
 
   actualizar(

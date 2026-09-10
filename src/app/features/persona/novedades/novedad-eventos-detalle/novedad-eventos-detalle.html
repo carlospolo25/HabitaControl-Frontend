@@ -264,7 +264,7 @@
 
                   <img
                     class="registro-evidencia__image"
-                    [src]="obtenerImagenUrl(evento.imagenUrl)"
+                    [src]="obtenerImagenUrl(evento)"
                     [alt]="'Evidencia del registro ' + (index + 1)"
                     loading="lazy"
                     (error)="manejarErrorImagen(evento.id)">
@@ -308,7 +308,7 @@
 
                   <a
                     class="registro-evidencia__link"
-                    [href]="obtenerImagenUrl(evento.imagenUrl)"
+                    [href]="obtenerImagenUrl(evento)"
                     target="_blank"
                     rel="noopener noreferrer">
                     Abrir original

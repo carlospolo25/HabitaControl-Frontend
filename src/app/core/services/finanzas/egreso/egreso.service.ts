@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../../config/api.config';
 
 export enum EstadoEgreso {
   Registrado = 1,
@@ -76,7 +77,7 @@ export interface AnularEgresoRequest {
 })
 export class EgresoService {
   private readonly apiUrl =
-    'https://localhost:7232/api/Egreso';
+    `${API_CONFIG.baseUrl}/Egreso`;
 
   constructor(private readonly http: HttpClient) {}
 

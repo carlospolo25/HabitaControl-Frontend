@@ -9,7 +9,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { API_CONFIG } from '../../../../core/config/api.config';
 import jsPDF from 'jspdf';
 
 import {
@@ -198,37 +197,21 @@ export class NovedadEventosDetalle implements OnChanges {
   }
 
   obtenerImagenUrl(
-    imagenUrl: string | null | undefined
+    evento: EventoNovedad
   ): string {
-    if (!imagenUrl) {
-      return '';
-    }
-
-    const ruta = imagenUrl.trim();
-
-    if (!ruta) {
-      return '';
-    }
 
     if (
-      ruta.startsWith('http://') ||
-      ruta.startsWith('https://') ||
-      ruta.startsWith('data:') ||
-      ruta.startsWith('blob:')
+      !evento?.id?.trim() ||
+      !evento?.imagenUrl?.trim() ||
+      !this.novedadId?.trim()
     ) {
-      return ruta;
+      return '';
     }
 
-    const apiRoot = API_CONFIG.baseUrl.replace(
-      /\/api\/?$/i,
-      ''
+    return this.novedadService.obtenerImagenEventoUrl(
+      this.novedadId,
+      evento.id
     );
-
-    const rutaNormalizada = ruta.startsWith('/')
-      ? ruta
-      : `/${ruta}`;
-
-    return `${apiRoot}${rutaNormalizada}`;
   }
 
   manejarErrorImagen(eventoId: string): void {
@@ -635,12 +618,12 @@ export class NovedadEventosDetalle implements OnChanges {
       if (evento.imagenUrl) {
         currentY =
           await this.agregarEvidenciaPdf(
-            doc,
-            evento.imagenUrl,
-            currentY,
-            marginX,
-            limiteInferior
-          );
+          doc,
+          evento,
+          currentY,
+          marginX,
+          limiteInferior
+        );
       }
 
       currentY += 5;
@@ -681,7 +664,7 @@ export class NovedadEventosDetalle implements OnChanges {
 
   private async agregarEvidenciaPdf(
     doc: jsPDF,
-    imagenUrl: string,
+    evento: EventoNovedad,
     currentY: number,
     marginX: number,
     limiteInferior: number
@@ -697,8 +680,8 @@ export class NovedadEventosDetalle implements OnChanges {
     try {
       const imagen =
         await this.cargarImagenParaPdf(
-          this.obtenerImagenUrl(imagenUrl)
-        );
+        this.obtenerImagenUrl(evento)
+      );
 
       let anchoImagen =
         anchoDisponible;
@@ -809,7 +792,7 @@ export class NovedadEventosDetalle implements OnChanges {
     } catch (error) {
       console.error(
         'No fue posible incorporar una evidencia:',
-        imagenUrl,
+        evento.id,
         error
       );
 
@@ -866,6 +849,7 @@ export class NovedadEventosDetalle implements OnChanges {
         method: 'GET',
         mode: 'cors',
         cache: 'no-store',
+        credentials: 'include',
       });
       if (!response.ok) {
         throw new Error(

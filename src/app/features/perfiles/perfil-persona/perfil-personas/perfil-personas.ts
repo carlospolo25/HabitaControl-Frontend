@@ -10,8 +10,6 @@ import {
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { API_CONFIG } from '../../../../core/config/api.config';
-
 import {
   PersonResponse,
   PersonService,
@@ -150,35 +148,16 @@ export class PerfilPersonasComponent implements OnInit {
   }
 
   obtenerFotoPerfil(): string | null {
-    if (this.fotoNoDisponible) {
-      return null;
-    }
-
-    const foto = this.perfil?.fotoUrl?.trim();
-
-    if (!foto) {
-      return null;
-    }
-
     if (
-      foto.startsWith('http://') ||
-      foto.startsWith('https://') ||
-      foto.startsWith('data:') ||
-      foto.startsWith('blob:')
+      this.fotoNoDisponible ||
+      !this.perfil?.fotoUrl
     ) {
-      return foto;
+      return null;
     }
 
-    const apiRoot = API_CONFIG.baseUrl.replace(
-      /\/api\/?$/i,
-      ''
+    return this.personService.obtenerFotoUrl(
+      this.perfil.id
     );
-
-    const ruta = foto.startsWith('/')
-      ? foto
-      : `/${foto}`;
-
-    return `${apiRoot}${ruta}`;
   }
 
   obtenerIniciales(): string {

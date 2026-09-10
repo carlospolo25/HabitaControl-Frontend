@@ -42,9 +42,6 @@ type PackageSortOption =
 export class ListaPaquetesComponent implements OnInit {
   readonly EstadoPaquete = EstadoPaquete;
 
-  private readonly backendUrl =
-  'https://localhost:7232';
-
   paquetes: PaqueteResponse[] = [];
   paquetesFiltrados: PaqueteResponse[] = [];
 
@@ -252,7 +249,7 @@ export class ListaPaquetesComponent implements OnInit {
 
   abrirFoto(paquete: PaqueteResponse): void {
     const url = this.obtenerFotoUrl(
-      paquete.fotoUrl
+      paquete
     );
 
     if (!url) {
@@ -291,28 +288,18 @@ export class ListaPaquetesComponent implements OnInit {
   }
 
   obtenerFotoUrl(
-    fotoUrl: string | null | undefined
+    paquete: PaqueteResponse
   ): string | null {
-    if (!fotoUrl) {
-      return null;
-    }
-
-    const url = fotoUrl.trim();
-
-    if (!url) {
-      return null;
-    }
-
     if (
-      url.startsWith('http://') ||
-      url.startsWith('https://')
+      !paquete?.id ||
+      !paquete.fotoUrl?.trim()
     ) {
-      return url;
+      return null;
     }
 
-    return `${this.backendUrl}${
-      url.startsWith('/') ? '' : '/'
-    }${url}`;
+    return this.paqueteService.obtenerFotoUrl(
+      paquete.id
+    );
   }
 
   cambiarTorre(): void {

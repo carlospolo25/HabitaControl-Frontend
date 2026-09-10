@@ -312,9 +312,10 @@
 
                     <img
                       class="visitors-table__photo-image"
-                      [src]="obtenerFotoUrl(visitante.fotoUrl)"
+                      [src]="obtenerFotoUrl(visitante)"
                       [alt]="'Fotografía de ' + visitante.nombre"
-                      loading="lazy">
+                      loading="lazy"
+                    />
 
                     <span
                       class="visitors-table__photo-indicator"
@@ -564,8 +565,9 @@
 
             <img
               class="visitor-detail__photo-image"
-              [src]="obtenerFotoUrl(visitanteDetalle.fotoUrl)"
-              [alt]="'Fotografía de ' + visitanteDetalle.nombre">
+              [src]="obtenerFotoUrl(visitanteDetalle)"
+              [alt]="'Fotografía de ' + visitanteDetalle.nombre"
+            />
 
             <span class="visitor-detail__photo-badge">
               <span aria-hidden="true">
@@ -733,12 +735,13 @@
         <img
           class="visitor-photo-viewer__image"
           [src]="obtenerFotoUrl(
-            fotoVisitanteSeleccionada.fotoUrl
+            fotoVisitanteSeleccionada
           )"
           [alt]="
             'Fotografía de ' +
             fotoVisitanteSeleccionada.nombre
-          ">
+          "
+        />
 
       </div>
 

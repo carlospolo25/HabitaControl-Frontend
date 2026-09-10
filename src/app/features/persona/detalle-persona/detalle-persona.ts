@@ -12,6 +12,7 @@ import { finalize } from 'rxjs';
 
 import {
   PersonResponse,
+  PersonService,
 } from '../../../core/services/person/person-service';
 
 import {
@@ -39,8 +40,6 @@ type DetallePersonaTab =
   styleUrl: './detalle-persona.css',
 })
 export class DetallePersona implements OnChanges {
-  private readonly apiBaseUrl =
-    'https://localhost:7232';
 
   @Input({ required: true })
   persona!: PersonResponse;
@@ -69,6 +68,7 @@ export class DetallePersona implements OnChanges {
   readonly TipoMascota = TipoMascota;
 
   constructor(
+    private readonly personService: PersonService,
     private readonly vehiculoService: VehiculoService,
     private readonly mascotaService: MascotaService,
     private readonly cdr: ChangeDetectorRef
@@ -86,8 +86,12 @@ export class DetallePersona implements OnChanges {
   }
 
   obtenerFotoPersona(): string | null {
-    return this.construirUrlArchivo(
-      this.persona?.fotoUrl
+    if (!this.persona?.fotoUrl) {
+      return null;
+    }
+
+    return this.personService.obtenerFotoUrl(
+      this.persona.id
     );
   }
 
@@ -300,16 +304,24 @@ export class DetallePersona implements OnChanges {
   obtenerFotoVehiculo(
     vehiculo: VehiculoResponse
   ): string | null {
-    return this.construirUrlArchivo(
-      vehiculo.fotoUrl
+    if (!vehiculo.fotoUrl) {
+      return null;
+    }
+
+    return this.vehiculoService.obtenerFotoUrl(
+      vehiculo.id
     );
   }
 
   obtenerFotoMascota(
     mascota: MascotaResponse
   ): string | null {
-    return this.construirUrlArchivo(
-      mascota.fotoUrl
+    if (!mascota.fotoUrl) {
+      return null;
+    }
+
+    return this.mascotaService.obtenerFotoUrl(
+      mascota.id
     );
   }
 
@@ -338,30 +350,6 @@ export class DetallePersona implements OnChanges {
 
     this.imagenAmpliada = null;
     this.imagenAmpliadaAlt = '';
-  }
-
-  private construirUrlArchivo(
-    ruta: string | null | undefined
-  ): string | null {
-    if (!ruta) {
-      return null;
-    }
-
-    if (
-      ruta.startsWith('http://') ||
-      ruta.startsWith('https://') ||
-      ruta.startsWith('data:') ||
-      ruta.startsWith('blob:')
-    ) {
-      return ruta;
-    }
-
-    const rutaNormalizada =
-      ruta.startsWith('/')
-        ? ruta
-        : `/${ruta}`;
-
-    return `${this.apiBaseUrl}${rutaNormalizada}`;
   }
 
   private obtenerMensajeError(

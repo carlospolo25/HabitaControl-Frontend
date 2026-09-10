@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../../config/api.config';
 
 export type TipoPeriodoFinanciero =
   | 'mensual'
@@ -81,7 +82,7 @@ export interface ConsultarReporteFinancieroParams {
 })
 export class ReporteFinancieroService {
   private readonly apiUrl =
-    'https://localhost:7232/api/ReporteFinanciero';
+    `${API_CONFIG.baseUrl}/ReporteFinanciero`;
 
   constructor(private readonly http: HttpClient) {}
 

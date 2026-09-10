@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../config/api.config';
 
 export interface RegistrarVisitanteRequest {
   personaAutorizanteId: string;
@@ -65,8 +66,9 @@ export interface ApiMessageResponse {
   providedIn: 'root',
 })
 export class VisitanteService {
+
   private readonly baseUrl =
-    'https://localhost:7232/api/Visitante';
+    `${API_CONFIG.baseUrl}/Visitante`;
 
   constructor(
     private readonly http: HttpClient
@@ -179,5 +181,11 @@ export class VisitanteService {
       `${this.baseUrl}/marcar-invitacion-usada/${token}`,
       {}
     );
+  }
+
+  obtenerFotoUrl(
+    visitanteId: string
+  ): string {
+    return `${this.baseUrl}/${visitanteId}/foto`;
   }
 }

@@ -42,8 +42,6 @@ interface OpcionTipoMascota {
 export class MisMascotasComponent
   implements OnInit, OnDestroy {
 
-  private readonly apiBaseUrl =
-    'https://localhost:7232';
 
   private readonly tiposImagenPermitidos = [
     'image/jpeg',
@@ -260,7 +258,11 @@ export class MisMascotasComponent
     this.fotoPreview = null;
 
     this.fotoActualUrl =
-      this.construirFotoUrl(mascota.fotoUrl);
+      mascota.fotoUrl
+        ? this.mascotaService.obtenerFotoUrl(
+            mascota.id
+          )
+        : null;
   }
 
   cancelarEdicion(): void {
@@ -353,8 +355,12 @@ export class MisMascotasComponent
   obtenerFotoMascota(
     mascota: MascotaResponse
   ): string | null {
-    return this.construirFotoUrl(
-      mascota.fotoUrl
+    if (!mascota.fotoUrl) {
+      return null;
+    }
+
+    return this.mascotaService.obtenerFotoUrl(
+      mascota.id
     );
   }
 
@@ -617,30 +623,6 @@ export class MisMascotasComponent
         this.fotoPreview
       );
     }
-  }
-
-  private construirFotoUrl(
-    fotoUrl: string | null
-  ): string | null {
-    if (!fotoUrl) {
-      return null;
-    }
-
-    if (
-      fotoUrl.startsWith('http://') ||
-      fotoUrl.startsWith('https://') ||
-      fotoUrl.startsWith('data:') ||
-      fotoUrl.startsWith('blob:')
-    ) {
-      return fotoUrl;
-    }
-
-    const rutaNormalizada =
-      fotoUrl.startsWith('/')
-        ? fotoUrl
-        : `/${fotoUrl}`;
-
-    return `${this.apiBaseUrl}${rutaNormalizada}`;
   }
 
   private limpiarMensajes(): void {

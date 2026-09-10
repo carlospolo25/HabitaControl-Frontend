@@ -20,7 +20,6 @@ import {
   PrioridadAviso,
 } from '../../../../core/services/avisos/aviso';
 
-import { API_CONFIG } from '../../../../core/config/api.config';
 import {
   COLOMBIA_TIME_ZONE,
   fechaHoraColombiaAUtc
@@ -496,35 +495,18 @@ export class FormAvisoComponent implements OnChanges {
   // URL DEL ARCHIVO
   // =========================================================
 
-  obtenerUrlArchivo(
-    archivoUrl?: string | null
-  ): string {
-
-    if (!archivoUrl) {
+  obtenerUrlArchivo(): string {
+    if (
+      !this.aviso?.id ||
+      !this.aviso.archivoUrl?.trim()
+    ) {
       return '';
     }
 
-    if (
-      archivoUrl.startsWith('http://') ||
-      archivoUrl.startsWith('https://')
-    ) {
-      return archivoUrl;
-    }
-
-    const backendUrl =
-      API_CONFIG.baseUrl.replace(
-        /\/api\/?$/,
-        ''
-      );
-
-    const rutaArchivo =
-      archivoUrl.startsWith('/')
-        ? archivoUrl
-        : `/${archivoUrl}`;
-
-    return `${backendUrl}${rutaArchivo}`;
+    return this.avisoService.obtenerArchivoUrl(
+      this.aviso.id
+    );
   }
-
   // =========================================================
   // CANCELAR
   // =========================================================

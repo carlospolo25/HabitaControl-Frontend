@@ -15,8 +15,6 @@ import {
 } from '../../../core/services/norma-convivencia/norma-convivencia';
 import { FormNormaConvivencia } from '../form-norma-convivencia/form-norma-convivencia';
 
-import { API_CONFIG } from '../../../core/config/api.config';
-
 
 @Component({
   selector: 'app-gestion-normas-convivencia',
@@ -125,32 +123,19 @@ export class GestionNormasConvivenciaComponent implements OnInit {
   }
 
   obtenerUrlArchivo(
-    archivoUrl?: string | null
+    norma: NormaConvivenciaResponse
   ): string {
 
-    if (!archivoUrl) {
+    if (
+      !norma?.id ||
+      !norma.archivoUrl?.trim()
+    ) {
       return '';
     }
 
-    if (
-      archivoUrl.startsWith('http://') ||
-      archivoUrl.startsWith('https://')
-    ) {
-      return archivoUrl;
-    }
-
-    const backendUrl =
-      API_CONFIG.baseUrl.replace(
-        /\/api\/?$/,
-        ''
-      );
-
-    const rutaArchivo =
-      archivoUrl.startsWith('/')
-        ? archivoUrl
-        : `/${archivoUrl}`;
-
-    return `${backendUrl}${rutaArchivo}`;
+    return this.normaService.obtenerArchivoUrl(
+      norma.id
+    );
   }
 
   // =========================================================

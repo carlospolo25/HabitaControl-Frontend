@@ -36,9 +36,6 @@ export class PerfilUsuarioComponent implements OnInit {
   @Output()
   cerrar = new EventEmitter<void>();
 
-  private readonly apiBaseUrl =
-    'https://localhost:7232';
-
   perfil: PerfilUsuarioResponse | null = null;
 
   isLoading = false;
@@ -194,15 +191,16 @@ export class PerfilUsuarioComponent implements OnInit {
      ========================================================= */
 
   obtenerFotoPerfil(): string | null {
-    if (this.fotoNoDisponible) {
+    if (
+      this.fotoNoDisponible ||
+      !this.perfil?.fotoUrl
+    ) {
       return null;
     }
 
-    return this.construirFotoUrl(
-      this.perfil?.fotoUrl ?? null
-    );
+    return this.authService.obtenerFotoPerfilUrl();
   }
-
+  
   manejarErrorFoto(): void {
     this.fotoNoDisponible = true;
   }
@@ -329,39 +327,5 @@ export class PerfilUsuarioComponent implements OnInit {
       default:
         return mensajePredeterminado;
     }
-  }
-
-  /* =========================================================
-     URL DE LA FOTOGRAFÍA
-     ========================================================= */
-
-  private construirFotoUrl(
-    fotoUrl: string | null
-  ): string | null {
-    if (!fotoUrl) {
-      return null;
-    }
-
-    const ruta = fotoUrl.trim();
-
-    if (!ruta) {
-      return null;
-    }
-
-    if (
-      ruta.startsWith('http://') ||
-      ruta.startsWith('https://') ||
-      ruta.startsWith('data:') ||
-      ruta.startsWith('blob:')
-    ) {
-      return ruta;
-    }
-
-    const rutaNormalizada =
-      ruta.startsWith('/')
-        ? ruta
-        : `/${ruta}`;
-
-    return `${this.apiBaseUrl}${rutaNormalizada}`;
   }
 }

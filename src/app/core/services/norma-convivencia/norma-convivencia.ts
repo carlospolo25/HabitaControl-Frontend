@@ -230,6 +230,12 @@ export class NormaConvivencia {
     );
   }
 
+  obtenerArchivoUrl(
+    normaId: string
+  ): string {
+    return `${this.apiUrl}/${normaId}/archivo`;
+  }
+
   // =======================================================
   // ADMIN - ELIMINAR
   // =======================================================

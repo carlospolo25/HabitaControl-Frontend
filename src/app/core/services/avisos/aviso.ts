@@ -262,6 +262,12 @@ export class Aviso {
     );
   }
 
+  obtenerArchivoUrl(
+    avisoId: string
+  ): string {
+    return `${this.apiUrl}/${avisoId}/archivo`;
+  }
+
   // =======================================================
   // ADMIN - ELIMINAR
   // =======================================================

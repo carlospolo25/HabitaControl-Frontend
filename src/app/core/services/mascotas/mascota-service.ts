@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../config/api.config';
 
 export enum TipoMascota {
   Perro = 1,
@@ -55,8 +56,9 @@ export interface MascotaResponse {
   providedIn: 'root',
 })
 export class MascotaService {
+  
   private readonly apiUrl =
-    'https://localhost:7232/api/Mascota';
+    `${API_CONFIG.baseUrl}/Mascota`;
 
   constructor(
     private readonly http: HttpClient
@@ -83,6 +85,12 @@ export class MascotaService {
     return this.http.get<MascotaResponse[]>(
       `${this.apiUrl}/persona/${personaId}`
     );
+  }
+
+  obtenerFotoUrl(
+    mascotaId: string
+  ): string {
+    return `${this.apiUrl}/${mascotaId}/foto`;
   }
 
   actualizar(

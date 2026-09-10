@@ -42,9 +42,6 @@ export class FormPerfilUsuarioComponent
   perfilActualizado =
     new EventEmitter<PerfilUsuarioResponse>();
 
-  private readonly apiBaseUrl =
-    'https://localhost:7232';
-
   private readonly tiposImagenPermitidos = [
     'image/jpeg',
     'image/png',
@@ -400,9 +397,9 @@ export class FormPerfilUsuarioComponent
     this.fotoNoDisponible = false;
 
     this.fotoActualUrl =
-      this.construirFotoUrl(
-        perfil.fotoUrl
-      );
+      perfil.fotoUrl
+        ? this.authService.obtenerFotoPerfilUrl()
+        : null;
 
     this.limpiarMensajes();
   }
@@ -623,40 +620,6 @@ export class FormPerfilUsuarioComponent
     }
 
     return Number(valor);
-  }
-
-  /* =========================================================
-     URL DE LA FOTOGRAFÍA
-     ========================================================= */
-
-  private construirFotoUrl(
-    fotoUrl: string | null
-  ): string | null {
-    if (!fotoUrl) {
-      return null;
-    }
-
-    const ruta = fotoUrl.trim();
-
-    if (!ruta) {
-      return null;
-    }
-
-    if (
-      ruta.startsWith('http://') ||
-      ruta.startsWith('https://') ||
-      ruta.startsWith('data:') ||
-      ruta.startsWith('blob:')
-    ) {
-      return ruta;
-    }
-
-    const rutaNormalizada =
-      ruta.startsWith('/')
-        ? ruta
-        : `/${ruta}`;
-
-    return `${this.apiBaseUrl}${rutaNormalizada}`;
   }
 
   private liberarFotoPreview(): void {

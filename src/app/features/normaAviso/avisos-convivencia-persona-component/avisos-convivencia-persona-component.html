@@ -399,7 +399,7 @@
                   <button
                     type="button"
                     class="persona-aviso-card__action persona-aviso-card__action--file"
-                    (click)="abrirArchivo(aviso.archivoUrl)">
+                    (click)="abrirArchivoAviso(aviso)">
                     Abrir documento
                   </button>
 
@@ -744,7 +744,7 @@
                     <button
                       type="button"
                       class="persona-norma-card__action persona-norma-card__action--file"
-                      (click)="abrirArchivo(norma.archivoUrl)">
+                     (click)="abrirArchivoNorma(norma)" >
                       Abrir documento
                     </button>
 
@@ -864,7 +864,7 @@
               <button
                 type="button"
                 class="persona-info-modal__document-action"
-                (click)="abrirArchivo(avisoSeleccionado.archivoUrl)">
+                (click)="abrirArchivoAviso(avisoSeleccionado)">
                 Abrir
               </button>
 
@@ -978,7 +978,7 @@
               <button
                 type="button"
                 class="persona-info-modal__document-action"
-                (click)="abrirArchivo(normaSeleccionada.archivoUrl)">
+                (click)="abrirArchivoNorma(normaSeleccionada)">
                 Abrir
               </button>
 

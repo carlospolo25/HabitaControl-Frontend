@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../../config/api.config';
 
 export enum EstadoIngreso {
   Pendiente = 1,
@@ -75,7 +76,8 @@ export interface AnularIngresoRequest {
   providedIn: 'root',
 })
 export class IngresoService {
-  private readonly apiUrl = 'https://localhost:7232/api/Ingreso';
+  private readonly apiUrl =
+    `${API_CONFIG.baseUrl}/Ingreso`;
 
   constructor(private readonly http: HttpClient) {}
 

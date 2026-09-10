@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../../config/api.config';
 
 export interface CategoriaEgresoResponse {
   id: string;
@@ -30,7 +31,7 @@ export interface CambiarEstadoCategoriaEgresoRequest {
 })
 export class CategoriaEgresoService {
   private readonly apiUrl =
-    'https://localhost:7232/api/CategoriaEgreso';
+    `${API_CONFIG.baseUrl}/CategoriaEgreso`;
 
   constructor(private readonly http: HttpClient) {}
 

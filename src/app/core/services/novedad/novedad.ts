@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../config/api.config';
 
 // ======================================================
 // ENUMS
@@ -145,7 +146,7 @@ export interface ApiMessageResponse {
 export class NovedadService {
 
   private readonly baseUrl =
-    'https://localhost:7232/api/novedad';
+    `${API_CONFIG.baseUrl}/novedad`;
 
   constructor(
     private readonly http: HttpClient
@@ -240,6 +241,22 @@ export class NovedadService {
     return this.http.get<EventoNovedad[]>(
       `${this.baseUrl}/${novedadId}/eventos`
     );
+  }
+
+  // ====================================================
+  // EVIDENCIA DE EVENTO
+  // ====================================================
+
+  obtenerImagenEventoUrl(
+    novedadId: string,
+    eventoId: string
+  ): string {
+
+    if (!novedadId?.trim() || !eventoId?.trim()) {
+      return '';
+    }
+
+    return `${this.baseUrl}/${novedadId}/eventos/${eventoId}/imagen`;
   }
 
   // ====================================================

@@ -13,8 +13,6 @@ import { FormsModule } from '@angular/forms';
 
 import { finalize } from 'rxjs';
 
-import { API_CONFIG } from '../../../../core/config/api.config';
-
 import {
   ActualizarPerfilPersonaRequest,
   PersonResponse,
@@ -446,9 +444,11 @@ export class FormPerfilPersonaComponent
     this.fotoNoDisponible = false;
 
     this.fotoActualUrl =
-      this.construirFotoUrl(
-        perfil.fotoUrl
-      );
+      perfil.fotoUrl
+        ? this.personService.obtenerFotoUrl(
+            perfil.id
+          )
+        : null;
 
     this.limpiarMensajes();
   }
@@ -563,44 +563,6 @@ export class FormPerfilPersonaComponent
   /* =========================================================
      URL DE LA FOTO
      ========================================================= */
-
-  private construirFotoUrl(
-    fotoUrl: string | null
-  ): string | null {
-    if (!fotoUrl) {
-      return null;
-    }
-
-    const ruta =
-      fotoUrl.trim();
-
-    if (!ruta) {
-      return null;
-    }
-
-    if (
-      ruta.startsWith('http://') ||
-      ruta.startsWith('https://') ||
-      ruta.startsWith('data:') ||
-      ruta.startsWith('blob:')
-    ) {
-      return ruta;
-    }
-
-    const apiRoot =
-      API_CONFIG.baseUrl.replace(
-        /\/api\/?$/i,
-        ''
-      );
-
-    const rutaNormalizada =
-      ruta.startsWith('/')
-        ? ruta
-        : `/${ruta}`;
-
-    return `${apiRoot}${rutaNormalizada}`;
-  }
-
   private liberarFotoPreview(): void {
     if (
       this.fotoPreview?.startsWith(

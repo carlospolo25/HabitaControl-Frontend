@@ -40,9 +40,6 @@ import {
 export class ListaVisitantesComponent implements OnInit {
   visitantes: VisitanteResponse[] = [];
 
-  private readonly backendUrl =
-  'https://localhost:7232';
-
   visitanteDetalle: VisitanteResponse | null = null;
   mostrarDetalleVisitante = false;
   fotoVisitanteSeleccionada: VisitanteResponse | null = null;
@@ -300,28 +297,18 @@ export class ListaVisitantesComponent implements OnInit {
   }
 
   obtenerFotoUrl(
-    fotoUrl: string | null | undefined
+    visitante: VisitanteResponse | null | undefined
   ): string | null {
-    if (!fotoUrl) {
-      return null;
-    }
-
-    const url = fotoUrl.trim();
-
-    if (!url) {
-      return null;
-    }
-
     if (
-      url.startsWith('http://') ||
-      url.startsWith('https://')
+      !visitante?.id ||
+      !visitante.fotoUrl?.trim()
     ) {
-      return url;
+      return null;
     }
 
-    return `${this.backendUrl}${
-      url.startsWith('/') ? '' : '/'
-    }${url}`;
+    return this.visitanteService.obtenerFotoUrl(
+      visitante.id
+    );
   }
 
   verDetalle(visitante: VisitanteResponse): void {

@@ -18,8 +18,6 @@ import {
   NormaConvivencia,
   NormaConvivenciaResponse,
 } from '../../../core/services/norma-convivencia/norma-convivencia';
-import { API_CONFIG } from '../../../core/config/api.config';
-
 
 type VistaConvivencia = 'avisos' | 'normas';
 
@@ -404,29 +402,47 @@ export class AvisosConvivenciaPersonaComponent implements OnInit {
   // =========================================================
   // ARCHIVOS
   // =========================================================
-
-  abrirArchivo(
-    archivoUrl?: string | null
+  abrirArchivoAviso(
+    aviso: AvisoResponse
   ): void {
 
-    if (!archivoUrl) {
+    if (
+      !aviso?.id ||
+      !aviso.archivoUrl?.trim()
+    ) {
       return;
     }
 
-    const backendUrl =
-      API_CONFIG.baseUrl.replace(
-        /\/api\/?$/,
-        ''
+    const url =
+      this.avisoService.obtenerArchivoUrl(
+        aviso.id
       );
 
-    const urlCompleta =
-      archivoUrl.startsWith('http://') ||
-      archivoUrl.startsWith('https://')
-        ? archivoUrl
-        : `${backendUrl}${archivoUrl}`;
+    window.open(
+      url,
+      '_blank',
+      'noopener,noreferrer'
+    );
+  }
+
+  abrirArchivoNorma(
+    norma: NormaConvivenciaResponse
+  ): void {
+
+    if (
+      !norma?.id ||
+      !norma.archivoUrl?.trim()
+    ) {
+      return;
+    }
+
+    const url =
+      this.normaService.obtenerArchivoUrl(
+        norma.id
+      );
 
     window.open(
-      urlCompleta,
+      url,
       '_blank',
       'noopener,noreferrer'
     );

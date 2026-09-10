@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../config/api.config';
 
 export interface DashboardOverviewResponse {
   activePersons: number;
@@ -48,7 +49,8 @@ export interface DashboardNewsOperationalResponse {
   providedIn: 'root',
 })
 export class Dashboard {
-  private readonly api = 'https://localhost:7232/api';
+ private readonly api =
+  API_CONFIG.baseUrl;
 
   constructor(private http: HttpClient) {}
 

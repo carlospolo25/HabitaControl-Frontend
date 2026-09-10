@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../config/api.config';
 
 export interface PersonResponse {
   id: string;
@@ -137,13 +138,13 @@ export interface MessageResponse {
 })
 export class PersonService {
   private readonly apiUrl =
-    'https://localhost:7232/api/Person';
+    `${API_CONFIG.baseUrl}/Person`;
 
   private readonly registerPersonUrl =
-    'https://localhost:7232/api/RegisterPerson';
+    `${API_CONFIG.baseUrl}/RegisterPerson`;
 
   private readonly dashboardUrl =
-    'https://localhost:7232/api/Dashboard';
+    `${API_CONFIG.baseUrl}/Dashboard`;
 
   constructor(
     private readonly http: HttpClient
@@ -191,6 +192,12 @@ export class PersonService {
     return this.http.get<PersonResponse>(
       `${this.apiUrl}/perfil`
     );
+  }
+
+  obtenerFotoUrl(
+    personaId: string
+  ): string {
+    return `${this.apiUrl}/${personaId}/foto`;
   }
 
   actualizarMiPerfil(

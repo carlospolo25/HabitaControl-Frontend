@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../../config/api.config';
 
 export enum EstadoPaquete {
   Pendiente = 'Pendiente',
@@ -79,7 +80,7 @@ export interface RegistrarPaqueteResponse {
 })
 export class PaqueteService {
   private readonly baseUrl =
-    'https://localhost:7232/api/Paquete';
+  `${API_CONFIG.baseUrl}/Paquete`;
 
   constructor(private readonly http: HttpClient) {}
 
@@ -139,6 +140,10 @@ export class PaqueteService {
     return this.http.get<PaqueteDetalleResponse>(
       `${this.baseUrl}/detalle/${paqueteId}`
     );
+  }
+
+  obtenerFotoUrl(paqueteId: string): string {
+    return `${this.baseUrl}/${paqueteId}/foto`;
   }
 
   entregar(
